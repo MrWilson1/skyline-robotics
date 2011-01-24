@@ -1,0 +1,21 @@
+#labels FRC,Help,Links,Tutorials,Guides,Downloads
+#Links to useful websites
+
+= List of useful links =
+
+== FRC ==
+
+FRC website: http://www.usfirst.org/roboticsprograms/frc/default.aspx?=966
+
+FRC tutorials, training and help: http://decibel.ni.com/content/community/first/frc?view=overview
+
+FIRST forge -- downloads: http://firstforge.wpi.edu/sf/sfmain/do/home
+
+FIRST resource center: http://first.wpi.edu/FRC/
+
+== C++ ==
+
+Guides:
+http://www.cplusplus.com/doc/tutorial/
+
+http://www.cprogramming.com/tutorial.html
