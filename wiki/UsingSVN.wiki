@@ -1,3 +1,4 @@
+#labels SVN,Subversion,Help
 #How to check out, check in, and generally use SVN.
 
 = Introduction =
@@ -10,21 +11,22 @@ In order to access, download, and check-in code, you need a server side program.
 
 = How to use RapidSVN =
 
-# Download the program.
+1 Download the program.
   Main:  http://rapidsvn.tigris.org/
+
   Portable:  http://portableapps.com/node/13470
-# Create a folder
+2 Create a folder
   First, open 'My Documents' and create a folder somewhere.  Name it something like 'SVN' or 'Robotics code'.  *This folder is your working copy* - you will download the latest code here.
-# Access the repository
- Click 'Bookmarks' and click 'Add Existing Repository...'
- Type in 'https://skyline-robotics.googlecode.com/svn/trunk/' for the URL, then click OK.
- To the left in the Bookmarks pane, you should see a new item with the same URL.  Click on it, and if it asks you about the SLL certificate, press either Permanently or Temporarily.
-# Check out a copy.
- To be able to open and edit files, you need to check out a copy from the Googlecode repository.  Right-click it, and click 'Checkout New Working Copy'.  Keep the URL the same, and under 'Destination Directory' press the '...' button to browse to the folder you created earlier.  Press OK.
-# Editing
- In the left Bookmark pane, you should see two items now - the Googlecode URL and your folder.  Click on My Documents, browse over to your folder.  Your folder should be updated with the items from the repository.  Create and edit files at your whim.  After you are done, navigate to the item on the right hand pane.  For every new file or every file edited, you should see a small question mark.  Right click, and click 'Add'.
-# Checking in
- After you are done, right-click your folder in the left Bookmark pane (after adding all new changes) and click 'Update'.  After that, right-click again and press 'Commit'.
+3 Access the repository
+  Click 'Bookmarks' and click 'Add Existing Repository...'
+  Type in 'https://skyline-robotics.googlecode.com/svn/trunk/' for the URL, then click OK.
+  To the left in the Bookmarks pane, you should see a new item with the same URL.  Click on it, and if it asks you about the SLL certificate, press either Permanently or Temporarily.
+4 Check out a copy.
+  To be able to open and edit files, you need to check out a copy from the Googlecode repository.  Right-click it, and click 'Checkout New Working Copy'.  Keep the URL the same, and under 'Destination Directory' press the '...' button to browse to the folder you created earlier.  Press OK.
+5 Editing
+  In the left Bookmark pane, you should see two items now - the Googlecode URL and your folder.  Click on My Documents, browse over to your folder.  Your folder should be updated with the items from the repository.  Create and edit files at your whim.  After you are done, navigate to the item on the right hand pane.  For every new file or every file edited, you should see a small question mark.  Right click, and click 'Add'.
+6 Checking in
+  After you are done, right-click your folder in the left Bookmark pane (after adding all new changes) and click 'Update'.  After that, right-click again and press 'Commit'.
 
 Every time you want the latest version, use Update and every time you want to add your code, use Commit.
  
