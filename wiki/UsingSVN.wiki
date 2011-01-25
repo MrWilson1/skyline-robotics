@@ -1,0 +1,17 @@
+#How to check out, check in, and generally use SVN.
+
+= Introduction =
+
+Subversion is a system of managing code.  Because this programming team has many members, simply saving code to a central computer or emailing code to each other is not optimal -- there is too much opportunity for confusion, and too high of a chance that we may simply get in each other's way and make programming harder.
+
+For that reason, we are using google code, which provides a version control system called Subversion, or SVN for short.  This system comprises of two parts - server-side and client side.  Google Code manages the server-side; it keeps a central, canonical copy of the code.  All the code hosted by Google should be treated as the main code to refer too. 
+
+In order to access, download, and check-in code, you need a server side program.  I am using RapidSVN, found here: http://rapidsvn.tigris.org/ (portable version: http://portableapps.com/node/13470 ) to access the code.  There are other clients available, although you will have to find instructions on your own.  You use the clint primarily to download and upload files and code, and you edit files or create folders using your normal tools.
+
+= How to use RapidSVN =
+
+# Download the program.
+  Main:  http://rapidsvn.tigris.org/
+  Portable:  http://portableapps.com/node/13470
+# Checkout a working copy.
+  First, create a folder to keep your working copy on your computer.  Name it something like 'SVN' or 'Robotics code'.
