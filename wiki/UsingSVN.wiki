@@ -11,6 +11,8 @@ In order to access, download, and check-in code, you need a server side program.
 
 = How to use RapidSVN =
 
+_If at any point, the program asks for a password, see the bottom._
+
 1 Download the program.
   Main:  http://rapidsvn.tigris.org/
 
@@ -29,4 +31,5 @@ In order to access, download, and check-in code, you need a server side program.
   After you are done, right-click your folder in the left Bookmark pane (after adding all new changes) and click 'Update'.  After that, right-click again and press 'Commit'.
 
 Every time you want the latest version, use Update and every time you want to add your code, use Commit.
- 
+
+_If a password is required to either check out or commit, log in to your Google account, press the 'Source' tab on this website near the top, press browse, and click the link that will generate your Googlecode password.  The password should be a string of pseudo-random numbers and letters._
