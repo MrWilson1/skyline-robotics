@@ -21,16 +21,6 @@
 
 void OmniDrive(GenericHID*, GenericHID*);
 
-bool fastSpeedEnabled = false;
-bool safetyModeOn = true;
-
-const float ROTATION_SPEED = 6.0
-const float SPEED_DECREASE = 2.0
-
-const int FLM = 1;
-const int RLM = 2;
-const int FRM = 3;
-const int RRM = 4;
 /**
  * The above are the constants for the ports each motor goes into.
  * See the method "MainRobot(void) in the below class for more.
@@ -46,29 +36,35 @@ const int RRM = 4;
  */
   
 class MainRobot : public SimpleRobot {
-	RobotDrive myRobot;				// Robot drive system
+	RobotDrive myRobot;		// Robot drive system
 	Joystick *stick1;		// Directional control
 	Joystick *stick2;		// Lifting control
+	const float ROTATION_SPEED = 6.0;
+	const float SPEED_DECREASE = 2.0;
+
+	const int FLM = 1;
+	const int RLM = 2;
+	const int FRM = 3;
+	const int RRM = 4;
+
 	
 public:
 	/**
 	 * Presumably the constructor function
 	 * Todo:
-	 * - Find out what the 'myRobot' initialization does.
+	 * - Pending
 	 */
 	MainRobot(void):
 		/**
 		 * Explaination of mysterious numbers below:
-		 * Each number corresponds to either the jaguar
-		 * that controls that motor (or something like that).
-		 * Order:
+		 * Each motor is connected to a jaguar, which is connected to a port.
+		 * The constructor wants to know which ports control which motor. 
+		 * Order it expects:
 		 * Front Left Motor,
 		 * Rear Left Motor,
 		 * Front Right Motor,
 		 * Rear Right Motor.
-		 * Numbers copied and pasted from last year, may need
-		 * to be altered based on current configuration.
-		 * See the constants at the top.
+		 * See the constants at the top for the motor port numbers.
 		 */
 		myRobot(FLM, RLM, FRM, RRM) {
 			// This should be the constructor.
@@ -78,7 +74,8 @@ public:
 			stick2 = new Joystick(2); // Left joystick, lifting
 		}
 	
-
+	bool fastSpeedEnabled = false;
+	bool safetyModeOn = true;
 	Timer timer;
 	
 	/**
@@ -93,7 +90,7 @@ public:
 		while(IsAutonomous()) {
 			// Placeholder for autonomous - just spins in a circle
 			myRobot.HolonomicDrive(0,90,0);
-			Wait(0.5)
+			Wait(0.5);
 		}
 	}
 	
@@ -116,7 +113,7 @@ public:
 			FatalityChecks(stick1, stick2);
 			//ScissorLift(stick2);
 			OmniDrive(stick1);
-			Wait(0.005)
+			Wait(0.005);
 		}
 	}
 	
@@ -125,7 +122,7 @@ public:
 	 * Scissor Lift Controllor
 	 * Input = Data from Joystick 2
 	 * Output = Scissor lift movement
-	 * TODO
+	 * Todo:
 	 * - Make the function/method (thing)
 	 */
 	// Scissor life code here
@@ -181,6 +178,9 @@ public:
 	 * Output = Robot movement (controls mechanum wheels)
 	 * Copied and pasted movement code from last year
 	 * Altered so it (hopefully) uses the new buttons.
+	 * Todo:
+	 * - Try implementing the built-in momentum and dirction for
+	 * holonomic drive instead of using the large math stuff.
 	 */
 	void OmniDrive(GenericHID *moveStick) {
 		if (moveStick->GetRawButton(1)) {
@@ -209,7 +209,7 @@ public:
 		float leftXValue = fastSpeedEnabled ? moveStick->GetX()
 			  : leftStick->GetX() / SPEED_DECREASE;
 		float magnitude = sqrt((leftYValue * leftYValue) 
-				            + (leftXValue * leftXValue));
+						+ (leftXValue * leftXValue));
 		//Above: Pythagorean Theorum to calculate distance.
 		
 		/**
@@ -248,10 +248,7 @@ public:
 	 * Updates the dashboard
 	 * Input = string to be displayed
 	 * Todo:
-	 * - Verify that this works
-	 * - Check why there is no 'DashboardDataSender'
-	 *   file in the new documentation.
-	 * - Make sure I used 'char' correctly in this case.
+	 * - Make new dashboard stuff
 	 */
 	
 	/*
