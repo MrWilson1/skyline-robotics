@@ -18,7 +18,7 @@
 
 #include "WPILib.h"
 #include "math.h"
-#include "DashboardDataSender.h"
+//#include "DashboardDataFormat.h"
 
 void OmniDrive(GenericHID*, GenericHID*);
 
@@ -34,7 +34,7 @@ class MainRobot : public SimpleRobot {
 	RobotDrive myRobot;				// Robot drive system
 	Joystick *stick1;		// Directional control
 	Joystick *stick2;		// Lifting control
-	DashboardDataSender *dds;
+	//DashboardDataFormat *dds;
 	
 public:
 	/**
@@ -57,11 +57,11 @@ public:
 		 */
 		myRobot(1, 3, 2, 4) {
 			// This should be the constructor.
-			UpdateDashboard("Initializing...");
+			//UpdateDashboard("Initializing...");
 			GetWatchdog().SetExpiration(0.1);
 			stick1 = new Joystick(1); // Right joystick, direction
 			stick2 = new Joystick(2); // Left joystick, lifting
-			dds = new DashboardDataSender();
+			//dds = new DashboardDataFormat();
 		}
 	
 	bool fastSpeedEnabled = false;
@@ -74,9 +74,9 @@ public:
 	 * Actually make it do something.
 	 */
 	void Autonomous(void) {
-		UpdateDashboard("Initializing autonomous...");
+		//UpdateDashboard("Initializing autonomous...");
 		getWatchdog().SetEnabled(false);
-		UpdateDashboard("Starting autonomous.")
+		//UpdateDashboard("Starting autonomous.")
 		while(IsAutonomous()) {
 			// Placeholder for autonomous - just spins in a circle
 			myRobot.HolonomicDrive(0,90,0);
@@ -91,17 +91,17 @@ public:
 	 * - Make more functions to add (such as the scissor lift)
 	 */
 	void OperatorControl(void) {
-		UpdateDashboard("Initializing operator control...");
+		//UpdateDashboard("Initializing operator control...");
 		myRobot.SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
 		fastSpeedEnabled = false;
 		timer.Start();
 		GetWatchdog().SetEnabled(true);
-		UpdateDashboard("Starting operator control.");
+		//UpdateDashboard("Starting operator control.");
 		while(IsOperatorControl()) {
 			// Does nothing besides move around.
 			GetWatchdog().Feed();
 			FatalityChecks(stick1, stick2);
-			ScissorLift(stick2);
+			//ScissorLift(stick2);
 			OmniDrive(stick1);
 			Wait(0.005)
 		}
@@ -116,10 +116,10 @@ public:
 	 * - Make the function/method (thing)
 	 */
 	// Scissor life code here
-	void ScissorLift(GenericHID *liftStick) {
+	//void ScissorLift(GenericHID *liftStick) {
 		// Need to add.
 		
-	}
+	//}
 	
 	/**
 	 * Fatality Check
@@ -132,20 +132,22 @@ public:
 					  GenericHID * liftStick) {
 		if (moveStick == NULL || liftStick == NULL) {
 			// If joysticks are disconnected, terminate.
-			UpdateDashboard("ERROR: A joystick is disconnected.");
+			//UpdateDashboard("ERROR: A joystick is disconnected.");
 			wpi_fatal(NullParameter);
 			return;
 		}
 		if (moveStick->GetRawKey(11) || liftStick->GetRawKey(11)) {
 			// Button 11 on both sticks enables safety mode
 			if (!safetyModeOn) {
-				UpdateDashboard("Safety mode on.");}
+				//UpdateDashboard("Safety mode on.");
+			}
 			safetyModeOn = true;
 		}
 		if (moveStick->GetRawKey(10) || liftStick->GetRawKey(10)) {
 			// Button 10 on both sticks disables safety mode
 			if (safetyModeOn) {
-				UpdateDashboard("Safety mode off.");}
+				//UpdateDashboard("Safety mode off.");
+			}
 			safetyModeOn = false;
 		}
 	}	
@@ -171,11 +173,13 @@ public:
 		if (stick1->GetRawButton(1)) {
 			// Squeeze trigger to move fast
 			if (!fastSpeedEnabled) {
-				UpdateDashboard("Maximum Speed!");}
+				//UpdateDashboard("Maximum Speed!");
+			}
 			fastSpeedEnabled = true;
 		} else {
 			if (fastSpeedEnabled) {
-				UpdateDashboard("Normal Speed.")}
+				//UpdateDashboard("Normal Speed.")
+			}
 			// Release trigger to move slower
 			fastSpeedEnabled = false;
 		}
@@ -235,10 +239,13 @@ public:
 	 *   file in the new documentation.
 	 * - Make sure I used 'char' correctly in this case.
 	 */
+	
+	/*
 	void UpdateDashboard(char * output) {
 		dds.printf(output);
 		dds.finalize;
 	}
+	*/
 };
 
 START_ROBOT_CLASS(MainRobot);

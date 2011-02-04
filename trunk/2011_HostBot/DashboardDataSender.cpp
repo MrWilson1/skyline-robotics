@@ -2,11 +2,10 @@
 #include "WPILib.h"
 
 /**
- * Send data to the dashboard.
- * This class sends two types of data to the dashboard program:
- * 1. Data representing all the ports on the robot
- * 2. Camera tracking data so the dashboard can annotate the video stream with
- *    target information.
+ * Modified from the "DashboardDataSender" example.
+ * Data sent:
+ * - Current state (autonomous, teleoperated, etc.)
+ * - What the robot is doing, etc.
  */
 DashboardDataSender::DashboardDataSender()
 {

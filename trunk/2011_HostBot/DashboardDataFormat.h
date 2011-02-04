@@ -1,10 +1,7 @@
 #ifndef __DashboardDataFormat_h__
 #define __DashboardDataFormat_h__
 
-#include <vector>
-#include "Target.h"
-
-class Timer;
+#include "WPILib.h"
 
 /**
  * This class is just an example of one way you could organize the data that you want
@@ -17,18 +14,8 @@ class Timer;
  * to add data elements or remove them.  Just remember to make any changes consistently
  * between the LabVIEW "Dashboard Datatype" and the data that gets packed by this class.
  */
-class DashboardDataSender
-{
-public:
-	DashboardDataSender();
-	void sendIOPortData();
-	void sendVisionData(double joyStickX,
-					double gyroAngle,
-					double gyroRate,
-					double targetX,
-					vector<Target> targets);
-private:
-	Timer *visionTimer;
-	Timer *IOTimer;
-};
+
+void sendIOPortData(void);
+void sendVisionData(void);
+
 #endif // __DashboardDataFormat_h__
