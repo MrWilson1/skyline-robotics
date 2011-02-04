@@ -20,11 +20,7 @@
 #include "math.h"
 
 void OmniDrive(GenericHID*, GenericHID*);
-
-/**
- * The above are the constants for the ports each motor goes into.
- * See the method "MainRobot(void) in the below class for more.
- */
+// I don't know why the above is necessary.s
 
 
 /**
@@ -42,10 +38,14 @@ class MainRobot : public SimpleRobot {
 	const float ROTATION_SPEED = 6.0;
 	const float SPEED_DECREASE = 2.0;
 
-	const int FLM = 1;
-	const int RLM = 2;
-	const int FRM = 3;
-	const int RRM = 4;
+	const UINT32 FLM = 1;
+	const UINT32 RLM = 2;
+	const UINT32 FRM = 3;
+	const UINT32 RRM = 4;
+	/**
+	 * The above are the constants for the ports each motor goes into.
+	 * See the method "MainRobot(void) in the below class for more.
+	 */
 
 	
 public:
@@ -80,7 +80,7 @@ public:
 	
 	/**
 	 * Autonomous Mode
-	 * TODO:
+	 * Todo:
 	 * Actually make it do something.
 	 */
 	void Autonomous(void) {
@@ -102,8 +102,11 @@ public:
 	 */
 	void OperatorControl(void) {
 		//UpdateDashboard("Initializing operator control...");
-		myRobot.SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
+		//myRobot.SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
+		// Apparently, last year, the above motor was wired incorrectly.
+		// The above would flip the wiring.  Removed to test.
 		fastSpeedEnabled = false;
+		safetyModeOn = true;
 		timer.Start();
 		GetWatchdog().SetEnabled(true);
 		//UpdateDashboard("Starting operator control.");
@@ -111,8 +114,9 @@ public:
 			// Does nothing besides move around.
 			GetWatchdog().Feed();
 			FatalityChecks(stick1, stick2);
-			//ScissorLift(stick2);
 			OmniDrive(stick1);
+			//ScissorLift(stick2);
+			//MinibotDeploy;
 			Wait(0.005);
 		}
 	}
@@ -167,7 +171,7 @@ public:
 	 * Minibot Deployer
 	 * Input = Button push
 	 * Output = Minibot deploys
-	 * TODO
+	 * Todo:
 	 * - Make it
 	 */
 	// Minibot deployment code here
