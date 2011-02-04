@@ -18,9 +18,24 @@
 
 #include "WPILib.h"
 #include "math.h"
-//#include "DashboardDataFormat.h"
 
 void OmniDrive(GenericHID*, GenericHID*);
+
+bool fastSpeedEnabled = false;
+bool safetyModeOn = true;
+
+const float ROTATION_SPEED = 6.0
+const float SPEED_DECREASE = 2.0
+
+const int FLM = 1;
+const int RLM = 2;
+const int FRM = 3;
+const int RRM = 4;
+/**
+ * The above are the constants for the ports each motor goes into.
+ * See the method "MainRobot(void) in the below class for more.
+ */
+
 
 /**
  * The code for this is based on the SimpleRobot demo and
@@ -34,7 +49,6 @@ class MainRobot : public SimpleRobot {
 	RobotDrive myRobot;				// Robot drive system
 	Joystick *stick1;		// Directional control
 	Joystick *stick2;		// Lifting control
-	//DashboardDataFormat *dds;
 	
 public:
 	/**
@@ -54,18 +68,17 @@ public:
 		 * Rear Right Motor.
 		 * Numbers copied and pasted from last year, may need
 		 * to be altered based on current configuration.
+		 * See the constants at the top.
 		 */
-		myRobot(1, 3, 2, 4) {
+		myRobot(FLM, RLM, FRM, RRM) {
 			// This should be the constructor.
 			//UpdateDashboard("Initializing...");
 			GetWatchdog().SetExpiration(0.1);
 			stick1 = new Joystick(1); // Right joystick, direction
 			stick2 = new Joystick(2); // Left joystick, lifting
-			//dds = new DashboardDataFormat();
 		}
 	
-	bool fastSpeedEnabled = false;
-	bool safetyModeOn = true;
+
 	Timer timer;
 	
 	/**
@@ -138,16 +151,16 @@ public:
 		}
 		if (moveStick->GetRawKey(11) || liftStick->GetRawKey(11)) {
 			// Button 11 on both sticks enables safety mode
-			if (!safetyModeOn) {
+			//if (!safetyModeOn) {
 				//UpdateDashboard("Safety mode on.");
-			}
+			//}
 			safetyModeOn = true;
 		}
 		if (moveStick->GetRawKey(10) || liftStick->GetRawKey(10)) {
 			// Button 10 on both sticks disables safety mode
-			if (safetyModeOn) {
+			//if (safetyModeOn) {
 				//UpdateDashboard("Safety mode off.");
-			}
+			//}
 			safetyModeOn = false;
 		}
 	}	
@@ -170,16 +183,16 @@ public:
 	 * Altered so it (hopefully) uses the new buttons.
 	 */
 	void OmniDrive(GenericHID *moveStick) {
-		if (stick1->GetRawButton(1)) {
+		if (moveStick->GetRawButton(1)) {
 			// Squeeze trigger to move fast
-			if (!fastSpeedEnabled) {
+			//if (!fastSpeedEnabled) {
 				//UpdateDashboard("Maximum Speed!");
-			}
+			//}
 			fastSpeedEnabled = true;
 		} else {
-			if (fastSpeedEnabled) {
+			//if (fastSpeedEnabled) {
 				//UpdateDashboard("Normal Speed.")
-			}
+			//}
 			// Release trigger to move slower
 			fastSpeedEnabled = false;
 		}
@@ -191,10 +204,10 @@ public:
 		 * else expression 2.
 		 * Like a compact 'If' statement.
 		 */
-		float leftYValue = fastSpeedEnabled ? -leftStick->GetY() 
-			  : -leftStick->GetY() / 2;
-		float leftXValue = fastSpeedEnabled ? leftStick->GetX()
-			  : leftStick->GetX() / 2;
+		float leftYValue = fastSpeedEnabled ? -moveStick->GetY() 
+			  : -leftStick->GetY() / SPEED_DECREASE;
+		float leftXValue = fastSpeedEnabled ? moveStick->GetX()
+			  : leftStick->GetX() / SPEED_DECREASE;
 		float magnitude = sqrt((leftYValue * leftYValue) 
 				            + (leftXValue * leftXValue));
 		//Above: Pythagorean Theorum to calculate distance.
@@ -203,25 +216,26 @@ public:
 		 * From here on down, presumably the code prevents the robot from
 		 * drifting if somebody nudges the joystick.
 		 */
-		if (magnitude < 0.1) {
-			magnitude = 0;}
-		if (leftXValue > -0.1 && leftXValue < 0.1) {
-			leftXValue = 0.00001;}
-		if (leftYValue > -0.1 && leftYValue < 0.1) {
-			leftYValue = 0.00001;}
+		if (magnitude < 0.1)
+			magnitude = 0;
+		if (leftXValue > -0.1 && leftXValue < 0.1)
+			leftXValue = 0.00001;
+		if (leftYValue > -0.1 && leftYValue < 0.1)
+			leftYValue = 0.00001;
 		float direction = (180 / 3.14159) 
 			              * atan(leftXValue/leftYValue);
-		if (leftYValue < 0.0){
-			direction += 180.0}
+		if (leftYValue < 0.0)
+			direction += 180.0;
 		
 		// Starts rotation using buttons.  6 degree turn.
-		float rotation;
-		if (moveStick->GetRawButton(4) || moveStick->GetRawButton(3)) {
-			rotation = ((moveStick->GetRawButton(3) - 
-						 moveStick->GetRawButton(4))*
-						 6.0);	//6 degree turn either way.
-		} else {
-			rotation = 0.0;
+		// Button 3 (center button) turns clockwise,
+		// Button 4 (left button) turns counterclockwise.
+		float rotation = (moveStick->GetRawButton(4) ? -1.0 : 0.0) 
+					   + (moveStick->GetRawButton(3) ? 1.0 : 0.0);
+		if (rotation) {
+			rotation = 
+				rotation * (fastSpeedEnabled ? 
+				ROTATION_SPEED : ROTATION_SPEED / SPEED_DECREASE;
 		}
 		if (rotation < 0.1 && rotation > -0.1) {
 			// Just in case.
