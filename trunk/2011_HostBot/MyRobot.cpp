@@ -65,6 +65,7 @@ public:
 		 * Front Right Motor,
 		 * Rear Right Motor.
 		 * See the constants at the top for the motor port numbers.
+		 * The above is confirmed.
 		 */
 		myRobot(FLM, RLM, FRM, RRM) {
 			// This should be the constructor.
