@@ -1,4 +1,4 @@
-﻿/***********************************************
+/* **********************************************
  * Skyline High School Robotics Team
  * Spartabots, Team 2976
  * Main code for team robot
@@ -19,8 +19,6 @@
 #include "WPILib.h"
 #include "math.h"
 
-void OmniDrive(GenericHID*, GenericHID*);
-// I don't know why the above is necessary.s
 
 
 /**
@@ -32,16 +30,72 @@ void OmniDrive(GenericHID*, GenericHID*);
  */
   
 class MainRobot : public SimpleRobot {
-	RobotDrive myRobot;		// Robot drive system
+	RobotDrive robotDrive;	// Robot drive system
 	Joystick *stick1;		// Directional control
 	Joystick *stick2;		// Lifting control
-	const float ROTATION_SPEED = 6.0;
-	const float SPEED_DECREASE = 2.0;
+	bool fastSpeedEnabled;
+	bool safetyModeOn;
+	Timer timer;
 
-	const UINT32 FLM = 1;
-	const UINT32 RLM = 2;
-	const UINT32 FRM = 3;
-	const UINT32 RRM = 4;
+	typedef enum
+	{
+		kPWMPort_1 = 1,
+		kPWMPort_2 = 2,
+		kPWMPort_3 = 3,
+		kPWMPort_4 = 4,
+		kPWMPort_5 = 5,
+		kPWMPort_6 = 6,
+		kPWMPort_7 = 7,
+		kPWMPort_8 = 8,
+		kPWMPort_9 = 9,
+		kPWMPort_10 = 10,
+		kPWMPort_11 = 11,
+		kPWMPort_12 = 12,
+		kPWMPort_13 = 13,
+		kPWMPort_14 = 14
+	} PWMPorts;
+	
+	typedef enum
+	{
+		kUSBPort_1 = 1,
+		kUSBPort_2 = 2
+	} USBPorts;
+	
+	typedef enum
+	{
+		kJSButton_1 = 1,
+		kJSButton_2 = 2,
+		kJSButton_3 = 3,
+		kJSButton_4 = 4,
+		kJSButton_5 = 5,
+		kJSButton_6 = 6,
+		kJSButton_7 = 7,
+		kJSButton_8 = 8,
+		kJSButton_9 = 9,
+		kJSButton_10 = 10,
+		kJSButton_11 = 11,
+		kJSButton_12 = 12,
+		kJSButton_13 = 13,
+		kJSButton_14 = 14
+	} JoyStickButtons;
+	
+	static const float ROTATION_SPEED = 6.0;
+	static const float SPEED_DECREASE = 2.0;
+
+	static const UINT32 LEFT_FRONT_MOTOR_PORT  = kPWMPort_1;
+	static const UINT32 LEFT_REAR_MOTOR_PORT   = kPWMPort_2;
+	static const UINT32 RIGHT_FRONT_MOTOR_PORT = kPWMPort_3;
+	static const UINT32 RIGHT_REAR_MOTOR_PORT  = kPWMPort_4;
+
+	static const UINT32 kMoveFastButton = kJSButton_1;
+
+	static const UINT32 kEnableSafetyModeButton = kJSButton_11;
+	static const UINT32 kDisableSafetyModeButton = kJSButton_10;
+	
+	// Button 3 (center button) turns clockwise,
+	// Button 4 (left button) turns counterclockwise.
+	static const UINT32 kRotateRightButton = kJSButton_3;
+	static const UINT32 kRotateLeftButton = kJSButton_4;
 	/**
 	 * The above are the constants for the ports each motor goes into.
 	 * See the method "MainRobot(void) in the below class for more.
@@ -67,17 +121,17 @@ public:
 		 * See the constants at the top for the motor port numbers.
 		 * The above is confirmed.
 		 */
-		myRobot(FLM, RLM, FRM, RRM) {
+		robotDrive(LEFT_FRONT_MOTOR_PORT, LEFT_REAR_MOTOR_PORT, RIGHT_FRONT_MOTOR_PORT, RIGHT_REAR_MOTOR_PORT)
+		{
 			// This should be the constructor.
 			//UpdateDashboard("Initializing...");
 			GetWatchdog().SetExpiration(0.1);
-			stick1 = new Joystick(1); // Right joystick, direction
-			stick2 = new Joystick(2); // Left joystick, lifting
+			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
+			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
+			
+			fastSpeedEnabled = false;
+			safetyModeOn = true;
 		}
-	
-	bool fastSpeedEnabled = false;
-	bool safetyModeOn = true;
-	Timer timer;
 	
 	/**
 	 * Autonomous Mode
@@ -86,13 +140,14 @@ public:
 	 */
 	void Autonomous(void) {
 		//UpdateDashboard("Initializing autonomous...");
-		getWatchdog().SetEnabled(false);
+		GetWatchdog().SetEnabled(false);
 		//UpdateDashboard("Starting autonomous.")
 		while(IsAutonomous()) {
 			// Placeholder for autonomous - just spins in a circle
-			myRobot.HolonomicDrive(0,90,0);
+			robotDrive.HolonomicDrive(0,90,0);
 			Wait(0.5);
 		}
+		GetWatchdog().SetEnabled(true);
 	}
 	
 
@@ -103,13 +158,12 @@ public:
 	 */
 	void OperatorControl(void) {
 		//UpdateDashboard("Initializing operator control...");
-		//myRobot.SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
+		//robotDrive.SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
 		// Apparently, last year, the above motor was wired incorrectly.
 		// The above would flip the wiring.  Removed to test.
 		fastSpeedEnabled = false;
 		safetyModeOn = true;
 		timer.Start();
-		GetWatchdog().SetEnabled(true);
 		//UpdateDashboard("Starting operator control.");
 		while(IsOperatorControl()) {
 			// Does nothing besides move around.
@@ -151,14 +205,16 @@ public:
 			wpi_fatal(NullParameter);
 			return;
 		}
-		if (moveStick->GetRawKey(11) || liftStick->GetRawKey(11)) {
+		if (moveStick->GetRawButton(kEnableSafetyModeButton) ||
+			liftStick->GetRawButton(kEnableSafetyModeButton)) {
 			// Button 11 on both sticks enables safety mode
 			//if (!safetyModeOn) {
 				//UpdateDashboard("Safety mode on.");
 			//}
 			safetyModeOn = true;
 		}
-		if (moveStick->GetRawKey(10) || liftStick->GetRawKey(10)) {
+		if (moveStick->GetRawButton(kDisableSafetyModeButton) ||
+			liftStick->GetRawButton(kDisableSafetyModeButton)) {
 			// Button 10 on both sticks disables safety mode
 			//if (safetyModeOn) {
 				//UpdateDashboard("Safety mode off.");
@@ -188,7 +244,7 @@ public:
 	 * holonomic drive instead of using the large math stuff.
 	 */
 	void OmniDrive(GenericHID *moveStick) {
-		if (moveStick->GetRawButton(1)) {
+		if (moveStick->GetRawButton(kMoveFastButton)) {
 			// Squeeze trigger to move fast
 			//if (!fastSpeedEnabled) {
 				//UpdateDashboard("Maximum Speed!");
@@ -210,9 +266,9 @@ public:
 		 * Like a compact 'If' statement.
 		 */
 		float leftYValue = fastSpeedEnabled ? -moveStick->GetY() 
-			  : -leftStick->GetY() / SPEED_DECREASE;
+			  : -moveStick->GetY() / SPEED_DECREASE;
 		float leftXValue = fastSpeedEnabled ? moveStick->GetX()
-			  : leftStick->GetX() / SPEED_DECREASE;
+			  : moveStick->GetX() / SPEED_DECREASE;
 		float magnitude = sqrt((leftYValue * leftYValue) 
 						+ (leftXValue * leftXValue));
 		//Above: Pythagorean Theorum to calculate distance.
@@ -233,20 +289,18 @@ public:
 			direction += 180.0;
 		
 		// Starts rotation using buttons.  6 degree turn.
-		// Button 3 (center button) turns clockwise,
-		// Button 4 (left button) turns counterclockwise.
-		float rotation = (moveStick->GetRawButton(4) ? -1.0 : 0.0) 
-					   + (moveStick->GetRawButton(3) ? 1.0 : 0.0);
+		float rotation = (moveStick->GetRawButton(kRotateRightButton) ? -1.0 : 0.0) 
+					   + (moveStick->GetRawButton(kRotateLeftButton) ? 1.0 : 0.0);
 		if (rotation) {
 			rotation = 
 				rotation * (fastSpeedEnabled ? 
-				ROTATION_SPEED : ROTATION_SPEED / SPEED_DECREASE;
+				ROTATION_SPEED : ROTATION_SPEED / SPEED_DECREASE);
 		}
 		if (rotation < 0.1 && rotation > -0.1) {
 			// Just in case.
 			rotation = 0.0;
 		}
-		myRobot.HolonomicDrive(magnitude, direction, rotation);
+		robotDrive.HolonomicDrive(magnitude, direction, rotation);
 	}
 	
 	/**
