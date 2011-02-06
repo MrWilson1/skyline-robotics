@@ -11,6 +11,8 @@ In order to access, download, and check-in code, you need a server side program.
 
 = How to use RapidSVN =
 
+Disclaimer: RapidSVN is not the best client available (or so I am told).  It's primary benefit is that it can be run on a USB.
+
 _If at any point, the program asks for a password, see the bottom._
 
 1 Download the program.
