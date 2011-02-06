@@ -11,12 +11,10 @@
 #include "math.h"
 #include "string.h"
 
-
-
 /**
  * The code for this is based on the SimpleRobot demo and
  * the code used from last year's competition.
- * The movement code should be extremely similar from last year.
+ * The movement code should be conceptually similar to last year.
  * Autonomous and OperatorControl methods are called either from the
  * driver station or the field controls.
  */
@@ -31,6 +29,7 @@ class MainRobot : public SimpleRobot {
 	float currentHeight;
 	float presetTurn;
 	float listOfHeights [5];
+	
 	
 	typedef enum
 	{
@@ -116,6 +115,7 @@ public:
 		robotDrive(LEFT_FRONT_MOTOR_PORT, LEFT_REAR_MOTOR_PORT, 
 		RIGHT_FRONT_MOTOR_PORT, RIGHT_REAR_MOTOR_PORT)
 		{
+			SmartDashboard::init();	// Creating the dashboard.
 			GetWatchdog().SetExpiration(0.1);
 			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
 			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
@@ -128,6 +128,7 @@ public:
 			listOfHeights[3] = 7.5;
 			listOfHeights[4] = 8.0;
 			listOfHeights[5] = 0.0;
+			UpdateDashboard("Finished initializing.");
 		}
 	
 	
@@ -143,10 +144,12 @@ public:
 	void Autonomous(void)
 	{
 		GetWatchdog().SetEnabled(false);
+		UpdateDashboard("Starting Autonomous.");
 		while(IsAutonomous()) {
 			// Placeholder for autonomous - just spins in a circle
 			robotDrive.HolonomicDrive(0,0,0.3);
 			Wait(0.5);
+			UpdateDashboard();
 		}
 	}
 	
@@ -166,6 +169,7 @@ public:
 		fastSpeedEnabled = false;
 		safetyModeOn = false;
 		timer.Start();
+		UpdateDashboard("Starting Operator Control");
 		while(IsOperatorControl()) {
 			// Does nothing besides move around.
 			GetWatchdog().Feed();
@@ -174,6 +178,7 @@ public:
 			//ScissorLift(stick2);
 			//MinibotDeploy();
 			Wait(0.005);
+			UpdateDashboard();
 		}
 	}
 	
@@ -276,6 +281,10 @@ public:
 		 * Yeah.
 		 */
 		robotDrive.HolonomicDrive(magnitude, direction, rotation);
+		
+		SmartDashboard::Log(direction, "JS- Distance: ");
+		SmartDashboard::Log(magnitude, "JS- Magnitude: ");
+		SmartDashboard::Log(rotation, "JS- Rotation: ");
 	}
 	
 	
@@ -404,16 +413,46 @@ public:
 	/********************************************
 	 * UpdateDashboard:
 	 * Updates the dashboard
-	 * Input = string to be displayed
-	 * Output = true if dashboard was successfully updated, false if it wasn't.
+	 * Input = string to be displayed.
+	 * Output = Text and data on laptop.
 	 * TODO:
 	 * - Make new dashboard stuff
 	 */
-	bool UpdateDashboard (string * outputText)
+	void UpdateDashboard(const char * outputText)
 	{
-		// Nothing here.
-		return false;
+		SmartDashboard::Log(safetyModeOn ? "WARNING: Enabled" : "Disabled", 
+							"Safety mode: ");
+		SmartDashboard::Log(fastSpeedEnabled ? "Fast" : "Normal",
+							"Speed: ");
+		const char * systemState;
+		if (IsOperatorControl()) {
+			systemState = "Teleoperate";
+		} else if (IsAutonomous()) {
+			systemState = "Autonomous";
+		} else {
+			systemState = "???";
+		}
+		SmartDashboard::Log(systemState, "System State: ");
+		SmartDashboard::Log(outputText, "Message:");
 	}
+	// Overloading the same function.  No input, same output.
+	void UpdateDashboard(void)
+	{
+		SmartDashboard::Log(safetyModeOn ? "WARNING: Enabled" : "Disabled",
+							"Safety mode: ");
+		SmartDashboard::Log(fastSpeedEnabled ? "Fast" : "Normal",
+							"Speed:");
+		const char * systemState;
+		if (IsOperatorControl()) {
+			systemState = "Teleoperate";
+		} else if (IsAutonomous()) {
+			systemState = "Autonomous";
+		} else {
+			systemState = "???";
+		}
+		SmartDashboard::Log(systemState, "System State: ");
+	}
+	
 };
 
 START_ROBOT_CLASS(MainRobot);
