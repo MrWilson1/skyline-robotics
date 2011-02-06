@@ -5,15 +5,6 @@
  * FRC Robotics competition 2011 - Logomotion
  ***********************************************/
 
-/**
- * To increase the readability of the code, I recommend making sure that 
- * lines are not too long.  Please attempt to make each line of code
- * approximately 80 characters long at most, although it should be fine to 
- * go a few characters over if it makes more sense that way.
- * Underneath this comment should be another comment block that is exactly
- * 80 characters long.
- */
-
 /*-------------------- Recommended Maximum Length of Lines -------------------*/
 
 #include "WPILib.h"
@@ -36,7 +27,8 @@ class MainRobot : public SimpleRobot {
 	bool fastSpeedEnabled;
 	bool safetyModeOn;
 	Timer timer;
-
+	float debug;
+	
 	typedef enum
 	{
 		kPWMPort_1 = 1,
@@ -79,7 +71,7 @@ class MainRobot : public SimpleRobot {
 		kJSButton_14 = 14
 	} JoyStickButtons;
 	
-	static const float ROTATION_SPEED = 6.0;
+	static const float ROTATION_CONSTANT = 1.0;
 	static const float SPEED_DECREASE = 2.0;
 
 	static const UINT32 LEFT_FRONT_MOTOR_PORT  = kPWMPort_1;
@@ -131,6 +123,7 @@ public:
 			
 			fastSpeedEnabled = false;
 			safetyModeOn = true;
+			debug = 1.0;
 		}
 	
 	/**
@@ -158,9 +151,6 @@ public:
 	 */
 	void OperatorControl(void) {
 		//UpdateDashboard("Initializing operator control...");
-		//robotDrive.SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
-		// Apparently, last year, the above motor was wired incorrectly.
-		// The above would flip the wiring.  Removed to test.
 		fastSpeedEnabled = false;
 		safetyModeOn = true;
 		timer.Start();
@@ -221,7 +211,7 @@ public:
 			//}
 			safetyModeOn = false;
 		}
-	}	
+	}
 	
 	
 	/**
@@ -238,24 +228,32 @@ public:
 	 * Input = Joystick data
 	 * Output = Robot movement (controls mechanum wheels)
 	 * Copied and pasted movement code from last year
-	 * Altered so it (hopefully) uses the new buttons.
+	 * Altered so it uses the new buttons.
 	 * Todo:
 	 * - Try implementing the built-in momentum and dirction for
 	 * holonomic drive instead of using the large math stuff.
 	 */
 	void OmniDrive(GenericHID *moveStick) {
-		if (moveStick->GetRawButton(kMoveFastButton)) {
-			// Squeeze trigger to move fast
-			//if (!fastSpeedEnabled) {
-				//UpdateDashboard("Maximum Speed!");
-			//}
-			fastSpeedEnabled = true;
-		} else {
-			//if (fastSpeedEnabled) {
-				//UpdateDashboard("Normal Speed.")
-			//}
-			// Release trigger to move slower
+		/**
+		 * Fast speed only works when safety mode is disabled.
+		 * Prevents robots from speeding dangerously during demos.
+		 */
+		if (safetyModeOn){
 			fastSpeedEnabled = false;
+		} else {
+			if (moveStick->GetRawButton(kMoveFastButton)) {
+				// Squeeze trigger to move fast
+				//if (!fastSpeedEnabled) {
+					//UpdateDashboard("Maximum Speed!");
+				//}
+				fastSpeedEnabled = true;
+			} else {
+				//if (fastSpeedEnabled) {
+					//UpdateDashboard("Normal Speed.")
+				//}
+				// Release trigger to move slower
+				fastSpeedEnabled = false;
+			}
 		}
 		
 		/**
@@ -288,19 +286,36 @@ public:
 		if (leftYValue < 0.0)
 			direction += 180.0;
 		
-		// Starts rotation using buttons.  6 degree turn.
-		float rotation = (moveStick->GetRawButton(kRotateRightButton) ? -1.0 : 0.0) 
-					   + (moveStick->GetRawButton(kRotateLeftButton) ? 1.0 : 0.0);
+		// Starts rotation using buttons.  
+		// Doesn't appear to use degrees.
+		float rotationSpeed = (moveStick->GetThrottle() - 1.1) * -0.5 + 0.07;
+		/**
+		 * Above - uses the twiddly thing to adjust max rotation speed.
+		 * Middle of the twiddly thing == 0, can lead to negative.
+		 * Added 1.0 so twiddly thing is always positive.
+		 */
+		float rotation = (moveStick->GetRawButton(kRotateRightButton) ? 1.0 : 0.0) 
+					   + (moveStick->GetRawButton(kRotateLeftButton) ? -1.0 : 0.0);
 		if (rotation) {
 			rotation = 
-				rotation * (fastSpeedEnabled ? 
-				ROTATION_SPEED : ROTATION_SPEED / SPEED_DECREASE);
+				rotationSpeed * rotation * (fastSpeedEnabled ? 
+				ROTATION_CONSTANT : ROTATION_CONSTANT / SPEED_DECREASE);
 		}
-		if (rotation < 0.1 && rotation > -0.1) {
-			// Just in case.
+		if (rotation < 0.04 && rotation > -0.04) {
+			// Just in case, prevents drifting.
 			rotation = 0.0;
 		}
+		
+		/**
+		 * This is where the magic happens.
+		 * Yeah.
+		 */
+
 		robotDrive.HolonomicDrive(magnitude, direction, rotation);
+		/**
+		 * Assuming that a input of '1.0' is normal.
+		 * This is probably why a rotation of '6.0' created craziness.
+		 */
 	}
 	
 	/**
