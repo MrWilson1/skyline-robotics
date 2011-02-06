@@ -28,6 +28,9 @@ class MainRobot : public SimpleRobot {
 	bool fastSpeedEnabled;	
 	bool safetyModeOn;		// Safety switch (mostly during demos)
 	Timer timer;
+	float currentHeight;
+	float presetTurn;
+	float listOfHeights [5];
 	
 	typedef enum
 	{
@@ -83,16 +86,22 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 kEnableSafetyModeButton = kJSButton_11;
 	static const UINT32 kDisableSafetyModeButton = kJSButton_10;
 	
-	// Button 3 (center button) turns clockwise,
-	// Button 4 (left button) turns counterclockwise.
 	static const UINT32 kRotateRightButton = kJSButton_3;
 	static const UINT32 kRotateLeftButton = kJSButton_4;
+	// Button 3 (center button) turns clockwise,
+	// Button 4 (left button) turns counterclockwise.
+	
+	static const float FUDGE_FACTOR = 0.2;
+	static const float MAXIMUM_TURN = 1.0;
+	// For scissor lift - FUDGE_FACTOR = how close the lift can get to the peg.
+	// For scissor lift - MAXIMUM_TURN = how much the motor can turn per loop.
 	
 public:
 	/**************************************
 	 * MainRobot: (The constructor)
 	 * TODO:
-	 * - Pending
+	 * - Configure anything related to scissor lift better.
+	 * - Initialize the motor for the scissor lift.
 	 */
 	MainRobot(void):
 		/**
@@ -110,6 +119,13 @@ public:
 			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
 			fastSpeedEnabled = false;
 			safetyModeOn = true;
+			currentHeight = 0.0;	// Later, use a function to check motor/encoder.
+			listOfHeights[0] = 0.0;
+			listOfHeights[1] = 2.5;
+			listOfHeights[2] = 4.0;
+			listOfHeights[3] = 7.5;
+			listOfHeights[4] = 8.0;
+			listOfHeights[5] = 0.0;
 		}
 	
 	
@@ -167,11 +183,103 @@ public:
 	 * Input = Data from Joystick 2
 	 * Output = Scissor lift movement
 	 * TODO:
-	 * - Make the function/method (thing)
+	 * - Turn pseudo-code to actual code.
 	 */
 	void ScissorLift(GenericHID *liftStick)
 	{
-		// Nothing here.
+		// Currently in pseudo-code.
+		
+		/*
+		Defined earlier, in constructor...
+		listOfHeights - an array 5 slots long.
+			Zeroth slot  = lowest height
+			First slot   = first peg
+			Second slot  = second peg
+			Third slot   = third peg
+			Fourth slot  = maximum height allowed.
+			Fifth slot   = contains zero, just in case
+		presetTurn    - a persistant var, lasts throughout main loop.
+		currentHeight - a persistant var, should be directly updated for accuracy.
+						Returns a value consistant with MAXIMUM_TURN.
+		MAXIMUM_TURN  - a constant, the maximum amount of turns the motor can do each loop
+						Transforms a decimal from -1.0 to 1.0 into the correct amount of
+						terms.  Value should be found by experimenting.
+						Additionally, MAXIMUM_TERM should be able to convert the decimal
+						into a measurable feet compatible with 'currentHeight'.
+		FUDGE_FACTOR  - the number (in feet) of how close the lift can be to the peg
+						and still be acceptable.
+		MagicMotorTurn - from the library, turns the motor.
+			Input: The amount of turns it should do.
+
+	{ // Start of class (commented for now)	
+		if (liftStick->GetY()) {
+			float userInput = liftStick->GetY() * MAXIMUM_TURN;
+			float presetTurn = 0.0;		// Override any preset turning
+			float tempHeight = userInput + currentHeight;
+			if (tempHeight < listOfHeights[0])
+				userInput = listOfHeights[0] - currentHeight;	// Don't go too low
+			if (tempHeight > listOfHeights[4])
+				userInput = listOfHeights[4] - currentHeight);	// Don't go too high
+			MagicMotorTurn(userInput);
+		} else {
+			// Preset only when no joystick movement
+			// Awkward structure underneath - can't think of a more elegant way yet.
+			bool setNewPreset = false;
+			if (liftStick->GetRawButton(2)) {
+				preset = 0;
+				setNewPreset = true;
+			} else if (liftStick->GetRawButton(4)) {
+				preset = 1;
+				setNewPreset = true;
+			} else if (liftStick->GetRawButton(3)) {
+				preset = 2;
+				setNewPreset = true;
+			} else if (liftStick->GetRawButton(5)) {
+				preset = 3;
+				setNewPreset = true;
+			} else {
+				setNewPreset = false;
+			}
+			if (setNewPreset) {
+				if (currentHeight < (listOfHeights[preset] - FUDGE_FACTOR)) {
+					// Too low - adjusting.
+					float heightNeeded = listOfHeights[preset] - currentHeight;
+					if (heightNeeded > MAXIMUM_TURN) {
+						presetTurn = MAXIMUM_TURN;
+					} else {
+						// Make sure I don't overshoot when going up.
+						presetTurn = heightNeeded;
+					}
+				} else if (currentHeight > (listOfHeights[preset] + FUDGE_FACTOR)) {
+					// Too high - adjusting.
+					float heightNeeded = currentHeight - listOfHeights[preset];
+					if (heightNeeded > MAXIMUM_TURN) {
+						presetTurn = -MAXIMUM_TURN;
+					} else {
+						// Make sure I don't overshoot when going down.
+						presetTurn = -heightNeeded;
+					}
+				} else {
+					// I've fallen into the fudge factor zone.  Stop turning.
+					presetTurn = 0.0;
+				}
+			} // Done finding the amount I need to turn (for preset)
+			if (presetTurn) {
+				MagicMotorTurn(presetTurn);
+			}
+		} // Done with finding inputs and moving motor for joystick and preset
+		
+		currentHeight = MagicHeightFinderAndConverter();
+		
+		if currentHeight > listOfHeights[2] {
+			safetyModeOn == true;
+		}
+		
+	}			
+	*/
+		
+		
+		
 	}
 	
 	
