@@ -9,6 +9,7 @@
 
 #include "WPILib.h"
 #include "math.h"
+#include "string.h"
 
 
 
@@ -21,13 +22,12 @@
  */
   
 class MainRobot : public SimpleRobot {
-	RobotDrive robotDrive;	// Robot drive system
+	RobotDrive robotDrive;	// Robot drive system (wheels and whatnot)
 	Joystick *stick1;		// Directional control
 	Joystick *stick2;		// Lifting control
-	bool fastSpeedEnabled;
-	bool safetyModeOn;
+	bool fastSpeedEnabled;	
+	bool safetyModeOn;		// Safety switch (mostly during demos)
 	Timer timer;
-	float debug;
 	
 	typedef enum
 	{
@@ -71,8 +71,7 @@ class MainRobot : public SimpleRobot {
 		kJSButton_14 = 14
 	} JoyStickButtons;
 	
-	static const float ROTATION_CONSTANT = 1.0;
-	static const float SPEED_DECREASE = 2.0;
+	static const float SPEED_DECREASE = 0.5;
 
 	static const UINT32 LEFT_FRONT_MOTOR_PORT  = kPWMPort_1;
 	static const UINT32 LEFT_REAR_MOTOR_PORT   = kPWMPort_2;
@@ -88,53 +87,44 @@ class MainRobot : public SimpleRobot {
 	// Button 4 (left button) turns counterclockwise.
 	static const UINT32 kRotateRightButton = kJSButton_3;
 	static const UINT32 kRotateLeftButton = kJSButton_4;
-	/**
-	 * The above are the constants for the ports each motor goes into.
-	 * See the method "MainRobot(void) in the below class for more.
-	 */
-
 	
 public:
-	/**
-	 * Presumably the constructor function
-	 * Todo:
+	/**************************************
+	 * MainRobot: (The constructor)
+	 * TODO:
 	 * - Pending
 	 */
 	MainRobot(void):
 		/**
-		 * Explaination of mysterious numbers below:
+		 * Explaination of numbers below:
 		 * Each motor is connected to a jaguar, which is connected to a port.
 		 * The constructor wants to know which ports control which motor. 
-		 * Order it expects:
-		 * Front Left Motor,
-		 * Rear Left Motor,
-		 * Front Right Motor,
-		 * Rear Right Motor.
+		 * The order given is the correct order it expects.
 		 * See the constants at the top for the motor port numbers.
-		 * The above is confirmed.
 		 */
-		robotDrive(LEFT_FRONT_MOTOR_PORT, LEFT_REAR_MOTOR_PORT, RIGHT_FRONT_MOTOR_PORT, RIGHT_REAR_MOTOR_PORT)
+		robotDrive(LEFT_FRONT_MOTOR_PORT, LEFT_REAR_MOTOR_PORT, 
+		RIGHT_FRONT_MOTOR_PORT, RIGHT_REAR_MOTOR_PORT)
 		{
-			// This should be the constructor.
-			//UpdateDashboard("Initializing...");
 			GetWatchdog().SetExpiration(0.1);
 			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
 			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
-			
 			fastSpeedEnabled = false;
 			safetyModeOn = true;
-			debug = 1.0;
 		}
 	
-	/**
-	 * Autonomous Mode
-	 * Todo:
+	
+	
+	
+	/**********************************************
+	 * Autonomous:
+	 * Input = Data from driver station or field.
+	 * Output = Robot movement (hanging ubertubes)
+	 * TODO:
 	 * Actually make it do something.
 	 */
-	void Autonomous(void) {
-		//UpdateDashboard("Initializing autonomous...");
+	void Autonomous(void)
+	{
 		GetWatchdog().SetEnabled(false);
-		//UpdateDashboard("Starting autonomous.")
 		while(IsAutonomous()) {
 			// Placeholder for autonomous - just spins in a circle
 			robotDrive.HolonomicDrive(0,90,0);
@@ -143,18 +133,21 @@ public:
 		GetWatchdog().SetEnabled(true);
 	}
 	
-
-	/**
-	 * Operator Controlled Mode
-	 * Todo:
+	
+	
+	
+	/**************************************
+	 * OperatorControl:
+	 * Input = Data from driver station or field
+	 * Output = Robot movements 
+	 * TODO:
 	 * - Make more functions to add (such as the scissor lift)
 	 */
-	void OperatorControl(void) {
-		//UpdateDashboard("Initializing operator control...");
+	void OperatorControl(void)
+	{
 		fastSpeedEnabled = false;
 		safetyModeOn = true;
 		timer.Start();
-		//UpdateDashboard("Starting operator control.");
 		while(IsOperatorControl()) {
 			// Does nothing besides move around.
 			GetWatchdog().Feed();
@@ -167,176 +160,153 @@ public:
 	}
 	
 	
-	/**
-	 * Scissor Lift Controllor
+	
+	
+	/*******************************************************
+	 * ScissorLift:
 	 * Input = Data from Joystick 2
 	 * Output = Scissor lift movement
-	 * Todo:
+	 * TODO:
 	 * - Make the function/method (thing)
 	 */
-	// Scissor life code here
-	//void ScissorLift(GenericHID *liftStick) {
-		// Need to add.
-		
-	//}
+	void ScissorLift(GenericHID *liftStick)
+	{
+		// Nothing here.
+	}
 	
-	/**
-	 * Fatality Check
+	
+	
+	
+	/*******************************************************
+	 * FatalityChecks:
 	 * Input = Both joysticks
+	 * Output = None
 	 * Handles 
 	 * - Joystick disconnects
 	 * - Toggling safety mode
+	 * TODO:
+	 * - Add checks for scissor lift and speed.
 	 */
-	void FatalityChecks(GenericHID * moveStick,
-					  GenericHID * liftStick) {
+	void FatalityChecks(GenericHID * moveStick, GenericHID * liftStick)
+	{
 		if (moveStick == NULL || liftStick == NULL) {
 			// If joysticks are disconnected, terminate.
-			//UpdateDashboard("ERROR: A joystick is disconnected.");
 			wpi_fatal(NullParameter);
 			return;
 		}
 		if (moveStick->GetRawButton(kEnableSafetyModeButton) ||
 			liftStick->GetRawButton(kEnableSafetyModeButton)) {
 			// Button 11 on both sticks enables safety mode
-			//if (!safetyModeOn) {
-				//UpdateDashboard("Safety mode on.");
-			//}
 			safetyModeOn = true;
 		}
 		if (moveStick->GetRawButton(kDisableSafetyModeButton) ||
 			liftStick->GetRawButton(kDisableSafetyModeButton)) {
 			// Button 10 on both sticks disables safety mode
-			//if (safetyModeOn) {
-				//UpdateDashboard("Safety mode off.");
-			//}
 			safetyModeOn = false;
 		}
 	}
 	
 	
-	/**
+	
+	
+	/************************************8
 	 * Minibot Deployer
 	 * Input = Button push
 	 * Output = Minibot deploys
-	 * Todo:
-	 * - Make it
+	 * TODO:
+	 * - Write this.
 	 */
-	// Minibot deployment code here
+	void MinibotDeploy(void)
+	{
+		// Nothing yet
+	}
 	
 	
-	/**
+	
+	
+	/********************************************************
+	 * OmniDrive:
 	 * Input = Joystick data
 	 * Output = Robot movement (controls mechanum wheels)
-	 * Copied and pasted movement code from last year
+	 * Radically altered code from last year.
 	 * Altered so it uses the new buttons.
-	 * Todo:
-	 * - Try implementing the built-in momentum and dirction for
-	 * holonomic drive instead of using the large math stuff.
+	 * TODO:
+	 * - Test to see if it works.
 	 */
-	void OmniDrive(GenericHID *moveStick) {
+	void OmniDrive(GenericHID *moveStick)
+	{
 		/**
 		 * Fast speed only works when safety mode is disabled.
 		 * Prevents robots from speeding dangerously during demos.
 		 */
-		if (safetyModeOn){
-			fastSpeedEnabled = false;
-		} else {
-			if (moveStick->GetRawButton(kMoveFastButton)) {
-				// Squeeze trigger to move fast
-				//if (!fastSpeedEnabled) {
-					//UpdateDashboard("Maximum Speed!");
-				//}
-				fastSpeedEnabled = true;
-			} else {
-				//if (fastSpeedEnabled) {
-					//UpdateDashboard("Normal Speed.")
-				//}
-				// Release trigger to move slower
-				fastSpeedEnabled = false;
-			}
+		fastSpeedEnabled = false;
+		if ((safetyModeOn == false) && moveStick->GetRawButton(kMoveFastButton)) {
+			fastSpeedEnabled = true;
 		}
-		
+
 		/**
-		 * Quick lesson:
-		 * (condition) ? (expression 1) : (expression 2)
-		 * if condition is true, expression 1,
-		 * else expression 2.
-		 * Like a compact 'If' statement.
+		 * Finding magnitude, direction, and rotation (for holonomic drive)
+		 * Magnitude == [-1.0 to 1.0]
+		 * Direction == In degrees
+		 * Rotation  == [-1.0 to 1.0] 
 		 */
-		float leftYValue = fastSpeedEnabled ? -moveStick->GetY() 
-			  : -moveStick->GetY() / SPEED_DECREASE;
-		float leftXValue = fastSpeedEnabled ? moveStick->GetX()
-			  : moveStick->GetX() / SPEED_DECREASE;
-		float magnitude = sqrt((leftYValue * leftYValue) 
-						+ (leftXValue * leftXValue));
-		//Above: Pythagorean Theorum to calculate distance.
+		float magnitude = fabs(stick1->GetMagnitude());
+		float direction = stick1->GetDirectionDegrees();
+		// I don't know exactly why, but using moveStick doesn't work above.
+		// I think it's because of a combination of pointer weirdness and
+		// how "'class GenericHID' has no member named 'X'".  Or something.
+		// Also, 'fabs' returns the absolute value of a float.
 		
-		/**
-		 * From here on down, presumably the code prevents the robot from
-		 * drifting if somebody nudges the joystick.
-		 */
-		if (magnitude < 0.1)
-			magnitude = 0;
-		if (leftXValue > -0.1 && leftXValue < 0.1)
-			leftXValue = 0.00001;
-		if (leftYValue > -0.1 && leftYValue < 0.1)
-			leftYValue = 0.00001;
-		float direction = (180 / 3.14159) 
-			              * atan(leftXValue/leftYValue);
-		if (leftYValue < 0.0)
-			direction += 180.0;
 		
-		// Starts rotation using buttons.  
-		// Doesn't appear to use degrees.
+		// Sorry about the magic numbers below.
 		float rotationSpeed = (moveStick->GetThrottle() - 1.1) * -0.5 + 0.07;
+		float rotationPress = int(moveStick->GetRawButton(kRotateRightButton)) 
+							  - int(moveStick->GetRawButton(kRotateLeftButton));
+		float rotation = rotationSpeed * rotationPress;
+		
 		/**
-		 * Above - uses the twiddly thing to adjust max rotation speed.
-		 * Middle of the twiddly thing == 0, can lead to negative.
-		 * Added 1.0 so twiddly thing is always positive.
+		 * Multiply everything by a fractional number if the safety catch
+		 * hasn't been disabled yet.
 		 */
-		float rotation = (moveStick->GetRawButton(kRotateRightButton) ? 1.0 : 0.0) 
-					   + (moveStick->GetRawButton(kRotateLeftButton) ? -1.0 : 0.0);
-		if (rotation) {
-			rotation = 
-				rotationSpeed * rotation * (fastSpeedEnabled ? 
-				ROTATION_CONSTANT : ROTATION_CONSTANT / SPEED_DECREASE);
-		}
-		if (rotation < 0.04 && rotation > -0.04) {
-			// Just in case, prevents drifting.
-			rotation = 0.0;
+		if (fastSpeedEnabled == false) {
+			magnitude *= SPEED_DECREASE;
+			rotation  *= SPEED_DECREASE;
 		}
 		
+		/**
+		 * Prevents values from drifting.
+		 * If any values floats too close to zero, it just makes them zero.
+		 */
+		magnitude = (magnitude < 0.1) ? 0.0 : magnitude;
+		rotation  = (fabs(rotation) < 0.04) ? 0.0 : rotation;
+				
 		/**
 		 * This is where the magic happens.
 		 * Yeah.
 		 */
-
 		robotDrive.HolonomicDrive(magnitude, direction, rotation);
-		/**
-		 * Assuming that a input of '1.0' is normal.
-		 * This is probably why a rotation of '6.0' created craziness.
-		 */
 	}
 	
-	/**
+	
+	
+	
+	/********************************************
+	 * ReturnDashboard:
 	 * Updates the dashboard
 	 * Input = string to be displayed
-	 * Todo:
+	 * Output = true if dashboard was successfully updated, false if it wasn't.
+	 * TODO:
 	 * - Make new dashboard stuff
 	 */
-	
-	/*
-	void UpdateDashboard(char * output) {
-		dds.printf(output);
-		dds.finalize;
+	bool ReturnDashboard (string * outputText)
+	{
+		// Nothing here.
+		return false;
 	}
-	*/
 };
 
 START_ROBOT_CLASS(MainRobot);
 
 
-
-//END OF DOCUMENT
-
 /*-------------------- Recommended Maximum Length of Lines -------------------*/
+// END OF DOCUMENT
