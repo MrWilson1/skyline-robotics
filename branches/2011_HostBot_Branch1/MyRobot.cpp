@@ -75,8 +75,6 @@ class MainRobot : public SimpleRobot {
 		kJSButton_14 = 14
 	} JoyStickButtons;
 	
-	static const float SPEED_DECREASE = 0.5;
-
 	static const UINT32 LEFT_FRONT_MOTOR_PORT  = kPWMPort_1;
 	static const UINT32 LEFT_REAR_MOTOR_PORT   = kPWMPort_2;
 	static const UINT32 RIGHT_FRONT_MOTOR_PORT = kPWMPort_3;
@@ -93,20 +91,28 @@ class MainRobot : public SimpleRobot {
 	// Button 3 (center button) turns clockwise,
 	// Button 4 (left button) turns counterclockwise.
 	
+	/* Scissor Lift
+	 * FUDGE_FACTOR  = How close the lift can get to the peg.
+	 * 				   Absolute value - similar to 'deadband'?
+	 * MAXIMUM_TURN  = How much the motor can turn per loop.
+	 * 				   Converts joystick output into the appropriate approximate
+	 * 				   amount of motor turns.
+	 * SAFETY_HEIGHT = The height where safety mode should turn on if the
+	 * 				   scissor lift goes too high
+	 */
 	static const float FUDGE_FACTOR  = 0.2;
 	static const float MAXIMUM_TURN  = 1.0;
 	static const float SAFETY_HEIGHT = 5.0;
-	// For scissor lift - FUDGE_FACTOR  = how close the lift can get to the peg.
-	// For scissor lift - MAXIMUM_TURN  = how much the motor can turn per loop.
-	// For scissor lift - SAFETY_HEIGHT = above X height where safety mode should turn on.
 	
 	static const float GAMEPLAY_TIME = 120.0;
 	// How long teleoperated lasts (in seconds)
-	
+	static const float SPEED_DECREASE = 0.5;
+	// The percent the speed should decrease when in normal speed mode.
 	
 public:
 	/**************************************
 	 * MainRobot: (The constructor)
+	 * Mandatory method.
 	 * TODO:
 	 * - Configure anything related to scissor lift better.
 	 * - Initialize the motor for the scissor lift.
@@ -146,10 +152,11 @@ public:
 	
 	/**********************************************
 	 * Autonomous:
+	 * Mandatory method.
 	 * Input = Data from driver station or field.
 	 * Output = Robot movement (hanging ubertubes)
 	 * TODO:
-	 * Actually make it do something.
+	 * - Add and test line following code.
 	 */
 	void Autonomous(void)
 	{
@@ -169,6 +176,7 @@ public:
 	
 	/**************************************
 	 * OperatorControl:
+	 * Mandatory method.
 	 * Input = Data from driver station or field
 	 * Output = Robot movements 
 	 * TODO:
@@ -183,7 +191,6 @@ public:
 		timer.Start();
 		UpdateDashboard("Starting Operator Control");
 		while(IsOperatorControl()) {
-			// Does nothing besides move around.
 			FatalityChecks(stick1, stick2);
 			OmniDrive(stick1);
 			//ScissorLift(stick2);
@@ -214,6 +221,13 @@ public:
 			wpi_fatal(NullParameter);
 			return;
 		}
+		if (Watchdog().IsAlive() == false) {
+			// If something's wrong with the watchdog,
+			// KILL IT
+			Watchdog().Kill();
+			wpi_fatal(NullParameter);
+			return;
+		}
 		if (moveStick->GetRawButton(kEnableSafetyModeButton) ||
 			liftStick->GetRawButton(kEnableSafetyModeButton)) {
 			// Button 11 on both sticks enables safety mode
@@ -225,6 +239,7 @@ public:
 			safetyModeOn = false;
 		}
 		if (currentHeight > SAFETY_HEIGHT) {
+			// If the scissor lift is too high, it drops the speed for safety.
 			safetyModeOn = true;
 		}
 	}
@@ -234,6 +249,7 @@ public:
 	
 	/********************************************************
 	 * OmniDrive:
+	 * Critical piece of code
 	 * Input = Joystick data
 	 * Output = Robot movement (controls mechanum wheels)
 	 * Radically altered code from last year.
@@ -310,6 +326,8 @@ public:
 	 * - Find out how to actually control and read a motor.
 	 * - Calibrate MAXIMUM_TURN
 	 * - Create something that finds height.
+	 * - Move the code that controls the presets to another method
+	 *   (so it can be called from autonomous)
 	 */
 	void ScissorLift(GenericHID *liftStick)
 	{
@@ -415,7 +433,7 @@ public:
 	 * Input = Button push
 	 * Output = Minibot deploys
 	 * TODO:
-	 * - Write this.
+	 * - Find out how to use this.
 	 */
 	void MinibotDeploy(void)
 	{
@@ -430,6 +448,10 @@ public:
 	 * Base: Updates the dashboard
 	 * Input = none
 	 * Output = Text and data on laptop.
+	 * Obviously highly dependent on the 'SmartDashboard' stuff from
+	 * the WPI library.
+	 * TODO:
+	 * - Test to see if this works.
 	 */
 	void UpdateDashboard(void)
 	{
@@ -480,6 +502,7 @@ public:
 	 */
 	void UpdateDashboard(const char *outputText)
 	{
+		// Call to base dashboard updater.
 		UpdateDashboard();
 		
 		// User-given data
