@@ -128,9 +128,9 @@ public:
 		robotDrive(LEFT_FRONT_MOTOR_PORT, LEFT_REAR_MOTOR_PORT, 
 		RIGHT_FRONT_MOTOR_PORT, RIGHT_REAR_MOTOR_PORT)
 		{
-			SmartDashboard::init();	// Creating the dashboard.
+			SmartDashboard::init();
 			Watchdog();
-			Watchdog().SetExpiration(0.1);
+			Watchdog().SetExpiration(0.1);  // Expiration in seconds.
 			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
 			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
 			//scissorMotor = new Jaguar(SCISSOR_MOTOR_PORT); // Should be obvious
@@ -143,7 +143,7 @@ public:
 			listOfHeights[2] = 4.0;
 			listOfHeights[3] = 7.5;
 			listOfHeights[4] = 8.0;
-			listOfHeights[5] = 0.0;
+			listOfHeights[5] = 0.0;  // Zero terminated just in case.
 			UpdateDashboard("Finished initializing.");
 		}
 	
@@ -168,6 +168,64 @@ public:
 			Watchdog().Feed();
 			Wait(0.005);
 			UpdateDashboard();
+			/*
+			
+			
+			What I want to do:
+			
+			Declare function LINE (arguments) {
+				Take input from cameras;
+				Move foward while adjusting based on camera;
+				Check distance left;
+				if (At end of distance given) {
+					Yell "END"
+				} else if (Detected fork) {
+					Yell "FORK"
+				} else if (Detected no line) {
+					Yell "ERROR";
+				}
+				return (distance left);
+			}
+			
+			// (Start of Autonomous method here)
+			// (Various initialization here)
+			if (Line detected) {
+				while (IsAutonomous()) {
+					Call Function LINE;
+					if (you hear anything) {
+						break;
+					}
+				}
+			} else { 
+				yell "ERROR";
+			}
+			
+			if (you hear "FORK") {
+				Add rotation to right (?);
+				while (IsAutonomous()) {
+					Call Function LINE;
+					if ("FORK" or "ERROR") {
+						yell "ERROR";
+						break;
+					}
+					if ("END" is heard) {
+						Adjust rotation to face front
+						break;
+					}
+				}
+			}
+			
+			if (you hear "END"){
+				Call function SCISSOR_PRESET(3);
+			}
+			
+			if (you hear "ERROR") {
+			Call Function UpdateDashboard ("Error");
+			while (IsAutonomous()) {
+				// Do nothing, wait
+			}
+
+			*/
 		}
 	}
 	
@@ -205,15 +263,15 @@ public:
 	
 	
 	/*******************************************************
-		 * FatalityChecks:
-		 * Input = Both joysticks
-		 * Output = None
-		 * Handles 
-		 * - Joystick disconnects
-		 * - Toggling safety mode
-		 * TODO:
-		 * - Add checks for scissor lift and speed.
-		 */
+	 * FatalityChecks:
+	 * Input = Both joysticks
+	 * Output = None
+	 * Handles 
+	 * - Joystick disconnects
+	 * - Toggling safety mode
+	 * TODO:
+	 * - Add checks for scissor lift and speed.
+	 */
 	void FatalityChecks(GenericHID * moveStick, GenericHID * liftStick)
 	{
 		if (moveStick == NULL || liftStick == NULL) {
@@ -222,8 +280,7 @@ public:
 			return;
 		}
 		if (Watchdog().IsAlive() == false) {
-			// If something's wrong with the watchdog,
-			// KILL IT
+			// If something's wrong with the watchdog, KILL IT
 			Watchdog().Kill();
 			wpi_fatal(NullParameter);
 			return;
@@ -271,12 +328,12 @@ public:
 		/**
 		 * Finding magnitude, direction, and rotation (for holonomic drive)
 		 * Magnitude == [-1.0 to 1.0]
-		 * Direction == In degrees
+		 * Direction == In degrees (?)
 		 * Rotation  == [-1.0 to 1.0] 
 		 */
 		float magnitude = fabs(stick1->GetMagnitude());
 		float direction = stick1->GetDirectionDegrees();
-		// I don't know exactly why, but using moveStick doesn't work above.
+		// I don't know exactly why, but using moveStick won't compile.
 		// I think it's because of a combination of pointer weirdness and
 		// how "'class GenericHID' has no member named 'X'".  Or something.
 		// Also, 'fabs' returns the absolute value of a float.
@@ -287,6 +344,15 @@ public:
 		float rotationPress = int(moveStick->GetRawButton(kRotateRightButton)) 
 							  - int(moveStick->GetRawButton(kRotateLeftButton));
 		float rotation = rotationSpeed * rotationPress;
+		
+		/**
+		 * To prevent the motors from breaking, makes sure that magnitude
+		 * and rotation don't exceed an absolute value of 1.0
+		 * Any higher is scarily fast - feels like it'd break the motors.
+		 */
+		magnitude = (magnitude > 1.0) ?  1.0 : magnitude;
+		rotation  = (rotation > 1.0)  ?  1.0 : rotation;
+		rotation  = (rotation < -1.0) ? -1.0 : rotation;
 		
 		/**
 		 * Multiply everything by a fractional number if the safety catch
@@ -302,14 +368,17 @@ public:
 		 * If any values floats too close to zero, it just makes them zero.
 		 */
 		magnitude = (magnitude < 0.1) ? 0.0 : magnitude;
-		rotation  = (fabs(rotation) < 0.04) ? 0.0 : rotation;
-				
+		rotation  = (fabs(rotation) < 0.04) ? 0.0 : rotation;		
+		
 		/**
 		 * This is where the magic happens.
 		 * Yeah.
 		 */
 		robotDrive.HolonomicDrive(magnitude, direction, rotation);
 		
+		/**
+		 * For debugging purposes.
+		 */
 		SmartDashboard::Log(direction, "JS- Distance: ");
 		SmartDashboard::Log(magnitude, "JS- Magnitude: ");
 		SmartDashboard::Log(rotation, "JS- Rotation: ");
@@ -428,6 +497,21 @@ public:
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/************************************
 	 * Minibot Deployer
 	 * Input = Button push
@@ -447,8 +531,14 @@ public:
 	 * UpdateDashboard
 	 * Base: Updates the dashboard
 	 * Input = none
-	 * Output = Text and data on laptop.
-	 * Obviously highly dependent on the 'SmartDashboard' stuff from
+	 * Output = Safety mode
+	 * 			Watchdog state
+	 * 			Robot Speed
+	 * 			System state (Autonomous or Teleoperated?)
+	 * 			Robot state (Enabled or Disabled?)
+	 * 			Timer
+	 * 			Minibot alert
+	 * Obviously dependent on the 'SmartDashboard' stuff from
 	 * the WPI library.
 	 * TODO:
 	 * - Test to see if this works.
@@ -496,9 +586,10 @@ public:
 	
 	/********************************************
 	 * UpdateDashboard:
-	 * Overloading: Updates the dashboard, but with text.
+	 * Overloading: Updates the dashboard, but with text also.
 	 * Input = string to be displayed.
-	 * Output = Text and data on laptop.
+	 * Output = See UpdateDashboard(void)
+	 * 			String from program.
 	 */
 	void UpdateDashboard(const char *outputText)
 	{
