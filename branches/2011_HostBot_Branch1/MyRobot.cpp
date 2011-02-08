@@ -23,9 +23,11 @@ class MainRobot : public SimpleRobot {
 	RobotDrive robotDrive;	// Robot drive system (wheels and whatnot)
 	Joystick *stick1;		// Directional control
 	Joystick *stick2;		// Lifting control
+	//Jaguar *scissorMotor;	// Motor for controlling the scissor lift
+	Timer timer;
+	
 	bool fastSpeedEnabled;	
 	bool safetyModeOn;		// Safety switch (mostly during demos)
-	Timer timer;
 	float currentHeight;
 	float presetTurn;
 	float listOfHeights [5];
@@ -79,7 +81,8 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 LEFT_REAR_MOTOR_PORT   = kPWMPort_2;
 	static const UINT32 RIGHT_FRONT_MOTOR_PORT = kPWMPort_3;
 	static const UINT32 RIGHT_REAR_MOTOR_PORT  = kPWMPort_4;
-
+	static const UINT32 SCISSOR_MOTOR_PORT     = kPWMPort_5;
+	
 	static const UINT32 kMoveFastButton = kJSButton_1;
 
 	static const UINT32 kEnableSafetyModeButton = kJSButton_11;
@@ -96,6 +99,10 @@ class MainRobot : public SimpleRobot {
 	// For scissor lift - FUDGE_FACTOR  = how close the lift can get to the peg.
 	// For scissor lift - MAXIMUM_TURN  = how much the motor can turn per loop.
 	// For scissor lift - SAFETY_HEIGHT = above X height where safety mode should turn on.
+	
+	static const float GAMEPLAY_TIME = 120.0;
+	// How long teleoperated lasts (in seconds)
+	
 	
 public:
 	/**************************************
@@ -116,9 +123,12 @@ public:
 		RIGHT_FRONT_MOTOR_PORT, RIGHT_REAR_MOTOR_PORT)
 		{
 			SmartDashboard::init();	// Creating the dashboard.
-			GetWatchdog().SetExpiration(0.1);
+			Watchdog();
+			Watchdog().SetExpiration(0.1);
 			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
 			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
+			//scissorMotor = new Jaguar(SCISSOR_MOTOR_PORT); // Should be obvious
+			
 			fastSpeedEnabled = false;
 			safetyModeOn = true;
 			currentHeight = 0.0;	// Later, use a function to check motor/encoder.
@@ -143,12 +153,13 @@ public:
 	 */
 	void Autonomous(void)
 	{
-		GetWatchdog().SetEnabled(false);
+		Watchdog().SetEnabled(true);
 		UpdateDashboard("Starting Autonomous.");
 		while(IsAutonomous()) {
 			// Placeholder for autonomous - just spins in a circle
 			robotDrive.HolonomicDrive(0,0,0.3);
-			Wait(0.5);
+			Watchdog().Feed();
+			Wait(0.005);
 			UpdateDashboard();
 		}
 	}
@@ -165,18 +176,19 @@ public:
 	 */
 	void OperatorControl(void)
 	{
-		GetWatchdog().SetEnabled(true);
+		Watchdog().SetEnabled(true);
 		fastSpeedEnabled = false;
 		safetyModeOn = false;
+		timer.Reset();
 		timer.Start();
 		UpdateDashboard("Starting Operator Control");
 		while(IsOperatorControl()) {
 			// Does nothing besides move around.
-			GetWatchdog().Feed();
 			FatalityChecks(stick1, stick2);
 			OmniDrive(stick1);
 			//ScissorLift(stick2);
 			//MinibotDeploy();
+			Watchdog().Feed();
 			Wait(0.005);
 			UpdateDashboard();
 		}
@@ -296,6 +308,8 @@ public:
 	 * Output = Scissor lift movement
 	 * TODO:
 	 * - Find out how to actually control and read a motor.
+	 * - Calibrate MAXIMUM_TURN
+	 * - Create something that finds height.
 	 */
 	void ScissorLift(GenericHID *liftStick)
 	{
@@ -323,8 +337,13 @@ public:
 		SAFETY_HEIGHT - If the currentHeight goes over this float, then it is deemed
 						too dangerous to go around at max speed.  Therefore, safety mode
 						is turned on.
-		MagicMotorTurn - from the library, turns the motor.
-			Input: The amount of turns it should do.
+		MagicMotorTurn - Hypothical from the library, turns the motor.
+		
+		Actually, jaguar turns at rate of [-1.0 to 1.0].
+		Therefore, one must transform the difference between the currentHeight
+		and the desired height into the jaguar turning rate.
+		Also, 'MAXIMUM_TURN' might have to be tweaked so the motor doesn't
+		accidentally smash something up.
 
 	{ // Start of class (commented for now)	
 		if (liftStick->GetY()) {
@@ -406,53 +425,66 @@ public:
 	
 	
 	
+	/*********************************
+	 * UpdateDashboard
+	 * Base: Updates the dashboard
+	 * Input = none
+	 * Output = Text and data on laptop.
+	 */
+	void UpdateDashboard(void)
+	{
+		// Safety Info
+		SmartDashboard::Log(safetyModeOn ? "WARNING: Enabled" : "Disabled", 
+						"Safety mode: ");
+		const char *watchdogCheck;
+		if (Watchdog().IsAlive()) {
+			watchdogCheck = Watchdog().GetEnabled() ? "Enabled" : "DISABLED";
+		} else {
+			watchdogCheck = "DEAD";
+		}
+		SmartDashboard::Log(watchdogCheck, "Watchdog State: ");
+		
+		// Info about what the robot is doing
+		SmartDashboard::Log(fastSpeedEnabled ? "Fast" : "Normal",
+							"Speed: ");
+		
+		// Info about the field state
+		const char *systemState;
+		if (IsOperatorControl()) {
+			systemState = "Teleoperate";
+		} else if (IsAutonomous()) {
+			systemState = "Autonomous";
+		} else {
+			systemState = "???";
+		}
+		SmartDashboard::Log(systemState, "System State: ");
+		SmartDashboard::Log(IsEnabled() ? "Enabled" : "DISABLED", "Robot State: ");
+		
+		SmartDashboard::Log(GAMEPLAY_TIME - timer.Get(), "Time Left: ");
+		const char *minibotStatus;
+		if (timer.Get() >= (GAMEPLAY_TIME - 15)) {
+			minibotStatus = (timer.Get() >= (GAMEPLAY_TIME - 10)) 
+							 ? "DEPLOY" : "Get Ready";
+			SmartDashboard::Log(minibotStatus, "MINIBOT ALERT: ");
+		}
+	}
 	
 	
 	
 	
 	/********************************************
 	 * UpdateDashboard:
-	 * Updates the dashboard
+	 * Overloading: Updates the dashboard, but with text.
 	 * Input = string to be displayed.
 	 * Output = Text and data on laptop.
-	 * TODO:
-	 * - Make new dashboard stuff
 	 */
-	void UpdateDashboard(const char * outputText)
+	void UpdateDashboard(const char *outputText)
 	{
-		SmartDashboard::Log(safetyModeOn ? "WARNING: Enabled" : "Disabled", 
-							"Safety mode: ");
-		SmartDashboard::Log(fastSpeedEnabled ? "Fast" : "Normal",
-							"Speed: ");
-		const char * systemState;
-		if (IsOperatorControl()) {
-			systemState = "Teleoperate";
-		} else if (IsAutonomous()) {
-			systemState = "Autonomous";
-		} else {
-			systemState = "???";
-		}
-		SmartDashboard::Log(systemState, "System State: ");
+		UpdateDashboard();
+		
+		// User-given data
 		SmartDashboard::Log(outputText, "Message:");
 	}
-	// Overloading the same function.  No input, same output.
-	void UpdateDashboard(void)
-	{
-		SmartDashboard::Log(safetyModeOn ? "WARNING: Enabled" : "Disabled",
-							"Safety mode: ");
-		SmartDashboard::Log(fastSpeedEnabled ? "Fast" : "Normal",
-							"Speed:");
-		const char * systemState;
-		if (IsOperatorControl()) {
-			systemState = "Teleoperate";
-		} else if (IsAutonomous()) {
-			systemState = "Autonomous";
-		} else {
-			systemState = "???";
-		}
-		SmartDashboard::Log(systemState, "System State: ");
-	}
-	
 };
 
 START_ROBOT_CLASS(MainRobot);
