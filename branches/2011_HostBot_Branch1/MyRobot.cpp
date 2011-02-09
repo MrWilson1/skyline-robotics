@@ -19,18 +19,21 @@
  * driver station or the field controls.
  */
   
+
 class MainRobot : public SimpleRobot {
 	RobotDrive robotDrive;	// Robot drive system (wheels and whatnot)
 	Joystick *stick1;		// Directional control
 	Joystick *stick2;		// Lifting control
 	//Jaguar *scissorMotor;	// Motor for controlling the scissor lift
 	Timer timer;
+	Victor *scissorMotor;
 	
 	bool fastSpeedEnabled;	
 	bool safetyModeOn;		// Safety switch (mostly during demos)
 	float currentHeight;
-	float presetTurn;
 	float listOfHeights [5];
+	bool isDoingPreset;
+	int currentPreset;
 	
 	
 	typedef enum
@@ -81,6 +84,12 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 RIGHT_REAR_MOTOR_PORT  = kPWMPort_4;
 	static const UINT32 SCISSOR_MOTOR_PORT     = kPWMPort_5;
 	
+	static const UINT32 PRESET_BOTTOM = kJSButton_2;// Botton top button
+	static const UINT32 PRESET_PEG_1 = kJSButton_4;	// Left top button
+	static const UINT32 PRESET_PEG_2 = kJSButton_3; // Center top button
+	static const UINT32 PRESET_PEG_3 = kJSButton_5; // Right top button
+	
+	
 	static const UINT32 kMoveFastButton = kJSButton_1;
 
 	static const UINT32 kEnableSafetyModeButton = kJSButton_11;
@@ -91,18 +100,10 @@ class MainRobot : public SimpleRobot {
 	// Button 3 (center button) turns clockwise,
 	// Button 4 (left button) turns counterclockwise.
 	
-	/* Scissor Lift
-	 * FUDGE_FACTOR  = How close the lift can get to the peg.
-	 * 				   Absolute value - similar to 'deadband'?
-	 * MAXIMUM_TURN  = How much the motor can turn per loop.
-	 * 				   Converts joystick output into the appropriate approximate
-	 * 				   amount of motor turns.
-	 * SAFETY_HEIGHT = The height where safety mode should turn on if the
-	 * 				   scissor lift goes too high
-	 */
-	static const float FUDGE_FACTOR  = 0.2;
-	static const float MAXIMUM_TURN  = 1.0;
 	static const float SAFETY_HEIGHT = 5.0;
+	static const float TURN_TRANSFORM = 0.25;
+	// Transforms wanted distance in speed to correct amount of motor rotations.
+	
 	
 	static const float GAMEPLAY_TIME = 120.0;
 	// How long teleoperated lasts (in seconds)
@@ -133,7 +134,7 @@ public:
 			Watchdog().SetExpiration(0.1);  // Expiration in seconds.
 			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
 			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
-			//scissorMotor = new Jaguar(SCISSOR_MOTOR_PORT); // Should be obvious
+			scissorMotor = new Victor(SCISSOR_MOTOR_PORT);
 			
 			fastSpeedEnabled = false;
 			safetyModeOn = true;
@@ -144,6 +145,8 @@ public:
 			listOfHeights[3] = 7.5;
 			listOfHeights[4] = 8.0;
 			listOfHeights[5] = 0.0;  // Zero terminated just in case.
+			isDoingPreset = false;
+			currentPreset = 0;
 			UpdateDashboard("Finished initializing.");
 		}
 	
@@ -247,15 +250,16 @@ public:
 		safetyModeOn = false;
 		timer.Reset();
 		timer.Start();
+		bool scissorCheck;
 		UpdateDashboard("Starting Operator Control");
 		while(IsOperatorControl()) {
 			FatalityChecks(stick1, stick2);
 			OmniDrive(stick1);
-			//ScissorLift(stick2);
+			scissorCheck = ScissorManual(stick2);
 			//MinibotDeploy();
 			Watchdog().Feed();
 			Wait(0.005);
-			UpdateDashboard();
+			UpdateDashboard((scissorCheck == false) ? "Scissor Error" : " ");
 		}
 	}
 	
@@ -264,7 +268,7 @@ public:
 	
 	/*******************************************************
 	 * FatalityChecks:
-	 * Input = Both joysticks
+	 * Input = Both joysticks, error codes from ScissorManual
 	 * Output = None
 	 * Handles 
 	 * - Joystick disconnects
@@ -272,7 +276,7 @@ public:
 	 * TODO:
 	 * - Add checks for scissor lift and speed.
 	 */
-	void FatalityChecks(GenericHID * moveStick, GenericHID * liftStick)
+	void FatalityChecks(GenericHID *moveStick, GenericHID *liftStick)
 	{
 		if (moveStick == NULL || liftStick == NULL) {
 			// If joysticks are disconnected, terminate.
@@ -391,123 +395,118 @@ public:
 	 * ScissorLift:
 	 * Input = Data from Joystick 2
 	 * Output = Scissor lift movement
+	 * 			false = Error of some kind (probably passed from ScissorPreset)
+	 * 			true  = Everything is just dandy.
+	 * TURN_TRANSFORM- Distance * TURN_TRANSFORMS == amount of motor turns
+	 * Victor turns at rate of [-1.0 to 1.0]
+	 * 
 	 * TODO:
-	 * - Find out how to actually control and read a motor.
 	 * - Calibrate MAXIMUM_TURN
-	 * - Create something that finds height.
-	 * - Move the code that controls the presets to another method
-	 *   (so it can be called from autonomous)
+	 * - Use limit switches for max or min, not dead reckoning.
 	 */
-	void ScissorLift(GenericHID *liftStick)
-	{
-		// Currently in pseudo-code.
+	bool ScissorManual(GenericHID *liftStick)
+	{	
+		// Preset choose		
+		if (liftStick->GetRawButton(PRESET_BOTTOM)) {
+			currentPreset = 0;
+			isDoingPreset = true;
+		} else if (liftStick->GetRawButton(PRESET_PEG_1)) {
+			currentPreset = 1;
+			isDoingPreset = true;
+		} else if (liftStick->GetRawButton(PRESET_PEG_2)) {
+			currentPreset = 2;
+			isDoingPreset = true;
+		} else if (liftStick->GetRawButton(PRESET_PEG_3)) {
+			currentPreset = 3;
+			isDoingPreset = true;
+		}
 		
-		/*
-		Defined earlier, in constructor...
-		listOfHeights - an array 5 slots long.
-			Zeroth slot  = lowest height
-			First slot   = first peg
-			Second slot  = second peg
-			Third slot   = third peg
-			Fourth slot  = maximum height allowed.
-			Fifth slot   = contains zero, just in case
-		presetTurn    - a persistant var, lasts throughout main loop.
-		currentHeight - a persistant var, should be directly updated for accuracy.
-						Returns a value consistant with MAXIMUM_TURN.
-		MAXIMUM_TURN  - a constant, the maximum amount of turns the motor can do each loop
-						Transforms a decimal from -1.0 to 1.0 into the correct amount of
-						terms.  Value should be found by experimenting.
-						Additionally, MAXIMUM_TERM should be able to convert the decimal
-						into a measurable feet compatible with 'currentHeight'.
-		FUDGE_FACTOR  - the number (in feet) of how close the lift can be to the peg
-						and still be acceptable.
-		SAFETY_HEIGHT - If the currentHeight goes over this float, then it is deemed
-						too dangerous to go around at max speed.  Therefore, safety mode
-						is turned on.
-		MagicMotorTurn - Hypothical from the library, turns the motor.
-		
-		Actually, jaguar turns at rate of [-1.0 to 1.0].
-		Therefore, one must transform the difference between the currentHeight
-		and the desired height into the jaguar turning rate.
-		Also, 'MAXIMUM_TURN' might have to be tweaked so the motor doesn't
-		accidentally smash something up.
-
-	{ // Start of class (commented for now)	
+		// User Input (it can override above.  Joystick comes first.)
 		if (liftStick->GetY()) {
-			float userInput = liftStick->GetY() * MAXIMUM_TURN;
-			float presetTurn = 0.0;		// Override any preset turning
-			float tempHeight = userInput + currentHeight;
-			if (tempHeight < listOfHeights[0])
-				userInput = listOfHeights[0] - currentHeight;	// Don't go too low
-			if (tempHeight > listOfHeights[4])
-				userInput = listOfHeights[4] - currentHeight);	// Don't go too high
-			MagicMotorTurn(userInput);
-		} else {
-			// Preset only when no joystick movement
-			// Awkward structure underneath - can't think of a more elegant way yet.
-			bool setNewPreset = false;
-			if (liftStick->GetRawButton(2)) {
-				preset = 0;
-				setNewPreset = true;
-			} else if (liftStick->GetRawButton(4)) {
-				preset = 1;
-				setNewPreset = true;
-			} else if (liftStick->GetRawButton(3)) {
-				preset = 2;
-				setNewPreset = true;
-			} else if (liftStick->GetRawButton(5)) {
-				preset = 3;
-				setNewPreset = true;
-			} else {
-				setNewPreset = false;
+			// Get joystick values.
+			float userInput = liftStick->GetY();
+			
+			// Make sure you don't go over 1.0 or under -1.0
+			int absoluteInput = (userInput > 0.0) ? 1 : -1;
+			absoluteInput = (userInput == 0) ? 0 : absoluteInput;
+			userInput = (fabs(userInput) > 1.0) ? absoluteInput : userInput;
+			
+			// Make sure you don't go too high or too low.
+			float predictedHeight = (userInput * TURN_TRANSFORM) + currentHeight;
+			if (predictedHeight < listOfHeights[0]) {
+				userInput = currentHeight * -1.0 / TURN_TRANSFORM;
+			} else if (predictedHeight > listOfHeights[4]) {
+				userInput = (listOfHeights[4] - currentHeight) / TURN_TRANSFORM;			
 			}
-			if (setNewPreset) {
-				if (currentHeight < (listOfHeights[preset] - FUDGE_FACTOR)) {
-					// Too low - adjusting.
-					float heightNeeded = listOfHeights[preset] - currentHeight;
-					if (heightNeeded > MAXIMUM_TURN) {
-						presetTurn = MAXIMUM_TURN;
-					} else {
-						// Make sure I don't overshoot when going up.
-						presetTurn = heightNeeded;
-					}
-				} else if (currentHeight > (listOfHeights[preset] + FUDGE_FACTOR)) {
-					// Too high - adjusting.
-					float heightNeeded = currentHeight - listOfHeights[preset];
-					if (heightNeeded > MAXIMUM_TURN) {
-						presetTurn = -MAXIMUM_TURN;
-					} else {
-						// Make sure I don't overshoot when going down.
-						presetTurn = -heightNeeded;
-					}
-				} else {
-					// I've fallen into the fudge factor zone.  Stop turning.
-					presetTurn = 0.0;
-				}
-			} // Done finding the amount I need to turn (for preset)
-			if (presetTurn) {
-				MagicMotorTurn(presetTurn);
-			}
-		} // Done with finding inputs and moving motor for joystick and preset
+			
+			// Override any presets.
+			isDoingPreset = false;
+			currentPreset = 0;
+			
+			// Magic
+			scissorMotor->Set(userInput);
+		}
 		
-		currentHeight = MagicHeightFinderAndConverter();
-	}			
-	*/
+		// Actually do presets
+		if (isDoingPreset == true) {
+			int valueReturned = ScissorPreset(currentPreset);
+			if (valueReturned == 1) {
+				isDoingPreset = false;
+			} else if (valueReturned == -1){
+				return false;	// Error returned.
+			}
+		}
+		
+		return true;			// Everything is dandy.
 	}
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/***********************************
+	 * ScissorPreset
+	 * Input = Peg number
+	 * Output = Scissor movement
+	 * 			0  = Haven't hit the target yet.
+	 * 			1  = I've hit the target!
+	 * 			-1 = Something is seriously wrong. (Negative 1)
+	 * TODO
+	 * - Calibrate TURN_TRANSFORM
+	 * 		Find out how much feet scissorMotor.Set(1.0) gives me.
+	 * 		Hypothetically, name that number 'X'
+	 * 		static const float TURN_TRANSFORM = 1/X
+	 */
+	int ScissorPreset(int pegChoice) {
+		float targetHeight = listOfHeights[pegChoice];
+		if (targetHeight == currentHeight) {
+			return 1;
+		}
+		float neededDirection = targetHeight - currentHeight;
+		int rawDirection = (neededDirection > 0.0) ? 1 : -1;
+		
+		// Make sure I don't go too low or too high.
+		// Shouldn't ever happen, but just in case...
+		float predictedHeight = currentHeight + neededDirection;
+		if (predictedHeight < listOfHeights[0] || predictedHeight > listOfHeights[4]) {
+			return -1;
+		}
+		
+		// Don't want to overshoot the target peg.
+		float motorTurn;
+		if (fabs(neededDirection * TURN_TRANSFORM) < 1.0) {
+			// If turning the motor the max amount won't get me to the peg,
+			// Just go the max amount.
+			motorTurn = rawDirection * TURN_TRANSFORM;
+			currentHeight = (rawDirection / TURN_TRANSFORM) + currentHeight;
+		} else {
+			// Else, just go the amount I need.
+			motorTurn = neededDirection * TURN_TRANSFORM;
+			currentHeight = neededDirection + currentHeight;
+		}
+		
+		scissorMotor->Set(motorTurn);
+		return (currentHeight == targetHeight) ? 1 : 0;
+	}
 	
 	
 	
@@ -580,7 +579,7 @@ public:
 			SmartDashboard::Log(minibotStatus, "MINIBOT ALERT: ");
 		}
 	}
-	
+
 	
 	
 	
