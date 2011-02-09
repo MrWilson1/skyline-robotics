@@ -29,7 +29,7 @@ class MainRobot : public SimpleRobot {
 	Victor *scissorMotor;
 	
 	bool fastSpeedEnabled;	
-	bool safetyModeOn;		// Safety switch (mostly during demos)
+	bool safetyModeOn;		// Safety switch
 	float currentHeight;
 	float listOfHeights [5];
 	bool isDoingPreset;
@@ -89,22 +89,24 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 PRESET_PEG_2 = kJSButton_3; // Center top button
 	static const UINT32 PRESET_PEG_3 = kJSButton_5; // Right top button
 	
-	
 	static const UINT32 kMoveFastButton = kJSButton_1;
-
 	static const UINT32 kEnableSafetyModeButton = kJSButton_11;
 	static const UINT32 kDisableSafetyModeButton = kJSButton_10;
-	
 	static const UINT32 kRotateRightButton = kJSButton_3;
 	static const UINT32 kRotateLeftButton = kJSButton_4;
 	// Button 3 (center button) turns clockwise,
 	// Button 4 (left button) turns counterclockwise.
 	
 	static const float SAFETY_HEIGHT = 5.0;
-	static const float TURN_TRANSFORM = 0.25;
+	static const float TURN_TRANSFORM = 9.403125;
 	// Transforms wanted distance in speed to correct amount of motor rotations.
-	
-	
+	// To use: Rotation = Distance / TURN_TRANSFORM
+	//		   Distance = Rotation * TURN_TRANSFORM
+	// Partially verified by experiment.
+	static const float ROBOT_HEIGHT = 120.0;
+	// In inches - currently guessed value.
+	// Measures from floor up to the height of the scissors when they are
+	// compressed.
 	static const float GAMEPLAY_TIME = 120.0;
 	// How long teleoperated lasts (in seconds)
 	static const float SPEED_DECREASE = 0.5;
@@ -115,8 +117,7 @@ public:
 	 * MainRobot: (The constructor)
 	 * Mandatory method.
 	 * TODO:
-	 * - Configure anything related to scissor lift better.
-	 * - Initialize the motor for the scissor lift.
+	 * - Tweak anything related to the scissor lift - verify values.
 	 */
 	MainRobot(void):
 		/**
@@ -139,11 +140,11 @@ public:
 			fastSpeedEnabled = false;
 			safetyModeOn = true;
 			currentHeight = 0.0;	// Later, use a function to check motor/encoder.
-			listOfHeights[0] = 0.0;
-			listOfHeights[1] = 2.5;
-			listOfHeights[2] = 4.0;
-			listOfHeights[3] = 7.5;
-			listOfHeights[4] = 8.0;
+			listOfHeights[0] = 0;	// All in inches.
+			listOfHeights[1] = 39.0  - ROBOT_HEIGHT;
+			listOfHeights[2] = 77.0  - ROBOT_HEIGHT;
+			listOfHeights[3] = 115.0 - ROBOT_HEIGHT;
+			listOfHeights[4] = 130.0 - ROBOT_HEIGHT;
 			listOfHeights[5] = 0.0;  // Zero terminated just in case.
 			isDoingPreset = false;
 			currentPreset = 0;
@@ -159,7 +160,7 @@ public:
 	 * Input = Data from driver station or field.
 	 * Output = Robot movement (hanging ubertubes)
 	 * TODO:
-	 * - Add and test line following code.
+	 * - Add and test line-following code.
 	 */
 	void Autonomous(void)
 	{
@@ -241,7 +242,7 @@ public:
 	 * Input = Data from driver station or field
 	 * Output = Robot movements 
 	 * TODO:
-	 * - Make more functions to add (such as the scissor lift)
+	 * None
 	 */
 	void OperatorControl(void)
 	{
@@ -274,7 +275,7 @@ public:
 	 * - Joystick disconnects
 	 * - Toggling safety mode
 	 * TODO:
-	 * - Add checks for scissor lift and speed.
+	 * None
 	 */
 	void FatalityChecks(GenericHID *moveStick, GenericHID *liftStick)
 	{
@@ -401,7 +402,8 @@ public:
 	 * Victor turns at rate of [-1.0 to 1.0]
 	 * 
 	 * TODO:
-	 * - Calibrate MAXIMUM_TURN
+	 * - Test code
+	 * - Test MAXIMUM_TURN, calibrate numbers
 	 * - Use limit switches for max or min, not dead reckoning.
 	 */
 	bool ScissorManual(GenericHID *liftStick)
@@ -436,7 +438,7 @@ public:
 			if (predictedHeight < listOfHeights[0]) {
 				userInput = currentHeight * -1.0 / TURN_TRANSFORM;
 			} else if (predictedHeight > listOfHeights[4]) {
-				userInput = (listOfHeights[4] - currentHeight) / TURN_TRANSFORM;			
+				userInput = (listOfHeights[4] - currentHeight) / TURN_TRANSFORM;
 			}
 			
 			// Override any presets.
@@ -471,10 +473,8 @@ public:
 	 * 			1  = I've hit the target!
 	 * 			-1 = Something is seriously wrong. (Negative 1)
 	 * TODO
-	 * - Calibrate TURN_TRANSFORM
-	 * 		Find out how much feet scissorMotor.Set(1.0) gives me.
-	 * 		Hypothetically, name that number 'X'
-	 * 		static const float TURN_TRANSFORM = 1/X
+	 * - Test
+	 * - Calibrate numbers
 	 */
 	int ScissorPreset(int pegChoice) {
 		float targetHeight = listOfHeights[pegChoice];
@@ -493,14 +493,14 @@ public:
 		
 		// Don't want to overshoot the target peg.
 		float motorTurn;
-		if (fabs(neededDirection * TURN_TRANSFORM) < 1.0) {
+		if (fabs(neededDirection / TURN_TRANSFORM) > 1.0) {
 			// If turning the motor the max amount won't get me to the peg,
 			// Just go the max amount.
-			motorTurn = rawDirection * TURN_TRANSFORM;
-			currentHeight = (rawDirection / TURN_TRANSFORM) + currentHeight;
+			motorTurn = rawDirection;
+			currentHeight = (rawDirection * TURN_TRANSFORM) + currentHeight;
 		} else {
 			// Else, just go the amount I need.
-			motorTurn = neededDirection * TURN_TRANSFORM;
+			motorTurn = neededDirection / TURN_TRANSFORM;
 			currentHeight = neededDirection + currentHeight;
 		}
 		
@@ -589,6 +589,8 @@ public:
 	 * Input = string to be displayed.
 	 * Output = See UpdateDashboard(void)
 	 * 			String from program.
+	 * TODO:
+	 * - Test
 	 */
 	void UpdateDashboard(const char *outputText)
 	{
