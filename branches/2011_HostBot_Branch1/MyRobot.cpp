@@ -9,7 +9,6 @@
 
 #include "WPILib.h"
 #include "math.h"
-#include "string.h"
 
 /**
  * The code for this is based on the SimpleRobot demo and
@@ -97,7 +96,7 @@ class MainRobot : public SimpleRobot {
 	// Button 3 (center button) turns clockwise,
 	// Button 4 (left button) turns counterclockwise.
 	
-	static const float SAFETY_HEIGHT = 5.0;
+	static const float SAFETY_HEIGHT = 77.0;
 	static const float TURN_TRANSFORM = 9.403125;
 	// Transforms wanted distance in speed to correct amount of motor rotations.
 	// To use: Rotation = Distance / TURN_TRANSFORM
@@ -107,7 +106,7 @@ class MainRobot : public SimpleRobot {
 	// In inches - currently guessed value.
 	// Measures from floor up to the height of the scissors when they are
 	// compressed.
-	static const float GAMEPLAY_TIME = 120.0;
+	static const float GAMEPLAY_TIME = 24.0;
 	// How long teleoperated lasts (in seconds)
 	static const float SPEED_DECREASE = 0.5;
 	// The percent the speed should decrease when in normal speed mode.
@@ -145,7 +144,7 @@ public:
 			listOfHeights[2] = 77.0  - ROBOT_HEIGHT;
 			listOfHeights[3] = 115.0 - ROBOT_HEIGHT;
 			listOfHeights[4] = 130.0 - ROBOT_HEIGHT;
-			listOfHeights[5] = 0.0;  // Zero terminated just in case.
+			listOfHeights[5] = 0.0;  // Zero-terminated just in case.
 			isDoingPreset = false;
 			currentPreset = 0;
 			UpdateDashboard("Finished initializing.");
@@ -193,15 +192,12 @@ public:
 			
 			// (Start of Autonomous method here)
 			// (Various initialization here)
-			if (Line detected) {
-				while (IsAutonomous()) {
-					Call Function LINE;
-					if (you hear anything) {
-						break;
-					}
+
+			while (IsAutonomous()) {
+				Call Function LINE;
+				if (you hear anything) {
+					break;
 				}
-			} else { 
-				yell "ERROR";
 			}
 			
 			if (you hear "FORK") {
@@ -429,8 +425,7 @@ public:
 			float userInput = liftStick->GetY();
 			
 			// Make sure you don't go over 1.0 or under -1.0
-			int absoluteInput = (userInput > 0.0) ? 1 : -1;
-			absoluteInput = (userInput == 0) ? 0 : absoluteInput;
+			int absoluteInput = GetSign(userInput);
 			userInput = (fabs(userInput) > 1.0) ? absoluteInput : userInput;
 			
 			// Make sure you don't go too high or too low.
@@ -482,7 +477,7 @@ public:
 			return 1;
 		}
 		float neededDirection = targetHeight - currentHeight;
-		int rawDirection = (neededDirection > 0.0) ? 1 : -1;
+		int rawDirection = GetSign(neededDirection);
 		
 		// Make sure I don't go too low or too high.
 		// Shouldn't ever happen, but just in case...
@@ -558,6 +553,7 @@ public:
 		// Info about what the robot is doing
 		SmartDashboard::Log(fastSpeedEnabled ? "Fast" : "Normal",
 							"Speed: ");
+		SmartDashboard::Log(currentHeight, "Current Lift Height: ");
 		
 		// Info about the field state
 		const char *systemState;
@@ -599,6 +595,47 @@ public:
 		
 		// User-given data
 		SmartDashboard::Log(outputText, "Message:");
+	}
+	
+	
+	
+	
+	/*********************************************
+	 * GetSign
+	 * Input  = a float
+	 * Output = if number is positive, returns 1
+	 * 			if number is negative, returns -1
+	 * 			if number equals zero, returns 0
+	 * Written just for convinience
+	 */
+	int GetSign(float numberInput)
+	{
+		if (numberInput == 0.0) {
+			return 0;
+		} else {
+			return (numberInput > 0.0) ? 1 : -1;
+		}
+	}
+	
+	
+	
+
+	/*********************************************
+	 * GetSign
+	 * Input  = a integer
+	 * Output = if number is positive, returns 1
+	 * 			if number is negative, returns -1
+	 * 			if number equals zero, returns 0
+	 * Written just for convinience
+	 * Overloads previous
+	 */
+	int GetSign(int numberInput)
+	{
+		if (numberInput == 0) {
+			return 0;
+		} else {
+			return (numberInput > 0) ? 1 : -1;
+		}
 	}
 };
 
