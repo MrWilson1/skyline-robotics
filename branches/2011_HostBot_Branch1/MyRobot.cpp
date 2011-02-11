@@ -26,6 +26,9 @@ class MainRobot : public SimpleRobot {
 	//Jaguar *scissorMotor;	// Motor for controlling the scissor lift
 	Timer timer;
 	Victor *scissorMotor;
+	DigitalInput *leftCam;	// The cameras for autonomous.
+	DigitalInput *middleCam;
+	DigitalInput *rightCam;
 	
 	bool fastSpeedEnabled;	
 	bool safetyModeOn;		// Safety switch
@@ -77,11 +80,14 @@ class MainRobot : public SimpleRobot {
 		kJSButton_14 = 14
 	} JoyStickButtons;
 	
-	static const UINT32 LEFT_FRONT_MOTOR_PORT  = kPWMPort_1;
-	static const UINT32 LEFT_REAR_MOTOR_PORT   = kPWMPort_2;
-	static const UINT32 RIGHT_FRONT_MOTOR_PORT = kPWMPort_3;
-	static const UINT32 RIGHT_REAR_MOTOR_PORT  = kPWMPort_4;
-	static const UINT32 SCISSOR_MOTOR_PORT     = kPWMPort_5;
+	static const UINT32 LEFT_FRONT_MOTOR_PORT	= kPWMPort_1;
+	static const UINT32 LEFT_REAR_MOTOR_PORT	= kPWMPort_2;
+	static const UINT32 RIGHT_FRONT_MOTOR_PORT	= kPWMPort_3;
+	static const UINT32 RIGHT_REAR_MOTOR_PORT	= kPWMPort_4;
+	static const UINT32 SCISSOR_MOTOR_PORT		= kPWMPort_5;
+	static const UINT32 LEFT_CAMERA_PORT		= kPWMPort_6;
+	static const UINT32 MIDDLE_CAMERA_PORT		= kPWMPort_7;
+	static const UINT32 RIGHT_CAMERA_PORT		= kPWMPort_8;
 	
 	static const UINT32 PRESET_BOTTOM = kJSButton_2;// Botton top button
 	static const UINT32 PRESET_PEG_1 = kJSButton_4;	// Left top button
@@ -95,6 +101,13 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 kRotateLeftButton = kJSButton_4;
 	// Button 3 (center button) turns clockwise,
 	// Button 4 (left button) turns counterclockwise.
+	
+	static const float FAST_AUTO_TIME = 300.0;
+	// During autonomous, the time the robot drives at max speed.  In seconds.
+	static const float LARGE_AUTO_CORRECT = 0.3;
+	static const float SMALL_AUTO_CORRECT = 0.1;
+	// The auto corrects are the rotational values for autonomous when it
+	// verges away from the line.
 	
 	static const float SAFETY_HEIGHT = 77.0;
 	static const float TURN_TRANSFORM = 9.403125;
@@ -135,6 +148,9 @@ public:
 			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
 			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
 			scissorMotor = new Victor(SCISSOR_MOTOR_PORT);
+			leftCam = 	new DigitalInput(LEFT_CAMERA_PORT);
+			middleCam = new DigitalInput(MIDDLE_CAMERA_PORT);
+			rightCam = 	new DigitalInput(RIGHT_CAMERA_PORT);
 			
 			fastSpeedEnabled = false;
 			safetyModeOn = true;
@@ -158,74 +174,49 @@ public:
 	 * Mandatory method.
 	 * Input = Data from driver station or field.
 	 * Output = Robot movement (hanging ubertubes)
+	 * Line tracks edge.  Line should be under left camera only.
+	 * If line detected by middle camera, adjust.
+	 * Dead reckoning used.
 	 * TODO:
 	 * - Add and test line-following code.
 	 */
 	void Autonomous(void)
 	{
 		Watchdog().SetEnabled(true);
+		float magnitude;
+		float direction;
+		float rotation;
 		UpdateDashboard("Starting Autonomous.");
+		Watchdog().Feed();
+		timer.Reset();
+		timer.Start();
 		while(IsAutonomous()) {
-			// Placeholder for autonomous - just spins in a circle
-			robotDrive.HolonomicDrive(0,0,0.3);
-			Watchdog().Feed();
-			Wait(0.005);
-			UpdateDashboard();
 			/*
-			
-			
-			What I want to do:
-			
-			Declare function LINE (arguments) {
-				Take input from cameras;
-				Move foward while adjusting based on camera;
-				Check distance left;
-				if (At end of distance given) {
-					Yell "END"
-				} else if (Detected fork) {
-					Yell "FORK"
-				} else if (Detected no line) {
-					Yell "ERROR";
-				}
-				return (distance left);
-			}
-			
-			// (Start of Autonomous method here)
-			// (Various initialization here)
-
-			while (IsAutonomous()) {
-				Call Function LINE;
-				if (you hear anything) {
+			int lineState = GetLine();
+			// Default vars
+			magnitude = 1.0;
+			direction = 0.0;
+			rotation = 0.0;
+			switch lineState {
+				case 1:
+					// Left only - fine.
 					break;
-				}
-			}
-			
-			if (you hear "FORK") {
-				Add rotation to right (?);
-				while (IsAutonomous()) {
-					Call Function LINE;
-					if ("FORK" or "ERROR") {
-						yell "ERROR";
-						break;
-					}
-					if ("END" is heard) {
-						Adjust rotation to face front
-						break;
-					}
-				}
-			}
-			
-			if (you hear "END"){
-				Call function SCISSOR_PRESET(3);
-			}
-			
-			if (you hear "ERROR") {
-			Call Function UpdateDashboard ("Error");
-			while (IsAutonomous()) {
-				// Do nothing, wait
-			}
+				case 2:
+					// Middle only - too far left.
+					rotation = LARGE_AUTO_CORRECTION * -1.0;
+					break;
+				case 3:
+					// Left and middle - verging left.
+					rotation = SMALL_AUTO_CORRECTION * -1.0;
+					break;
+				case 4:
+					// Right only - way too far left.
+					
 
+			}
 			*/
+			
+			
 		}
 	}
 	
@@ -516,6 +507,25 @@ public:
 	void MinibotDeploy(void)
 	{
 		// Nothing yet
+	}
+	
+	
+	
+	
+	/***********************************
+	 * GetLine
+	 * Input 	= None
+	 * Output 	= Integer value of line.
+	 * 				(leftCam? * 1) + (middleCam? * 2) + (rightCam? * 4)
+	 * For autonomous only.
+	 */
+	int GetLine(void)
+	{
+		int leftInput = leftCam->Get() 		? 1 : 0;
+		int middleInput = middleCam->Get() 	? 1 : 0;
+		int rightInput = rightCam->Get()	? 1 : 0;
+		int output = leftInput + (middleInput * 2) + (rightInput * 4);
+		return output;
 	}
 	
 	
