@@ -610,11 +610,7 @@ public:
 	 */
 	int GetSign(float numberInput)
 	{
-		if (numberInput == 0.0) {
-			return 0;
-		} else {
-			return (numberInput > 0.0) ? 1 : -1;
-		}
+		return int(numberInput > 0.0) - int(numberInput > 0);
 	}
 	
 	
@@ -631,11 +627,7 @@ public:
 	 */
 	int GetSign(int numberInput)
 	{
-		if (numberInput == 0) {
-			return 0;
-		} else {
-			return (numberInput > 0) ? 1 : -1;
-		}
+		return int(numberInput > 0.0) - int(numberInput > 0);
 	}
 };
 
