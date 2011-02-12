@@ -1,44 +1,42 @@
-/* **********************************************
+/*************************************************
  * Skyline High School Robotics Team
  * Spartabots, Team 2976
  * Main code for team robot
  * FRC Robotics competition 2011 - Logomotion
- ***********************************************/
+ * 
+ * This code is based on the SimpleRobot demo and the code used from last 
+ * year's competition.
+ * The movement code should be conceptually similar to last year's.
+ * Autonomous() and OperatorControl() methods are automatically started
+ * by either the driver station or by the field controls. 
+ ************************************************/
 
 /*-------------------- Recommended Maximum Length of Lines -------------------*/
 
 #include "WPILib.h"
 #include "math.h"
 
-/**
- * The code for this is based on the SimpleRobot demo and
- * the code used from last year's competition.
- * The movement code should be conceptually similar to last year.
- * Autonomous and OperatorControl methods are called either from the
- * driver station or the field controls.
- */
-  
-
 class MainRobot : public SimpleRobot {
-	RobotDrive robotDrive;	// Robot drive system (wheels and whatnot)
-	Joystick *stick1;		// Directional control
-	Joystick *stick2;		// Lifting control
-	//Jaguar *scissorMotor;	// Motor for controlling the scissor lift
-	Timer timer;
-	Victor *scissorMotor;
-	DigitalInput *leftCam;	// The cameras for autonomous.
-	DigitalInput *middleCam;
-	DigitalInput *rightCam;
+	RobotDrive robotDrive;		// Robot drive system (wheels and whatnot)
+	Joystick *stick1;			// Directional control
+	Joystick *stick2;			// Lifting control
+	Timer timer;				// The only timer.
+	Victor *deployMotor;		// The motor that deploys the minibot
 	
-	bool fastSpeedEnabled;	
-	bool safetyModeOn;		// Safety switch
-	float currentHeight;
-	float listOfHeights [5];
-	bool isDoingPreset;
-	int currentPreset;
+	Victor *scissorMotor;		// Controls the scissor-lift
+	DigitalInput *leftCam;		// The cameras for autonomous.
+	DigitalInput *middleCam;	// Left camera follows the line.
+	DigitalInput *rightCam;		// Left and right from robot's perspective.
+	
+	bool fastSpeedEnabled;		// Normal or fast speed?
+	bool safetyModeOn;			// Safety switch.
+	float currentHeight;		// Measured in inches.
+	float listOfHeights [5];	// The various heights for the scissor-lieft.
+	bool isDoingPreset;			// Is the scissor-lift moving automatically?
+	int currentPreset;			// Where the scissor-lift is going (preset).
 	
 	
-	typedef enum
+	typedef enum			// The ports on the digital sidecar
 	{
 		kPWMPort_1 = 1,
 		kPWMPort_2 = 2,
@@ -56,30 +54,31 @@ class MainRobot : public SimpleRobot {
 		kPWMPort_14 = 14
 	} PWMPorts;
 	
-	typedef enum
+	typedef enum			// For the joysticks.
 	{
 		kUSBPort_1 = 1,
 		kUSBPort_2 = 2
 	} USBPorts;
 	
-	typedef enum
+	typedef enum			// Buttons on the joystick.
 	{
-		kJSButton_1 = 1,
-		kJSButton_2 = 2,
-		kJSButton_3 = 3,
-		kJSButton_4 = 4,
-		kJSButton_5 = 5,
-		kJSButton_6 = 6,
-		kJSButton_7 = 7,
-		kJSButton_8 = 8,
-		kJSButton_9 = 9,
-		kJSButton_10 = 10,
-		kJSButton_11 = 11,
-		kJSButton_12 = 12,
-		kJSButton_13 = 13,
-		kJSButton_14 = 14
+		kJSButton_1 = 1,	// Trigger.
+		kJSButton_2 = 2,	// On top of stick (bottom)
+		kJSButton_3 = 3,	// On top of stick (middle)
+		kJSButton_4 = 4,	// On top of stick (left)
+		kJSButton_5 = 5,	// On top of stick (right)
+		kJSButton_6 = 6,	// Bottom left (further away)
+		kJSButton_7 = 7,	// Bottom right (closer)
+		kJSButton_8 = 8,	// Bottom front left button
+		kJSButton_9 = 9,	// Bottom front right button
+		kJSButton_10 = 10,	// Bottom right (closer)
+		kJSButton_11 = 11,	// Bottom riht (further away)
+		kJSButton_12 = 12,	// Doesn't exist
+		kJSButton_13 = 13,	// Doesn't exist
+		kJSButton_14 = 14	// Doesn't exist
 	} JoyStickButtons;
 	
+	// Port assignments
 	static const UINT32 LEFT_FRONT_MOTOR_PORT	= kPWMPort_1;
 	static const UINT32 LEFT_REAR_MOTOR_PORT	= kPWMPort_2;
 	static const UINT32 RIGHT_FRONT_MOTOR_PORT	= kPWMPort_3;
@@ -88,44 +87,79 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 LEFT_CAMERA_PORT		= kPWMPort_6;
 	static const UINT32 MIDDLE_CAMERA_PORT		= kPWMPort_7;
 	static const UINT32 RIGHT_CAMERA_PORT		= kPWMPort_8;
+	static const UINT32 MINIBOT_DEPLOY_PORT		= kPWMPort_9;
 	
-	static const UINT32 PRESET_BOTTOM = kJSButton_2;// Botton top button
-	static const UINT32 PRESET_PEG_1 = kJSButton_4;	// Left top button
-	static const UINT32 PRESET_PEG_2 = kJSButton_3; // Center top button
-	static const UINT32 PRESET_PEG_3 = kJSButton_5; // Right top button
+	// Button assignments (Scissor-lift)
+	static const UINT32 PRESET_BOTTOM = kJSButton_2;	// Botton top button
+	static const UINT32 PRESET_PEG_1 = kJSButton_4;		// Left top button
+	static const UINT32 PRESET_PEG_2 = kJSButton_3; 	// Center top button
+	static const UINT32 PRESET_PEG_3 = kJSButton_5; 	// Right top button
 	
-	static const UINT32 kMoveFastButton = kJSButton_1;
-	static const UINT32 kEnableSafetyModeButton = kJSButton_11;
-	static const UINT32 kDisableSafetyModeButton = kJSButton_10;
-	static const UINT32 kRotateRightButton = kJSButton_3;
-	static const UINT32 kRotateLeftButton = kJSButton_4;
-	// Button 3 (center button) turns clockwise,
-	// Button 4 (left button) turns counterclockwise.
+	// Button assignments (Both)
+	static const UINT32 MOVE_FAST_BUTTON = kJSButton_1;
+	static const UINT32 ENABLE_SAFETY_BUTTON = kJSButton_6;
+	static const UINT32 DISABLE_SAFETY_BUTTON = kJSButton_7;
 	
-	static const float FAST_AUTO_TIME = 300.0;
-	// During autonomous, the time the robot drives at max speed.  In seconds.
-	static const float LARGE_AUTO_CORRECT = 0.3;
-	static const float SMALL_AUTO_CORRECT = 0.1;
-	// The auto corrects are the rotational values for autonomous when it
-	// verges away from the line.
+	// Button assignments (Driving)
+	static const UINT32 ROTATE_RIGHT_BUTTON = kJSButton_3; // Clockwise
+	static const UINT32 ROTATE_LEFT_BUTTON = kJSButton_4;  // Counter-clockwise
+	static const UINT32 EXTEND_MINIBOT_BUTTON = kJSButton_11;
+	static const UINT32 RETRACT_MINIBOT_BUTTON = kJSButton_10;
 	
-	static const float SAFETY_HEIGHT = 77.0;
-	static const float TURN_TRANSFORM = 9.403125;
-	// Transforms wanted distance in speed to correct amount of motor rotations.
-	// To use: Rotation = Distance / TURN_TRANSFORM
-	//		   Distance = Rotation * TURN_TRANSFORM
-	// Partially verified by experiment.
-	static const float ROBOT_HEIGHT = 120.0;
-	// In inches - currently guessed value.
-	// Measures from floor up to the height of the scissors when they are
-	// compressed.
-	static const float GAMEPLAY_TIME = 24.0;
-	// How long teleoperated lasts (in seconds)
+	/**
+	 * ROTATE_RIGHT_BUTTON:	The center button, rotates clockwise.
+	 * ROTATE_LEFT_BUTTON:	The left button, rotates counter-clockwise.
+	 * The counterclockwise button was mapped to the center button because
+	 * mapping it to the right button would force the thumb to move too much.
+	 */
+	
+	// General constants
+	static const float ROBOT_HEIGHT = 24.0;		// Not accurate.
+	static const float GAMEPLAY_TIME = 120.0;
 	static const float SPEED_DECREASE = 0.5;
-	// The percent the speed should decrease when in normal speed mode.
+	/**
+	 * ROBOT_HEIGHT:	Measures from the floor to the height of the scissors
+	 * 					when fully compressed, in inches.  
+	 * GAMEPLAY_TIME: 	How long teleoperated mode lasts (in seconds)
+	 * SPEED_DECREASE:	The factor by which the speed should decrease in normal
+	 * 					mode.  Multiply the output, not divide.
+	 */
+	
+	// Autonomous constants
+	static const float FAST_AUTO_TIME = 5.0;
+	static const float AUTO_CORRECTION  = 0.1;
+	static const int MAX_NO_LINE = 15;				// Needs calibration
+	static const int TARGET_PEG_AUTO = 3;
+	/**
+	 * FAST_AUTO_TIME:	The time in seconds the robot is allowed to drive at
+	 * 					maximum speed.  The robot must eventually slow down
+	 * 					to avoid running into a pole
+	 * AUTO_CORRECTION:	The value at which the robot will attempt correcting
+	 * 					itself when it diverges from the line.
+	 * MAX_NO_LINE:		How many iterations the robot can go without detecting
+	 * 					a line before shutting down (gone rogue)
+	 * TARGET_PEG_AUTO: The chosen target peg.  May have to be turned into a 
+	 * 					variable if switches are incorporated.
+	 */
+	
+	// Scissor-lift contants
+	static const float SAFETY_HEIGHT = 77.0;		// Not accurate
+	static const float TURN_TRANSFORM = 9.403125;	// Possibly inaccurate
+	/**
+	 * SAFETY_HEIGHT:	When the scissor-lift exceeds this height (in inches),
+	 * 					the robot is deemed too top-heavy to move at high
+	 * 					speeds.
+	 * TURN_TRANSFORM:	Transforms the wanted distance to the correct amount
+	 * 					of motor rotations.
+	 * 					To use:
+	 * 					Rotation = Distance / TURN_TRANSFORM;
+	 * 					Distance = Rotation * TURN_TRANSFORM;
+	 * 					Partially verified value.
+	 */
+
 	
 public:
-	/**************************************
+	/****************************************
 	 * MainRobot: (The constructor)
 	 * Mandatory method.
 	 * TODO:
@@ -147,6 +181,7 @@ public:
 			Watchdog().SetExpiration(0.1);  // Expiration in seconds.
 			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
 			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
+			deployMotor = new Victor(MINIBOT_DEPLOY_PORT);
 			scissorMotor = new Victor(SCISSOR_MOTOR_PORT);
 			leftCam = 	new DigitalInput(LEFT_CAMERA_PORT);
 			middleCam = new DigitalInput(MIDDLE_CAMERA_PORT);
@@ -154,7 +189,7 @@ public:
 			
 			fastSpeedEnabled = false;
 			safetyModeOn = true;
-			currentHeight = 0.0;	// Later, use a function to check motor/encoder.
+			currentHeight = 0.0;	// Dead reckoning.
 			listOfHeights[0] = 0;	// All in inches.
 			listOfHeights[1] = 39.0  - ROBOT_HEIGHT;
 			listOfHeights[2] = 77.0  - ROBOT_HEIGHT;
@@ -169,92 +204,199 @@ public:
 	
 	
 	
-	/**********************************************
+	/****************************************
 	 * Autonomous:
-	 * Mandatory method.
 	 * Input = Data from driver station or field.
 	 * Output = Robot movement (hanging ubertubes)
+	 * Mandatory method.
 	 * Line tracks edge.  Line should be under left camera only.
 	 * If line detected by middle camera, adjust.
 	 * Dead reckoning used.
 	 * TODO:
-	 * - Add and test line-following code.
+	 * - Tweak numbers
+	 * - Test
+	 * - Run through the flow of logic (double-checking)
 	 */
 	void Autonomous(void)
 	{
+		//Part 0 - initialization.
 		Watchdog().SetEnabled(true);
-		float magnitude;
-		float direction;
-		float rotation;
-		UpdateDashboard("Starting Autonomous.");
 		Watchdog().Feed();
 		timer.Reset();
 		timer.Start();
+		// If no line is detected, increments this.  If too high, robot stops.
+		int safetyCount = 0;
+		float rotation = 0.0;
+		bool atEnd = false;
+		bool isScissorDone = false;
+		bool isError = false;
+		UpdateDashboard("Starting Autonomous.");
+		
+		// Part 1 - Following the line.
 		while(IsAutonomous()) {
-			/*
+			if (IsOperatorControl() == true) {
+				// Autonomous won't automatically quit when
+				// it's operator control.
+				return;
+			}
+			
 			int lineState = GetLine();
 			// Default vars
-			magnitude = 1.0;
-			direction = 0.0;
-			rotation = 0.0;
-			switch lineState {
-				case 1:
-					// Left only - fine.
+			float magnitude = 1.0;
+			float direction = 0.0;
+			switch (lineState) {
+				case 0:		// Nothing - too far right/going rogue
+					++safetyCount;
+					rotation = AUTO_CORRECTION;
+				case 1:		// Left only - fine.
+					rotation = 0.0;
+					safetyCount = 0;
 					break;
-				case 2:
-					// Middle only - too far left.
-					rotation = LARGE_AUTO_CORRECTION * -1.0;
+				case 2:		// Middle only - too far left.
+				case 3:		// Left and middle - verging left.
+				case 4:		// Right only - way too far left.
+				case 5:		// Left and right - fork?
+					// Handles all left-turning cases
+					rotation = AUTO_CORRECTION * -1.0;
+					safetyCount = 0;
 					break;
-				case 3:
-					// Left and middle - verging left.
-					rotation = SMALL_AUTO_CORRECTION * -1.0;
+				case 6:		// Middle and right - verging right.
+					// Handles all right-turning cases
+					rotation = AUTO_CORRECTION;
 					break;
-				case 4:
-					// Right only - way too far left.
-					
-
+				case 7:
+					// All sensors on - Hit end?
+					safetyCount = 0;
+					atEnd = true;
 			}
-			*/
 			
+			if (atEnd == true) {
+				break;
+			}
 			
+			if (safetyCount == MAX_NO_LINE) {
+				isError = true;
+			}
+			
+			if (timer.Get() > FAST_AUTO_TIME) {
+				// May have to create second constant for this instead of
+				// reusing the one below.
+				magnitude *= SPEED_DECREASE;
+			}
+			
+			// Magic here - see method OmniDrive for more info.
+			robotDrive.HolonomicDrive(magnitude, direction, rotation);
+			
+			if (true == isScissorDone) {
+				isError = ScissorAuto(TARGET_PEG_AUTO, isScissorDone);
+			}
+			
+			// Error-catching
+			if (isError) {
+				SmartDashboard::Log("1: Failed while following line.", 
+									"AUTONOMOUS ERROR: ");
+				break;
+			}
+			
+			Watchdog().Feed();
+			UpdateDashboard();
+		}
+		
+		
+		// Part two - if at the end...
+		if (atEnd == true) {
+			while (false == isScissorDone) {
+				// Raising scissor...
+				if (IsOperatorControl() == true) {
+					return;
+				}
+				
+				if (false == isScissorDone) {
+					isError == ScissorAuto(TARGET_PEG_AUTO, isScissorDone);
+				}
+				
+				// Error-catching
+				if (isError) {
+					SmartDashboard::Log("2: Failed at end, while raising lift.", 
+										"AUTONOMOUS ERROR: ");
+					break;
+				}
+				
+				Watchdog().Feed();
+				UpdateDashboard();
+			}
+			
+			// Part 3 - lowering the scissor-lift.
+			isScissorDone = false;
+			while (false == isScissorDone) {
+				if (IsOperatorControl() == true) {
+					return;
+				}
+				
+				if (false == isScissorDone) {
+					isError = ScissorAuto(0, isScissorDone);
+				}
+				
+				// Error-catching
+				if (isError) {
+					SmartDashboard::Log("3: Failed while lowering lift.", 
+										"AUTONOMOUS ERROR: ");
+					break;
+				}
+				
+				
+				Watchdog().Feed();
+				UpdateDashboard();
+			}
+		}
+		
+		// Part 4 - resting.
+		while(IsAutonomous()) {
+			// If there's still time left, wait here.
+			// If any errors emerge, should default to here.
+			
+			Watchdog().Feed();
+			UpdateDashboard((isError) ? "Waiting after error..." 
+									  : "Autonomous finished.");
 		}
 	}
 	
 	
 	
 	
-	/**************************************
+	/****************************************
 	 * OperatorControl:
-	 * Mandatory method.
 	 * Input = Data from driver station or field
-	 * Output = Robot movements 
+	 * Output = Robot movements
+	 * Mandatory method. 
 	 * TODO:
 	 * None
 	 */
 	void OperatorControl(void)
 	{
-		Watchdog().SetEnabled(true);
-		fastSpeedEnabled = false;
-		safetyModeOn = false;
 		timer.Reset();
 		timer.Start();
+		Watchdog().Feed();
+		fastSpeedEnabled = false;
+		safetyModeOn = false;
 		bool scissorCheck;
 		UpdateDashboard("Starting Operator Control");
 		while(IsOperatorControl()) {
 			FatalityChecks(stick1, stick2);
 			OmniDrive(stick1);
 			scissorCheck = ScissorManual(stick2);
-			//MinibotDeploy();
+			// MinibotDeploy(stick1);
+			
 			Watchdog().Feed();
 			Wait(0.005);
-			UpdateDashboard((scissorCheck == false) ? "Scissor Error" : " ");
+			UpdateDashboard((false == scissorCheck) ? "Scissor Error" : " ");
 		}
 	}
 	
 	
 	
 	
-	/*******************************************************
+	/****************************************
 	 * FatalityChecks:
 	 * Input = Both joysticks, error codes from ScissorManual
 	 * Output = None
@@ -266,39 +408,38 @@ public:
 	 */
 	void FatalityChecks(GenericHID *moveStick, GenericHID *liftStick)
 	{
-		if (moveStick == NULL || liftStick == NULL) {
-			// If joysticks are disconnected, terminate.
+		// Terminate if a joystick is disconnected.
+		if ((NULL == moveStick) || (NULL == liftStick)) {
 			wpi_fatal(NullParameter);
 			return;
 		}
-		if (Watchdog().IsAlive() == false) {
-			// If something's wrong with the watchdog, KILL IT
+		
+		if (false == Watchdog().IsAlive()) {
 			Watchdog().Kill();
 			wpi_fatal(NullParameter);
 			return;
 		}
-		if (moveStick->GetRawButton(kEnableSafetyModeButton) ||
-			liftStick->GetRawButton(kEnableSafetyModeButton)) {
-			// Button 11 on both sticks enables safety mode
+		
+		if (moveStick->GetRawButton(ENABLE_SAFETY_BUTTON) ||
+			liftStick->GetRawButton(ENABLE_SAFETY_BUTTON)) {
 			safetyModeOn = true;
 		}
-		if (moveStick->GetRawButton(kDisableSafetyModeButton) ||
-			liftStick->GetRawButton(kDisableSafetyModeButton)) {
-			// Button 10 on both sticks disables safety mode
+		if (moveStick->GetRawButton(DISABLE_SAFETY_BUTTON) ||
+			liftStick->GetRawButton(DISABLE_SAFETY_BUTTON)) {
 			safetyModeOn = false;
 		}
+		
+		// If the scissor-lift is too high, it might topple at higher speeds.
 		if (currentHeight > SAFETY_HEIGHT) {
-			// If the scissor lift is too high, it drops the speed for safety.
 			safetyModeOn = true;
 		}
 	}
 	
 		
+
 	
-	
-	/********************************************************
+	/****************************************
 	 * OmniDrive:
-	 * Critical piece of code
 	 * Input = Joystick data
 	 * Output = Robot movement (controls mechanum wheels)
 	 * Radically altered code from last year.
@@ -308,69 +449,43 @@ public:
 	 */
 	void OmniDrive(GenericHID *moveStick)
 	{
-		/**
-		 * Fast speed only works when safety mode is disabled.
-		 * Prevents robots from speeding dangerously during demos.
-		 */
+		// Safety primarily to prevent toppling or for safer demos.
 		fastSpeedEnabled = false;
-		if ((safetyModeOn == false) && moveStick->GetRawButton(kMoveFastButton)) {
+		if ((false == safetyModeOn) && moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
 			fastSpeedEnabled = true;
 		}
-
-		/**
-		 * Finding magnitude, direction, and rotation (for holonomic drive)
-		 * Magnitude == [-1.0 to 1.0]
-		 * Direction == In degrees (?)
-		 * Rotation  == [-1.0 to 1.0] 
-		 */
-		float magnitude = fabs(stick1->GetMagnitude());
+		
+		// Magnitude: [-1.0 to 1.0] - How far to travel.
+		// Direction: In degrees	- Which way to travel.
+		// Rotation : [-1.0 to 1.0] - How much to turn.
+		// Joystick returns a float in range [-1.0 to 1.0] automatically.
+		// Using moveStick will not compile - not sure why.
+		float magnitude = fabs(stick1->GetMagnitude());	// fabs = Float abs
 		float direction = stick1->GetDirectionDegrees();
-		// I don't know exactly why, but using moveStick won't compile.
-		// I think it's because of a combination of pointer weirdness and
-		// how "'class GenericHID' has no member named 'X'".  Or something.
-		// Also, 'fabs' returns the absolute value of a float.
-		
-		
-		// Sorry about the magic numbers below.
 		float rotationSpeed = (moveStick->GetThrottle() - 1.1) * -0.5 + 0.07;
-		float rotationPress = int(moveStick->GetRawButton(kRotateRightButton)) 
-							  - int(moveStick->GetRawButton(kRotateLeftButton));
+		float rotationPress = int(moveStick->GetRawButton(ROTATE_RIGHT_BUTTON)) 
+							  - int(moveStick->GetRawButton(ROTATE_LEFT_BUTTON));
 		float rotation = rotationSpeed * rotationPress;
 		
-		/**
-		 * To prevent the motors from breaking, makes sure that magnitude
-		 * and rotation don't exceed an absolute value of 1.0
-		 * Any higher is scarily fast - feels like it'd break the motors.
-		 */
+		// Just in case - prevents values from being over 1.0 (absolute value)
+		// Higher numbers cause motors to spin alarmingly fast.
 		magnitude = (magnitude > 1.0) ?  1.0 : magnitude;
 		rotation  = (rotation > 1.0)  ?  1.0 : rotation;
 		rotation  = (rotation < -1.0) ? -1.0 : rotation;
 		
-		/**
-		 * Multiply everything by a fractional number if the safety catch
-		 * hasn't been disabled yet.
-		 */
-		if (fastSpeedEnabled == false) {
+		if (false == fastSpeedEnabled) {
 			magnitude *= SPEED_DECREASE;
 			rotation  *= SPEED_DECREASE;
 		}
 		
-		/**
-		 * Prevents values from drifting.
-		 * If any values floats too close to zero, it just makes them zero.
-		 */
+		// Prevents drift if values are too close to zero.
 		magnitude = (magnitude < 0.1) ? 0.0 : magnitude;
-		rotation  = (fabs(rotation) < 0.04) ? 0.0 : rotation;		
+		rotation  = (fabs(rotation) < 0.04) ? 0.0 : rotation;
 		
-		/**
-		 * This is where the magic happens.
-		 * Yeah.
-		 */
+		// This is where the magic happens.
 		robotDrive.HolonomicDrive(magnitude, direction, rotation);
 		
-		/**
-		 * For debugging purposes.
-		 */
+		// For debugging purposes.
 		SmartDashboard::Log(direction, "JS- Distance: ");
 		SmartDashboard::Log(magnitude, "JS- Magnitude: ");
 		SmartDashboard::Log(rotation, "JS- Rotation: ");
@@ -379,7 +494,7 @@ public:
 	
 	
 	
-	/*******************************************************
+	/****************************************
 	 * ScissorLift:
 	 * Input = Data from Joystick 2
 	 * Output = Scissor lift movement
@@ -395,7 +510,7 @@ public:
 	 */
 	bool ScissorManual(GenericHID *liftStick)
 	{	
-		// Preset choose		
+		// Chose the preset (button input)
 		if (liftStick->GetRawButton(PRESET_BOTTOM)) {
 			currentPreset = 0;
 			isDoingPreset = true;
@@ -410,16 +525,15 @@ public:
 			isDoingPreset = true;
 		}
 		
-		// User Input (it can override above.  Joystick comes first.)
+		// User Input -- overrides above if necessary.
 		if (liftStick->GetY()) {
-			// Get joystick values.
 			float userInput = liftStick->GetY();
 			
-			// Make sure you don't go over 1.0 or under -1.0
+			// Making sure not to exceed range [1.0 to -1.0]
 			int absoluteInput = GetSign(userInput);
 			userInput = (fabs(userInput) > 1.0) ? absoluteInput : userInput;
 			
-			// Make sure you don't go too high or too low.
+			// Making sure scissor-lift doesn't go too high or too low.
 			float predictedHeight = (userInput * TURN_TRANSFORM) + currentHeight;
 			if (predictedHeight < listOfHeights[0]) {
 				userInput = currentHeight * -1.0 / TURN_TRANSFORM;
@@ -435,24 +549,24 @@ public:
 			scissorMotor->Set(userInput);
 		}
 		
-		// Actually do presets
-		if (isDoingPreset == true) {
+		// If presets were not overriden, continue moving.
+		if (isDoingPreset) {
 			int valueReturned = ScissorPreset(currentPreset);
-			if (valueReturned == 1) {
+			if (1 == valueReturned) {
 				isDoingPreset = false;
-			} else if (valueReturned == -1){
+			} else if (-1 == valueReturned){
 				return false;	// Error returned.
 			}
 		}
 		
-		return true;			// Everything is dandy.
+		return true;			// No error.
 	}
 	
 	
 	
 	
-	/***********************************
-	 * ScissorPreset
+	/****************************************
+	 * ScissorPreset:
 	 * Input = Peg number
 	 * Output = Scissor movement
 	 * 			0  = Haven't hit the target yet.
@@ -468,26 +582,23 @@ public:
 			return 1;
 		}
 		float neededDirection = targetHeight - currentHeight;
-		int rawDirection = GetSign(neededDirection);
 		
-		// Make sure I don't go too low or too high.
+		// Making sure not to go too high or too low.
 		// Shouldn't ever happen, but just in case...
 		float predictedHeight = currentHeight + neededDirection;
 		if (predictedHeight < listOfHeights[0] || predictedHeight > listOfHeights[4]) {
 			return -1;
 		}
 		
-		// Don't want to overshoot the target peg.
 		float motorTurn;
 		if (fabs(neededDirection / TURN_TRANSFORM) > 1.0) {
-			// If turning the motor the max amount won't get me to the peg,
-			// Just go the max amount.
-			motorTurn = rawDirection;
-			currentHeight = (rawDirection * TURN_TRANSFORM) + currentHeight;
+			// If needed distance exceeds the maximum motor movement...
+			motorTurn = GetSign(neededDirection);
+			currentHeight += GetSign(neededDirection) * TURN_TRANSFORM;
 		} else {
-			// Else, just go the amount I need.
+			// If needed distance falls under the maximum motor movement...
 			motorTurn = neededDirection / TURN_TRANSFORM;
-			currentHeight = neededDirection + currentHeight;
+			currentHeight += neededDirection;
 		}
 		
 		scissorMotor->Set(motorTurn);
@@ -497,43 +608,70 @@ public:
 	
 	
 	
-	/************************************
-	 * Minibot Deployer
-	 * Input = Button push
-	 * Output = Minibot deploys
-	 * TODO:
-	 * - Find out how to use this.
+	/****************************************
+	 * ScissorAuto:
+	 * Input 	= Target peg height
+	 * 			  Pointer to bool value (if finished)
+	 * 			  Bool error value (true returned if no error)
+	 * Output 	= Scissor-lift movement
+	 * 			  Changes bool value that was passed.
+	 * For autonomous only.
 	 */
-	void MinibotDeploy(void)
-	{
-		// Nothing yet
+	bool ScissorAuto(int targetPeg, bool &isFinished) {
+		int scissorOutput = ScissorPreset(targetPeg);
+		if (-1 == scissorOutput) {
+			return false;
+		} else {
+			isFinished = (1 == scissorOutput) ? true : false;
+		}
+		return true;
 	}
 	
 	
 	
 	
-	/***********************************
-	 * GetLine
+	/****************************************
+	 * Minibot Deployer
+	 * Input = Button push
+	 * Output = Minibot deploys
+	 * TODO:
+	 * - Write a better one
+	 * - Find accurate motor numbers
+	 * - Add delays to prevent motor from breaking?
+	 */
+	void MinibotDeploy(GenericHID *moveStick)
+	{
+		if (moveStick->GetRawButton(EXTEND_MINIBOT_BUTTON)) {
+			deployMotor->Set(1.0);
+		} else if (moveStick->GetRawButton(RETRACT_MINIBOT_BUTTON)) {
+			deployMotor->Set(-1.0);
+		}
+	}
+	
+	
+	
+	
+	/****************************************
+	 * GetLine:
 	 * Input 	= None
-	 * Output 	= Integer value of line.
+	 * Output 	= Integer value of line (0-7).
 	 * 				(leftCam? * 1) + (middleCam? * 2) + (rightCam? * 4)
 	 * For autonomous only.
 	 */
 	int GetLine(void)
 	{
-		int leftInput = leftCam->Get() 		? 1 : 0;
-		int middleInput = middleCam->Get() 	? 1 : 0;
-		int rightInput = rightCam->Get()	? 1 : 0;
-		int output = leftInput + (middleInput * 2) + (rightInput * 4);
+		int leftInput 	= leftCam->Get() 	? 1 : 0;
+		int middleInput = middleCam->Get() 	? 2 : 0;
+		int rightInput 	= rightCam->Get()	? 4 : 0;
+		int output = leftInput + middleInput + rightInput;
 		return output;
 	}
+
 	
 	
 	
-	
-	/*********************************
-	 * UpdateDashboard
-	 * Base: Updates the dashboard
+	/****************************************
+	 * UpdateDashboard:
 	 * Input = none
 	 * Output = Safety mode
 	 * 			Watchdog state
@@ -542,31 +680,19 @@ public:
 	 * 			Robot state (Enabled or Disabled?)
 	 * 			Timer
 	 * 			Minibot alert
-	 * Obviously dependent on the 'SmartDashboard' stuff from
-	 * the WPI library.
+	 * Dependent on the 'SmartDashboard' class from the WPI library.
 	 * TODO:
 	 * - Test to see if this works.
 	 */
 	void UpdateDashboard(void)
-	{
-		// Safety Info
-		SmartDashboard::Log(safetyModeOn ? "WARNING: Enabled" : "Disabled", 
-						"Safety mode: ");
-		const char *watchdogCheck;
+	{	
+		// Setup here:
+		const char *watchdogCheck, *systemState, *minibotStatus;
 		if (Watchdog().IsAlive()) {
 			watchdogCheck = Watchdog().GetEnabled() ? "Enabled" : "DISABLED";
 		} else {
 			watchdogCheck = "DEAD";
 		}
-		SmartDashboard::Log(watchdogCheck, "Watchdog State: ");
-		
-		// Info about what the robot is doing
-		SmartDashboard::Log(fastSpeedEnabled ? "Fast" : "Normal",
-							"Speed: ");
-		SmartDashboard::Log(currentHeight, "Current Lift Height: ");
-		
-		// Info about the field state
-		const char *systemState;
 		if (IsOperatorControl()) {
 			systemState = "Teleoperate";
 		} else if (IsAutonomous()) {
@@ -574,11 +700,23 @@ public:
 		} else {
 			systemState = "???";
 		}
-		SmartDashboard::Log(systemState, "System State: ");
-		SmartDashboard::Log(IsEnabled() ? "Enabled" : "DISABLED", "Robot State: ");
 		
+		// Safety info
+		SmartDashboard::Log(safetyModeOn ? "WARNING: Enabled" : "Disabled", 
+							"Safety mode: ");
+		SmartDashboard::Log(watchdogCheck, "Watchdog State: ");
+		
+		// Robot actions
+		SmartDashboard::Log(fastSpeedEnabled ? "Fast" : "Normal", "Speed: ");
+		SmartDashboard::Log(currentHeight, "Current Lift Height: ");
+		
+		// Info about the field state
+		SmartDashboard::Log(systemState, "System State: ");
+		SmartDashboard::Log(IsEnabled() ? "Enabled" : "DISABLED",
+							"Robot State: ");
+		
+		// Info about time
 		SmartDashboard::Log(GAMEPLAY_TIME - timer.Get(), "Time Left: ");
-		const char *minibotStatus;
 		if (timer.Get() >= (GAMEPLAY_TIME - 15)) {
 			minibotStatus = (timer.Get() >= (GAMEPLAY_TIME - 10)) 
 							 ? "DEPLOY" : "Get Ready";
@@ -589,7 +727,7 @@ public:
 	
 	
 	
-	/********************************************
+	/****************************************
 	 * UpdateDashboard:
 	 * Overloading: Updates the dashboard, but with text also.
 	 * Input = string to be displayed.
@@ -602,42 +740,23 @@ public:
 	{
 		// Call to base dashboard updater.
 		UpdateDashboard();
-		
-		// User-given data
+
 		SmartDashboard::Log(outputText, "Message:");
 	}
 	
 	
 	
 	
-	/*********************************************
-	 * GetSign
+	/****************************************
+	 * GetSign:
 	 * Input  = a float
 	 * Output = if number is positive, returns 1
 	 * 			if number is negative, returns -1
 	 * 			if number equals zero, returns 0
-	 * Written just for convinience
 	 */
 	int GetSign(float numberInput)
 	{
-		return int(numberInput > 0.0) - int(numberInput > 0);
-	}
-	
-	
-	
-
-	/*********************************************
-	 * GetSign
-	 * Input  = a integer
-	 * Output = if number is positive, returns 1
-	 * 			if number is negative, returns -1
-	 * 			if number equals zero, returns 0
-	 * Written just for convinience
-	 * Overloads previous
-	 */
-	int GetSign(int numberInput)
-	{
-		return int(numberInput > 0.0) - int(numberInput > 0);
+		return int(numberInput > 0.0) - int(numberInput > 0.0);
 	}
 };
 
