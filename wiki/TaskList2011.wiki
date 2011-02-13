@@ -8,13 +8,17 @@ This is stuff we still have to do, in terms of programming.  Anything crossed ou
 
 == Host Robot ==
  * ~~Get the robot moving~~
- * Program the scissor lift
- * Program the autonomous line following code
- * Program the minibot deployment code
- * Program the interface with the dashboard
+ * ~~Program the scissor lift~~
+ * ~~Program the autonomous line following code~~
+ * ~~Program the minibot deployment code~~
+ * ~~Program the interface with the dashboard~~
+ * Test the new movement code
+ * Test the scissor-lift
+ * Calibrate constants and other variables
 
 == Minibot ==
- * Make the minibot know when to start climbing
- * Make the minibot go up
- * Make the minibot know when to go down
- * Make the minibot go down
+ * ~~Make the minibot know when to start climbing~~
+ * ~~Make the minibot go up~~
+ * ~~Make the minibot know when to go down~~
+ * ~~Make the minibot go down~~
+ * Test the minibot's speed
