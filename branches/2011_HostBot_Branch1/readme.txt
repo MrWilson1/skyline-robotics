@@ -3,7 +3,7 @@
 Skyline High School (with Boeing)
 Spartabots, Team 2976
 Program designed for 2011 FRC Robotics competition - Logomotion
-Last updated February 9th, 2011.
+Last updated Saturday, February 12th, 2011.
 
 Table of Contents
   Instructions on how to control the robot
@@ -33,10 +33,12 @@ Instructions on how to control the robot:
     To use fast mode, the trigger MUST be held down.  Releasing it cuts
     the speed in half.
     
-    Disable safety mode (10) - Allows fast speed
-    Enable safety mode (11)  - Disables fast speed (for demos)
+    Bottom upper-left (7)    - Enable safety mode (allows fast speed).
+    Bottom lower-right (6)   - Disables safety mode (limits speed for safety).
     Safety mode can also be enabled if the scissor lift rises too high
     to prevent the robot from toppling at high speeds.
+
+	Bottom upper-
 
   Joystick 2 (Scissor Lift):
   	Move stick up            - Lift rises

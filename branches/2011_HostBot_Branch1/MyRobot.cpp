@@ -28,13 +28,12 @@ class MainRobot : public SimpleRobot {
 	DigitalInput *middleCam;	// Left camera follows the line.
 	DigitalInput *rightCam;		// Left and right from robot's perspective.
 	
-	bool fastSpeedEnabled;		// Normal or fast speed?
-	bool safetyModeOn;			// Safety switch.
+	bool isFastSpeedOn;			// Normal or fast speed?
+	bool isSafetyModeOn;		// Safety switch.
 	float currentHeight;		// Measured in inches.
 	float listOfHeights [5];	// The various heights for the scissor-lieft.
 	bool isDoingPreset;			// Is the scissor-lift moving automatically?
 	int currentPreset;			// Where the scissor-lift is going (preset).
-	
 	
 	typedef enum			// The ports on the digital sidecar
 	{
@@ -105,7 +104,6 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 ROTATE_LEFT_BUTTON = kJSButton_4;  // Counter-clockwise
 	static const UINT32 EXTEND_MINIBOT_BUTTON = kJSButton_11;
 	static const UINT32 RETRACT_MINIBOT_BUTTON = kJSButton_10;
-	
 	/**
 	 * ROTATE_RIGHT_BUTTON:	The center button, rotates clockwise.
 	 * ROTATE_LEFT_BUTTON:	The left button, rotates counter-clockwise.
@@ -114,7 +112,7 @@ class MainRobot : public SimpleRobot {
 	 */
 	
 	// General constants
-	static const float ROBOT_HEIGHT = 24.0;		// Not accurate.
+	static const float ROBOT_HEIGHT = 36.5;		// More accurate.
 	static const float GAMEPLAY_TIME = 120.0;
 	static const float SPEED_DECREASE = 0.5;
 	/**
@@ -126,9 +124,9 @@ class MainRobot : public SimpleRobot {
 	 */
 	
 	// Autonomous constants
-	static const float FAST_AUTO_TIME = 5.0;
+	static const float FAST_AUTO_TIME = 10.0;
 	static const float AUTO_CORRECTION  = 0.1;
-	static const int MAX_NO_LINE = 15;				// Needs calibration
+	static const int MAX_NO_LINE = 5;				// Needs calibration
 	static const int TARGET_PEG_AUTO = 3;
 	/**
 	 * FAST_AUTO_TIME:	The time in seconds the robot is allowed to drive at
@@ -143,7 +141,7 @@ class MainRobot : public SimpleRobot {
 	 */
 	
 	// Scissor-lift contants
-	static const float SAFETY_HEIGHT = 77.0;		// Not accurate
+	static const float SAFETY_HEIGHT = 77.0;		// Probably inaccurate
 	static const float TURN_TRANSFORM = 9.403125;	// Possibly inaccurate
 	/**
 	 * SAFETY_HEIGHT:	When the scissor-lift exceeds this height (in inches),
@@ -156,7 +154,7 @@ class MainRobot : public SimpleRobot {
 	 * 					Distance = Rotation * TURN_TRANSFORM;
 	 * 					Partially verified value.
 	 */
-
+	
 	
 public:
 	/****************************************
@@ -177,7 +175,7 @@ public:
 		RIGHT_FRONT_MOTOR_PORT, RIGHT_REAR_MOTOR_PORT)
 		{
 			SmartDashboard::init();
-			Watchdog();
+			Watchdog();						// Initialization
 			Watchdog().SetExpiration(0.1);  // Expiration in seconds.
 			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
 			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
@@ -187,10 +185,12 @@ public:
 			middleCam = new DigitalInput(MIDDLE_CAMERA_PORT);
 			rightCam = 	new DigitalInput(RIGHT_CAMERA_PORT);
 			
-			fastSpeedEnabled = false;
-			safetyModeOn = true;
+			isFastSpeedOn = false;
+			isSafetyModeOn = true;
 			currentHeight = 0.0;	// Dead reckoning.
-			listOfHeights[0] = 0;	// All in inches.
+			// The height of the pegs offset by the height of the robot.
+			// In inches.
+			listOfHeights[0] = 0;
 			listOfHeights[1] = 39.0  - ROBOT_HEIGHT;
 			listOfHeights[2] = 77.0  - ROBOT_HEIGHT;
 			listOfHeights[3] = 115.0 - ROBOT_HEIGHT;
@@ -227,7 +227,7 @@ public:
 		// If no line is detected, increments this.  If too high, robot stops.
 		int safetyCount = 0;
 		float rotation = 0.0;
-		bool atEnd = false;
+		bool isAtEnd = false;
 		bool isScissorDone = false;
 		bool isError = false;
 		UpdateDashboard("Starting Autonomous.");
@@ -267,10 +267,10 @@ public:
 				case 7:
 					// All sensors on - Hit end?
 					safetyCount = 0;
-					atEnd = true;
+					isAtEnd = true;
 			}
 			
-			if (atEnd == true) {
+			if (isAtEnd == true) {
 				break;
 			}
 			
@@ -287,7 +287,7 @@ public:
 			// Magic here - see method OmniDrive for more info.
 			robotDrive.HolonomicDrive(magnitude, direction, rotation);
 			
-			if (true == isScissorDone) {
+			if (isScissorDone) {
 				isError = ScissorAuto(TARGET_PEG_AUTO, isScissorDone);
 			}
 			
@@ -300,11 +300,12 @@ public:
 			
 			Watchdog().Feed();
 			UpdateDashboard();
+			Wait(0.005);
 		}
 		
 		
 		// Part two - if at the end...
-		if (atEnd == true) {
+		if (isAtEnd) {
 			while (false == isScissorDone) {
 				// Raising scissor...
 				if (IsOperatorControl() == true) {
@@ -317,13 +318,14 @@ public:
 				
 				// Error-catching
 				if (isError) {
-					SmartDashboard::Log("2: Failed at end, while raising lift.", 
-										"AUTONOMOUS ERROR: ");
+					SmartDashboard::Log("2: Failed at end, while raising lift."
+										,"AUTONOMOUS ERROR: ");
 					break;
 				}
 				
 				Watchdog().Feed();
 				UpdateDashboard();
+				Wait(0.005);
 			}
 			
 			// Part 3 - lowering the scissor-lift.
@@ -347,6 +349,7 @@ public:
 				
 				Watchdog().Feed();
 				UpdateDashboard();
+				Wait(0.005);
 			}
 		}
 		
@@ -377,19 +380,18 @@ public:
 		timer.Reset();
 		timer.Start();
 		Watchdog().Feed();
-		fastSpeedEnabled = false;
-		safetyModeOn = false;
-		bool scissorCheck;
+		isFastSpeedOn = false;
+		isSafetyModeOn = false;
 		UpdateDashboard("Starting Operator Control");
 		while(IsOperatorControl()) {
 			FatalityChecks(stick1, stick2);
 			OmniDrive(stick1);
-			scissorCheck = ScissorManual(stick2);
-			// MinibotDeploy(stick1);
+			bool isScissorGood = ScissorManual(stick2);
+			MinibotDeploy(stick1);
 			
 			Watchdog().Feed();
+			UpdateDashboard(isScissorGood ? " " : "Scissor Error");
 			Wait(0.005);
-			UpdateDashboard((false == scissorCheck) ? "Scissor Error" : " ");
 		}
 	}
 	
@@ -422,16 +424,16 @@ public:
 		
 		if (moveStick->GetRawButton(ENABLE_SAFETY_BUTTON) ||
 			liftStick->GetRawButton(ENABLE_SAFETY_BUTTON)) {
-			safetyModeOn = true;
+			isSafetyModeOn = true;
 		}
 		if (moveStick->GetRawButton(DISABLE_SAFETY_BUTTON) ||
 			liftStick->GetRawButton(DISABLE_SAFETY_BUTTON)) {
-			safetyModeOn = false;
+			isSafetyModeOn = false;
 		}
 		
 		// If the scissor-lift is too high, it might topple at higher speeds.
 		if (currentHeight > SAFETY_HEIGHT) {
-			safetyModeOn = true;
+			isSafetyModeOn = true;
 		}
 	}
 	
@@ -450,9 +452,9 @@ public:
 	void OmniDrive(GenericHID *moveStick)
 	{
 		// Safety primarily to prevent toppling or for safer demos.
-		fastSpeedEnabled = false;
-		if ((false == safetyModeOn) && moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
-			fastSpeedEnabled = true;
+		isFastSpeedOn = false;
+		if ((false == isSafetyModeOn) && moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
+			isFastSpeedOn = true;
 		}
 		
 		// Magnitude: [-1.0 to 1.0] - How far to travel.
@@ -473,7 +475,7 @@ public:
 		rotation  = (rotation > 1.0)  ?  1.0 : rotation;
 		rotation  = (rotation < -1.0) ? -1.0 : rotation;
 		
-		if (false == fastSpeedEnabled) {
+		if (false == isFastSpeedOn) {
 			magnitude *= SPEED_DECREASE;
 			rotation  *= SPEED_DECREASE;
 		}
@@ -702,12 +704,12 @@ public:
 		}
 		
 		// Safety info
-		SmartDashboard::Log(safetyModeOn ? "WARNING: Enabled" : "Disabled", 
+		SmartDashboard::Log(isSafetyModeOn ? "WARNING: Enabled" : "Disabled", 
 							"Safety mode: ");
 		SmartDashboard::Log(watchdogCheck, "Watchdog State: ");
 		
 		// Robot actions
-		SmartDashboard::Log(fastSpeedEnabled ? "Fast" : "Normal", "Speed: ");
+		SmartDashboard::Log(isFastSpeedOn ? "Fast" : "Normal", "Speed: ");
 		SmartDashboard::Log(currentHeight, "Current Lift Height: ");
 		
 		// Info about the field state
