@@ -30,6 +30,7 @@ class MainRobot : public SimpleRobot {
 	
 	bool isFastSpeedOn;			// Normal or fast speed?
 	bool isSafetyModeOn;		// Safety switch.
+	bool isScissorHigh;			// Safety switch, but can automatically disable.
 	float currentHeight;		// Measured in inches.
 	float listOfHeights [5];	// The various heights for the scissor-lieft.
 	bool isDoingPreset;			// Is the scissor-lift moving automatically?
@@ -77,6 +78,8 @@ class MainRobot : public SimpleRobot {
 		kJSButton_14 = 14	// Doesn't exist
 	} JoyStickButtons;
 	
+	
+	//* START NORMAL (remove one parenthesis for debug)
 	// Port assignments
 	static const UINT32 LEFT_FRONT_MOTOR_PORT	= kPWMPort_1;
 	static const UINT32 LEFT_REAR_MOTOR_PORT	= kPWMPort_2;
@@ -104,58 +107,98 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 ROTATE_LEFT_BUTTON = kJSButton_4;  // Counter-clockwise
 	static const UINT32 EXTEND_MINIBOT_BUTTON = kJSButton_11;
 	static const UINT32 RETRACT_MINIBOT_BUTTON = kJSButton_10;
-	/**
-	 * ROTATE_RIGHT_BUTTON:	The center button, rotates clockwise.
-	 * ROTATE_LEFT_BUTTON:	The left button, rotates counter-clockwise.
-	 * The counterclockwise button was mapped to the center button because
-	 * mapping it to the right button would force the thumb to move too much.
-	 */
+	// ROTATE_RIGHT_BUTTON:	The center button, rotates clockwise.
+	// ROTATE_LEFT_BUTTON:	The left button, rotates counter-clockwise.
+	// The counterclockwise button was mapped to the center button because
+	// mapping it to the right button would force the thumb to move too much.
 	
 	// General constants
 	static const float ROBOT_HEIGHT = 36.5;		// More accurate.
 	static const float GAMEPLAY_TIME = 120.0;
 	static const float SPEED_DECREASE = 0.5;
-	/**
-	 * ROBOT_HEIGHT:	Measures from the floor to the height of the scissors
-	 * 					when fully compressed, in inches.  
-	 * GAMEPLAY_TIME: 	How long teleoperated mode lasts (in seconds)
-	 * SPEED_DECREASE:	The factor by which the speed should decrease in normal
-	 * 					mode.  Multiply the output, not divide.
-	 */
+	// ROBOT_HEIGHT:	Measures from the floor to the height of the scissors
+	// 					when fully compressed, in inches.  
+	// GAMEPLAY_TIME: 	How long teleoperated mode lasts (in seconds)
+	// SPEED_DECREASE:	The factor by which the speed should decrease in normal
+	// 					mode.  Multiply the output, not divide.
 	
 	// Autonomous constants
 	static const float FAST_AUTO_TIME = 10.0;
 	static const float AUTO_CORRECTION  = 0.1;
 	static const int MAX_NO_LINE = 5;				// Needs calibration
 	static const int TARGET_PEG_AUTO = 3;
-	/**
-	 * FAST_AUTO_TIME:	The time in seconds the robot is allowed to drive at
-	 * 					maximum speed.  The robot must eventually slow down
-	 * 					to avoid running into a pole
-	 * AUTO_CORRECTION:	The value at which the robot will attempt correcting
-	 * 					itself when it diverges from the line.
-	 * MAX_NO_LINE:		How many iterations the robot can go without detecting
-	 * 					a line before shutting down (gone rogue)
-	 * TARGET_PEG_AUTO: The chosen target peg.  May have to be turned into a 
-	 * 					variable if switches are incorporated.
-	 */
+	// FAST_AUTO_TIME:	The time in seconds the robot is allowed to drive at
+	// 					maximum speed.  The robot must eventually slow down
+	// 					to avoid running into a pole
+	// AUTO_CORRECTION:	The value at which the robot will attempt correcting
+	// 					itself when it diverges from the line.
+	// MAX_NO_LINE:		How many iterations the robot can go without detecting
+	// 					a line before shutting down (gone rogue)
+	// TARGET_PEG_AUTO: The chosen target peg.  May have to be turned into a 
+	// 					variable if switches are incorporated.
 	
 	// Scissor-lift contants
 	static const float SAFETY_HEIGHT = 77.0;		// Probably inaccurate
 	static const float TURN_TRANSFORM = 9.403125;	// Possibly inaccurate
-	/**
-	 * SAFETY_HEIGHT:	When the scissor-lift exceeds this height (in inches),
-	 * 					the robot is deemed too top-heavy to move at high
-	 * 					speeds.
-	 * TURN_TRANSFORM:	Transforms the wanted distance to the correct amount
-	 * 					of motor rotations.
-	 * 					To use:
-	 * 					Rotation = Distance / TURN_TRANSFORM;
-	 * 					Distance = Rotation * TURN_TRANSFORM;
-	 * 					Partially verified value.
-	 */
+	// SAFETY_HEIGHT:	When the scissor-lift exceeds this height (in inches),
+	// 					the robot is deemed too top-heavy to move at high
+	// 					speeds.
+	// TURN_TRANSFORM:	Transforms the wanted distance to the correct amount
+	// 					of motor rotations.
+	// 					To use:
+	// 					Rotation = Distance / TURN_TRANSFORM;
+	// 					Distance = Rotation * TURN_TRANSFORM;
+	// 					Partially verified value.
+	
+	// END NORMAL */
 	
 	
+	/* DEBUG (add one parenthesis for debugging)
+	// Port assignments
+	UINT32 LEFT_FRONT_MOTOR_PORT;
+	UINT32 LEFT_REAR_MOTOR_PORT;
+	UINT32 RIGHT_FRONT_MOTOR_PORT;
+	UINT32 RIGHT_REAR_MOTOR_PORT;
+	UINT32 SCISSOR_MOTOR_PORT;
+	UINT32 LEFT_CAMERA_PORT;
+	UINT32 MIDDLE_CAMERA_PORT;
+	UINT32 RIGHT_CAMERA_PORT;
+	UINT32 MINIBOT_DEPLOY_PORT;
+	
+	// Button assignments (Scissor-lift)
+	UINT32 PRESET_BOTTOM;		// Botton top button
+	UINT32 PRESET_PEG_1;		// Left top button
+	UINT32 PRESET_PEG_2; 		// Center top button
+	UINT32 PRESET_PEG_3; 		// Right top button
+	
+	// Button assignments (Both)
+	UINT32 MOVE_FAST_BUTTON;
+	UINT32 ENABLE_SAFETY_BUTTON;
+	UINT32 DISABLE_SAFETY_BUTTON;
+	
+	// Button assignments (Driving)
+	UINT32 ROTATE_RIGHT_BUTTON; 		// Clockwise
+	UINT32 ROTATE_LEFT_BUTTON;  		// Counter-clockwise
+	UINT32 EXTEND_MINIBOT_BUTTON;
+	UINT32 RETRACT_MINIBOT_BUTTON;
+	
+	// General constants
+	float ROBOT_HEIGHT;
+	float GAMEPLAY_TIME;
+	float SPEED_DECREASE;
+	
+	// Autonomous constants
+	float FAST_AUTO_TIME;
+	float AUTO_CORRECTION;
+	int MAX_NO_LINE;				// Needs calibration
+	int TARGET_PEG_AUTO;
+	
+	// Scissor-lift contants
+	float SAFETY_HEIGHT;			// Probably inaccurate
+	float TURN_TRANSFORM;			// Possibly inaccurate
+	// END DEBUG */
+	
+		
 public:
 	/****************************************
 	 * MainRobot: (The constructor)
@@ -187,6 +230,15 @@ public:
 			
 			isFastSpeedOn = false;
 			isSafetyModeOn = true;
+			isScissorHigh = false;
+			// isSafetyModeOn is a boolean controlled by the driver.
+			// They can decide to disable or enable it.
+			// isScissorHigh is a boolean automatically controlled.
+			// It only becomes true if the height is too high, and 
+			// automatically disables if the height falls back unders.
+			// The driver should just choose to disable or enable safety mode, 
+			// then never have to worry about it ever again.
+			
 			currentHeight = 0.0;	// Dead reckoning.
 			// The height of the pegs offset by the height of the robot.
 			// In inches.
@@ -198,6 +250,53 @@ public:
 			listOfHeights[5] = 0.0;  // Zero-terminated just in case.
 			isDoingPreset = false;
 			currentPreset = 0;
+			
+			/* DEBUG (add one parenthesis for debugging)
+			// Port assignments
+			LEFT_FRONT_MOTOR_PORT	= kPWMPort_1;
+			LEFT_REAR_MOTOR_PORT	= kPWMPort_2;
+			RIGHT_FRONT_MOTOR_PORT	= kPWMPort_3;
+			RIGHT_REAR_MOTOR_PORT	= kPWMPort_4;
+			SCISSOR_MOTOR_PORT		= kPWMPort_5;
+			LEFT_CAMERA_PORT		= kPWMPort_6;
+			MIDDLE_CAMERA_PORT		= kPWMPort_7;
+			RIGHT_CAMERA_PORT		= kPWMPort_8;
+			MINIBOT_DEPLOY_PORT		= kPWMPort_9;
+			
+			// Button assignments (Scissor-lift)
+			PRESET_BOTTOM 	= kJSButton_2;		// Botton top button
+			PRESET_PEG_1 	= kJSButton_4;		// Left top button
+			PRESET_PEG_2 	= kJSButton_3; 		// Center top button
+			PRESET_PEG_3 	= kJSButton_5; 		// Right top button
+			
+			// Button assignments (Both)
+			MOVE_FAST_BUTTON 		= kJSButton_1;
+			ENABLE_SAFETY_BUTTON 	= kJSButton_6;
+			DISABLE_SAFETY_BUTTON 	= kJSButton_7;
+			
+			// Button assignments (Driving)
+			ROTATE_RIGHT_BUTTON 	= kJSButton_3; 	// Clockwise
+			ROTATE_LEFT_BUTTON 		= kJSButton_4;  // Counter-clockwise
+			EXTEND_MINIBOT_BUTTON 	= kJSButton_11;
+			RETRACT_MINIBOT_BUTTON 	= kJSButton_10;
+			
+			// General constants
+			ROBOT_HEIGHT 	= 36.5;			// More accurate.
+			GAMEPLAY_TIME 	= 120.0;
+			SPEED_DECREASE 	= 0.5;
+			
+			// Autonomous constants
+			FAST_AUTO_TIME 	= 10.0;
+			AUTO_CORRECTION = 0.1;
+			MAX_NO_LINE 	= 5;				// Needs calibration
+			TARGET_PEG_AUTO = 3;
+			
+			// Scissor-lift contants
+			SAFETY_HEIGHT 	= 77.0;			// Probably inaccurate
+			TURN_TRANSFORM 	= 9.403125;		// Possibly inaccurate
+			// END DEBUG */
+			
+			
 			UpdateDashboard("Finished initializing.");
 		}
 	
@@ -230,16 +329,10 @@ public:
 		bool isAtEnd = false;
 		bool isScissorDone = false;
 		bool isError = false;
-		UpdateDashboard("Starting Autonomous.");
+		UpdateDashboard("0: Starting Autonomous.");
 		
 		// Part 1 - Following the line.
-		while(IsAutonomous()) {
-			if (IsOperatorControl() == true) {
-				// Autonomous won't automatically quit when
-				// it's operator control.
-				return;
-			}
-			
+		while(IsAutonomous()) { 
 			int lineState = GetLine();
 			// Default vars
 			float magnitude = 1.0;
@@ -278,7 +371,7 @@ public:
 				isError = true;
 			}
 			
-			if (timer.Get() > FAST_AUTO_TIME) {
+			if ((timer.Get() > FAST_AUTO_TIME) || isScissorHigh) {
 				// May have to create second constant for this instead of
 				// reusing the one below.
 				magnitude *= SPEED_DECREASE;
@@ -298,8 +391,15 @@ public:
 				break;
 			}
 			
+			// Checks
+			if (IsAutoDone()) {
+				// Autonomous won't automatically quit when
+				// it's operator control.
+				return;
+			}
 			Watchdog().Feed();
-			UpdateDashboard();
+			FatalityChecks(stick1, stick2);
+			UpdateDashboard("1: Following the line...");
 			Wait(0.005);
 		}
 		
@@ -308,9 +408,6 @@ public:
 		if (isAtEnd) {
 			while (false == isScissorDone) {
 				// Raising scissor...
-				if (IsOperatorControl() == true) {
-					return;
-				}
 				
 				if (false == isScissorDone) {
 					isError == ScissorAuto(TARGET_PEG_AUTO, isScissorDone);
@@ -323,18 +420,18 @@ public:
 					break;
 				}
 				
+				// Checks
+				if (IsAutoDone()) {return;}
 				Watchdog().Feed();
-				UpdateDashboard();
+				FatalityChecks(stick1, stick2);
+				UpdateDashboard("2: End of the line...");
 				Wait(0.005);
 			}
 			
 			// Part 3 - lowering the scissor-lift.
 			isScissorDone = false;
 			while (false == isScissorDone) {
-				if (IsOperatorControl() == true) {
-					return;
-				}
-				
+				// Try lowering scissor
 				if (false == isScissorDone) {
 					isError = ScissorAuto(0, isScissorDone);
 				}
@@ -347,20 +444,25 @@ public:
 				}
 				
 				
+				// Checks
+				if (IsAutoDone()) {return;}
 				Watchdog().Feed();
-				UpdateDashboard();
+				FatalityChecks(stick1, stick2);
+				UpdateDashboard("3: Tucking scissor away...");
 				Wait(0.005);
 			}
 		}
 		
 		// Part 4 - resting.
-		while(IsAutonomous()) {
+		while(IsAutoDone()) {
 			// If there's still time left, wait here.
 			// If any errors emerge, should default to here.
 			
 			Watchdog().Feed();
-			UpdateDashboard((isError) ? "Waiting after error..." 
-									  : "Autonomous finished.");
+			FatalityChecks(stick1, stick2);
+			UpdateDashboard((isError) ? "4: Waiting after error..." 
+									  : "4: Autonomous finished.");
+			Wait(0.005);
 		}
 	}
 	
@@ -433,7 +535,9 @@ public:
 		
 		// If the scissor-lift is too high, it might topple at higher speeds.
 		if (currentHeight > SAFETY_HEIGHT) {
-			isSafetyModeOn = true;
+			isScissorHigh = true;
+		} else {
+			isScissorHigh = false;
 		}
 	}
 	
@@ -453,8 +557,10 @@ public:
 	{
 		// Safety primarily to prevent toppling or for safer demos.
 		isFastSpeedOn = false;
-		if ((false == isSafetyModeOn) && moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
-			isFastSpeedOn = true;
+		if (moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
+			if ((false == isSafetyModeOn) && (false == isScissorHigh)) {
+				isFastSpeedOn = true;
+			}
 		}
 		
 		// Magnitude: [-1.0 to 1.0] - How far to travel.
@@ -666,6 +772,42 @@ public:
 		int middleInput = middleCam->Get() 	? 2 : 0;
 		int rightInput 	= rightCam->Get()	? 4 : 0;
 		int output = leftInput + middleInput + rightInput;
+		return output;
+	}
+	
+	
+	
+	
+	/****************************************
+	 * IsAutoDone:
+	 * Input 	= None
+	 * Output 	= True if no longer autonomous
+	 * For autonomous only.
+	 * This checks to see if autonomous is over.
+	 * In case the the competition-broadcast-thing fails and doesn't
+	 * send the single stating that Autonomous is over, this also
+	 * provides some interrupts.
+	 * Autonomous can be ended by turning safety off or by
+	 * pushing a joystick nearly to the max (any direction)
+	 * while holding the trigger down.
+	 */
+	bool IsAutoDone(void)
+	{
+		// Disable by turning safety off.
+		bool safetyKill = 	stick1->GetRawButton(DISABLE_SAFETY_BUTTON) ||
+							stick2->GetRawButton(DISABLE_SAFETY_BUTTON);
+		
+		// Disable by attempting to move at max speed.
+		bool moveKill = 	(fabs(stick1->GetMagnitude()) > 0.9) &&
+							(stick1->GetRawButton(MOVE_FAST_BUTTON));
+		bool liftKill =		(fabs(stick2->GetMagnitude()) > 0.9) &&
+							(stick2->GetRawButton(MOVE_FAST_BUTTON));
+		bool stickKill = moveKill || liftKill;
+		
+		// Disable if a signal is sent out by the driver station.
+		bool systemKill = (false == IsAutonomous()) || IsOperatorControl();
+		
+		bool output = safetyKill || stickKill || systemKill;
 		return output;
 	}
 
