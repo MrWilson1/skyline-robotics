@@ -86,10 +86,11 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 RIGHT_FRONT_MOTOR_PORT	= kPWMPort_3;
 	static const UINT32 RIGHT_REAR_MOTOR_PORT	= kPWMPort_4;
 	static const UINT32 SCISSOR_MOTOR_PORT		= kPWMPort_5;
-	static const UINT32 LEFT_CAMERA_PORT		= kPWMPort_6;
-	static const UINT32 MIDDLE_CAMERA_PORT		= kPWMPort_7;
-	static const UINT32 RIGHT_CAMERA_PORT		= kPWMPort_8;
-	static const UINT32 MINIBOT_DEPLOY_PORT		= kPWMPort_9;
+	static const UINT32 MINIBOT_DEPLOY_PORT		= kPWMPort_6;
+	static const UINT32 LEFT_CAMERA_PORT		= kPWMPort_7;
+	static const UINT32 MIDDLE_CAMERA_PORT		= kPWMPort_8;
+	static const UINT32 RIGHT_CAMERA_PORT		= kPWMPort_9;
+	
 	
 	// Button assignments (Scissor-lift)
 	static const UINT32 PRESET_BOTTOM = kJSButton_2;	// Botton top button
@@ -98,11 +99,11 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 PRESET_PEG_3 = kJSButton_5; 	// Right top button
 	
 	// Button assignments (Both)
-	static const UINT32 MOVE_FAST_BUTTON = kJSButton_1;
 	static const UINT32 ENABLE_SAFETY_BUTTON = kJSButton_6;
 	static const UINT32 DISABLE_SAFETY_BUTTON = kJSButton_7;
 	
 	// Button assignments (Driving)
+	static const UINT32 MOVE_FAST_BUTTON = kJSButton_1;
 	static const UINT32 ROTATE_RIGHT_BUTTON = kJSButton_3; // Clockwise
 	static const UINT32 ROTATE_LEFT_BUTTON = kJSButton_4;  // Counter-clockwise
 	static const UINT32 EXTEND_MINIBOT_BUTTON = kJSButton_11;
@@ -198,13 +199,13 @@ class MainRobot : public SimpleRobot {
 	float TURN_TRANSFORM;			// Possibly inaccurate
 	// END DEBUG */
 	
-		
 public:
 	/****************************************
 	 * MainRobot: (The constructor)
 	 * Mandatory method.
 	 * TODO:
 	 * - Tweak anything related to the scissor lift - verify values.
+	 * - Find out how motor inversion works.
 	 */
 	MainRobot(void):
 		/**
@@ -227,6 +228,11 @@ public:
 			leftCam = 	new DigitalInput(LEFT_CAMERA_PORT);
 			middleCam = new DigitalInput(MIDDLE_CAMERA_PORT);
 			rightCam = 	new DigitalInput(RIGHT_CAMERA_PORT);
+			
+			// So, the wiring was inverted (stupid mechanics).
+			// Something has to give, and sadly, my code must be encumbered.
+			// Stupid mechanics.
+			// robotDrive.SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
 			
 			isFastSpeedOn = false;
 			isSafetyModeOn = true;
@@ -296,7 +302,7 @@ public:
 			TURN_TRANSFORM 	= 9.403125;		// Possibly inaccurate
 			// END DEBUG */
 			
-			
+			Watchdog().SetEnabled(true);
 			UpdateDashboard("Finished initializing.");
 		}
 	
@@ -319,7 +325,6 @@ public:
 	void Autonomous(void)
 	{
 		//Part 0 - initialization.
-		Watchdog().SetEnabled(true);
 		Watchdog().Feed();
 		timer.Reset();
 		timer.Start();
@@ -508,7 +513,8 @@ public:
 	 * - Joystick disconnects
 	 * - Toggling safety mode
 	 * TODO:
-	 * None
+	 * - Find out how 'wpi_fatal' works
+	 * - Replace NULL with '0'? (zero)
 	 */
 	void FatalityChecks(GenericHID *moveStick, GenericHID *liftStick)
 	{
@@ -554,14 +560,88 @@ public:
 	 * - Test to see if it works.
 	 */
 	void OmniDrive(GenericHID *moveStick)
-	{
+	{		
+		/**
+		 * Fast speed only works when safety mode is disabled.
+		 * Prevents robots from speeding dangerously during demos.
+		 */
+		isFastSpeedOn = false;
+		if (moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
+			if ((false == isSafetyModeOn) && (false == isScissorHigh)) {
+				isFastSpeedOn = true;
+			}
+		}				
+		
+        /**
+         * Quick lesson:
+         * (condition) ? (expression 1) : (expression 2)
+         * if condition is true, expression 1,
+         * else expression 2.
+         * Like a compact 'If' statement.
+         */
+        float leftYValue = isFastSpeedOn ? -moveStick->GetY() 
+                  : -moveStick->GetY() / SPEED_DECREASE;
+        float leftXValue = isFastSpeedOn ? moveStick->GetX()
+                  : moveStick->GetX() / SPEED_DECREASE;
+        float magnitude = sqrt((leftYValue * leftYValue) 
+                                        + (leftXValue * leftXValue));
+        //Above: Pythagorean Theorum to calculate distance.
+        
+        /**
+         * From here on down, presumably the code prevents the robot from
+         * drifting if somebody nudges the joystick.
+         */
+        if (magnitude < 0.1)
+                magnitude = 0;
+        if (leftXValue > -0.1 && leftXValue < 0.1)
+                leftXValue = 0.00001;
+        if (leftYValue > -0.1 && leftYValue < 0.1)
+                leftYValue = 0.00001;
+        float direction = (180 / 3.14159) 
+                              * atan(leftXValue/leftYValue);
+        if (leftYValue < 0.0)
+                direction += 180.0;
+        
+        // Starts rotation using buttons.  
+        // Doesn't appear to use degrees.
+        float rotationSpeed = (moveStick->GetThrottle() - 1.1) * -0.5 + 0.07;
+        /**
+         * Above - uses the twiddly thing to adjust max rotation speed.
+         * Middle of the twiddly thing == 0, can lead to negative.
+         * Added 1.0 so twiddly thing is always positive.
+         */
+        float rotation = (moveStick->GetRawButton(ROTATE_RIGHT_BUTTON) ? 1.0 : 0.0) 
+                                   + (moveStick->GetRawButton(ROTATE_LEFT_BUTTON) ? -1.0 : 0.0);
+        if (rotation) {
+                rotation = 
+                        rotationSpeed * rotation * (isFastSpeedOn ? 
+                        1 : SPEED_DECREASE);
+        }
+        if (rotation < 0.04 && rotation > -0.04) {
+                // Just in case, prevents drifting.
+                rotation = 0.0;
+        }
+        
+        /**
+         * This is where the magic happens.
+         * Yeah.
+         */
+
+        robotDrive.HolonomicDrive(magnitude, direction, rotation);
+        /**
+         * Assuming that a input of '1.0' is normal.
+         * This is probably why a rotation of '6.0' created craziness.
+         */
+		
+		
+		/*
 		// Safety primarily to prevent toppling or for safer demos.
 		isFastSpeedOn = false;
 		if (moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
 			if ((false == isSafetyModeOn) && (false == isScissorHigh)) {
 				isFastSpeedOn = true;
 			}
-		}
+		}	
 		
 		// Magnitude: [-1.0 to 1.0] - How far to travel.
 		// Direction: In degrees	- Which way to travel.
@@ -569,7 +649,7 @@ public:
 		// Joystick returns a float in range [-1.0 to 1.0] automatically.
 		// Using moveStick will not compile - not sure why.
 		float magnitude = fabs(stick1->GetMagnitude());	// fabs = Float abs
-		float direction = stick1->GetDirectionDegrees();
+		float direction = stick1->GetDirectionRadians();
 		float rotationSpeed = (moveStick->GetThrottle() - 1.1) * -0.5 + 0.07;
 		float rotationPress = int(moveStick->GetRawButton(ROTATE_RIGHT_BUTTON)) 
 							  - int(moveStick->GetRawButton(ROTATE_LEFT_BUTTON));
@@ -592,6 +672,9 @@ public:
 		
 		// This is where the magic happens.
 		robotDrive.HolonomicDrive(magnitude, direction, rotation);
+		
+		//*/
+		
 		
 		// For debugging purposes.
 		SmartDashboard::Log(direction, "JS- Distance: ");
@@ -793,11 +876,11 @@ public:
 	 */
 	bool IsAutoDone(void)
 	{
-		// Disable by turning safety off.
+		// Can disable autonomous by turning safety off.
 		bool safetyKill = 	stick1->GetRawButton(DISABLE_SAFETY_BUTTON) ||
 							stick2->GetRawButton(DISABLE_SAFETY_BUTTON);
 		
-		// Disable by attempting to move at max speed.
+		// Can disable autonomous by attempting to move at max speed.
 		bool moveKill = 	(fabs(stick1->GetMagnitude()) > 0.9) &&
 							(stick1->GetRawButton(MOVE_FAST_BUTTON));
 		bool liftKill =		(fabs(stick2->GetMagnitude()) > 0.9) &&
@@ -807,7 +890,7 @@ public:
 		// Disable if a signal is sent out by the driver station.
 		bool systemKill = (false == IsAutonomous()) || IsOperatorControl();
 		
-		bool output = safetyKill || stickKill || systemKill;
+		bool output = (safetyKill || stickKill) || systemKill;
 		return output;
 	}
 
