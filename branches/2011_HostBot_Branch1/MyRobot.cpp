@@ -35,6 +35,7 @@ class MainRobot : public SimpleRobot {
 	float listOfHeights [5];	// The various heights for the scissor-lieft.
 	bool isDoingPreset;			// Is the scissor-lift moving automatically?
 	int currentPreset;			// Where the scissor-lift is going (preset).
+	bool isThisOld;
 	
 	typedef enum			// The ports on the digital sidecar
 	{
@@ -205,7 +206,6 @@ public:
 	 * Mandatory method.
 	 * TODO:
 	 * - Tweak anything related to the scissor lift - verify values.
-	 * - Find out how motor inversion works.
 	 */
 	MainRobot(void):
 		/**
@@ -229,10 +229,10 @@ public:
 			middleCam = new DigitalInput(MIDDLE_CAMERA_PORT);
 			rightCam = 	new DigitalInput(RIGHT_CAMERA_PORT);
 			
-			// So, the wiring was inverted (stupid mechanics).
-			// Something has to give, and sadly, my code must be encumbered.
-			// Stupid mechanics.
-			// robotDrive.SetInvertedMotor(RobotDrive::kFrontRightMotor, true);
+			// So, the wiring was inverted on two of the motors,
+			// which is why the below is necessary.
+			robotDrive.SetInvertedMotor(RobotDrive::kFrontLeftMotor, true);
+			robotDrive.SetInvertedMotor(RobotDrive::kRearLeftMotor, true);
 			
 			isFastSpeedOn = false;
 			isSafetyModeOn = true;
@@ -256,6 +256,7 @@ public:
 			listOfHeights[5] = 0.0;  // Zero-terminated just in case.
 			isDoingPreset = false;
 			currentPreset = 0;
+			isThisOld = false;
 			
 			/* DEBUG (add one parenthesis for debugging)
 			// Port assignments
@@ -318,7 +319,7 @@ public:
 	 * If line detected by middle camera, adjust.
 	 * Dead reckoning used.
 	 * TODO:
-	 * - Tweak numbers
+	 * - Calibrate numbers and code
 	 * - Test
 	 * - Run through the flow of logic (double-checking)
 	 */
@@ -557,84 +558,10 @@ public:
 	 * Radically altered code from last year.
 	 * Altered so it uses the new buttons.
 	 * TODO:
-	 * - Test to see if it works.
+	 * - None
 	 */
 	void OmniDrive(GenericHID *moveStick)
 	{		
-		/**
-		 * Fast speed only works when safety mode is disabled.
-		 * Prevents robots from speeding dangerously during demos.
-		 */
-		isFastSpeedOn = false;
-		if (moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
-			if ((false == isSafetyModeOn) && (false == isScissorHigh)) {
-				isFastSpeedOn = true;
-			}
-		}				
-		
-        /**
-         * Quick lesson:
-         * (condition) ? (expression 1) : (expression 2)
-         * if condition is true, expression 1,
-         * else expression 2.
-         * Like a compact 'If' statement.
-         */
-        float leftYValue = isFastSpeedOn ? -moveStick->GetY() 
-                  : -moveStick->GetY() / SPEED_DECREASE;
-        float leftXValue = isFastSpeedOn ? moveStick->GetX()
-                  : moveStick->GetX() / SPEED_DECREASE;
-        float magnitude = sqrt((leftYValue * leftYValue) 
-                                        + (leftXValue * leftXValue));
-        //Above: Pythagorean Theorum to calculate distance.
-        
-        /**
-         * From here on down, presumably the code prevents the robot from
-         * drifting if somebody nudges the joystick.
-         */
-        if (magnitude < 0.1)
-                magnitude = 0;
-        if (leftXValue > -0.1 && leftXValue < 0.1)
-                leftXValue = 0.00001;
-        if (leftYValue > -0.1 && leftYValue < 0.1)
-                leftYValue = 0.00001;
-        float direction = (180 / 3.14159) 
-                              * atan(leftXValue/leftYValue);
-        if (leftYValue < 0.0)
-                direction += 180.0;
-        
-        // Starts rotation using buttons.  
-        // Doesn't appear to use degrees.
-        float rotationSpeed = (moveStick->GetThrottle() - 1.1) * -0.5 + 0.07;
-        /**
-         * Above - uses the twiddly thing to adjust max rotation speed.
-         * Middle of the twiddly thing == 0, can lead to negative.
-         * Added 1.0 so twiddly thing is always positive.
-         */
-        float rotation = (moveStick->GetRawButton(ROTATE_RIGHT_BUTTON) ? 1.0 : 0.0) 
-                                   + (moveStick->GetRawButton(ROTATE_LEFT_BUTTON) ? -1.0 : 0.0);
-        if (rotation) {
-                rotation = 
-                        rotationSpeed * rotation * (isFastSpeedOn ? 
-                        1 : SPEED_DECREASE);
-        }
-        if (rotation < 0.04 && rotation > -0.04) {
-                // Just in case, prevents drifting.
-                rotation = 0.0;
-        }
-        
-        /**
-         * This is where the magic happens.
-         * Yeah.
-         */
-
-        robotDrive.HolonomicDrive(magnitude, direction, rotation);
-        /**
-         * Assuming that a input of '1.0' is normal.
-         * This is probably why a rotation of '6.0' created craziness.
-         */
-		
-		
-		/*
 		// Safety primarily to prevent toppling or for safer demos.
 		isFastSpeedOn = false;
 		if (moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
@@ -649,11 +576,15 @@ public:
 		// Joystick returns a float in range [-1.0 to 1.0] automatically.
 		// Using moveStick will not compile - not sure why.
 		float magnitude = fabs(stick1->GetMagnitude());	// fabs = Float abs
-		float direction = stick1->GetDirectionRadians();
+		float direction = stick1->GetDirectionDegrees();
+		direction = (direction < 0.0) ? 
+					direction + 360.0 : direction;
 		float rotationSpeed = (moveStick->GetThrottle() - 1.1) * -0.5 + 0.07;
 		float rotationPress = int(moveStick->GetRawButton(ROTATE_RIGHT_BUTTON)) 
 							  - int(moveStick->GetRawButton(ROTATE_LEFT_BUTTON));
 		float rotation = rotationSpeed * rotationPress;
+		
+		
 		
 		// Just in case - prevents values from being over 1.0 (absolute value)
 		// Higher numbers cause motors to spin alarmingly fast.
@@ -672,9 +603,6 @@ public:
 		
 		// This is where the magic happens.
 		robotDrive.HolonomicDrive(magnitude, direction, rotation);
-		
-		//*/
-		
 		
 		// For debugging purposes.
 		SmartDashboard::Log(direction, "JS- Distance: ");
@@ -718,7 +646,8 @@ public:
 		
 		// User Input -- overrides above if necessary.
 		if (liftStick->GetY()) {
-			float userInput = liftStick->GetY();
+			// Moving up returns a negative Y-value, oddly.
+			float userInput = -liftStick->GetY();
 			
 			// Making sure not to exceed range [1.0 to -1.0]
 			int absoluteInput = GetSign(userInput);
@@ -728,16 +657,26 @@ public:
 			float predictedHeight = (userInput * TURN_TRANSFORM) + currentHeight;
 			if (predictedHeight < listOfHeights[0]) {
 				userInput = currentHeight * -1.0 / TURN_TRANSFORM;
+				currentHeight = listOfHeights[0];
 			} else if (predictedHeight > listOfHeights[4]) {
 				userInput = (listOfHeights[4] - currentHeight) / TURN_TRANSFORM;
+				currentHeight = listOfHeights[4];
+			} else {
+				currentHeight = predictedHeight + currentHeight;
 			}
 			
 			// Override any presets.
 			isDoingPreset = false;
 			currentPreset = 0;
 			
-			// Magic
+			// Positive = counter-clockwise spin (when facing the motor)
+			// Counter-clockwise = rise.
+			// Luckily, a positive value corresponds with a rise in height.
 			scissorMotor->Set(userInput);
+			
+			SmartDashboard::Log(userInput, "userInput: ");
+			SmartDashboard::Log(absoluteInput, "absoluteInput: ");
+			SmartDashboard::Log(predictedHeight, "predictedHeight");
 		}
 		
 		// If presets were not overriden, continue moving.
@@ -943,12 +882,13 @@ public:
 							"Robot State: ");
 		
 		// Info about time
-		SmartDashboard::Log(GAMEPLAY_TIME - timer.Get(), "Time Left: ");
 		if (timer.Get() >= (GAMEPLAY_TIME - 15)) {
 			minibotStatus = (timer.Get() >= (GAMEPLAY_TIME - 10)) 
 							 ? "DEPLOY" : "Get Ready";
-			SmartDashboard::Log(minibotStatus, "MINIBOT ALERT: ");
+		} else {
+			minibotStatus = " ";
 		}
+		SmartDashboard::Log(minibotStatus, "MINIBOT ALERT: ");
 	}
 
 	
@@ -983,7 +923,10 @@ public:
 	 */
 	int GetSign(float numberInput)
 	{
-		return int(numberInput > 0.0) - int(numberInput > 0.0);
+		int result = 0;
+		result = (numberInput > 0.0) ? 1  : result;
+		result = (numberInput < 0.0) ? -1 : result;
+		return result;
 	}
 };
 
