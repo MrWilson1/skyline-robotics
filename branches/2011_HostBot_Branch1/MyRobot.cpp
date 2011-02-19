@@ -17,27 +17,33 @@
 #include "math.h"
 
 class MainRobot : public SimpleRobot {
-	RobotDrive robotDrive;		// Robot drive system (wheels and whatnot)
-	Joystick *stick1;			// Directional control
-	Joystick *stick2;			// Lifting control
-	Timer timer;				// The only timer.
-	Victor *deployMotor;		// The motor that deploys the minibot
+	RobotDrive robotDrive;			// Robot drive system (wheels and whatnot)
+	Joystick *stick1;				// Directional control
+	Joystick *stick2;				// Lifting control
+	Timer timer;					// The only timer
 	
-	Victor *scissorMotor;		// Controls the scissor-lift
-	DigitalInput *leftCam;		// The cameras for autonomous.
-	DigitalInput *middleCam;	// Left camera follows the line.
-	DigitalInput *rightCam;		// Left and right from robot's perspective.
+	Victor *deployMotor;			// The motor that deploys the minibot
+	DigitalInput *deployFarLimit;	// The outer limit for minibot deployment
+	DigitalInput *deployNearLimit;	// The closer limit for minibot.
+	
+	Victor *liftMotor;				// Controls the lift
+	DigitalInput *liftHighLimit;	// The high limit for the lift
+	DigitalInput *liftLowLimit;		// The lower limit for the lift
+	
+	DigitalInput *leftCam;			// The cameras for autonomous.
+	DigitalInput *middleCam;		// Left camera follows the line.
+	DigitalInput *rightCam;			// Left and right from robot's perspective.
 	
 	bool isFastSpeedOn;			// Normal or fast speed?
 	bool isSafetyModeOn;		// Safety switch.
-	bool isScissorHigh;			// Safety switch, but can automatically disable.
+	bool isLiftHigh;			// Safety switch, can automatically disable.
 	float currentHeight;		// Measured in inches.
-	float listOfHeights [5];	// The various heights for the scissor-lieft.
-	bool isDoingPreset;			// Is the scissor-lift moving automatically?
-	int currentPreset;			// Where the scissor-lift is going (preset).
+	float listOfHeights [5];	// The various heights for the scissor-lift.
+	bool isDoingPreset;			// Is the lift moving automatically?
+	int currentPreset;			// Where the lift is going (preset).
 	bool isThisOld;
 	
-	typedef enum			// The ports on the digital sidecar
+	typedef enum			// The ports on the digital sidecar (motors)
 	{
 		kPWMPort_1 = 1,
 		kPWMPort_2 = 2,
@@ -48,12 +54,26 @@ class MainRobot : public SimpleRobot {
 		kPWMPort_7 = 7,
 		kPWMPort_8 = 8,
 		kPWMPort_9 = 9,
-		kPWMPort_10 = 10,
-		kPWMPort_11 = 11,
-		kPWMPort_12 = 12,
-		kPWMPort_13 = 13,
-		kPWMPort_14 = 14
+		kPWMPort_10 = 10
 	} PWMPorts;
+	
+	typedef enum			// The ports for the digital IO (limit switches)
+	{
+		kDigitalIO_1 = 1,
+		kDigitalIO_2 = 2,
+		kDigitalIO_3 = 3,
+		kDigitalIO_4 = 4,
+		kDigitalIO_5 = 5,
+		kDigitalIO_6 = 6,
+		kDigitalIO_7 = 7,
+		kDigitalIO_8 = 8,
+		kDigitalIO_9 = 9,
+		kDigitalIO_10 = 10,
+		kDigitalIO_11 = 11,
+		kDigitalIO_12 = 12,
+		kDigitalIO_13 = 13,
+		kDigitalIO_14 = 14
+	} DigitalIO;
 	
 	typedef enum			// For the joysticks.
 	{
@@ -79,19 +99,26 @@ class MainRobot : public SimpleRobot {
 		kJSButton_14 = 14	// Doesn't exist
 	} JoyStickButtons;
 	
-	
-	//* START NORMAL (remove one parenthesis for debug)
-	// Port assignments
+	// Port (PWM) assignments
 	static const UINT32 LEFT_FRONT_MOTOR_PORT	= kPWMPort_1;
 	static const UINT32 LEFT_REAR_MOTOR_PORT	= kPWMPort_2;
 	static const UINT32 RIGHT_FRONT_MOTOR_PORT	= kPWMPort_3;
 	static const UINT32 RIGHT_REAR_MOTOR_PORT	= kPWMPort_4;
-	static const UINT32 SCISSOR_MOTOR_PORT		= kPWMPort_5;
+	static const UINT32 LIFT_MOTOR_PORT			= kPWMPort_5;
 	static const UINT32 MINIBOT_DEPLOY_PORT		= kPWMPort_6;
 	static const UINT32 LEFT_CAMERA_PORT		= kPWMPort_7;
 	static const UINT32 MIDDLE_CAMERA_PORT		= kPWMPort_8;
 	static const UINT32 RIGHT_CAMERA_PORT		= kPWMPort_9;
 	
+	// Digital IO assignments
+	static const UINT32 HIGH_LIFT_DIO			= kDigitalIO_1;
+	static const UINT32 LOW_LIFT_DIO			= kDigitalIO_2;
+	static const UINT32 FAR_DEPLOY_DIO			= kDigitalIO_3;
+	static const UINT32 NEAR_DEPLOY_DIO			= kDigitalIO_4;
+	
+	// Joystick assignments
+	static const UINT32 MOVE_JOYSTICK_USB		= kUSBPort_1;
+	static const UINT32 LIFT_JOYSTICK_USB		= kUSBPort_2;
 	
 	// Button assignments (Scissor-lift)
 	static const UINT32 PRESET_BOTTOM = kJSButton_2;	// Botton top button
@@ -139,12 +166,11 @@ class MainRobot : public SimpleRobot {
 	// TARGET_PEG_AUTO: The chosen target peg.  May have to be turned into a 
 	// 					variable if switches are incorporated.
 	
-	// Scissor-lift contants
+	// Lift contants
 	static const float SAFETY_HEIGHT = 77.0;		// Probably inaccurate
-	static const float TURN_TRANSFORM = 9.403125;	// Possibly inaccurate
-	// SAFETY_HEIGHT:	When the scissor-lift exceeds this height (in inches),
-	// 					the robot is deemed too top-heavy to move at high
-	// 					speeds.
+	static const float TURN_TRANSFORM = 0.5;		// Debug value
+	// SAFETY_HEIGHT:	When the lift exceeds this height (in inches), the 
+	//					robot is deemed too top-heavy to move at high speeds.
 	// TURN_TRANSFORM:	Transforms the wanted distance to the correct amount
 	// 					of motor rotations.
 	// 					To use:
@@ -152,158 +178,69 @@ class MainRobot : public SimpleRobot {
 	// 					Distance = Rotation * TURN_TRANSFORM;
 	// 					Partially verified value.
 	
-	// END NORMAL */
-	
-	
-	/* DEBUG (add one parenthesis for debugging)
-	// Port assignments
-	UINT32 LEFT_FRONT_MOTOR_PORT;
-	UINT32 LEFT_REAR_MOTOR_PORT;
-	UINT32 RIGHT_FRONT_MOTOR_PORT;
-	UINT32 RIGHT_REAR_MOTOR_PORT;
-	UINT32 SCISSOR_MOTOR_PORT;
-	UINT32 LEFT_CAMERA_PORT;
-	UINT32 MIDDLE_CAMERA_PORT;
-	UINT32 RIGHT_CAMERA_PORT;
-	UINT32 MINIBOT_DEPLOY_PORT;
-	
-	// Button assignments (Scissor-lift)
-	UINT32 PRESET_BOTTOM;		// Botton top button
-	UINT32 PRESET_PEG_1;		// Left top button
-	UINT32 PRESET_PEG_2; 		// Center top button
-	UINT32 PRESET_PEG_3; 		// Right top button
-	
-	// Button assignments (Both)
-	UINT32 MOVE_FAST_BUTTON;
-	UINT32 ENABLE_SAFETY_BUTTON;
-	UINT32 DISABLE_SAFETY_BUTTON;
-	
-	// Button assignments (Driving)
-	UINT32 ROTATE_RIGHT_BUTTON; 		// Clockwise
-	UINT32 ROTATE_LEFT_BUTTON;  		// Counter-clockwise
-	UINT32 EXTEND_MINIBOT_BUTTON;
-	UINT32 RETRACT_MINIBOT_BUTTON;
-	
-	// General constants
-	float ROBOT_HEIGHT;
-	float GAMEPLAY_TIME;
-	float SPEED_DECREASE;
-	
-	// Autonomous constants
-	float FAST_AUTO_TIME;
-	float AUTO_CORRECTION;
-	int MAX_NO_LINE;				// Needs calibration
-	int TARGET_PEG_AUTO;
-	
-	// Scissor-lift contants
-	float SAFETY_HEIGHT;			// Probably inaccurate
-	float TURN_TRANSFORM;			// Possibly inaccurate
-	// END DEBUG */
-	
+	// Deployment constants
+	static const float MINIBOT_DEPLOY_SPEED = 0.3;
+		
 public:
 	/****************************************
 	 * MainRobot: (The constructor)
 	 * Mandatory method.
 	 * TODO:
 	 * - Tweak anything related to the scissor lift - verify values.
+	 * - Find out how to configure Victor.
 	 */
 	MainRobot(void):
-		/**
-		 * Explaination of numbers below:
-		 * Each motor is connected to a jaguar, which is connected to a port.
-		 * The constructor wants to know which ports control which motor. 
-		 * The order given is the correct order it expects.
-		 * See the constants at the top for the motor port numbers.
-		 */
+		// Below: The constructor needs to know which port connects to which
+		// motor so it can control the Jaguars correctly.
+		// See constants at top.
 		robotDrive(LEFT_FRONT_MOTOR_PORT, LEFT_REAR_MOTOR_PORT, 
 		RIGHT_FRONT_MOTOR_PORT, RIGHT_REAR_MOTOR_PORT)
 		{
 			SmartDashboard::init();
-			Watchdog();						// Initialization
-			Watchdog().SetExpiration(0.1);  // Expiration in seconds.
-			stick1 = new Joystick(kUSBPort_1); // Right joystick, direction
-			stick2 = new Joystick(kUSBPort_2); // Left joystick, lifting
+			Watchdog();
+			Watchdog().SetExpiration(0.1);  				// In seconds.
+			stick1 = new Joystick(MOVE_JOYSTICK_USB); 		// Joystick 1
+			stick2 = new Joystick(LIFT_JOYSTICK_USB);		// Joystick 2
+			
 			deployMotor = new Victor(MINIBOT_DEPLOY_PORT);
-			scissorMotor = new Victor(SCISSOR_MOTOR_PORT);
+			deployFarLimit =  new DigitalInput(FAR_DEPLOY_DIO);
+			deployNearLimit = new DigitalInput(NEAR_DEPLOY_DIO);
+			
+			liftMotor = new Victor(LIFT_MOTOR_PORT);
+			liftHighLimit = new DigitalInput(HIGH_LIFT_DIO);
+			liftLowLimit =  new DigitalInput(LOW_LIFT_DIO);
+			
 			leftCam = 	new DigitalInput(LEFT_CAMERA_PORT);
 			middleCam = new DigitalInput(MIDDLE_CAMERA_PORT);
 			rightCam = 	new DigitalInput(RIGHT_CAMERA_PORT);
 			
-			// So, the wiring was inverted on two of the motors,
-			// which is why the below is necessary.
+			// The wiring was inverted on the left motors, so the below
+			// is necessary.
 			robotDrive.SetInvertedMotor(RobotDrive::kFrontLeftMotor, true);
 			robotDrive.SetInvertedMotor(RobotDrive::kRearLeftMotor, true);
 			
 			isFastSpeedOn = false;
 			isSafetyModeOn = true;
-			isScissorHigh = false;
-			// isSafetyModeOn is a boolean controlled by the driver.
-			// They can decide to disable or enable it.
-			// isScissorHigh is a boolean automatically controlled.
-			// It only becomes true if the height is too high, and 
-			// automatically disables if the height falls back unders.
-			// The driver should just choose to disable or enable safety mode, 
-			// then never have to worry about it ever again.
+			isLiftHigh = false;
+			// isSafetyModeOn:  Controlled by the driver -- should only have to
+			// 					choose once.
+			// isLiftHigh: 		Controlled by the program -- turns true only 
+			//					when height is too high, otherwise turns false.
 			
-			currentHeight = 0.0;	// Dead reckoning.
-			// The height of the pegs offset by the height of the robot.
-			// In inches.
+			currentHeight = 0.0;
+			
+			// Height of the pegs offset by the robot height (in inches).
 			listOfHeights[0] = 0;
 			listOfHeights[1] = 39.0  - ROBOT_HEIGHT;
 			listOfHeights[2] = 77.0  - ROBOT_HEIGHT;
 			listOfHeights[3] = 115.0 - ROBOT_HEIGHT;
-			listOfHeights[4] = 130.0 - ROBOT_HEIGHT;
-			listOfHeights[5] = 0.0;  // Zero-terminated just in case.
+			listOfHeights[4] = 0.0;  	// Zero-terminated just in case.
 			isDoingPreset = false;
 			currentPreset = 0;
-			isThisOld = false;
-			
-			/* DEBUG (add one parenthesis for debugging)
-			// Port assignments
-			LEFT_FRONT_MOTOR_PORT	= kPWMPort_1;
-			LEFT_REAR_MOTOR_PORT	= kPWMPort_2;
-			RIGHT_FRONT_MOTOR_PORT	= kPWMPort_3;
-			RIGHT_REAR_MOTOR_PORT	= kPWMPort_4;
-			SCISSOR_MOTOR_PORT		= kPWMPort_5;
-			LEFT_CAMERA_PORT		= kPWMPort_6;
-			MIDDLE_CAMERA_PORT		= kPWMPort_7;
-			RIGHT_CAMERA_PORT		= kPWMPort_8;
-			MINIBOT_DEPLOY_PORT		= kPWMPort_9;
-			
-			// Button assignments (Scissor-lift)
-			PRESET_BOTTOM 	= kJSButton_2;		// Botton top button
-			PRESET_PEG_1 	= kJSButton_4;		// Left top button
-			PRESET_PEG_2 	= kJSButton_3; 		// Center top button
-			PRESET_PEG_3 	= kJSButton_5; 		// Right top button
-			
-			// Button assignments (Both)
-			MOVE_FAST_BUTTON 		= kJSButton_1;
-			ENABLE_SAFETY_BUTTON 	= kJSButton_6;
-			DISABLE_SAFETY_BUTTON 	= kJSButton_7;
-			
-			// Button assignments (Driving)
-			ROTATE_RIGHT_BUTTON 	= kJSButton_3; 	// Clockwise
-			ROTATE_LEFT_BUTTON 		= kJSButton_4;  // Counter-clockwise
-			EXTEND_MINIBOT_BUTTON 	= kJSButton_11;
-			RETRACT_MINIBOT_BUTTON 	= kJSButton_10;
-			
-			// General constants
-			ROBOT_HEIGHT 	= 36.5;			// More accurate.
-			GAMEPLAY_TIME 	= 120.0;
-			SPEED_DECREASE 	= 0.5;
-			
-			// Autonomous constants
-			FAST_AUTO_TIME 	= 10.0;
-			AUTO_CORRECTION = 0.1;
-			MAX_NO_LINE 	= 5;				// Needs calibration
-			TARGET_PEG_AUTO = 3;
-			
-			// Scissor-lift contants
-			SAFETY_HEIGHT 	= 77.0;			// Probably inaccurate
-			TURN_TRANSFORM 	= 9.403125;		// Possibly inaccurate
-			// END DEBUG */
 			
 			Watchdog().SetEnabled(true);
+			UpdateDashboard("TestingTestingTestingTesting"
+							"TestingTestingTestingTestingTesting");
 			UpdateDashboard("Finished initializing.");
 		}
 	
@@ -325,36 +262,38 @@ public:
 	 */
 	void Autonomous(void)
 	{
-		//Part 0 - initialization.
+		// Part 0 - initialization.
 		Watchdog().Feed();
 		timer.Reset();
 		timer.Start();
+		
 		// If no line is detected, increments this.  If too high, robot stops.
 		int safetyCount = 0;
 		float rotation = 0.0;
 		bool isAtEnd = false;
-		bool isScissorDone = false;
+		bool isLiftDone = false;
 		bool isError = false;
+		const char *errorMessage = " ";
 		UpdateDashboard("0: Starting Autonomous.");
 		
+		
 		// Part 1 - Following the line.
-		while(IsAutonomous()) { 
-			int lineState = GetLine();
-			// Default vars
+		while(IsAutonomous()) {
 			float magnitude = 1.0;
 			float direction = 0.0;
+			int lineState = GetLine();
 			switch (lineState) {
-				case 0:		// Nothing - too far right/going rogue
+				case 0:				// Nothing - too far right/going rogue
 					++safetyCount;
 					rotation = AUTO_CORRECTION;
-				case 1:		// Left only - fine.
+				case 1:				// Left only - fine.
 					rotation = 0.0;
 					safetyCount = 0;
 					break;
-				case 2:		// Middle only - too far left.
-				case 3:		// Left and middle - verging left.
-				case 4:		// Right only - way too far left.
-				case 5:		// Left and right - fork?
+				case 2:				// Middle only - too far left.
+				case 3:				// Left and middle - verging left.
+				case 4:				// Right only - way too far left.
+				case 5:				// Left and right - fork?
 					// Handles all left-turning cases
 					rotation = AUTO_CORRECTION * -1.0;
 					safetyCount = 0;
@@ -367,37 +306,31 @@ public:
 					// All sensors on - Hit end?
 					safetyCount = 0;
 					isAtEnd = true;
+					break;
+				default:
+					// Are there more motors?
+					isError = true;
+					errorMessage = "ERROR: a1 - Too many line detectors?";
 			}
 			
-			if (isAtEnd == true) {
+			if (isAtEnd)
 				break;
-			}
-			
 			if (safetyCount == MAX_NO_LINE) {
 				isError = true;
+				errorMessage = "ERROR: a1 - Drifted too far.";
 			}
-			
-			if ((timer.Get() > FAST_AUTO_TIME) || isScissorHigh) {
-				// May have to create second constant for this instead of
-				// reusing the one below.
+			if ((timer.Get() > FAST_AUTO_TIME) || isLiftHigh)
 				magnitude *= SPEED_DECREASE;
-			}
+			// Might not be good to reuse SPEED_DECREASE
 			
-			// Magic here - see method OmniDrive for more info.
+			// Magic here - see method DriveHost for more info.
 			robotDrive.HolonomicDrive(magnitude, direction, rotation);
+			if (!isLiftDone)
+				isError = AutoLift(TARGET_PEG_AUTO, isLiftDone);
 			
-			if (isScissorDone) {
-				isError = ScissorAuto(TARGET_PEG_AUTO, isScissorDone);
-			}
-			
-			// Error-catching
-			if (isError) {
-				SmartDashboard::Log("1: Failed while following line.", 
-									"AUTONOMOUS ERROR: ");
+			// Error-catching and checks
+			if (isError)
 				break;
-			}
-			
-			// Checks
 			if (IsAutoDone()) {
 				// Autonomous won't automatically quit when
 				// it's operator control.
@@ -410,64 +343,52 @@ public:
 		}
 		
 		
-		// Part two - if at the end...
+		// Part two - if at the end, try raising the lift.
 		if (isAtEnd) {
-			while (false == isScissorDone) {
-				// Raising scissor...
+			while (!isLiftDone) {
+				if (!isLiftDone)
+					isError = AutoLift(TARGET_PEG_AUTO, isLiftDone);
 				
-				if (false == isScissorDone) {
-					isError == ScissorAuto(TARGET_PEG_AUTO, isScissorDone);
-				}
-				
-				// Error-catching
+				// Error-catching and checks
 				if (isError) {
-					SmartDashboard::Log("2: Failed at end, while raising lift."
-										,"AUTONOMOUS ERROR: ");
+					errorMessage = "ERROR: a2 - Lift hit higher limit switch?";
 					break;
 				}
-				
-				// Checks
-				if (IsAutoDone()) {return;}
+				if (IsAutoDone())
+					return;
 				Watchdog().Feed();
 				FatalityChecks(stick1, stick2);
 				UpdateDashboard("2: End of the line...");
 				Wait(0.005);
 			}
 			
-			// Part 3 - lowering the scissor-lift.
-			isScissorDone = false;
-			while (false == isScissorDone) {
-				// Try lowering scissor
-				if (false == isScissorDone) {
-					isError = ScissorAuto(0, isScissorDone);
-				}
+			
+			// Part 3 - attempt lowering the lift.
+			isLiftDone = false;
+			while (!isLiftDone) {
+				if (!isLiftDone)
+					isError = AutoLift(0, isLiftDone);
 				
-				// Error-catching
+				// Error-catching and checks
 				if (isError) {
-					SmartDashboard::Log("3: Failed while lowering lift.", 
-										"AUTONOMOUS ERROR: ");
+					errorMessage = "ERROR: a3 - Lift hit lower limit switch?";
 					break;
 				}
-				
-				
-				// Checks
-				if (IsAutoDone()) {return;}
+				if (IsAutoDone())
+					return;
 				Watchdog().Feed();
 				FatalityChecks(stick1, stick2);
-				UpdateDashboard("3: Tucking scissor away...");
+				UpdateDashboard("3: Tucking lift away...");
 				Wait(0.005);
 			}
 		}
 		
-		// Part 4 - resting.
+		
+		// Part 4 - If any time left, wait here.  If errors, default to here.
 		while(IsAutoDone()) {
-			// If there's still time left, wait here.
-			// If any errors emerge, should default to here.
-			
 			Watchdog().Feed();
 			FatalityChecks(stick1, stick2);
-			UpdateDashboard((isError) ? "4: Waiting after error..." 
-									  : "4: Autonomous finished.");
+			UpdateDashboard((isError) ? errorMessage : "4: Autonomous finished.");
 			Wait(0.005);
 		}
 	}
@@ -490,15 +411,16 @@ public:
 		Watchdog().Feed();
 		isFastSpeedOn = false;
 		isSafetyModeOn = false;
+		bool isLiftGood;
 		UpdateDashboard("Starting Operator Control");
 		while(IsOperatorControl()) {
 			FatalityChecks(stick1, stick2);
-			OmniDrive(stick1);
-			bool isScissorGood = ScissorManual(stick2);
+			DriveHost(stick1);
+			isLiftGood = ManualLift(stick2);
 			MinibotDeploy(stick1);
 			
 			Watchdog().Feed();
-			UpdateDashboard(isScissorGood ? " " : "Scissor Error");
+			UpdateDashboard(isLiftGood ? " " : "Scissor Error");
 			Wait(0.005);
 		}
 	}
@@ -508,7 +430,7 @@ public:
 	
 	/****************************************
 	 * FatalityChecks:
-	 * Input = Both joysticks, error codes from ScissorManual
+	 * Input = Both joysticks, error codes from ManualLift
 	 * Output = None
 	 * Handles 
 	 * - Joystick disconnects
@@ -542,9 +464,9 @@ public:
 		
 		// If the scissor-lift is too high, it might topple at higher speeds.
 		if (currentHeight > SAFETY_HEIGHT) {
-			isScissorHigh = true;
+			isLiftHigh = true;
 		} else {
-			isScissorHigh = false;
+			isLiftHigh = false;
 		}
 	}
 	
@@ -552,20 +474,21 @@ public:
 
 	
 	/****************************************
-	 * OmniDrive:
+	 * DriveHost:
 	 * Input = Joystick data
 	 * Output = Robot movement (controls mechanum wheels)
 	 * Radically altered code from last year.
 	 * Altered so it uses the new buttons.
 	 * TODO:
-	 * - None
+	 * - Find out how to pass robotDrive here without breaking anything
+	 *   (Not a necessary task).
 	 */
-	void OmniDrive(GenericHID *moveStick)
+	void DriveHost(GenericHID *moveStick)
 	{		
 		// Safety primarily to prevent toppling or for safer demos.
 		isFastSpeedOn = false;
 		if (moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
-			if ((false == isSafetyModeOn) && (false == isScissorHigh)) {
+			if ((false == isSafetyModeOn) && (false == isLiftHigh)) {
 				isFastSpeedOn = true;
 			}
 		}	
@@ -574,25 +497,22 @@ public:
 		// Direction: In degrees	- Which way to travel.
 		// Rotation : [-1.0 to 1.0] - How much to turn.
 		// Joystick returns a float in range [-1.0 to 1.0] automatically.
-		// Using moveStick will not compile - not sure why.
+		// Using moveStick will not compile.
 		float magnitude = fabs(stick1->GetMagnitude());	// fabs = Float abs
 		float direction = stick1->GetDirectionDegrees();
-		direction = (direction < 0.0) ? 
-					direction + 360.0 : direction;
+		direction = (direction < 0.0) ? direction + 360.0 : direction;
 		float rotationSpeed = (moveStick->GetThrottle() - 1.1) * -0.5 + 0.07;
 		float rotationPress = int(moveStick->GetRawButton(ROTATE_RIGHT_BUTTON)) 
 							  - int(moveStick->GetRawButton(ROTATE_LEFT_BUTTON));
 		float rotation = rotationSpeed * rotationPress;
-		
-		
-		
+			
 		// Just in case - prevents values from being over 1.0 (absolute value)
 		// Higher numbers cause motors to spin alarmingly fast.
 		magnitude = (magnitude > 1.0) ?  1.0 : magnitude;
 		rotation  = (rotation > 1.0)  ?  1.0 : rotation;
 		rotation  = (rotation < -1.0) ? -1.0 : rotation;
 		
-		if (false == isFastSpeedOn) {
+		if (!isFastSpeedOn) {
 			magnitude *= SPEED_DECREASE;
 			rotation  *= SPEED_DECREASE;
 		}
@@ -604,7 +524,6 @@ public:
 		// This is where the magic happens.
 		robotDrive.HolonomicDrive(magnitude, direction, rotation);
 		
-		// For debugging purposes.
 		SmartDashboard::Log(direction, "JS- Distance: ");
 		SmartDashboard::Log(magnitude, "JS- Magnitude: ");
 		SmartDashboard::Log(rotation, "JS- Rotation: ");
@@ -614,8 +533,9 @@ public:
 	
 	
 	/****************************************
-	 * ScissorLift:
-	 * Input = Data from Joystick 2
+	 * ManualLift:
+	 * Input = 	The motor for the lift (Victors only(?))
+	 * 			Data from Joystick 2
 	 * Output = Scissor lift movement
 	 * 			false = Error of some kind (probably passed from ScissorPreset)
 	 * 			true  = Everything is just dandy.
@@ -627,7 +547,7 @@ public:
 	 * - Test MAXIMUM_TURN, calibrate numbers
 	 * - Use limit switches for max or min, not dead reckoning.
 	 */
-	bool ScissorManual(GenericHID *liftStick)
+	bool ManualLift(GenericHID *liftStick)
 	{	
 		// Chose the preset (button input)
 		if (liftStick->GetRawButton(PRESET_BOTTOM)) {
@@ -644,50 +564,46 @@ public:
 			isDoingPreset = true;
 		}
 		
-		// User Input -- overrides above if necessary.
-		if (liftStick->GetY()) {
-			// Moving up returns a negative Y-value, oddly.
-			float userInput = -liftStick->GetY();
-			
-			// Making sure not to exceed range [1.0 to -1.0]
-			int absoluteInput = GetSign(userInput);
+		int absoluteInput;
+		float userInput = -liftStick->GetY();
+		// Pushing joystick up returns a negative Y-value, oddly.
+		
+		// User Input -- overrides presets if necessary.
+		if (fabs(userInput) > 0.1) {
+			absoluteInput = GetSign(userInput);
 			userInput = (fabs(userInput) > 1.0) ? absoluteInput : userInput;
 			
 			// Making sure scissor-lift doesn't go too high or too low.
-			float predictedHeight = (userInput * TURN_TRANSFORM) + currentHeight;
-			if (predictedHeight < listOfHeights[0]) {
-				userInput = currentHeight * -1.0 / TURN_TRANSFORM;
-				currentHeight = listOfHeights[0];
-			} else if (predictedHeight > listOfHeights[4]) {
-				userInput = (listOfHeights[4] - currentHeight) / TURN_TRANSFORM;
-				currentHeight = listOfHeights[4];
-			} else {
-				currentHeight = predictedHeight + currentHeight;
-			}
-			
+			if (liftHighLimit->Get() && (userInput > 0.0))
+				return false;
+			if (liftLowLimit->Get() && (userInput < 0.0))
+				return false;
+					
 			// Override any presets.
 			isDoingPreset = false;
 			currentPreset = 0;
 			
 			// Positive = counter-clockwise spin (when facing the motor)
 			// Counter-clockwise = rise.
-			// Luckily, a positive value corresponds with a rise in height.
-			scissorMotor->Set(userInput);
-			
-			SmartDashboard::Log(userInput, "userInput: ");
-			SmartDashboard::Log(absoluteInput, "absoluteInput: ");
-			SmartDashboard::Log(predictedHeight, "predictedHeight");
+			// Luckily, a positive value corresponds with a rise in height(?).
+			liftMotor->Set(userInput);
+			currentHeight += userInput * TURN_TRANSFORM;
+		} else {
+			userInput = 0.0;
 		}
 		
 		// If presets were not overriden, continue moving.
 		if (isDoingPreset) {
-			int valueReturned = ScissorPreset(currentPreset);
+			int valueReturned = PresetLift(currentPreset);
 			if (1 == valueReturned) {
 				isDoingPreset = false;
 			} else if (-1 == valueReturned){
 				return false;	// Error returned.
 			}
 		}
+		
+		SmartDashboard::Log(userInput, "userInput: ");
+		SmartDashboard::Log(absoluteInput, "absoluteInput: ");
 		
 		return true;			// No error.
 	}
@@ -696,8 +612,8 @@ public:
 	
 	
 	/****************************************
-	 * ScissorPreset:
-	 * Input = Peg number
+	 * PresetLift:
+	 * Input = 	Peg number
 	 * Output = Scissor movement
 	 * 			0  = Haven't hit the target yet.
 	 * 			1  = I've hit the target!
@@ -705,33 +621,30 @@ public:
 	 * TODO
 	 * - Test
 	 * - Calibrate numbers
-	 */
-	int ScissorPreset(int pegChoice) {
+	 */	
+	int PresetLift(int pegChoice) {
+		// Basic checks: make sure that movement is needed or that the lift
+		// hasn't hit the limit switches (it should never, but just in case...)
 		float targetHeight = listOfHeights[pegChoice];
-		if (targetHeight == currentHeight) {
+		if (targetHeight == currentHeight)
 			return 1;
-		}
-		float neededDirection = targetHeight - currentHeight;
-		
-		// Making sure not to go too high or too low.
-		// Shouldn't ever happen, but just in case...
-		float predictedHeight = currentHeight + neededDirection;
-		if (predictedHeight < listOfHeights[0] || predictedHeight > listOfHeights[4]) {
+		if (liftHighLimit->Get() || liftLowLimit->Get())
 			return -1;
-		}
 		
+		// Checking to make sure the motor doesn't spin too much.
+		float neededDirection = targetHeight - currentHeight;
 		float motorTurn;
 		if (fabs(neededDirection / TURN_TRANSFORM) > 1.0) {
 			// If needed distance exceeds the maximum motor movement...
-			motorTurn = GetSign(neededDirection);
-			currentHeight += GetSign(neededDirection) * TURN_TRANSFORM;
+			motorTurn = (float)(GetSign(neededDirection));
+			currentHeight += (motorTurn * TURN_TRANSFORM);
 		} else {
 			// If needed distance falls under the maximum motor movement...
 			motorTurn = neededDirection / TURN_TRANSFORM;
 			currentHeight += neededDirection;
 		}
 		
-		scissorMotor->Set(motorTurn);
+		liftMotor->Set(motorTurn);
 		return (currentHeight == targetHeight) ? 1 : 0;
 	}
 	
@@ -739,20 +652,20 @@ public:
 	
 	
 	/****************************************
-	 * ScissorAuto:
-	 * Input 	= Target peg height
+	 * AutoLift:
+	 * Input 	= Target peg number
 	 * 			  Pointer to bool value (if finished)
 	 * 			  Bool error value (true returned if no error)
 	 * Output 	= Scissor-lift movement
 	 * 			  Changes bool value that was passed.
 	 * For autonomous only.
 	 */
-	bool ScissorAuto(int targetPeg, bool &isFinished) {
-		int scissorOutput = ScissorPreset(targetPeg);
-		if (-1 == scissorOutput) {
+	bool AutoLift(int targetPeg, bool &isFinished) {
+		int liftOutput = PresetLift(targetPeg);
+		if (-1 == liftOutput) {
 			return false;
 		} else {
-			isFinished = (1 == scissorOutput) ? true : false;
+			isFinished = (1 == liftOutput) ? true : false;
 		}
 		return true;
 	}
@@ -762,7 +675,10 @@ public:
 	
 	/****************************************
 	 * Minibot Deployer
-	 * Input = Button push
+	 * Input =	Deployment motor
+	 * 			Button push
+	 * 			Further limit
+	 * 			Closer limit
 	 * Output = Minibot deploys
 	 * TODO:
 	 * - Write a better one
@@ -772,9 +688,13 @@ public:
 	void MinibotDeploy(GenericHID *moveStick)
 	{
 		if (moveStick->GetRawButton(EXTEND_MINIBOT_BUTTON)) {
-			deployMotor->Set(1.0);
+			if (!deployFarLimit->Get()) {
+				deployMotor->Set(MINIBOT_DEPLOY_SPEED);
+			}
 		} else if (moveStick->GetRawButton(RETRACT_MINIBOT_BUTTON)) {
-			deployMotor->Set(-1.0);
+			if (!deployNearLimit->Get()) {
+				deployMotor->Set(-MINIBOT_DEPLOY_SPEED);
+			}
 		}
 	}
 	
@@ -783,18 +703,21 @@ public:
 	
 	/****************************************
 	 * GetLine:
-	 * Input 	= None
+	 * Input 	= Left sensor,
+	 * 			  Middle sensor,
+	 * 			  Right sensor
 	 * Output 	= Integer value of line (0-7).
 	 * 				(leftCam? * 1) + (middleCam? * 2) + (rightCam? * 4)
 	 * For autonomous only.
+	 * TODO:
+	 * None
 	 */
 	int GetLine(void)
 	{
 		int leftInput 	= leftCam->Get() 	? 1 : 0;
 		int middleInput = middleCam->Get() 	? 2 : 0;
 		int rightInput 	= rightCam->Get()	? 4 : 0;
-		int output = leftInput + middleInput + rightInput;
-		return output;
+		return leftInput + middleInput + rightInput;
 	}
 	
 	
@@ -868,7 +791,7 @@ public:
 		}
 		
 		// Safety info
-		SmartDashboard::Log(isSafetyModeOn ? "WARNING: Enabled" : "Disabled", 
+		SmartDashboard::Log(isSafetyModeOn ? "ENABLED" : "Disabled", 
 							"Safety mode: ");
 		SmartDashboard::Log(watchdogCheck, "Watchdog State: ");
 		
@@ -886,7 +809,7 @@ public:
 			minibotStatus = (timer.Get() >= (GAMEPLAY_TIME - 10)) 
 							 ? "DEPLOY" : "Get Ready";
 		} else {
-			minibotStatus = " ";
+			minibotStatus = "...";
 		}
 		SmartDashboard::Log(minibotStatus, "MINIBOT ALERT: ");
 	}
@@ -923,10 +846,7 @@ public:
 	 */
 	int GetSign(float numberInput)
 	{
-		int result = 0;
-		result = (numberInput > 0.0) ? 1  : result;
-		result = (numberInput < 0.0) ? -1 : result;
-		return result;
+		return ((int)(numberInput > 0.0)) - ((int)(numberInput < 0.0));
 	}
 };
 
