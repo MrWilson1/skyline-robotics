@@ -142,14 +142,17 @@ class MainRobot : public SimpleRobot {
 	// mapping it to the right button would force the thumb to move too much.
 	
 	// General constants
-	static const float ROBOT_HEIGHT = 36.5;		// More accurate.
-	static const float GAMEPLAY_TIME = 120.0;
-	static const float SPEED_DECREASE = 0.5;
+	static const float ROBOT_HEIGHT 	= 36.5;		// More accurate.
+	static const float GAMEPLAY_TIME 	= 120.0;
+	static const float SPEED_DECREASE 	= 0.5;
+	static const float DELAY_VALUE 		= 0.01;		// In seconds
 	// ROBOT_HEIGHT:	Measures from the floor to the height of the scissors
 	// 					when fully compressed, in inches.  
 	// GAMEPLAY_TIME: 	How long teleoperated mode lasts (in seconds)
 	// SPEED_DECREASE:	The factor by which the speed should decrease in normal
 	// 					mode.  Multiply the output, not divide.
+	// DELAY VALUE:		How long the robot should wait in movement loops.
+	//					Motors have a minimum update speed.
 	
 	// Autonomous constants
 	static const float FAST_AUTO_TIME = 10.0;
@@ -339,7 +342,7 @@ public:
 			Watchdog().Feed();
 			FatalityChecks(stick1, stick2);
 			UpdateDashboard("1: Following the line...");
-			Wait(0.005);
+			Wait(DELAY_VALUE);
 		}
 		
 		
@@ -359,7 +362,7 @@ public:
 				Watchdog().Feed();
 				FatalityChecks(stick1, stick2);
 				UpdateDashboard("2: End of the line...");
-				Wait(0.005);
+				Wait(DELAY_VALUE);
 			}
 			
 			
@@ -379,7 +382,7 @@ public:
 				Watchdog().Feed();
 				FatalityChecks(stick1, stick2);
 				UpdateDashboard("3: Tucking lift away...");
-				Wait(0.005);
+				Wait(DELAY_VALUE);
 			}
 		}
 		
@@ -389,7 +392,7 @@ public:
 			Watchdog().Feed();
 			FatalityChecks(stick1, stick2);
 			UpdateDashboard((isError) ? errorMessage : "4: Autonomous finished.");
-			Wait(0.005);
+			Wait(DELAY_VALUE);
 		}
 	}
 	
@@ -421,7 +424,7 @@ public:
 			
 			Watchdog().Feed();
 			UpdateDashboard(isLiftGood ? " " : "Scissor Error");
-			Wait(0.005);
+			Wait(DELAY_VALUE);
 		}
 	}
 	
@@ -443,11 +446,21 @@ public:
 	{
 		// Terminate if a joystick is disconnected.
 		if ((NULL == moveStick) || (NULL == liftStick)) {
+			int badMove = (NULL == moveStick);
+			int badLift = (NULL == liftStick);
+			if (badMove && !badLift) {
+				UpdateDashboard("ERROR: Stick 1 disconnected");
+			} else if (!badMove && badLift) {
+				UpdateDashboard("ERROR: Stick 2 disconnected");
+			} else if (badMove && badLift) {
+				UpdateDashboard("ERROR: Stick 1 and stick 2 disconnected");
+			}
 			wpi_fatal(NullParameter);
 			return;
 		}
-		
+
 		if (false == Watchdog().IsAlive()) {
+			UpdateDashboard("ERROR: The watchdog died");
 			Watchdog().Kill();
 			wpi_fatal(NullParameter);
 			return;
@@ -565,8 +578,8 @@ public:
 		}
 		
 		int absoluteInput;
-		float userInput = -liftStick->GetY();
 		// Pushing joystick up returns a negative Y-value, oddly.
+		float userInput = -liftStick->GetY();
 		
 		// User Input -- overrides presets if necessary.
 		if (fabs(userInput) > 0.1) {
@@ -658,16 +671,13 @@ public:
 	 * 			  Bool error value (true returned if no error)
 	 * Output 	= Scissor-lift movement
 	 * 			  Changes bool value that was passed.
+	 * 			  Returns true if no error, false if error.
 	 * For autonomous only.
 	 */
 	bool AutoLift(int targetPeg, bool &isFinished) {
 		int liftOutput = PresetLift(targetPeg);
-		if (-1 == liftOutput) {
-			return false;
-		} else {
-			isFinished = (1 == liftOutput) ? true : false;
-		}
-		return true;
+		isFinished = (1 == liftOutput) ? true : false;
+		return (-1 == liftOutput) ? false : true;
 	}
 	
 	
@@ -688,13 +698,11 @@ public:
 	void MinibotDeploy(GenericHID *moveStick)
 	{
 		if (moveStick->GetRawButton(EXTEND_MINIBOT_BUTTON)) {
-			if (!deployFarLimit->Get()) {
+			if (!deployFarLimit->Get())
 				deployMotor->Set(MINIBOT_DEPLOY_SPEED);
-			}
 		} else if (moveStick->GetRawButton(RETRACT_MINIBOT_BUTTON)) {
-			if (!deployNearLimit->Get()) {
+			if (!deployNearLimit->Get())
 				deployMotor->Set(-MINIBOT_DEPLOY_SPEED);
-			}
 		}
 	}
 	
@@ -747,13 +755,11 @@ public:
 							(stick1->GetRawButton(MOVE_FAST_BUTTON));
 		bool liftKill =		(fabs(stick2->GetMagnitude()) > 0.9) &&
 							(stick2->GetRawButton(MOVE_FAST_BUTTON));
-		bool stickKill = moveKill || liftKill;
 		
 		// Disable if a signal is sent out by the driver station.
 		bool systemKill = (false == IsAutonomous()) || IsOperatorControl();
 		
-		bool output = (safetyKill || stickKill) || systemKill;
-		return output;
+		return safetyKill || moveKill || liftKill || systemKill;
 	}
 
 	
@@ -775,24 +781,27 @@ public:
 	 */
 	void UpdateDashboard(void)
 	{	
-		// Setup here:
-		const char *watchdogCheck, *systemState, *minibotStatus;
-		if (Watchdog().IsAlive()) {
+		// Setup here (default values set):
+		const char *watchdogCheck = "DEAD";
+		const char *systemState = "???";
+		const char *minibotStatus = "...";
+		
+		if (Watchdog().IsAlive())
 			watchdogCheck = Watchdog().GetEnabled() ? "Enabled" : "DISABLED";
-		} else {
-			watchdogCheck = "DEAD";
-		}
+		
 		if (IsOperatorControl()) {
 			systemState = "Teleoperate";
 		} else if (IsAutonomous()) {
 			systemState = "Autonomous";
-		} else {
-			systemState = "???";
 		}
 		
+		if (timer.Get() >= (GAMEPLAY_TIME - 15))
+			minibotStatus = "Get Ready";
+		if (timer.Get() >= (GAMEPLAY_TIME - 10))
+				minibotStatus = "DEPLOY";
+		
 		// Safety info
-		SmartDashboard::Log(isSafetyModeOn ? "ENABLED" : "Disabled", 
-							"Safety mode: ");
+		SmartDashboard::Log(isSafetyModeOn ? "ENABLED" : "Disabled", "Safety mode: ");
 		SmartDashboard::Log(watchdogCheck, "Watchdog State: ");
 		
 		// Robot actions
@@ -801,16 +810,9 @@ public:
 		
 		// Info about the field state
 		SmartDashboard::Log(systemState, "System State: ");
-		SmartDashboard::Log(IsEnabled() ? "Enabled" : "DISABLED",
-							"Robot State: ");
+		SmartDashboard::Log(IsEnabled() ? "Enabled" : "DISABLED", "Robot State: ");
 		
 		// Info about time
-		if (timer.Get() >= (GAMEPLAY_TIME - 15)) {
-			minibotStatus = (timer.Get() >= (GAMEPLAY_TIME - 10)) 
-							 ? "DEPLOY" : "Get Ready";
-		} else {
-			minibotStatus = "...";
-		}
 		SmartDashboard::Log(minibotStatus, "MINIBOT ALERT: ");
 	}
 
