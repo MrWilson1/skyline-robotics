@@ -24,7 +24,7 @@ Instructions on how to control the robot:
     Deploy minibot			- Button 11 (bottom right, further from driver)
     Retract minibot			- Button 10 (bottom right, closer to driver)
     
-  Scissor-lift (joystick 2):
+  Lifting (joystick 2):
     Up, down				- Tilt joystick
     Preset 0 (lowest)		- Button 2 (top, closest to driver)
     Preset 1 (to 1st peg)	- Button 4 (top left)
@@ -36,15 +36,14 @@ Instructions on how to control the robot:
     
   Other infomation:
     Division of roles:
-      There are two roles - moving the scissor-lift and moving the robot.
-      The first joystick controls moving the robot.  The second joystick
-      controls moving the scissor-lift.  They both can enable and disable
-      safety mode.
+      There are two roles - moving the lift and moving the robot.  The first 
+      joystick controls moving the robot.  The second joystick  controls moving 
+      the lift.  They both can enable and disable safety mode.
     Safety:
       Turning safety on prevents moving at fast speeds - the trigger button
-      will do nothing.  If the height of the scissor-lift goes too high, safety
-      is enabled, but is disabled once it lowers more.  If safety is enabled,
-      it will never disable until you press the correct button.  Turn safety on
+      will do nothing.  If the height of the lift goes too high, safety is 
+      enabled, but is disabled once it lowers more.  If safety is enabled, it 
+      will never disable until you press the correct button.  Turn safety on
       only for demos.
     Speed:
       There are two speeds - fast and normal.  You MUST HOLD THE TRIGGER to use
@@ -58,10 +57,10 @@ Instructions on how to control the robot:
       controls), either disable the safety or hold the trigger and jerk any
       joystick.  This will manually start operator controlled mode.
     Presets:
-      The robot can automatically move the scissor-lift to any of the three
-      pegs.  Just press any of the top buttons on the 2nd joystick.  Selecting
-      another preset or moving the joystick interrupts the automatic movement,
-      so don't tilt the joystick when it's using a preset unless you want to.
+      The robot can automatically move the lift to any of the three pegs.  Just 
+      press any of the top buttons on the 2nd joystick.  Selecting another 
+      preset or moving the joystick interrupts the automatic movement, so don't 
+      tilt the joystick when it's using a preset unless you want to.
     
 ===============================================================================
 Explaination of programming design choices:
@@ -75,6 +74,12 @@ Explaination of programming design choices:
     The button for turning clockwise is the center button, not the right-side 
     button.  This is because the distance between the left and right buttons
     is too large for comfort and would have decreased reaction time.
+  Scissor-lift:
+    When examining the code (especially prior revisions), one may come across
+    references to a 'scissor-lift' which seem to be shortened to 'lift' in later
+    revisions.  Previously, the lifting mechanism was something called a scissor
+    lift, but it proved to be a unsuccessful design and was replaced by a 
+    simpler fork-lift mechanism.
   
 ===============================================================================
 END OF DOCUMENT
