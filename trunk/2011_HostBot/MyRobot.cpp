@@ -16,6 +16,7 @@
 #include "WPILib.h"
 #include "LineSensors.h"
 #include "MinibotDeployment.h"
+#include "LiftController.h"
 #include "math.h"
 
 class MainRobot : public SimpleRobot {
@@ -26,10 +27,7 @@ class MainRobot : public SimpleRobot {
 
 	LineSensors * lineSensors;		// The LineSensors object
 	MinibotDeployment * minibot;	// Handles Minibot Deployment
-	
-	Victor *liftMotor;				// Controls the lift
-	DigitalInput *liftHighLimit;	// The high limit for the lift
-	DigitalInput *liftLowLimit;		// The lower limit for the lift
+	LiftController *	lift;		// Handles the lift
 	
 	bool isFastSpeedOn;			// Normal or fast speed?
 	bool isSafetyModeOn;		// Safety switch.
@@ -204,10 +202,11 @@ public:
 					MINIBOT_DEPLOY_PORT,
 					FAR_DEPLOY_DIO,
 					NEAR_DEPLOY_DIO);
-			
-			liftMotor = new Victor(LIFT_MOTOR_PORT);
-			liftHighLimit = new DigitalInput(HIGH_LIFT_DIO);
-			liftLowLimit =  new DigitalInput(LOW_LIFT_DIO);
+
+			lift = new LiftController (
+					LIFT_MOTOR_PORT,
+					HIGH_LIFT_DIO,
+					LOW_LIFT_DIO);
 			
 			// The wiring was inverted on the left motors, so the below
 			// is necessary.
@@ -586,9 +585,9 @@ public:
 			userInput = (fabs(userInput) > 1.0) ? absoluteInput : userInput;
 			
 			// Making sure scissor-lift doesn't go too high or too low.
-			if (liftHighLimit->Get() && (userInput > 0.0))
+			if (lift->isAtTop() && (userInput > 0.0))
 				return false;
-			if (liftLowLimit->Get() && (userInput < 0.0))
+			if (lift->isAtBottom() && (userInput < 0.0))
 				return false;
 					
 			// Override any presets.
@@ -598,7 +597,13 @@ public:
 			// Positive = counter-clockwise spin (when facing the motor)
 			// Counter-clockwise = rise.
 			// Luckily, a positive value corresponds with a rise in height(?).
-			liftMotor->Set(userInput);
+			if (userInput > 0)
+				lift->extend(userInput);
+			else if (userInput < 0)
+				lift->retract(userInput);
+			else
+				lift->stop();
+
 			currentHeight += userInput * TURN_TRANSFORM;
 		} else {
 			userInput = 0.0;
@@ -640,7 +645,7 @@ public:
 		float targetHeight = listOfHeights[pegChoice];
 		if (targetHeight == currentHeight)
 			return 1;
-		if (liftHighLimit->Get() || liftLowLimit->Get())
+		if (lift->isAtTop() || lift->isAtBottom())
 			return -1;
 		
 		// Checking to make sure the motor doesn't spin too much.
@@ -655,8 +660,13 @@ public:
 			motorTurn = neededDirection / TURN_TRANSFORM;
 			currentHeight += neededDirection;
 		}
-		
-		liftMotor->Set(motorTurn);
+	
+		if (motorTurn > 0)
+			lift->extend(motorTurn);
+		else if (motorTurn < 0)
+			lift->retract(motorTurn);
+		else
+			lift->stop();
 		return (currentHeight == targetHeight) ? 1 : 0;
 	}
 	
