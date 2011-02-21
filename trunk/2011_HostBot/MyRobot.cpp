@@ -15,6 +15,7 @@
 
 #include "WPILib.h"
 #include "LineSensors.h"
+#include "MinibotDeployment.h"
 #include "math.h"
 
 class MainRobot : public SimpleRobot {
@@ -24,10 +25,7 @@ class MainRobot : public SimpleRobot {
 	Timer timer;					// The only timer
 
 	LineSensors * lineSensors;		// The LineSensors object
-	
-	Victor *deployMotor;			// The motor that deploys the minibot
-	DigitalInput *deployFarLimit;	// The outer limit for minibot deployment
-	DigitalInput *deployNearLimit;	// The closer limit for minibot.
+	MinibotDeployment * minibot;	// Handles Minibot Deployment
 	
 	Victor *liftMotor;				// Controls the lift
 	DigitalInput *liftHighLimit;	// The high limit for the lift
@@ -180,8 +178,6 @@ class MainRobot : public SimpleRobot {
 	// 					Distance = Rotation * TURN_TRANSFORM;
 	// 					Partially verified value.
 	
-	// Deployment constants
-	static const float MINIBOT_DEPLOY_SPEED = 0.3;
 		
 public:
 	/****************************************
@@ -204,9 +200,10 @@ public:
 			stick1 = new Joystick(MOVE_JOYSTICK_USB); 		// Joystick 1
 			stick2 = new Joystick(LIFT_JOYSTICK_USB);		// Joystick 2
 			
-			deployMotor = new Victor(MINIBOT_DEPLOY_PORT);
-			deployFarLimit =  new DigitalInput(FAR_DEPLOY_DIO);
-			deployNearLimit = new DigitalInput(NEAR_DEPLOY_DIO);
+			minibot = new MinibotDeployment (
+					MINIBOT_DEPLOY_PORT,
+					FAR_DEPLOY_DIO,
+					NEAR_DEPLOY_DIO);
 			
 			liftMotor = new Victor(LIFT_MOTOR_PORT);
 			liftHighLimit = new DigitalInput(HIGH_LIFT_DIO);
@@ -699,13 +696,10 @@ public:
 	 */
 	void MinibotDeploy(GenericHID *moveStick)
 	{
-		if (moveStick->GetRawButton(EXTEND_MINIBOT_BUTTON)) {
-			if (!deployFarLimit->Get())
-				deployMotor->Set(MINIBOT_DEPLOY_SPEED);
-		} else if (moveStick->GetRawButton(RETRACT_MINIBOT_BUTTON)) {
-			if (!deployNearLimit->Get())
-				deployMotor->Set(-MINIBOT_DEPLOY_SPEED);
-		}
+		if (moveStick->GetRawButton(EXTEND_MINIBOT_BUTTON))
+			minibot->deploy();
+		else if (moveStick->GetRawButton(RETRACT_MINIBOT_BUTTON))
+			minibot->retract();
 	}
 	
 	

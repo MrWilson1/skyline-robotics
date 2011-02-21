@@ -15,9 +15,12 @@ LineSensors::LineSensors (
 
 LineSensors::~LineSensors ()
 {
-	delete m_leftCam;
-	delete m_middleCam;
-	delete m_rightCam;
+	if (m_leftCam)
+		delete m_leftCam;
+	if (m_middleCam)
+		delete m_middleCam;
+	if (m_rightCam)
+		delete m_rightCam;
 };
 
 
