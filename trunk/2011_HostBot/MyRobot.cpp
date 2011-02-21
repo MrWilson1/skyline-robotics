@@ -14,6 +14,7 @@
 /*-------------------- Recommended Maximum Length of Lines -------------------*/
 
 #include "WPILib.h"
+#include "LineSensors.h"
 #include "math.h"
 
 class MainRobot : public SimpleRobot {
@@ -21,6 +22,8 @@ class MainRobot : public SimpleRobot {
 	Joystick *stick1;				// Directional control
 	Joystick *stick2;				// Lifting control
 	Timer timer;					// The only timer
+
+	LineSensors * lineSensors;		// The LineSensors object
 	
 	Victor *deployMotor;			// The motor that deploys the minibot
 	DigitalInput *deployFarLimit;	// The outer limit for minibot deployment
@@ -29,10 +32,6 @@ class MainRobot : public SimpleRobot {
 	Victor *liftMotor;				// Controls the lift
 	DigitalInput *liftHighLimit;	// The high limit for the lift
 	DigitalInput *liftLowLimit;		// The lower limit for the lift
-	
-	DigitalInput *leftCam;			// The cameras for autonomous.
-	DigitalInput *middleCam;		// Left camera follows the line.
-	DigitalInput *rightCam;			// Left and right from robot's perspective.
 	
 	bool isFastSpeedOn;			// Normal or fast speed?
 	bool isSafetyModeOn;		// Safety switch.
@@ -213,10 +212,6 @@ public:
 			liftHighLimit = new DigitalInput(HIGH_LIFT_DIO);
 			liftLowLimit =  new DigitalInput(LOW_LIFT_DIO);
 			
-			leftCam = 	new DigitalInput(LEFT_CAMERA_PORT);
-			middleCam = new DigitalInput(MIDDLE_CAMERA_PORT);
-			rightCam = 	new DigitalInput(RIGHT_CAMERA_PORT);
-			
 			// The wiring was inverted on the left motors, so the below
 			// is necessary.
 			robotDrive.SetInvertedMotor(RobotDrive::kFrontLeftMotor, true);
@@ -281,68 +276,75 @@ public:
 		
 		
 		// Part 1 - Following the line.
-		while(IsAutonomous()) {
+		while(IsAutonomous() && !isAtEnd)
+		{
 			float magnitude = 1.0;
 			float direction = 0.0;
-			int lineState = GetLine();
-			switch (lineState) {
-				case 0:				// Nothing - too far right/going rogue
+
+			switch (lineSensors->GetLineValue())
+			{
+				case LineSensors::kNone:	// Nothing - too far right/going rogue
 					++safetyCount;
 					rotation = AUTO_CORRECTION;
-				case 1:				// Left only - fine.
+
+				case LineSensors::kLeft:	// Left only - fine.
 					rotation = 0.0;
 					safetyCount = 0;
 					break;
-				case 2:				// Middle only - too far left.
-				case 3:				// Left and middle - verging left.
-				case 4:				// Right only - way too far left.
-				case 5:				// Left and right - fork?
+
+				case LineSensors::kMiddle:			// Middle only - too far left.
+				case LineSensors::kLeftAndMiddle:	// Left and middle - verging left.
+				case LineSensors::kRight:			// Right only - way too far left.
+				case LineSensors::kLeftAndRight:	// Left and right - fork?
 					// Handles all left-turning cases
 					rotation = AUTO_CORRECTION * -1.0;
 					safetyCount = 0;
 					break;
-				case 6:		// Middle and right - verging right.
+
+				case LineSensors::kMiddleAndRight:	// Middle and right - verging right.
 					// Handles all right-turning cases
 					rotation = AUTO_CORRECTION;
 					break;
-				case 7:
-					// All sensors on - Hit end?
+
+				case LineSensors::kAll:				// All sensors on - Hit end?
 					safetyCount = 0;
 					isAtEnd = true;
 					break;
+
 				default:
 					// Are there more motors?
 					isError = true;
 					errorMessage = "ERROR: a1 - Too many line detectors?";
 			}
 			
-			if (isAtEnd)
-				break;
-			if (safetyCount == MAX_NO_LINE) {
-				isError = true;
-				errorMessage = "ERROR: a1 - Drifted too far.";
+			if (!isAtEnd)
+			{
+				if (safetyCount == MAX_NO_LINE) {
+					isError = true;
+					errorMessage = "ERROR: a1 - Drifted too far.";
+				}
+				if ((timer.Get() > FAST_AUTO_TIME) || isLiftHigh)
+					magnitude *= SPEED_DECREASE;
+				// Might not be good to reuse SPEED_DECREASE
+				
+				// Magic here - see method DriveHost for more info.
+				robotDrive.HolonomicDrive(magnitude, direction, rotation);
+				if (!isLiftDone)
+					isError = AutoLift(TARGET_PEG_AUTO, isLiftDone);
+				
+				// Error-catching and checks
+				if (isError)
+					break;
+				if (IsAutoDone()) {
+					// Autonomous won't automatically quit when
+					// it's operator control.
+					return;
+				}
+				Watchdog().Feed();
+				FatalityChecks(stick1, stick2);
+				UpdateDashboard("1: Following the line...");
+				Wait(DELAY_VALUE);
 			}
-			if ((timer.Get() > FAST_AUTO_TIME) || isLiftHigh)
-				magnitude *= SPEED_DECREASE;
-			// Might not be good to reuse SPEED_DECREASE
-			
-			// Magic here - see method DriveHost for more info.
-			robotDrive.HolonomicDrive(magnitude, direction, rotation);
-			if (!isLiftDone)
-				isError = AutoLift(TARGET_PEG_AUTO, isLiftDone);
-			
-			// Error-catching and checks
-			if (isError)
-				break;
-			if (IsAutoDone()) {
-				// Autonomous won't automatically quit when
-				// it's operator control.
-				return;
-			}
-			Watchdog().Feed();
-			FatalityChecks(stick1, stick2);
-			UpdateDashboard("1: Following the line...");
-			Wait(DELAY_VALUE);
 		}
 		
 		
@@ -704,28 +706,6 @@ public:
 			if (!deployNearLimit->Get())
 				deployMotor->Set(-MINIBOT_DEPLOY_SPEED);
 		}
-	}
-	
-	
-	
-	
-	/****************************************
-	 * GetLine:
-	 * Input 	= Left sensor,
-	 * 			  Middle sensor,
-	 * 			  Right sensor
-	 * Output 	= Integer value of line (0-7).
-	 * 				(leftCam? * 1) + (middleCam? * 2) + (rightCam? * 4)
-	 * For autonomous only.
-	 * TODO:
-	 * None
-	 */
-	int GetLine(void)
-	{
-		int leftInput 	= leftCam->Get() 	? 1 : 0;
-		int middleInput = middleCam->Get() 	? 2 : 0;
-		int rightInput 	= rightCam->Get()	? 4 : 0;
-		return leftInput + middleInput + rightInput;
 	}
 	
 	
