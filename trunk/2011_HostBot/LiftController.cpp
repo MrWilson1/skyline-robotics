@@ -40,6 +40,19 @@ LiftController::~LiftController ()
 
 
 
+void
+LiftController::initButtons(UINT32 bottom, UINT32 peg1, UINT32 peg2, UINT32 peg3)
+{
+	m_buttons.bottomButton = bottom;
+	m_buttons.peg1Button = peg1;
+	m_buttons.peg2Button = peg2;
+	m_buttons.peg3Button = peg3;
+	
+	return;
+}
+
+
+
 bool
 LiftController::isAtTop()
 {
@@ -152,13 +165,13 @@ LiftController::isPresetSelected(GenericHID * inputDevice)
 	bool result = true;
 	
 	// Chose the preset (button input)
-	if (inputDevice->GetRawButton(PRESET_BOTTOM_BUTTON))
+	if (inputDevice->GetRawButton(m_buttons.bottomButton))
 		m_currentPreset = PRESET_BOTTOM;
-	else if (inputDevice->GetRawButton(PRESET_PEG_1_BUTTON))
+	else if (inputDevice->GetRawButton(m_buttons.peg1Button))
 		m_currentPreset = PRESET_PEG1;
-	else if (inputDevice->GetRawButton(PRESET_PEG_2_BUTTON))
+	else if (inputDevice->GetRawButton(m_buttons.peg2Button))
 		m_currentPreset = PRESET_PEG2;
-	else if (inputDevice->GetRawButton(PRESET_PEG_3_BUTTON))
+	else if (inputDevice->GetRawButton(m_buttons.peg3Button))
 		m_currentPreset = PRESET_PEG3;
 	else
 		result = false;

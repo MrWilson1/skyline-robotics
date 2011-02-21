@@ -140,6 +140,12 @@ public:
 					LIFT_MOTOR_PORT,
 					HIGH_LIFT_DIO,
 					LOW_LIFT_DIO);
+			lift->initButtons(
+					kJSButton_2,	// Botton top button
+					kJSButton_4,	// Left top button
+					kJSButton_3, 	// Center top button
+					kJSButton_5); 	// Right top button
+
 			
 			// The wiring was inverted on the left motors, so the below
 			// is necessary.

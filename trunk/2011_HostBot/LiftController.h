@@ -17,6 +17,14 @@ class LiftController
 			PRESET_PEG3
 		} PRESETS;
 
+		typedef struct
+		{
+			UINT32	bottomButton;
+			UINT32	peg1Button;
+			UINT32	peg2Button;
+			UINT32	peg3Button;
+		} ButtonHolder;
+		
 	private:
 		SpeedController * m_liftMotor;	// Controls the lift
 		DigitalInput * m_highLimit;		// The high limit for the lift
@@ -24,13 +32,9 @@ class LiftController
 		PRESETS	m_currentPreset;		// The currently selected preset
 		float	m_currentHeight;		// The current height of the lift in inches
 		float   m_arrayOfHeights[5];	// The various heights for the lift.
+		ButtonHolder m_buttons;			// Buttons to use for the bottom, peg 1, peg 2 and peg 3 presets
 		
 	public:
-		// Button assignments (Scissor-lift)
-		static const UINT32 PRESET_BOTTOM_BUTTON = kJSButton_2;	// Botton top button
-		static const UINT32 PRESET_PEG_1_BUTTON = kJSButton_4;		// Left top button
-		static const UINT32 PRESET_PEG_2_BUTTON = kJSButton_3; 	// Center top button
-		static const UINT32 PRESET_PEG_3_BUTTON = kJSButton_5; 	// Right top button
 		
 		static const float TURN_TRANSFORM = 0.5;		// Debug value
 		// TURN_TRANSFORM:	Transforms the wanted distance to the correct amount
@@ -52,6 +56,7 @@ class LiftController
 				UINT32 lowLimitPort);
 		~LiftController ();
 
+		void initButtons (UINT32 bottom, UINT32 peg1, UINT32 peg2, UINT32 peg3);
 		bool isAtTop();
 		bool isAtBottom();
 
