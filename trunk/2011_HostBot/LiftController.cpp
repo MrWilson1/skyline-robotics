@@ -1,5 +1,6 @@
 
 #include "LiftController.h"
+#include "math.h"
 
 
 LiftController::LiftController (
@@ -10,6 +11,17 @@ LiftController::LiftController (
 	m_liftMotor = new Victor(motorPort);
 	m_highLimit = new DigitalInput (highLimitPort);
 	m_lowLimit = new DigitalInput(lowLimitPort);
+	
+	m_currentPreset = PRESET_BOTTOM;
+	m_currentHeight = 0.0;
+
+	// Height of the pegs offset by the robot height (in inches).
+	m_arrayOfHeights[0] = 0;
+	m_arrayOfHeights[1] = 39.0  - ROBOT_HEIGHT;
+	m_arrayOfHeights[2] = 77.0  - ROBOT_HEIGHT;
+	m_arrayOfHeights[3] = 115.0 - ROBOT_HEIGHT;
+	m_arrayOfHeights[4] = 0.0;  	// Zero-terminated just in case.
+
 }
 
 
@@ -130,4 +142,99 @@ LiftController::retract(float speed)
 		result = false;
 	
 	return result;
+}
+
+
+
+bool
+LiftController::isPresetSelected(GenericHID * inputDevice)
+{
+	bool result = true;
+	
+	// Chose the preset (button input)
+	if (inputDevice->GetRawButton(PRESET_BOTTOM_BUTTON))
+		m_currentPreset = PRESET_BOTTOM;
+	else if (inputDevice->GetRawButton(PRESET_PEG_1_BUTTON))
+		m_currentPreset = PRESET_PEG1;
+	else if (inputDevice->GetRawButton(PRESET_PEG_2_BUTTON))
+		m_currentPreset = PRESET_PEG2;
+	else if (inputDevice->GetRawButton(PRESET_PEG_3_BUTTON))
+		m_currentPreset = PRESET_PEG3;
+	else
+		result = false;
+
+	return result;
+}
+
+
+
+/****************************************
+ * moveToPreset:
+ * Input = 	Peg number
+ * Output = Scissor movement
+ * 			0  = Haven't hit the target yet.
+ * 			1  = I've hit the target!
+ * 			-1 = Something is seriously wrong. (Negative 1)
+ * TODO
+ * - Test
+ * - Calibrate numbers
+ */	
+TriState
+LiftController::moveToPreset()
+{
+	TriState result;
+
+	// Basic checks: make sure that movement is needed or that the lift
+	// hasn't hit the limit switches (it should never, but just in case...)
+	float targetHeight = m_arrayOfHeights[m_currentPreset];
+
+	if (targetHeight == m_currentHeight)
+		result = Success;
+	else
+	{
+		if (isAtTop() || isAtBottom())
+			result = Error;
+		else
+		{
+			// Checking to make sure the motor doesn't spin too much.
+			float neededDirection = targetHeight - m_currentHeight;
+			float motorTurn;
+			if (fabs(neededDirection / TURN_TRANSFORM) > 1.0) {
+				// If needed distance exceeds the maximum motor movement...
+				motorTurn = (float)(GetSign(neededDirection));
+				m_currentHeight += (motorTurn * TURN_TRANSFORM);
+			} else {
+				// If needed distance falls under the maximum motor movement...
+				motorTurn = neededDirection / TURN_TRANSFORM;
+				m_currentHeight += neededDirection;
+			}
+		
+			if (motorTurn > 0)
+				extend(motorTurn);
+			else if (motorTurn < 0)
+				retract(motorTurn);
+			else
+				stop();
+		
+			result = (m_currentHeight == targetHeight) ? Success : Nominal;
+		}		
+	}
+	
+	return result;
+}
+
+
+TriState
+LiftController::moveToPeg(PRESETS preset)
+{
+	m_currentPreset = preset;
+	return moveToPreset();
+}
+
+
+
+float
+LiftController::getCurrentHeight()
+{
+	return m_currentHeight;
 }

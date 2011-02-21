@@ -14,6 +14,7 @@
 /*-------------------- Recommended Maximum Length of Lines -------------------*/
 
 #include "WPILib.h"
+#include "TypeDefs.h"
 #include "LineSensors.h"
 #include "MinibotDeployment.h"
 #include "LiftController.h"
@@ -32,67 +33,8 @@ class MainRobot : public SimpleRobot {
 	bool isFastSpeedOn;			// Normal or fast speed?
 	bool isSafetyModeOn;		// Safety switch.
 	bool isLiftHigh;			// Safety switch, can automatically disable.
-	float currentHeight;		// Measured in inches.
-	float listOfHeights [5];	// The various heights for the scissor-lift.
 	bool isDoingPreset;			// Is the lift moving automatically?
-	int currentPreset;			// Where the lift is going (preset).
 	bool isThisOld;
-	
-	typedef enum			// The ports on the digital sidecar (motors)
-	{
-		kPWMPort_1 = 1,
-		kPWMPort_2 = 2,
-		kPWMPort_3 = 3,
-		kPWMPort_4 = 4,
-		kPWMPort_5 = 5,
-		kPWMPort_6 = 6,
-		kPWMPort_7 = 7,
-		kPWMPort_8 = 8,
-		kPWMPort_9 = 9,
-		kPWMPort_10 = 10
-	} PWMPorts;
-	
-	typedef enum			// The ports for the digital IO (limit switches)
-	{
-		kDigitalIO_1 = 1,
-		kDigitalIO_2 = 2,
-		kDigitalIO_3 = 3,
-		kDigitalIO_4 = 4,
-		kDigitalIO_5 = 5,
-		kDigitalIO_6 = 6,
-		kDigitalIO_7 = 7,
-		kDigitalIO_8 = 8,
-		kDigitalIO_9 = 9,
-		kDigitalIO_10 = 10,
-		kDigitalIO_11 = 11,
-		kDigitalIO_12 = 12,
-		kDigitalIO_13 = 13,
-		kDigitalIO_14 = 14
-	} DigitalIO;
-	
-	typedef enum			// For the joysticks.
-	{
-		kUSBPort_1 = 1,
-		kUSBPort_2 = 2
-	} USBPorts;
-	
-	typedef enum			// Buttons on the joystick.
-	{
-		kJSButton_1 = 1,	// Trigger.
-		kJSButton_2 = 2,	// On top of stick (bottom)
-		kJSButton_3 = 3,	// On top of stick (middle)
-		kJSButton_4 = 4,	// On top of stick (left)
-		kJSButton_5 = 5,	// On top of stick (right)
-		kJSButton_6 = 6,	// Bottom left (further away)
-		kJSButton_7 = 7,	// Bottom right (closer)
-		kJSButton_8 = 8,	// Bottom front left button
-		kJSButton_9 = 9,	// Bottom front right button
-		kJSButton_10 = 10,	// Bottom right (closer)
-		kJSButton_11 = 11,	// Bottom riht (further away)
-		kJSButton_12 = 12,	// Doesn't exist
-		kJSButton_13 = 13,	// Doesn't exist
-		kJSButton_14 = 14	// Doesn't exist
-	} JoyStickButtons;
 	
 	// Port (PWM) assignments
 	static const UINT32 LEFT_FRONT_MOTOR_PORT	= kPWMPort_1;
@@ -115,12 +57,6 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 MOVE_JOYSTICK_USB		= kUSBPort_1;
 	static const UINT32 LIFT_JOYSTICK_USB		= kUSBPort_2;
 	
-	// Button assignments (Scissor-lift)
-	static const UINT32 PRESET_BOTTOM = kJSButton_2;	// Botton top button
-	static const UINT32 PRESET_PEG_1 = kJSButton_4;		// Left top button
-	static const UINT32 PRESET_PEG_2 = kJSButton_3; 	// Center top button
-	static const UINT32 PRESET_PEG_3 = kJSButton_5; 	// Right top button
-	
 	// Button assignments (Both)
 	static const UINT32 ENABLE_SAFETY_BUTTON = kJSButton_6;
 	static const UINT32 DISABLE_SAFETY_BUTTON = kJSButton_7;
@@ -137,12 +73,9 @@ class MainRobot : public SimpleRobot {
 	// mapping it to the right button would force the thumb to move too much.
 	
 	// General constants
-	static const float ROBOT_HEIGHT 	= 36.5;		// More accurate.
 	static const float GAMEPLAY_TIME 	= 120.0;
 	static const float SPEED_DECREASE 	= 0.5;
 	static const float DELAY_VALUE 		= 0.01;		// In seconds
-	// ROBOT_HEIGHT:	Measures from the floor to the height of the scissors
-	// 					when fully compressed, in inches.  
 	// GAMEPLAY_TIME: 	How long teleoperated mode lasts (in seconds)
 	// SPEED_DECREASE:	The factor by which the speed should decrease in normal
 	// 					mode.  Multiply the output, not divide.
@@ -153,7 +86,7 @@ class MainRobot : public SimpleRobot {
 	static const float FAST_AUTO_TIME = 10.0;
 	static const float AUTO_CORRECTION  = 0.1;
 	static const int MAX_NO_LINE = 5;				// Needs calibration
-	static const int TARGET_PEG_AUTO = 3;
+	static const LiftController::PRESETS TARGET_PEG_AUTO = LiftController::PRESET_PEG3;
 	// FAST_AUTO_TIME:	The time in seconds the robot is allowed to drive at
 	// 					maximum speed.  The robot must eventually slow down
 	// 					to avoid running into a pole
@@ -221,16 +154,7 @@ public:
 			// isLiftHigh: 		Controlled by the program -- turns true only 
 			//					when height is too high, otherwise turns false.
 			
-			currentHeight = 0.0;
-			
-			// Height of the pegs offset by the robot height (in inches).
-			listOfHeights[0] = 0;
-			listOfHeights[1] = 39.0  - ROBOT_HEIGHT;
-			listOfHeights[2] = 77.0  - ROBOT_HEIGHT;
-			listOfHeights[3] = 115.0 - ROBOT_HEIGHT;
-			listOfHeights[4] = 0.0;  	// Zero-terminated just in case.
 			isDoingPreset = false;
-			currentPreset = 0;
 			
 			Watchdog().SetEnabled(true);
 			UpdateDashboard("TestingTestingTestingTesting"
@@ -368,7 +292,7 @@ public:
 			isLiftDone = false;
 			while (!isLiftDone) {
 				if (!isLiftDone)
-					isError = AutoLift(0, isLiftDone);
+					isError = AutoLift(LiftController::PRESET_BOTTOM, isLiftDone);
 				
 				// Error-catching and checks
 				if (isError) {
@@ -474,11 +398,7 @@ public:
 		}
 		
 		// If the scissor-lift is too high, it might topple at higher speeds.
-		if (currentHeight > SAFETY_HEIGHT) {
-			isLiftHigh = true;
-		} else {
-			isLiftHigh = false;
-		}
+		isLiftHigh = lift->isAtTop();
 	}
 	
 		
@@ -559,21 +479,10 @@ public:
 	 * - Use limit switches for max or min, not dead reckoning.
 	 */
 	bool ManualLift(GenericHID *liftStick)
-	{	
-		// Chose the preset (button input)
-		if (liftStick->GetRawButton(PRESET_BOTTOM)) {
-			currentPreset = 0;
-			isDoingPreset = true;
-		} else if (liftStick->GetRawButton(PRESET_PEG_1)) {
-			currentPreset = 1;
-			isDoingPreset = true;
-		} else if (liftStick->GetRawButton(PRESET_PEG_2)) {
-			currentPreset = 2;
-			isDoingPreset = true;
-		} else if (liftStick->GetRawButton(PRESET_PEG_3)) {
-			currentPreset = 3;
-			isDoingPreset = true;
-		}
+	{
+		bool result;
+		
+		isDoingPreset = lift->isPresetSelected (liftStick);
 		
 		int absoluteInput;
 		// Pushing joystick up returns a negative Y-value, oddly.
@@ -584,90 +493,37 @@ public:
 			absoluteInput = GetSign(userInput);
 			userInput = (fabs(userInput) > 1.0) ? absoluteInput : userInput;
 			
-			// Making sure scissor-lift doesn't go too high or too low.
-			if (lift->isAtTop() && (userInput > 0.0))
-				return false;
-			if (lift->isAtBottom() && (userInput < 0.0))
-				return false;
-					
 			// Override any presets.
 			isDoingPreset = false;
-			currentPreset = 0;
 			
 			// Positive = counter-clockwise spin (when facing the motor)
 			// Counter-clockwise = rise.
 			// Luckily, a positive value corresponds with a rise in height(?).
 			if (userInput > 0)
-				lift->extend(userInput);
+				result = lift->extend(userInput);
 			else if (userInput < 0)
-				lift->retract(userInput);
+				result = lift->retract(userInput);
 			else
-				lift->stop();
-
-			currentHeight += userInput * TURN_TRANSFORM;
+				result = lift->stop();
 		} else {
 			userInput = 0.0;
 		}
 		
 		// If presets were not overriden, continue moving.
-		if (isDoingPreset) {
-			int valueReturned = PresetLift(currentPreset);
+		if (isDoingPreset)
+		{
+			int valueReturned = lift->moveToPreset();
 			if (1 == valueReturned) {
 				isDoingPreset = false;
 			} else if (-1 == valueReturned){
-				return false;	// Error returned.
+				result = false;	// Error
 			}
 		}
 		
 		SmartDashboard::Log(userInput, "userInput: ");
 		SmartDashboard::Log(absoluteInput, "absoluteInput: ");
 		
-		return true;			// No error.
-	}
-	
-	
-	
-	
-	/****************************************
-	 * PresetLift:
-	 * Input = 	Peg number
-	 * Output = Scissor movement
-	 * 			0  = Haven't hit the target yet.
-	 * 			1  = I've hit the target!
-	 * 			-1 = Something is seriously wrong. (Negative 1)
-	 * TODO
-	 * - Test
-	 * - Calibrate numbers
-	 */	
-	int PresetLift(int pegChoice) {
-		// Basic checks: make sure that movement is needed or that the lift
-		// hasn't hit the limit switches (it should never, but just in case...)
-		float targetHeight = listOfHeights[pegChoice];
-		if (targetHeight == currentHeight)
-			return 1;
-		if (lift->isAtTop() || lift->isAtBottom())
-			return -1;
-		
-		// Checking to make sure the motor doesn't spin too much.
-		float neededDirection = targetHeight - currentHeight;
-		float motorTurn;
-		if (fabs(neededDirection / TURN_TRANSFORM) > 1.0) {
-			// If needed distance exceeds the maximum motor movement...
-			motorTurn = (float)(GetSign(neededDirection));
-			currentHeight += (motorTurn * TURN_TRANSFORM);
-		} else {
-			// If needed distance falls under the maximum motor movement...
-			motorTurn = neededDirection / TURN_TRANSFORM;
-			currentHeight += neededDirection;
-		}
-	
-		if (motorTurn > 0)
-			lift->extend(motorTurn);
-		else if (motorTurn < 0)
-			lift->retract(motorTurn);
-		else
-			lift->stop();
-		return (currentHeight == targetHeight) ? 1 : 0;
+		return result;
 	}
 	
 	
@@ -683,8 +539,8 @@ public:
 	 * 			  Returns true if no error, false if error.
 	 * For autonomous only.
 	 */
-	bool AutoLift(int targetPeg, bool &isFinished) {
-		int liftOutput = PresetLift(targetPeg);
+	bool AutoLift(LiftController::PRESETS targetPeg, bool &isFinished) {
+		int liftOutput = lift->moveToPeg(targetPeg);
 		isFinished = (1 == liftOutput) ? true : false;
 		return (-1 == liftOutput) ? false : true;
 	}
@@ -790,7 +646,7 @@ public:
 		
 		// Robot actions
 		SmartDashboard::Log(isFastSpeedOn ? "Fast" : "Normal", "Speed: ");
-		SmartDashboard::Log(currentHeight, "Current Lift Height: ");
+		SmartDashboard::Log(lift->getCurrentHeight(), "Current Lift Height: ");
 		
 		// Info about the field state
 		SmartDashboard::Log(systemState, "System State: ");
