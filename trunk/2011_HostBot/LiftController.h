@@ -30,7 +30,7 @@ class LiftController
 		SpeedController * m_liftMotor;	// Controls the lift
 		DigitalInput * m_highLimit;		// The high limit for the lift
 		DigitalInput * m_lowLimit;		// The lower limit for the lift
-		MotorLimitWatchdog * m_motorWatchDog;	// background task to watch the motor
+		MotorLimitWatchdog * m_motorWatchdog;	// background task to watch the motor
 		PRESETS	m_currentPreset;		// The currently selected preset
 		float	m_currentHeight;		// The current height of the lift in inches
 		float   m_arrayOfHeights[5];	// The various heights for the lift.
@@ -72,8 +72,6 @@ class LiftController
 		TriState moveToPeg(PRESETS preset);
 		
 		float getCurrentHeight();
-		
-
 };
 
 

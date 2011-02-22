@@ -12,11 +12,10 @@ MinibotDeployment::MinibotDeployment (
 	m_deployNearLimit = new DigitalInput(retractedSwitchPort);
 
 	m_motorWatchdog = new MotorLimitWatchdog(
+			"Minibot",
 			m_deployMotor,
 			m_deployFarLimit,
 			m_deployNearLimit);
-	
-	m_motorWatchdog->Start();
 }
 
 

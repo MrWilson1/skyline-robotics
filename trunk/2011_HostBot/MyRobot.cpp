@@ -59,8 +59,8 @@ class MainRobot : public SimpleRobot {
 	// Digital IO assignments
 	static const UINT32 HIGH_LIFT_DIO			= kDigitalIO_1;
 	static const UINT32 LOW_LIFT_DIO			= kDigitalIO_2;
-	static const UINT32 MINIBOT_DEPLOYED_DIO			= kDigitalIO_3;
-	static const UINT32 MINIBOT_RETRACTED_DIO			= kDigitalIO_4;
+	static const UINT32 MINIBOT_DEPLOYED_DIO	= kDigitalIO_3;
+	static const UINT32 MINIBOT_RETRACTED_DIO	= kDigitalIO_4;
 	static const UINT32 LEFT_CAMERA_PORT		= kDigitalIO_7;
 	static const UINT32 MIDDLE_CAMERA_PORT		= kDigitalIO_8;
 	static const UINT32 RIGHT_CAMERA_PORT		= kDigitalIO_9;

@@ -22,12 +22,24 @@ LiftController::LiftController (
 	m_arrayOfHeights[3] = 115.0 - ROBOT_HEIGHT;
 	m_arrayOfHeights[4] = 0.0;  	// Zero-terminated just in case.
 
+
+	m_motorWatchdog = new MotorLimitWatchdog(
+			"Lift",
+			m_liftMotor,
+			m_highLimit,
+			m_lowLimit);
 }
 
 
 
 LiftController::~LiftController ()
 {
+	if (m_motorWatchdog)
+	{
+		m_motorWatchdog->Stop();
+		delete m_motorWatchdog;
+	}
+
 	if (m_liftMotor)
 		delete m_liftMotor;
 	
