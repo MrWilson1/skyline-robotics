@@ -10,12 +10,25 @@ MinibotDeployment::MinibotDeployment (
 	m_deployMotor = new Victor(motorPort);
 	m_deployFarLimit = new DigitalInput (deployedSwitchPort);
 	m_deployNearLimit = new DigitalInput(retractedSwitchPort);
+
+	m_motorWatchdog = new MotorLimitWatchdog(
+			m_deployMotor,
+			m_deployFarLimit,
+			m_deployNearLimit);
+	
+	m_motorWatchdog->Start();
 }
 
 
 
 MinibotDeployment::~MinibotDeployment ()
 {
+	if (m_motorWatchdog)
+	{
+		m_motorWatchdog->Stop();
+		delete m_motorWatchdog;
+	}
+
 	if (m_deployMotor)
 		delete m_deployMotor;
 	

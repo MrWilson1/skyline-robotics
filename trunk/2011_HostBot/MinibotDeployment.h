@@ -2,6 +2,7 @@
 #define MINIBOT_DEPLOYMENT_H_
 
 #include "WPILib.h"
+#include "MotorLimitWatchdog.h"
 
 class MinibotDeployment
 {
@@ -13,6 +14,7 @@ class MinibotDeployment
 		SpeedController * m_deployMotor;	// The motor that deploys the minibot
 		DigitalInput * m_deployFarLimit;	// The outer limit for minibot deployment
 		DigitalInput * m_deployNearLimit;	// The closer limit for minibot.
+		MotorLimitWatchdog * m_motorWatchdog;
 
 	public:
 		MinibotDeployment (
