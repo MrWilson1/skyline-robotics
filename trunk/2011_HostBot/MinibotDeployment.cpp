@@ -81,7 +81,7 @@ MinibotDeployment::retract()
 	}
 	else
 	{
-		m_deployMotor->Set(-MINIBOT_DEPLOY_SPEED);
+		m_deployMotor->Set(MINIBOT_DEPLOY_SPEED * -1);
 		result=false;
 	}
 

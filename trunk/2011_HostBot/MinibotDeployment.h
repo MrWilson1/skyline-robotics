@@ -6,15 +6,13 @@
 class MinibotDeployment
 {
 	// Deployment constants
-	static const float MINIBOT_DEPLOY_SPEED = 0.3;
+	public:
+		static const float MINIBOT_DEPLOY_SPEED = 1.0;
 
 	private:
 		SpeedController * m_deployMotor;	// The motor that deploys the minibot
 		DigitalInput * m_deployFarLimit;	// The outer limit for minibot deployment
 		DigitalInput * m_deployNearLimit;	// The closer limit for minibot.
-
-	public:
-
 
 	public:
 		MinibotDeployment (

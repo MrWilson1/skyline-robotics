@@ -52,7 +52,7 @@ typedef enum			// Buttons on the joystick.
 	kJSButton_8 = 8,	// Bottom front left button
 	kJSButton_9 = 9,	// Bottom front right button
 	kJSButton_10 = 10,	// Bottom right (closer)
-	kJSButton_11 = 11,	// Bottom riht (further away)
+	kJSButton_11 = 11,	// Bottom right (further away)
 	kJSButton_12 = 12,	// Doesn't exist
 	kJSButton_13 = 13,	// Doesn't exist
 	kJSButton_14 = 14	// Doesn't exist

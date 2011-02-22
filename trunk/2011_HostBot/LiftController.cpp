@@ -100,7 +100,7 @@ LiftController::stop()
  * 		The speed at which to extend the lift
  * Output - 
  * 		Returns true if the lift is moving up
- * 		Resurns false if the lift is already at the top or the speed is out
+ * 		Returns false if the lift is already at the top or the speed is out
  * 		of range.
  ***************************************************************************/
 bool
@@ -115,7 +115,7 @@ LiftController::extend(float speed)
 	}
 	else if (speed >= 0 && speed <= 1.0)
 	{
-		m_liftMotor->Set(speed); 
+		m_liftMotor->Set(min(speed, MAX_LIFT_SPEED)); 
 		result = true;
 	}
 	else
@@ -148,7 +148,7 @@ LiftController::retract(float speed)
 	}
 	else if (speed >= -1.0 && speed <= 0)
 	{
-		m_liftMotor->Set(speed); 
+		m_liftMotor->Set(min(fabs(speed), MAX_LIFT_SPEED) * -1); 
 		result = true;
 	}
 	else

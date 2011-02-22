@@ -36,6 +36,7 @@ class LiftController
 		
 	public:
 		
+		static const float MAX_LIFT_SPEED = 0.5;	// Maximum speed the lift should run
 		static const float TURN_TRANSFORM = 0.5;		// Debug value
 		// TURN_TRANSFORM:	Transforms the wanted distance to the correct amount
 		// 					of motor rotations.

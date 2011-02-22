@@ -20,6 +20,18 @@
 #include "LiftController.h"
 #include "math.h"
 
+/****************************************
+ * GetSign:
+ * Input  = a float
+ * Output = if number is positive, returns 1
+ * 			if number is negative, returns -1
+ * 			if number equals zero, returns 0
+ */
+int GetSign(float numberInput)
+{
+	return ((int)(numberInput > 0.0)) - ((int)(numberInput < 0.0));
+}
+
 class MainRobot : public SimpleRobot {
 	RobotDrive robotDrive;			// Robot drive system (wheels and whatnot)
 	Joystick *stick1;				// Directional control
@@ -43,15 +55,15 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 RIGHT_REAR_MOTOR_PORT	= kPWMPort_4;
 	static const UINT32 LIFT_MOTOR_PORT			= kPWMPort_5;
 	static const UINT32 MINIBOT_DEPLOY_PORT		= kPWMPort_6;
-	static const UINT32 LEFT_CAMERA_PORT		= kPWMPort_7;
-	static const UINT32 MIDDLE_CAMERA_PORT		= kPWMPort_8;
-	static const UINT32 RIGHT_CAMERA_PORT		= kPWMPort_9;
 	
 	// Digital IO assignments
 	static const UINT32 HIGH_LIFT_DIO			= kDigitalIO_1;
 	static const UINT32 LOW_LIFT_DIO			= kDigitalIO_2;
-	static const UINT32 FAR_DEPLOY_DIO			= kDigitalIO_3;
-	static const UINT32 NEAR_DEPLOY_DIO			= kDigitalIO_4;
+	static const UINT32 MINIBOT_DEPLOYED_DIO			= kDigitalIO_3;
+	static const UINT32 MINIBOT_RETRACTED_DIO			= kDigitalIO_4;
+	static const UINT32 LEFT_CAMERA_PORT		= kDigitalIO_7;
+	static const UINT32 MIDDLE_CAMERA_PORT		= kDigitalIO_8;
+	static const UINT32 RIGHT_CAMERA_PORT		= kDigitalIO_9;
 	
 	// Joystick assignments
 	static const UINT32 MOVE_JOYSTICK_USB		= kUSBPort_1;
@@ -133,9 +145,14 @@ public:
 			
 			minibot = new MinibotDeployment (
 					MINIBOT_DEPLOY_PORT,
-					FAR_DEPLOY_DIO,
-					NEAR_DEPLOY_DIO);
+					MINIBOT_DEPLOYED_DIO,
+					MINIBOT_RETRACTED_DIO);
 
+			lineSensors = new LineSensors (
+					LEFT_CAMERA_PORT,
+					MIDDLE_CAMERA_PORT,
+					RIGHT_CAMERA_PORT);
+			
 			lift = new LiftController (
 					LIFT_MOTOR_PORT,
 					HIGH_LIFT_DIO,
@@ -373,9 +390,9 @@ public:
 	void FatalityChecks(GenericHID *moveStick, GenericHID *liftStick)
 	{
 		// Terminate if a joystick is disconnected.
-		if ((NULL == moveStick) || (NULL == liftStick)) {
-			int badMove = (NULL == moveStick);
-			int badLift = (NULL == liftStick);
+		bool badMove = (NULL == moveStick);
+		bool badLift = (NULL == liftStick);
+		if (badMove || badLift) {
 			if (badMove && !badLift) {
 				UpdateDashboard("ERROR: Stick 1 disconnected");
 			} else if (!badMove && badLift) {
@@ -437,12 +454,13 @@ public:
 		// Using moveStick will not compile.
 		float magnitude = fabs(stick1->GetMagnitude());	// fabs = Float abs
 		float direction = stick1->GetDirectionDegrees();
-		direction = (direction < 0.0) ? direction + 360.0 : direction;
 		float rotationSpeed = (moveStick->GetThrottle() - 1.1) * -0.5 + 0.07;
 		float rotationPress = int(moveStick->GetRawButton(ROTATE_RIGHT_BUTTON)) 
 							  - int(moveStick->GetRawButton(ROTATE_LEFT_BUTTON));
 		float rotation = rotationSpeed * rotationPress;
-			
+		
+		direction = (direction < 0.0) ? direction + 360.0 : direction;
+		
 		// Just in case - prevents values from being over 1.0 (absolute value)
 		// Higher numbers cause motors to spin alarmingly fast.
 		magnitude = (magnitude > 1.0) ?  1.0 : magnitude;
@@ -490,14 +508,24 @@ public:
 		
 		isDoingPreset = lift->isPresetSelected (liftStick);
 		
-		int absoluteInput;
-		// Pushing joystick up returns a negative Y-value, oddly.
-		float userInput = -liftStick->GetY();
-		
-		// User Input -- overrides presets if necessary.
-		if (fabs(userInput) > 0.1) {
-			absoluteInput = GetSign(userInput);
-			userInput = (fabs(userInput) > 1.0) ? absoluteInput : userInput;
+		// If presets were not overriden, continue moving.
+		if (isDoingPreset)
+		{
+			int valueReturned = lift->moveToPreset();
+			if (1 == valueReturned) {
+				isDoingPreset = false;
+			} else if (-1 == valueReturned){
+				result = false;	// Error
+			}
+		}
+		else
+		{
+			// Pushing joystick up returns a negative Y-value, oddly.
+			float userInput = -liftStick->GetY();
+
+			SmartDashboard::Log(userInput, "absoluteInput: ");
+			
+			userInput = (fabs(userInput) > 1.0) ? GetSign(userInput) : userInput;
 			
 			// Override any presets.
 			isDoingPreset = false;
@@ -511,24 +539,9 @@ public:
 				result = lift->retract(userInput);
 			else
 				result = lift->stop();
-		} else {
-			userInput = 0.0;
-		}
-		
-		// If presets were not overriden, continue moving.
-		if (isDoingPreset)
-		{
-			int valueReturned = lift->moveToPreset();
-			if (1 == valueReturned) {
-				isDoingPreset = false;
-			} else if (-1 == valueReturned){
-				result = false;	// Error
-			}
-		}
-		
-		SmartDashboard::Log(userInput, "userInput: ");
-		SmartDashboard::Log(absoluteInput, "absoluteInput: ");
-		
+			SmartDashboard::Log(userInput, "userInput: ");
+		}		
+	
 		return result;
 	}
 	
@@ -545,7 +558,8 @@ public:
 	 * 			  Returns true if no error, false if error.
 	 * For autonomous only.
 	 */
-	bool AutoLift(LiftController::PRESETS targetPeg, bool &isFinished) {
+	bool AutoLift(LiftController::PRESETS targetPeg, bool &isFinished) 
+	{
 		int liftOutput = lift->moveToPeg(targetPeg);
 		isFinished = (1 == liftOutput) ? true : false;
 		return (-1 == liftOutput) ? false : true;
@@ -628,23 +642,33 @@ public:
 	void UpdateDashboard(void)
 	{	
 		// Setup here (default values set):
-		const char *watchdogCheck = "DEAD";
-		const char *systemState = "???";
-		const char *minibotStatus = "...";
-		
-		if (Watchdog().IsAlive())
+		const char *watchdogCheck;
+		if (Watchdog().IsAlive()) {
 			watchdogCheck = Watchdog().GetEnabled() ? "Enabled" : "DISABLED";
+		} else {
+			watchdogCheck = "DEAD";
+		}
 		
+		const char *systemState;
 		if (IsOperatorControl()) {
 			systemState = "Teleoperate";
 		} else if (IsAutonomous()) {
 			systemState = "Autonomous";
+		} else {
+			systemState = "???";
 		}
 		
-		if (timer.Get() >= (GAMEPLAY_TIME - 15))
+		const char *minibotStatus;
+		float currentTime = timer.Get();
+		if (currentTime >= (GAMEPLAY_TIME - 15)) { 
 			minibotStatus = "Get Ready";
-		if (timer.Get() >= (GAMEPLAY_TIME - 10))
+			if (currentTime >= (GAMEPLAY_TIME - 10)) {
 				minibotStatus = "DEPLOY";
+			}
+		} else {
+			minibotStatus = "...";
+		}
+		
 		
 		// Safety info
 		SmartDashboard::Log(isSafetyModeOn ? "ENABLED" : "Disabled", "Safety mode: ");
@@ -685,17 +709,6 @@ public:
 	
 	
 	
-	/****************************************
-	 * GetSign:
-	 * Input  = a float
-	 * Output = if number is positive, returns 1
-	 * 			if number is negative, returns -1
-	 * 			if number equals zero, returns 0
-	 */
-	int GetSign(float numberInput)
-	{
-		return ((int)(numberInput > 0.0)) - ((int)(numberInput < 0.0));
-	}
 };
 
 START_ROBOT_CLASS(MainRobot);
