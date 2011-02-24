@@ -27,6 +27,30 @@ class MotorLimitWatchdog : public Task
 		static void LogStatus (MotorLimitWatchdog * watchdog);
 
 		void Run();
+
+	/************************************************************************
+	 * The following should be moved once the bug in
+	 * SmartDashboard::AnnounceIfNecessary is fixed.
+	 ***********************************************************************/
+	private:
+		void initFieldNames()
+		{
+			pHighLimitField = new char[strlen(m_name) + 20];
+			strcpy (pHighLimitField, m_name);
+			strcat (pHighLimitField, " High limit set:");
+
+			pLowLimitField = new char[strlen(m_name) + 20];
+			strcpy (pLowLimitField, m_name);
+			strcat (pLowLimitField, " Ligh limit set:");
+
+			pMotorSpeedField = new char[strlen(m_name) + 25];
+			strcpy (pMotorSpeedField, m_name);
+			strcat (pMotorSpeedField, " Current motor speed:");
+		};
+		char * pHighLimitField;
+		char * pLowLimitField;
+		char * pMotorSpeedField;
+
 };
 
 #endif // MOTOR_LIMIT_WATCHDOG_H_

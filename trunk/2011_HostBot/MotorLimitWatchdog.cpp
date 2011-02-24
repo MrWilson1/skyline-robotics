@@ -13,10 +13,12 @@ MotorLimitWatchdog::MotorLimitWatchdog(
 	m_motor = motor;
 	m_highLimit = highLimit;
 	m_lowLimit = lowLimit;
-	
+
+	initFieldNames();
+
 	m_statusLogger = new Notifier((TimerEventHandler)MotorLimitWatchdog::LogStatus, this);
 	m_statusLogger->StartPeriodic(1.0);
-	
+
 	Task::Start((UINT32)this);
 }
 
@@ -44,6 +46,22 @@ MotorLimitWatchdog::TaskWrapper(void* ThisObject)
 
 
 
+/************************************************************************
+ * The following should be moved once the bug in
+ * SmartDashboard::AnnounceIfNecessary is fixed and replaced with the
+ * original method commented out below.
+ ***********************************************************************/
+void
+MotorLimitWatchdog::LogStatus (MotorLimitWatchdog * obj)
+{
+	SmartDashboard::Log((bool)(obj->m_highLimit->Get()), obj->pHighLimitField);
+	SmartDashboard::Log((bool)(obj->m_lowLimit->Get()), obj->pLowLimitField);
+	SmartDashboard::Log(obj->m_motor->Get(), obj->pMotorSpeedField);
+}
+
+
+
+/*
 void
 MotorLimitWatchdog::LogStatus (MotorLimitWatchdog * obj)
 {
@@ -65,16 +83,41 @@ MotorLimitWatchdog::LogStatus (MotorLimitWatchdog * obj)
 
 	delete pStatusStr;
 }
+*/
 
 
 
 void
 MotorLimitWatchdog::Run()
 {
+	bool bLimitSwitchHit;
+	
+	// Initialize the limit switch state
+	if (m_highLimit->Get() || m_lowLimit->Get())
+		bLimitSwitchHit = true;
+	else
+		bLimitSwitchHit = false;
+
+	// So long as the task is still active, keep looping
 	while(this->Verify())
 	{
-		if (m_highLimit->Get() || m_lowLimit->Get())
-			m_motor->Set(0);
-		Wait(0.5);
+		// While one of the limit switches are pressed hang out here until
+		//  one of the limit switches is released or the task ends
+		while (bLimitSwitchHit && this->Verify())
+		{
+			if (!m_highLimit->Get() && !m_lowLimit->Get())
+				bLimitSwitchHit = false;
+		}
+
+		// While neither of the limit switches is pressed hang out here until
+		//  one of the limit switches is pressed or the task ends
+		while (!bLimitSwitchHit && this->Verify())
+		{
+			if (m_highLimit->Get() || m_lowLimit->Get())
+			{
+				m_motor->Set(0);
+				bLimitSwitchHit = true;
+			}
+		}
 	}
 }
