@@ -138,8 +138,7 @@ public:
 		RIGHT_FRONT_MOTOR_PORT, RIGHT_REAR_MOTOR_PORT)
 		{
 			SmartDashboard::init();
-			Watchdog();
-			Watchdog().SetExpiration(0.1);  				// In seconds.
+			GetWatchdog().SetExpiration(0.1);  				// In seconds.
 			stick1 = new Joystick(MOVE_JOYSTICK_USB); 		// Joystick 1
 			stick2 = new Joystick(LIFT_JOYSTICK_USB);		// Joystick 2
 			
@@ -179,7 +178,7 @@ public:
 			
 			isDoingPreset = false;
 			
-			Watchdog().SetEnabled(true);
+			GetWatchdog().SetEnabled(true);
 			UpdateDashboard("TestingTestingTestingTesting"
 							"TestingTestingTestingTestingTesting");
 			UpdateDashboard("Finished initializing.");
@@ -204,7 +203,7 @@ public:
 	void Autonomous(void)
 	{
 		// Part 0 - initialization.
-		Watchdog().Feed();
+		GetWatchdog().Feed();
 		timer.Reset();
 		timer.Start();
 		
@@ -283,7 +282,7 @@ public:
 					// it's operator control.
 					return;
 				}
-				Watchdog().Feed();
+				GetWatchdog().Feed();
 				FatalityChecks(stick1, stick2);
 				UpdateDashboard("1: Following the line...");
 				Wait(DELAY_VALUE);
@@ -304,7 +303,7 @@ public:
 				}
 				if (IsAutoDone())
 					return;
-				Watchdog().Feed();
+				GetWatchdog().Feed();
 				FatalityChecks(stick1, stick2);
 				UpdateDashboard("2: End of the line...");
 				Wait(DELAY_VALUE);
@@ -324,7 +323,7 @@ public:
 				}
 				if (IsAutoDone())
 					return;
-				Watchdog().Feed();
+				GetWatchdog().Feed();
 				FatalityChecks(stick1, stick2);
 				UpdateDashboard("3: Tucking lift away...");
 				Wait(DELAY_VALUE);
@@ -334,7 +333,7 @@ public:
 		
 		// Part 4 - If any time left, wait here.  If errors, default to here.
 		while(IsAutoDone()) {
-			Watchdog().Feed();
+			GetWatchdog().Feed();
 			FatalityChecks(stick1, stick2);
 			UpdateDashboard((isError) ? errorMessage : "4: Autonomous finished.");
 			Wait(DELAY_VALUE);
@@ -356,7 +355,7 @@ public:
 	{
 		timer.Reset();
 		timer.Start();
-		Watchdog().Feed();
+		GetWatchdog().Feed();
 		isFastSpeedOn = false;
 		isSafetyModeOn = false;
 		bool isLiftGood;
@@ -367,7 +366,7 @@ public:
 			isLiftGood = ManualLift(stick2);
 			MinibotDeploy(stick1);
 			
-			Watchdog().Feed();
+			GetWatchdog().Feed();
 			UpdateDashboard(isLiftGood ? " " : "Scissor Error");
 			Wait(DELAY_VALUE);
 		}
@@ -404,9 +403,9 @@ public:
 			return;
 		}
 
-		if (false == Watchdog().IsAlive()) {
+		if (false == GetWatchdog().IsAlive()) {
 			UpdateDashboard("ERROR: The watchdog died");
-			Watchdog().Kill();
+			GetWatchdog().Kill();
 			wpi_fatal(NullParameter);
 			return;
 		}
@@ -643,8 +642,8 @@ public:
 	{	
 		// Setup here (default values set):
 		const char *watchdogCheck;
-		if (Watchdog().IsAlive()) {
-			watchdogCheck = Watchdog().GetEnabled() ? "Enabled" : "DISABLED";
+		if (GetWatchdog().IsAlive()) {
+			watchdogCheck = GetWatchdog().GetEnabled() ? "Enabled" : "DISABLED";
 		} else {
 			watchdogCheck = "DEAD";
 		}
