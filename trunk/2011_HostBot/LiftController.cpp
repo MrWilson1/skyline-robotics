@@ -11,7 +11,7 @@ LiftController::LiftController (
 	m_liftMotor = new Victor(motorPort);
 	m_highLimit = new DigitalInput (highLimitPort);
 	m_lowLimit = new DigitalInput(lowLimitPort);
-	
+
 	m_currentPreset = PRESET_BOTTOM;
 	m_currentHeight = 0.0;
 
@@ -158,9 +158,9 @@ LiftController::retract(float speed)
 		m_liftMotor->Set(0);
 		result = false;
 	}
-	else if (speed >= -1.0 && speed <= 0)
+	else if (speed >= 0 && speed <= 1.0)
 	{
-		m_liftMotor->Set(min(fabs(speed), MAX_LIFT_SPEED) * -1); 
+		m_liftMotor->Set(min(speed, MAX_LIFT_SPEED) * -1); 
 		result = true;
 	}
 	else
@@ -237,7 +237,7 @@ LiftController::moveToPreset()
 			if (motorTurn > 0)
 				extend(motorTurn);
 			else if (motorTurn < 0)
-				retract(motorTurn);
+				retract(fabs(motorTurn));
 			else
 				stop();
 		

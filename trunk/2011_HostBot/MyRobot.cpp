@@ -57,8 +57,8 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 MINIBOT_DEPLOY_PORT		= kPWMPort_6;
 	
 	// Digital IO assignments
-	static const UINT32 HIGH_LIFT_DIO			= kDigitalIO_1;
-	static const UINT32 LOW_LIFT_DIO			= kDigitalIO_2;
+	static const UINT32 HIGH_LIFT_DIO			= kDigitalIO_2;
+	static const UINT32 LOW_LIFT_DIO			= kDigitalIO_1;
 	static const UINT32 MINIBOT_DEPLOYED_DIO	= kDigitalIO_3;
 	static const UINT32 MINIBOT_RETRACTED_DIO	= kDigitalIO_4;
 	static const UINT32 LEFT_CAMERA_PORT		= kDigitalIO_7;
@@ -97,7 +97,7 @@ class MainRobot : public SimpleRobot {
 	// Autonomous constants
 	static const float FAST_AUTO_TIME = 10.0;
 	static const float AUTO_CORRECTION  = 0.1;
-	static const int MAX_NO_LINE = 5;				// Needs calibration
+	static const int MAX_NO_LINE = 50;				// Needs calibration
 	static const LiftController::PRESETS TARGET_PEG_AUTO = LiftController::PRESET_PEG3;
 	// FAST_AUTO_TIME:	The time in seconds the robot is allowed to drive at
 	// 					maximum speed.  The robot must eventually slow down
@@ -111,7 +111,7 @@ class MainRobot : public SimpleRobot {
 	
 	// Lift contants
 	static const float SAFETY_HEIGHT = 77.0;		// Probably inaccurate
-	static const float TURN_TRANSFORM = 0.5;		// Debug value
+	static const float TURN_TRANSFORM = -0.5;		// Debug value
 	// SAFETY_HEIGHT:	When the lift exceeds this height (in inches), the 
 	//					robot is deemed too top-heavy to move at high speeds.
 	// TURN_TRANSFORM:	Transforms the wanted distance to the correct amount
@@ -203,56 +203,137 @@ public:
 	void Autonomous(void)
 	{
 		// Part 0 - initialization.
-		GetWatchdog().Feed();
+		//GetWatchdog().SetEnabled(false);
 		timer.Reset();
 		timer.Start();
 		
+		// Wait for everything to end.
+		while(IsAutoDone()) {
+			FatalityChecks(stick1, stick2);
+			Wait(DELAY_VALUE);
+		}
+		
+		/*
+		
+		// Alternate hardcoded alternative.
+		for(int i=0; i<6; i++) {
+			// Pick the tube off the ground.
+			lift->extend(1.0);
+			if(IsAutoDone()) {
+				return;
+			}
+			FatalityChecks(stick1, stick2);
+			Wait(DELAY_VALUE);
+		}
+		lift->stop();
+		
+		FatalityChecks(stick1, stick2);
+		
+		for(int i=0; i<200; i++) {
+			// Move closer.
+			robotDrive.HolonomicDrive(0.5, 0, 0);
+			if(IsAutoDone()) {
+				return;
+			}
+		
+			FatalityChecks(stick1, stick2);
+			Wait(DELAY_VALUE);
+		}
+		robotDrive.HolonomicDrive(0, 0, 0);
+		for(int i=0; i<50; i++) {
+			// Move lift up more.
+			lift->extend(1.0);
+			if(IsAutoDone()) {
+				return;
+			}
+		
+			FatalityChecks(stick1, stick2);
+			Wait(DELAY_VALUE);
+		}
+		lift->stop();
+		
+		// Wiggle.
+		robotDrive.HolonomicDrive(0.0, 0, 0);
+		robotDrive.HolonomicDrive(0, 0, 0);
+		
+		FatalityChecks(stick1, stick2);
+		Wait(DELAY_VALUE);
+		if(IsAutoDone()) {
+			return;
+		}
+		
+		FatalityChecks(stick1, stick2);
+		lift->retract(0.2);
+		
+		FatalityChecks(stick1, stick2);
+		lift->stop();
+		
+		FatalityChecks(stick1, stick2);
+		for(int i=0; i<10; i++) {
+			robotDrive.HolonomicDrive(-.5, 0, 0);
+			if(IsAutoDone()) {
+				return;
+			}
+		
+			FatalityChecks(stick1, stick2);
+			Wait(DELAY_VALUE);
+		}
+		
+		FatalityChecks(stick1, stick2);
+		// Retract lift.
+		for(int i=0; i<100; i++) {
+			lift->retract(1.0);
+			if(IsAutoDone()) {
+				return;
+			}
+		
+			FatalityChecks(stick1, stick2);
+			Wait(DELAY_VALUE);
+		}
+		*/
+		
+
+		
+		
+		
+		/* Proposed snip.
+		
 		// If no line is detected, increments this.  If too high, robot stops.
-		int safetyCount = 0;
-		float rotation = 0.0;
 		bool isAtEnd = false;
 		bool isLiftDone = false;
 		bool isError = false;
 		const char *errorMessage = " ";
 		UpdateDashboard("0: Starting Autonomous.");
-		
+		float emergencyRotate = 0.3;
 		
 		// Part 1 - Following the line.
 		while(IsAutonomous() && !isAtEnd)
 		{
-			float magnitude = 1.0;
+			float rotation = 0.0;
+			float magnitude = 5.0;
 			float direction = 0.0;
-
+			int safetyCount = 0;
+			emergencyRotate = -emergencyRotate;
+			
 			switch (lineSensors->GetLineValue())
 			{
-				case LineSensors::kNone:	// Nothing - too far right/going rogue
-					++safetyCount;
-					rotation = AUTO_CORRECTION;
-
-				case LineSensors::kLeft:	// Left only - fine.
+				case LineSensors::kNone:
+					// Nothing - going rogue.
+					safetyCount++;
+					rotation = emergencyRotate;
+				case LineSensors::kLeft:
+				case LineSensors::kMiddle:
+				case LineSensors::kLeftAndMiddle:
+				case LineSensors::kRight:
+				case LineSensors::kLeftAndRight:
+				case LineSensors::kMiddleAndRight:
 					rotation = 0.0;
 					safetyCount = 0;
 					break;
-
-				case LineSensors::kMiddle:			// Middle only - too far left.
-				case LineSensors::kLeftAndMiddle:	// Left and middle - verging left.
-				case LineSensors::kRight:			// Right only - way too far left.
-				case LineSensors::kLeftAndRight:	// Left and right - fork?
-					// Handles all left-turning cases
-					rotation = AUTO_CORRECTION * -1.0;
-					safetyCount = 0;
-					break;
-
-				case LineSensors::kMiddleAndRight:	// Middle and right - verging right.
-					// Handles all right-turning cases
-					rotation = AUTO_CORRECTION;
-					break;
-
-				case LineSensors::kAll:				// All sensors on - Hit end?
+				case LineSensors::kAll:
 					safetyCount = 0;
 					isAtEnd = true;
 					break;
-
 				default:
 					// Are there more motors?
 					isError = true;
@@ -265,9 +346,6 @@ public:
 					isError = true;
 					errorMessage = "ERROR: a1 - Drifted too far.";
 				}
-				if ((timer.Get() > FAST_AUTO_TIME) || isLiftHigh)
-					magnitude *= SPEED_DECREASE;
-				// Might not be good to reuse SPEED_DECREASE
 				
 				// Magic here - see method DriveHost for more info.
 				robotDrive.HolonomicDrive(magnitude, direction, rotation);
@@ -292,9 +370,11 @@ public:
 		
 		// Part two - if at the end, try raising the lift.
 		if (isAtEnd) {
-			while (!isLiftDone) {
-				if (!isLiftDone)
-					isError = AutoLift(TARGET_PEG_AUTO, isLiftDone);
+			for(int i = 0; i<25; i++) {
+				//if (!isLiftDone)
+				//	isError = AutoLift(TARGET_PEG_AUTO, isLiftDone);
+				
+				lift->extend(0.3);
 				
 				// Error-catching and checks
 				if (isError) {
@@ -308,7 +388,12 @@ public:
 				UpdateDashboard("2: End of the line...");
 				Wait(DELAY_VALUE);
 			}
+			lift->stop();
 			
+			// Part 3 - hardcoded wiggle bit.
+			robotDrive.HolonomicDrive(0.5, 0, 0);
+			lift->retract(0.1);
+			robotDrive.HolonomicDrive(-0.5, 0, 0);
 			
 			// Part 3 - attempt lowering the lift.
 			isLiftDone = false;
@@ -330,7 +415,6 @@ public:
 			}
 		}
 		
-		
 		// Part 4 - If any time left, wait here.  If errors, default to here.
 		while(IsAutoDone()) {
 			GetWatchdog().Feed();
@@ -338,6 +422,8 @@ public:
 			UpdateDashboard((isError) ? errorMessage : "4: Autonomous finished.");
 			Wait(DELAY_VALUE);
 		}
+		
+		//*/
 	}
 	
 	
@@ -353,6 +439,7 @@ public:
 	 */
 	void OperatorControl(void)
 	{
+		//GetWatchdog().SetEnabled(true);
 		timer.Reset();
 		timer.Start();
 		GetWatchdog().Feed();
@@ -441,9 +528,9 @@ public:
 		// Safety primarily to prevent toppling or for safer demos.
 		isFastSpeedOn = false;
 		if (moveStick->GetRawButton(MOVE_FAST_BUTTON)) {
-			if ((false == isSafetyModeOn) && (false == isLiftHigh)) {
-				isFastSpeedOn = true;
-			}
+			//if ((false == isSafetyModeOn) && (false == isLiftHigh)) {
+			isFastSpeedOn = true;
+			//}
 		}	
 		
 		// Magnitude: [-1.0 to 1.0] - How far to travel.
@@ -532,10 +619,10 @@ public:
 			// Positive = counter-clockwise spin (when facing the motor)
 			// Counter-clockwise = rise.
 			// Luckily, a positive value corresponds with a rise in height(?).
-			if (userInput > 0)
-				result = lift->extend(userInput);
-			else if (userInput < 0)
-				result = lift->retract(userInput);
+			if (userInput > 0.05)
+				result = lift->retract(fabs(userInput));
+			else if (userInput < -0.05)
+				result = lift->extend(fabs(userInput));
 			else
 				result = lift->stop();
 			SmartDashboard::Log(userInput, "userInput: ");
