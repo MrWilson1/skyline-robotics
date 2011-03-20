@@ -139,6 +139,33 @@ LiftController::extend(float speed)
 
 
 /****************************************************************************
+ * Extends the lift for a period of time, then stops it
+ * 
+ * Input -
+ * 		The speed at which to extend the lift
+ * 		How long to wait before returning
+ * Output - 
+ * 		Returns true if the lift is moving up
+ * 		Returns false if the lift is already at the top or the speed is out
+ * 		of range.
+ ***************************************************************************/
+bool
+LiftController::extend(float speed, double waitTime)
+{
+	bool result = extend(speed);
+
+	if (result)
+	{
+		Wait (waitTime);
+		stop();
+	}
+
+	return result;
+}
+
+
+
+/****************************************************************************
  * Retracts the lift
  * 
  * Input -
@@ -165,6 +192,33 @@ LiftController::retract(float speed)
 	}
 	else
 		result = false;
+	
+	return result;
+}
+
+
+
+/****************************************************************************
+ * Retracts the lift for a period of time, then stops
+ * 
+ * Input -
+ * 		The speed at which to retract the lift
+ * 		How long to wait before returning
+ * Output - 
+ * 		Returns true if the lift is moving down
+ * 		Resurns false if the lift is already at the bottom or the speed is
+ * 		out of range.
+ ***************************************************************************/
+bool
+LiftController::retract(float speed, double waitTime)
+{
+	bool result = retract (speed);
+	
+	if (result)
+	{
+		Wait(waitTime);
+		stop();
+	}
 	
 	return result;
 }

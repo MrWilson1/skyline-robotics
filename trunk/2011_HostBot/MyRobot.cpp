@@ -18,6 +18,7 @@
 #include "LineSensors.h"
 #include "MinibotDeployment.h"
 #include "LiftController.h"
+#include "AutonomousTask.h"
 #include "math.h"
 
 /****************************************
@@ -46,7 +47,6 @@ class MainRobot : public SimpleRobot {
 	bool isSafetyModeOn;		// Safety switch.
 	bool isLiftHigh;			// Safety switch, can automatically disable.
 	bool isDoingPreset;			// Is the lift moving automatically?
-	bool isThisOld;
 	
 	// Port (PWM) assignments
 	static const UINT32 LEFT_FRONT_MOTOR_PORT	= kPWMPort_1;
@@ -57,8 +57,8 @@ class MainRobot : public SimpleRobot {
 	static const UINT32 MINIBOT_DEPLOY_PORT		= kPWMPort_6;
 	
 	// Digital IO assignments
-	static const UINT32 HIGH_LIFT_DIO			= kDigitalIO_2;
 	static const UINT32 LOW_LIFT_DIO			= kDigitalIO_1;
+	static const UINT32 HIGH_LIFT_DIO			= kDigitalIO_2;
 	static const UINT32 MINIBOT_DEPLOYED_DIO	= kDigitalIO_3;
 	static const UINT32 MINIBOT_RETRACTED_DIO	= kDigitalIO_4;
 	static const UINT32 LEFT_CAMERA_PORT		= kDigitalIO_7;
@@ -202,18 +202,23 @@ public:
 	 */
 	void Autonomous(void)
 	{
+		AutonomousTask * pTask = new AutonomousTask (&robotDrive, lift, lineSensors);
+
+		pTask->Start((UINT32)pTask, (UINT32)this);
+
+		while (IsAutonomous() && IsEnabled())
+		{
+			GetWatchdog().Feed();
+			Wait(.01);
+			
+		}
+		pTask->Stop();
+		
+/********************************************************************
 		// Part 0 - initialization.
 		//GetWatchdog().SetEnabled(false);
 		timer.Reset();
 		timer.Start();
-		
-		// Wait for everything to end.
-		while(IsAutoDone()) {
-			FatalityChecks(stick1, stick2);
-			Wait(DELAY_VALUE);
-		}
-		
-		/*
 		
 		// Alternate hardcoded alternative.
 		for(int i=0; i<6; i++) {
@@ -229,7 +234,7 @@ public:
 		
 		FatalityChecks(stick1, stick2);
 		
-		for(int i=0; i<200; i++) {
+		for(int i=0; i<26; i++) {
 			// Move closer.
 			robotDrive.HolonomicDrive(0.5, 0, 0);
 			if(IsAutoDone()) {
@@ -240,7 +245,7 @@ public:
 			Wait(DELAY_VALUE);
 		}
 		robotDrive.HolonomicDrive(0, 0, 0);
-		for(int i=0; i<50; i++) {
+		for(int i=0; i<11; i++) {
 			// Move lift up more.
 			lift->extend(1.0);
 			if(IsAutoDone()) {
@@ -253,11 +258,12 @@ public:
 		lift->stop();
 		
 		// Wiggle.
-		robotDrive.HolonomicDrive(0.0, 0, 0);
-		robotDrive.HolonomicDrive(0, 0, 0);
+		robotDrive.HolonomicDrive(0.5, 0, 0);
 		
 		FatalityChecks(stick1, stick2);
+		robotDrive.HolonomicDrive(0, 0, 0);
 		Wait(DELAY_VALUE);
+		
 		if(IsAutoDone()) {
 			return;
 		}
@@ -269,7 +275,7 @@ public:
 		lift->stop();
 		
 		FatalityChecks(stick1, stick2);
-		for(int i=0; i<10; i++) {
+		for(int i=0; i<5; i++) {
 			robotDrive.HolonomicDrive(-.5, 0, 0);
 			if(IsAutoDone()) {
 				return;
@@ -281,7 +287,7 @@ public:
 		
 		FatalityChecks(stick1, stick2);
 		// Retract lift.
-		for(int i=0; i<100; i++) {
+		for(int i=0; i<20; i++) {
 			lift->retract(1.0);
 			if(IsAutoDone()) {
 				return;
@@ -290,11 +296,15 @@ public:
 			FatalityChecks(stick1, stick2);
 			Wait(DELAY_VALUE);
 		}
-		*/
 		
-
+		FatalityChecks(stick1, stick2);
+		// Wait for everything to end.
+		while(IsAutoDone()) {
 		
-		
+			FatalityChecks(stick1, stick2);
+			Wait(DELAY_VALUE);
+		}
+*****************************************************/
 		
 		/* Proposed snip.
 		
@@ -423,7 +433,7 @@ public:
 			Wait(DELAY_VALUE);
 		}
 		
-		//*/
+		*/
 	}
 	
 	
@@ -439,7 +449,8 @@ public:
 	 */
 	void OperatorControl(void)
 	{
-		//GetWatchdog().SetEnabled(true);
+		GetWatchdog().SetEnabled(true);
+
 		timer.Reset();
 		timer.Start();
 		GetWatchdog().Feed();

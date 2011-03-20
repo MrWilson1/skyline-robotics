@@ -65,7 +65,9 @@ class LiftController
 
 		bool stop();
 		bool extend(float speed);
+		bool extend(float speed, double time);
 		bool retract(float speed);
+		bool retract(float speed, double time);
 		
 		bool isPresetSelected(GenericHID * inputDevice);
 		TriState moveToPreset();
