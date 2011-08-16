@@ -1,0 +1,97 @@
+<!--#include virtual="/includes/doctype.html" -->
+	<head>
+		<title>Contact | Spartabots</title>
+		<meta name="description" content="Do you have a suggestion, feedback, or have a question?  You can contact us here.">
+		<meta name="keywords" content="<!--#include virtual="/includes/keywords.html" -->, contact, feedback, email, tips, suggestions">
+		
+		<!-- For search engines -->
+		<meta name="robots" content="ALL">
+		
+		<!--#include virtual="/includes/meta.html" -->
+		<style type="text/css">
+		#nav ul li a[href$="misc.html"]{
+			<!--#include virtual="/includes/menu_choice.html" -->
+		}
+		
+		#sidebar ul li a[href$="contact.html"]{
+			<!--#include virtual="/includes/submenu_choice.html" -->
+		}
+		</style>
+	</head>
+	
+	<body>
+		<div id="boundary">
+			<!--#include virtual="/includes/nav.html" -->
+		
+			<div id="content">
+				<div id="header">
+					<h1>Contact | Spartabots</h1>
+					<p class="blurb">
+						Team 2976
+					</p>
+					<p class="breadcrumbs">
+						<a href="/index.html">Home</a> &gt;
+						<a href="/misc.html">Misc</a> &gt;
+						Contact
+					</p>
+				</div>
+				
+				<div id="sidebar">
+					<!--#include virtual="/misc/sidebar_misc.html" -->
+				</div>
+				
+				<div id="blogroll">
+					<div class="article" id="website">
+						<div class="head">
+							<h2>Contact Us</h2>
+						</div>
+						
+						<p>
+							You can email us at
+							<a href="mailto:skyline.spartabots@gmail.com?subject=Contact">
+								skyline.spartabots@gmail.com.
+							</a>
+							Alternatively, you can use the contact form below.  As long as
+							you provide a valid email address, we'll try to respond to your
+							feedback in at least a day.
+						</p>
+									
+						<form action="/cgi-bin/contact.py" method="post" id="contact">
+							<fieldset>
+								<legend>Optional Fields</legend>
+								<ul>
+									<li>
+										<label for="name">Name</label>
+										<input id="name" name="name" type="text" >
+									</li>
+
+									<li>
+										<label for="email">Email</label>
+										<input id="email" name="email" type="text" >
+									</li>
+									<li>
+										<label for="subject">Subject</label>
+										<input id="subject" name="subject" type="text" >
+									</li>
+
+								</ul>
+							</fieldset>
+							<fieldset>
+								<legend>Your Message</legend>
+								<textarea id="message" name="message" rows="10" cols="50"></textarea>
+								<textarea class="silent" name="about" rows="10" cols="1">About</textarea>
+							</fieldset>
+							<p>
+								<button type="submit">Submit</button>
+							</p>
+						</form>
+					</div>
+				</div>
+				
+				<!--#include virtual="/includes/footer.html" -->
+			</div>
+			
+			<!--#include virtual="/includes/extras.html" -->
+		</div>
+	</body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title>Spartabots</title>
+	<link href="http://spartabots.co.cc/" />
+	<link rel="self" href="http://spartabots.co.cc/news/feed.atom" />
+	<updated>2011-05-02T20:43:00.00-08:00</updated>
+	<author>
+		<name>Michael</name>
+		<email>deflect.4444@gmail.com</email>
+	</author>
+	<id>http://spartabots.co.cc/</id>
+	
+	<entry>
+		<title>Meeting Summary</title>
+		<link href="http://spartabots.co.cc/news/archives/2011/may_15.html" />
+		<id>http://spartabots.co.cc/news/archives/2011/may_15.html</id>
+		<updated>2011-05-15T14:42:00-07:00</updated>
+		<author>
+			<name>Sampurna</name>
+			<email>pifor23@gmail.com</email>
+		</author>
+		<summary>
+			We had a quick meeting today, and briefly revisited the picnic, tutoring,
+			the Farmer's market, the robot, and posters.  We finally got our robot
+			back, so next week, we will be rebuilding our robots at Skyline!
+		</summary>
+	</entry>
+	
+	<entry>
+		<title>Meeting Summary: Tying up loose ends</title>
+		<link href="http://spartabots.co.cc/news/archives/2011/may_05.html" />
+		<id>http://spartabots.co.cc/news/archives/2011/may_05.html</id>
+		<updated>2011-05-05T17:32:00-08:00</updated>
+		<author>
+			<name>Sampurna</name>
+			<email>pifor23@gmail.com</email>
+		</author>
+		<summary>
+			We decided on the time and date of the farmer's market (June 29th), the
+			approximate date of the picnic, and resolved to create a more detailed
+			inventory of our parts so we can revive the robots more efficently.
+			We also discussed recruiting middle-schoolers, creating posters, and reviewed
+			progress on the website.
+		</summary>
+	</entry>
+	
+	<entry>
+		<title>Meeting this Thursday</title>
+		<link href="http://spartabots.co.cc/news/archives/2011/may_02.html" />
+		<id>http://spartabots.co.cc/news/archives/2011/may_02.html</id>
+		<updated>2011-05-04T20:43:00.00-08:00</updated>
+		<author>
+			<name>Michael</name>
+			<email>deflect.4444@gmail.com</email>
+		</author>
+		<summary>
+			We're having a meeting this Thursday, in Mrs. Shim's room.  We'll be 
+			discussing the specifics of the picnic and the farmer's	market, reviving 
+			the robot, and possibly mentoring and recuiting.
+		</summary>
+	</entry>
+</feed>

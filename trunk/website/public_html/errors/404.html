@@ -1,0 +1,84 @@
+<!--#include virtual="/includes/doctype.html" -->
+	<head>
+		<title>404 Error | Spartabots</title>
+		<meta name="description" content="404 Error: Not Found">
+		
+		<!-- For search engines -->
+		<meta name="robots" content="NOINDEX, NOFOLLOW">
+		
+		<!--#include virtual="/includes/meta.html" -->		
+	</head>
+	
+	<body>
+		<div id="boundary">
+			<!--#include virtual="/includes/nav.html" -->
+		
+			<div id="content">
+				<div id="header">
+					<h1>404 Error | Spartabots</h1>
+					<p class="blurb">
+						Team 2976</a>
+					</p>
+				</div>
+
+				<div class="article error">
+					<div class="head">
+						<h2>404 Error: Not Found</h2>
+					</div>
+					<p>
+						Uh-oh: it looks like the page you were looking for is missing!
+						At this point, it means it hasn't been made yet, is temporarily down
+						for maintenence, is a dead link.
+					</p>
+					<p>
+						If you want to help make this page, or if you really need
+						this webpage up, contact me at
+						<a href="mailto:skyline.spartabots@gmail.com">
+						skyline.spartabots@gmail.com
+						</a>
+					</p>
+					<p>
+						Alternatively, you can use the contact form below.  As long as
+						you provide a valid email address, we'll try to respond to your
+						feedback in at least a day.
+					</p>
+								
+					<form action="/cgi-bin/contact.py" method="post" id="contact">
+						<fieldset>
+							<legend>Optional Fields</legend>
+							<ul>
+								<li>
+									<label for="name">Name</label>
+									<input id="name" name="name" type="text" >
+								</li>
+
+								<li>
+									<label for="email">Email</label>
+									<input id="email" name="email" type="text" >
+								</li>
+								<li>
+									<label for="subject">Subject</label>
+									<input id="subject" name="subject" type="text" >
+								</li>
+
+							</ul>
+						</fieldset>
+						<fieldset>
+							<legend>Your Message</legend>
+							<textarea id="message" name="message" rows="10" cols="50"></textarea>
+							<textarea class="silent" name="about" rows="10" cols="1">404 Error</textarea>
+						</fieldset>
+						<p>
+							<button type="submit">Submit</button>
+						</p>
+					</form>
+				
+				</div>
+				
+				<!--#include virtual="/includes/footer.html" -->
+			</div>
+			
+			<!--#include virtual="/includes/extras.html" -->
+		</div>
+	</body>
+</html>

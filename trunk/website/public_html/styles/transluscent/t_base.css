@@ -1,0 +1,681 @@
+
+/* Theme: Transluscent
+ * Base Stylesheet
+ *
+ * This stylesheet contains all of the main CSS.
+ * Some elements are overriden by t_ie.css for IE6 support.
+ *
+ * See t_base_final.css for the final, compressed code.
+ *
+ * Copyright Spartabots Robotics Club, 2010-2011
+ */
+
+/* Fonts 
+ * The following fonts were downloaded from The League of Moveable Type -
+ * a repository of well-designed, open-source fonts.
+ *
+ * Addition file formats (for compatibility) created by fontsquirrel.com
+ */
+@font-face{
+	/* Orbitron -- a decorative sci-fi font (for headers) */
+	font-family:'Orbitron';
+	src:url('fonts/orbitron-medium.eot');
+	src:url('fonts/orbitron-medium.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/orbitron-medium.woff') format('woff'),
+		 url('fonts/orbitron-medium.ttf') format('truetype'),
+		 url('fints/orbitron-medium.svg#webfont') format('svg');
+}
+
+@font-face{
+	/* Junction -- a humanist (mix between sans-serif and serif) font (for text) */
+	font-family:'Junction';
+	src:url('fonts/Junction.eot');
+	src:url('fonts/Junction.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/Junction.woff') format('woff'),
+		 url('fonts/Junction.ttf') format('truetype'),
+		 url('fonts/Junction.svg#webfont') format('svg');
+} 
+
+ 
+/* General
+ */
+
+*{
+	position:relative;
+	padding:0;
+	margin:0;
+	height:auto;
+	width:auto;
+	text-align:left;
+}
+
+html{
+	overflow:scroll;
+	position:static;
+	z-index:1;
+}
+
+
+body{
+	display:block;
+	position:static;
+	z-index:2;
+	background:#c0c0c0 url(/graphics/gears_background_1.jpg) repeat-x;
+	font-size:100%;
+	font-family:Junction,"Trebuchet MS",Trebuchet,Helvetica, Arial, Verdana, sans-serif;
+}
+
+h1, h2, h3{
+	font-family:Orbitron,Impact,"Trebuchet MS",Trebuchet,Arial,Helvetica,sans-serif;
+}
+
+#boundary{
+	/* Nav, content, and opaque are contained in this div. */
+	z-index:2;
+	overflow:hidden;
+	margin:2.5em auto;
+	min-width:47.3em;
+	max-width:64.3em;
+}
+
+#content{
+	/* Header, articles, sidebar, footer, etc. are contained in this div */
+	z-index:3;
+	overflow:hidden;
+	min-width:47.3em;			/* Add a small amount to account for IE6. */
+	max-width:64.3em;
+	padding:2em;
+	border:.15em solid #888;
+	margin:0 auto;
+	
+	border-radius:1em;
+}
+
+#header,
+.article,
+.slideshow,
+#sidebar,
+#footer{
+	z-index:4;
+}
+
+.opaque{
+	/* This is a hack.  Attempting to apply transparency to any element causes all
+	 * of its children to be similarily faded.  You cannot layer transparency.
+	 * But, if you do
+	 * <div id="boundary">
+	 *     <div id="nav"> ... </div>
+	 *     <div id="content"> ... </div>
+	 *     <div class="opaque"> ... </div>
+	 * </div>
+	 * and make sure that this element overflows the boundaries (add {overflow:hidden}
+	 * to parent, has a low z-index, and has an absolute position (to bring it out
+	 * of normal flow), then it'll layer perfectly.
+	 */
+	position:absolute;
+	z-index:1;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	background:#fff;
+	/* Below is code for transparency.
+	 * IE 8, 9:      Proprietary tag needed.
+	 * IE 6, 7:      Invalid proprietary tag needed (omitted here, will use png trick).
+	 * Others:       Modern versions supports opacity.
+	 */
+	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	opacity:.75;
+	/* Below is code for rounded corners.
+	 * IE:           No support.
+	 * Firefox < 4:  Proprietary tag needed.
+	 * Others:       Full support.
+	 */
+	border-radius:1em;
+}
+
+.copyright{
+	font-size:.8em;
+}
+
+.blind{
+	/* Hides an element from view (moves it far off-screen)
+	 * Note that {display:none} or anything simialar doesn't work for all browsers 
+	 * the way it should.
+	 * Use this to mark up sections that are normally grouped together visually.
+	 * For example, use this to mark the top of the navbar.
+	 * <h2 class="blind">Nav bar starts here</h2>
+	 *     <div id="nav">
+	 *         ...
+	 *     </div>
+	 * <p class="blind">Nav bar ends here</h2>
+	 */
+	position:absolute;
+	left:-9999em;
+}
+
+li{
+	/* Using a hollow circle to match the 'see-through' theme. */
+	list-style-type:circle;
+}
+
+
+
+/* Links
+ */
+a{
+	color:#06246f;
+	text-decoration:none;
+	font-weight:bold;
+}
+
+a:visited{
+	color:#06246f;
+}
+
+a:hover{
+	text-decoration:underline;
+}
+
+a:active{
+	color:#a63100;
+	text-decoration:underline;
+}
+
+a img{
+	border-width:0;
+}
+
+
+
+/* Navigational bar
+ * Use only once, at the top of the screen.
+ * Uses many hacks to work.
+ */
+
+#nav{
+	display:block;
+	z-index:9;
+	font-weight:normal;
+	margin:0 auto;
+	position:fixed;
+	top:0;
+	left:50%;
+	margin-left:-24em;	/* (number_of_menu_items x menu_item_length / 2) x -1 */
+	height:2em;
+	width:50em;
+}
+
+#nav ul{
+	overflow:visible;
+}
+
+#nav ul li{
+	display:inline;
+	overflow:hidden;
+	z-index:1;
+	float:left;
+	width:5.8em;
+	margin:0 .1em .1em;
+	list-style-type:none;
+}
+
+#nav ul li:hover{
+	height:4em;
+	z-index:9;
+	background-image:url('/graphics/invisible.gif');
+	background-repeat:repeat;
+	overflow:visible;
+}	
+
+#nav ul li a{
+	/* The actual link expands to fill the entire list item. */
+	display:block;
+	z-index:9;
+	text-align:center;
+	background-color:#228b22;
+	color:#fff;
+	height:1.5em;
+	font-size:1.1em;
+	font-weight:normal;
+	text-decoration:none;
+	padding:.2em;
+	
+	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	opacity:.9;
+	border-radius:0 0 .5em .5em;
+}
+
+#nav ul li a:hover{
+	background-color:#55be55;
+	border-top-width:0;
+}
+
+#nav ul li.dropdown ul{
+	display:none;
+	left:0;
+	top:.1em;
+	width:10em;
+	visibility:hidden;
+	display:none;
+	z-index:1;
+}
+
+#nav ul li.dropdown:hover > ul{
+	/* This is where the magic happens */
+	visibility:visible;
+	z-index:9;
+	display:block;
+	height:15em;
+	background-image:url('invisible.gif');
+	background-repeat:repeat;
+	z-index:4;
+}
+
+#nav ul li.dropdown ul li{
+	display:block;
+	width:11.25em;
+	overflow:visible;
+}
+
+#nav ul li.dropdown ul li:hover{
+	height:2em;
+}
+
+#nav ul li.dropdown ul li a{
+	display:block;
+	height:1.5em;
+	font-size:1em;
+	padding:.25em .5em;
+	text-align:left;
+	
+	border-radius:.3em;
+}
+
+#nav ul li.dropdown ul li a:hover{
+	width:11.75em;
+}
+
+
+
+/* Header
+ * Goes at the top of the page, only once.
+ */
+
+#header{
+	display:block;
+	background-color:#fff;
+	border:.25em solid #000;
+	padding:1em 2em;
+	margin-bottom:1.5em;
+}
+
+#header h1{
+	margin-bottom:.5em;
+	font-size:2.5em;
+	float:left;
+}
+
+#header .rss{
+	float:right;
+	font-size:.8em;
+	font-weight:normal;
+	margin-top:1em;
+}
+
+#header .blurb{
+	clear:both;
+}
+
+
+
+/* Slideshow of awesome
+ * This will house a Javascript (or jQuery?) based slideshow that will
+ * display promotional pictures of us (and maybe our sponsors).
+ * All CSS styling here is temporary.  The background-color makes a good
+ * contrast with the green, so save it.
+ */
+.slideshow{
+	display:block;
+	position:static;
+	height:22em;
+	margin:0 0 1.5em;
+	padding:0;
+	border:.2em solid #000;
+	background:#333;
+}
+
+.slideshow *{
+	margin:0;
+	padding:0;
+}
+
+.sswrapper{
+	width:47em;
+	height:22em;
+	margin-left:auto;
+	margin-right:auto;
+	background-color:#333;
+}
+
+#cesc{
+	height:100%;
+}
+
+
+/* Sidebar
+ * Contains inter-section links, and any misc. content
+ */
+#sidebar{
+	display:block;
+	position:relative;
+	z-index:5;
+	float:left;
+	width:14em;
+	height:100%;
+	margin:0 1em 1em 0;
+}
+
+#sidebar .block{
+	/* Each block is bordered on the top and bottom by a green bar */
+	display:block;
+	position:relative;
+	margin-bottom:.25em;
+	border-top:.3em solid #228b22;
+	padding:.25em 0;
+}
+
+#sidebar .block:last-child{
+	border-bottom:.3em solid #228b22;
+}
+
+#sidebar .block h2{
+	margin-bottom:.25em;
+	font-size:1.4em;
+}
+
+#sidebar .block img{
+	/* Images are forced to resize to fit.
+	 * TODO: Manually edit the images so that their widths and heights are 
+	 * directly encoded into the HTML and so that this becomes unnecessary.
+	 */
+	width:13.5em;
+	margin:.25em;
+}
+
+#sidebar .block p{
+	margin:0 0 .5em .25em;
+}
+
+#sidebar .block ul{
+	padding-left:1em;
+	margin:0 0 .5em .25em;
+}
+
+
+
+/* Blogroll
+ * Contains articles.
+ * TODO: Change the name 'blogroll'
+ */
+#blogroll{
+	display:block;
+	z-index:4;
+	position:relative;
+	min-width:32em;
+	max-width:65em;
+	margin-bottom:1em;
+	margin-left:15em;
+}
+
+
+
+/* Article
+ * Wrap in 'blogroll' only if you are also including a sidebar.
+ */
+.article{
+	display:block;
+	z-index:4;
+	position:relative;
+	overflow:auto;		/* Forces hasLayout, for IE */
+	border-style:solid;
+	border-width:.3em .15em;
+	margin:0 0 1em;
+	padding:.5em;
+	
+	/* For normal use */
+	background-color:#8ff3c6;
+	border-color:#3cb371;
+	
+	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	opacity:.8;
+	border-radius:.5em 0 .5em 0;
+}
+
+.error{
+	/* Use in 404 error page, when something's wrong with a page, etc.
+	 * Usage:
+	 * <div class="article error">
+	 *     ...
+	 * </div>
+	 * The standard 'article' stylings are applied, but the 'error' colors are
+	 * applied over the standard green.
+	 */
+	background-color:#faa;
+	border-color:#f00;
+}
+
+.article .head{
+	/* Use this div for the title of the article, date uploaded, author, etc. */
+	display:block;
+	padding:.5em;
+	border-bottom:.1em solid #06246f;
+	margin-bottom:1em;
+}
+
+.article .head h2{
+	margin-bottom:.25em;
+}
+
+.article .head .date{
+	text-indent:1.5em;
+	margin-bottom:.25em;
+}
+
+.article .head a{
+	margin-left:1.5em;
+	margin-bottom:.25em;
+}
+
+.article h3{
+	margin:.5em 0 .25em;
+}
+
+.article ul{
+	margin:0 0 .5em 1em;
+}
+
+.article p{
+	text-indent:1.5em;
+	margin-bottom:.5em;
+}
+
+.article blockquote{
+	text-indent:1.5em;
+	margin:1em;
+	font-style:italic;
+}
+
+.article cite{
+	text-align:right;
+	font-style:italic;
+	font-weight:bold;
+}
+
+.article .announcement *{
+	text-align:center;
+}
+
+.article .download{
+	/* Use in Resources section. */
+	display:block;
+	background-color:#9ff9d7;
+	border-style:solid;
+	border-width:.3em .15em;
+	border-color:#3cb371;
+	margin-bottom:1em;
+	padding:.25em;
+	display:block;
+	z-index:4;
+	position:relative;
+	border-radius:.5em 0 .5em 0;
+}
+
+.download div{
+	padding:.5em;
+	border-bottom:.1em solid #06246f
+}
+
+.download .links{
+	border:0;
+}
+
+.download p{
+	text-indent:0;
+	margin:.25em;
+}
+
+.download .links a{
+	font-size:.95em;
+	margin-right:1.5em;
+}
+
+.forums{
+	display:block;
+	z-index:4;
+	position:relative;
+	border-radius:.5em 0 .5em 0;
+	border-style:solid;
+	border-width:.3em .15em;
+	border-color:#3cb371;
+	background:#fff;
+	padding:.25em;
+	margin:0 0 1em;
+	
+	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	opacity:.9;
+}
+
+
+/* Forms
+ */
+form{
+	padding:.5em;
+}
+
+form fieldset{
+	display:block;
+	width:auto;
+	padding:.5em;
+	border:.1em solid #06246f;
+}
+
+form fieldset legend{
+	margin-left:.5em;
+}
+
+form fieldset ul{
+	display:block;
+}
+
+form fieldset ul li{
+	display:block;
+	clear:both;
+	list-style-type:none;
+}
+
+form fieldset ul li label{
+	float:left;
+	width:4em;
+}
+
+form fieldset ul li input{
+	float:left;
+	width:20em;
+	padding:.1em;
+}
+
+form fieldset textarea{
+	padding:.1em;
+}
+
+form fieldset textarea:focus,
+form fieldset ul li input:focus{
+	border: 0.25em solid #00BFFF;
+}
+
+.silent{
+	/* Used to hide an input box that we don't want the user to see.  Some cgi-scripts
+	 * take additional input from 'silent' input boxes.
+	 */
+	display:none;
+}
+
+form button{
+	display:block;
+	width:6em;
+	height:2em;
+	padding:.2em;
+	margin:.5em 0 0;
+	text-align:center;
+}
+
+
+
+/* Footer
+ * Located at the bottom of every page, only once.
+ */
+#footer{
+	display:block;
+	clear:both;
+	margin-top:1em;
+	border-top:.25em solid #000;
+	border-bottom:.25em solid #000;
+	padding:1em 2em;
+}
+
+#footer p{
+	font-size:.75em;
+}
+	
+#footer a img{
+	margin:.25em;
+}
+
+#floatbox{
+	display:block;
+	width:5em;
+	height:1.5em;
+	z-index:11;
+	position:fixed;
+	bottom:.3em;
+	right:.3em;
+}
+
+#floatbox a{
+	display:block;
+	width:100%;
+	height:100%;
+	background-color:#fff;
+	text-align:center;
+	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	opacity:.75;
+	border-radius:.2em;
+	border:.1em solid #228b22;
+}
+
+#floatbox a:hover{
+	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity:1;
+	text-decoration:none;
+}
