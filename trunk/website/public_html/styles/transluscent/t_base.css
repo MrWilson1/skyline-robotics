@@ -3,7 +3,7 @@
  * Base Stylesheet
  *
  * This stylesheet contains all of the main CSS.
- * Some elements are overriden by t_ie.css for IE6 support.
+ * Some elements are overridden by t_ie.css for IE6 support.
  *
  * See t_base_final.css for the final, compressed code.
  *
@@ -62,7 +62,7 @@ body{
 	z-index:2;
 	background:#c0c0c0 url(/graphics/gears_background_1.jpg) repeat-x;
 	font-size:100%;
-	font-family:Junction,"Trebuchet MS",Trebuchet,Helvetica, Arial, Verdana, sans-serif;
+	font-family:Junction,"Trebuchet MS",Trebuchet,Helvetica,Arial,Verdana,sans-serif;
 }
 
 h1, h2, h3{
@@ -87,7 +87,6 @@ h1, h2, h3{
 	padding:2em;
 	border:.15em solid #888;
 	margin:0 auto;
-	
 	border-radius:1em;
 }
 
