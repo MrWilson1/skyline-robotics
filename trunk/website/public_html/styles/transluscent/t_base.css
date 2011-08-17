@@ -380,12 +380,13 @@ a img{
 	display:block;
 	position:relative;
 	margin-bottom:.25em;
-	border-top:.3em solid #228b22;
+	/*border-top:.3em solid #228b22;*/
+	border-top:.3em solid #000;
 	padding:.25em 0;
 }
 
 #sidebar .block:last-child{
-	border-bottom:.3em solid #228b22;
+	border-bottom:.3em solid #000;
 }
 
 #sidebar .block h2{
