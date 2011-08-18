@@ -18,6 +18,10 @@ html{
 	margin-bottom:1px;
 	position:static;
 }
+
+body{
+	position:static;
+}
  
 #boundary{
 	width:50em;
@@ -33,11 +37,12 @@ html{
 }
 
 #nav {
-	position:relative;
+	position:static;
 	left:0;
 	top:0;
 	margin:0 auto;
 	width:49em;
+	height:3em;
 }
 
 #nav ul {
@@ -45,9 +50,10 @@ html{
 }
 
 #nav ul .dropdown{
-	width:5.8em;
 	height:2em;
 	overflow:hidden;
+	visibility:hidden;
+	display:none;
 }
 
 #boundary .error{
@@ -63,4 +69,5 @@ html{
 	width:30.5em;
 	position:relative;
 	margin-left:0;
+	background:#44ff44;
 }

@@ -123,8 +123,8 @@ h1, h2, h3{
 	 * IE 6, 7:      Invalid proprietary tag needed (omitted here, will use png trick).
 	 * Others:       Modern versions supports opacity.
 	 */
-	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
-	opacity:.75;
+	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	opacity:.8;
 	/* Below is code for rounded corners.
 	 * IE:           No support.
 	 * Firefox < 4:  Proprietary tag needed.
@@ -206,94 +206,87 @@ a img{
 }
 
 #nav ul{
-	overflow:visible;
+	display:block;
+	list-style:none;
 }
 
 #nav ul li{
-	display:inline;
-	overflow:hidden;
-	z-index:1;
+	display:block;
 	float:left;
-	width:5.8em;
-	margin:0 .1em .1em;
-	list-style-type:none;
+	height:2.4em;	/* Any size slightly over the height of the below 'a' element */
+	width:auto;
+	background-image:url('invisible.gif');		/* Fixes bug in IE */
+	background-repeat:repeat;
 }
 
-#nav ul li:hover{
-	height:4em;
-	z-index:9;
-	background-image:url('/graphics/invisible.gif');
-	background-repeat:repeat;
-	overflow:visible;
-}	
-
-#nav ul li a{
-	/* The actual link expands to fill the entire list item. */
+#nav a{
 	display:block;
-	z-index:9;
-	text-align:center;
-	background-color:#228b22;
-	color:#fff;
-	height:1.5em;
-	font-size:1.1em;
-	font-weight:normal;
 	text-decoration:none;
-	padding:.2em;
-	
-	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-	opacity:.9;
-	border-radius:0 0 .5em .5em;
+	color:#fff;
+	background:#000;
+	padding:.2em 1em;
+	margin-right:.2em;
+	border:.15em solid #98fb98;
+	border-top:none;
+	border-radius:0 0 .75em .75em;
 }
 
-#nav ul li a:hover{
-	background-color:#55be55;
-	border-top-width:0;
+#nav a:hover{
+	color:#000;
+	background:#98fb98;
+	border-color:#228b22;
 }
 
-#nav ul li.dropdown ul{
+#nav a+ul{
 	display:none;
-	left:0;
-	top:.1em;
-	width:10em;
+	position:absolute;
 	visibility:hidden;
-	display:none;
-	z-index:1;
+	height:auto;
+	width:13.5em;
+	background:#000;
+	border:.15em solid #98fb98;
+	border-radius:.75em;	
+	top:2em;
+	padding:.2em .1em;
 }
 
-#nav ul li.dropdown:hover > ul{
-	/* This is where the magic happens */
+#nav li:hover a{
+	border-color:#228b22;
+	background:#98fb98;
+	color:#000;
+}
+
+#nav li:hover>ul{
+	display:block;
 	visibility:visible;
-	z-index:9;
+	position:absolute;
+	z-index:100;
+}
+
+#nav li:hover{
+	border-color:#228b22;
+}
+
+#nav a+ul li{
+	height:auto;
+	width:100%;
+}
+
+#nav a+ul li a{
 	display:block;
-	height:15em;
-	background-image:url('invisible.gif');
-	background-repeat:repeat;
-	z-index:4;
+	background:#000 !important;
+	border-color:#000 !important;
+	color:#fff !important;
+	border-radius:.75em;
 }
 
-#nav ul li.dropdown ul li{
-	display:block;
-	width:11.25em;
-	overflow:visible;
+#nav a+ul li a:hover{
+	border-color:#228b22 !important;
+	background:#98fb98 !important;
+	color:#000 !important;
 }
 
-#nav ul li.dropdown ul li:hover{
-	height:2em;
-}
 
-#nav ul li.dropdown ul li a{
-	display:block;
-	height:1.5em;
-	font-size:1em;
-	padding:.25em .5em;
-	text-align:left;
-	
-	border-radius:.3em;
-}
-
-#nav ul li.dropdown ul li a:hover{
-	width:11.75em;
-}
 
 
 
@@ -303,14 +296,14 @@ a img{
 
 #header{
 	display:block;
-	background-color:#fff;
+	background-color:#fafffa;
 	border:.25em solid #000;
 	padding:1em 2em;
 	margin-bottom:1.5em;
 }
 
 #header h1{
-	margin-bottom:.5em;
+	margin-bottom:.1em;
 	font-size:2.5em;
 	float:left;
 }
@@ -324,6 +317,7 @@ a img{
 
 #header .blurb{
 	clear:both;
+	font-size:1.5em;
 }
 
 
@@ -469,7 +463,7 @@ a img{
 	/* Use this div for the title of the article, date uploaded, author, etc. */
 	display:block;
 	padding:.5em;
-	border-bottom:.1em solid #06246f;
+	border-bottom:.1em solid #000;
 	margin-bottom:1em;
 }
 
@@ -533,7 +527,7 @@ a img{
 
 .download div{
 	padding:.5em;
-	border-bottom:.1em solid #06246f
+	border-bottom:.1em solid #555
 }
 
 .download .links{
