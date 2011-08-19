@@ -10,6 +10,7 @@
  * Copyright Spartabots Robotics Club, 2010-2011
  */
 
+
 /* Fonts 
  * The following fonts were downloaded from The League of Moveable Type -
  * a repository of well-designed, open-source fonts.
@@ -74,7 +75,7 @@ h1, h2, h3{
 	z-index:2;
 	overflow:hidden;
 	margin:2.5em auto;
-	min-width:47.3em;
+	min-width:47.3em;		/* Not precisely 47em to account for IE6 */
 	max-width:64.3em;
 }
 
@@ -82,7 +83,7 @@ h1, h2, h3{
 	/* Header, articles, sidebar, footer, etc. are contained in this div */
 	z-index:3;
 	overflow:hidden;
-	min-width:47.3em;			/* Add a small amount to account for IE6. */
+	min-width:47.3em;
 	max-width:64.3em;
 	padding:2em;
 	border:.15em solid #888;
@@ -107,9 +108,9 @@ h1, h2, h3{
 	 *     <div id="content"> ... </div>
 	 *     <div class="opaque"> ... </div>
 	 * </div>
-	 * and make sure that this element overflows the boundaries (add {overflow:hidden}
-	 * to parent, has a low z-index, and has an absolute position (to bring it out
-	 * of normal flow), then it'll layer perfectly.
+	 * and make sure that the element with class="opaque" overflows the boundaries 
+	 * (add {overflow:hidden} to parent, has a low z-index, and has an absolute position 
+	 * (to bring it out of normal flow), then it'll layer perfectly.
 	 */
 	position:absolute;
 	z-index:1;
@@ -119,15 +120,13 @@ h1, h2, h3{
 	height:100%;
 	background:#fff;
 	/* Below is code for transparency.
-	 * IE 8, 9:      Proprietary tag needed.
-	 * IE 6, 7:      Invalid proprietary tag needed (omitted here, will use png trick).
-	 * Others:       Modern versions supports opacity.
+	 * IE:      Proprietary tag needed.
+	 * Others:  Modern versions supports opacity.
 	 */
 	-ms-filler:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	opacity:.8;
 	/* Below is code for rounded corners.
 	 * IE:           No support.
-	 * Firefox < 4:  Proprietary tag needed.
 	 * Others:       Full support.
 	 */
 	border-radius:1em;
@@ -139,8 +138,12 @@ h1, h2, h3{
 
 .blind{
 	/* Hides an element from view (moves it far off-screen)
-	 * Note that {display:none} or anything simialar doesn't work for all browsers 
+	 * The purpose of this element is to assist blind or otherwise visually
+	 * disabled users who have difficulty seeing the website otherwise.
+	 *
+	 * Note that {display:none} or anything similar doesn't work for all browsers 
 	 * the way it should.
+	 *
 	 * Use this to mark up sections that are normally grouped together visually.
 	 * For example, use this to mark the top of the navbar.
 	 * <h2 class="blind">Nav bar starts here</h2>
@@ -154,7 +157,7 @@ h1, h2, h3{
 }
 
 li{
-	/* Using a hollow circle to match the 'see-through' theme. */
+	/* Using a hollow circle to match the 'see-through theme. */
 	list-style-type:circle;
 }
 
@@ -172,7 +175,7 @@ a:visited{
 	color:#06246f;
 }
 
-a:hover{
+a:hover,a:focus{
 	text-decoration:underline;
 }
 
@@ -231,7 +234,7 @@ a img{
 	border-radius:0 0 .75em .75em;
 }
 
-#nav a:hover{
+#nav a:hover, #nav a:focus{
 	color:#000;
 	background:#98fb98;
 	border-color:#228b22;
@@ -250,20 +253,20 @@ a img{
 	padding:.2em .1em;
 }
 
-#nav li:hover a{
+#nav li:hover a, #nav li:focus a{
 	border-color:#228b22;
 	background:#98fb98;
 	color:#000;
 }
 
-#nav li:hover>ul{
+#nav li:hover > ul, #nav li:focus > ul{
 	display:block;
 	visibility:visible;
 	position:absolute;
 	z-index:100;
 }
 
-#nav li:hover{
+#nav li:hover, #nav li:focus{
 	border-color:#228b22;
 }
 
@@ -280,7 +283,7 @@ a img{
 	border-radius:.75em;
 }
 
-#nav a+ul li a:hover{
+#nav a+ul li a:hover, #nav a+ul li a:focus{
 	border-color:#228b22 !important;
 	background:#98fb98 !important;
 	color:#000 !important;
@@ -325,8 +328,6 @@ a img{
 /* Slideshow of awesome
  * This will house a Javascript (or jQuery?) based slideshow that will
  * display promotional pictures of us (and maybe our sponsors).
- * All CSS styling here is temporary.  The background-color makes a good
- * contrast with the green, so save it.
  */
 .slideshow{
 	display:block;
@@ -343,12 +344,17 @@ a img{
 	padding:0;
 }
 
+.slideshow p{
+	margin:auto;
+	color:#ddd;
+}
+
 .sswrapper{
 	width:47em;
 	height:22em;
 	margin-left:auto;
 	margin-right:auto;
-	background-color:#333;
+	background-color:#000;
 }
 
 #cesc{
@@ -447,7 +453,7 @@ a img{
 }
 
 .error{
-	/* Use in 404 error page, when something's wrong with a page, etc.
+	/* Use in 404 error page, when something is wrong with a page, etc.
 	 * Usage:
 	 * <div class="article error">
 	 *     ...
