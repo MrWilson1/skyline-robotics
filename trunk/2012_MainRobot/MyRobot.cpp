@@ -1,48 +1,90 @@
-#include "WPILib.h"
-
 /**
- * This is a demo program showing the use of the RobotBase class.
- * The SimpleRobot class is the base of a robot application that will automatically call your
- * Autonomous and OperatorControl methods at the right time as controlled by the switches on
- * the driver station or the field controls.
- */ 
-class RobotDemo : public SimpleRobot
+ * MyRobot.h
+ * 
+ * This is the main class for the robot.
+ * 
+ * Skyline Spartabots, Team 2976
+ * Made for 2012 Robot Rumble
+ */
+
+#include "MyRobot.h"
+#define SdLog SmartDashboard::GetInstance()->Log
+
+MainRobot::MainRobot(void)
 {
-	RobotDrive myRobot; // robot drive system
-	Joystick stick; // only joystick
+	SdLog("Starting", "State");
+	InitializeHardware();
+	SdLog("Hardware initialized", "State");
+	InitializeControllers();
+	SdLog("Controllers Initialized", "State");
+	InitializeSoftware();
+	SdLog("Software Initialized", "State");
+	GetWatchdog().SetExpiration(kWatchdogExpiration);
+	SdLog("Finished Initialization", "State");
+	return;
+}
 
-public:
-	RobotDemo(void):
-		myRobot(1, 2),	// these must be initialized in the same order
-		stick(1)		// as they are declared above.
-	{
-		myRobot.SetExpiration(0.1);
+void MainRobot::InitializeHardware(void)
+{
+	mRobotDrive = new RobotDrive(1, 2, 3, 4);
+	// AnalogChannel(UINT8 moduleNumber, UINT32 channel)
+	mUltrasoundSensor = new AnalogChannel(1, 1); 
+	mMotorTestJaguar = new Jaguar(5);
+	mTopServo = new Servo(7);
+	mBottomServo = new Servo(8);
+	return;
+}
+
+void MainRobot::InitializeControllers(void)
+{
+	mLeftJoystick = new Joystick(1);
+	mRightJoystick = new Joystick(2);
+	mMotorTestJoystick = new Joystick(3);
+	mKinect = Kinect::GetInstance();
+}	
+
+void MainRobot::InitializeSoftware(void)
+{
+	mDistance = new Distance(mUltrasoundSensor);
+	
+	mControllers[0] = new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick);
+	//mControllers[0] = new KinectController(mRobotDrive, mKinect);
+	
+	
+	
+	//mControllers[1] = new MotorTestController(mRobotDrive, mMotorTestJoystick, mMotorTestJaguar);
+	//mControllers[2] = new ServoTestController(mRobotDrive, mTopServo, mBottomServo, mRightJoystick, mLeftJoystick);
+	return;
+}
+
+void MainRobot::Autonomous(void)
+{
+	GetWatchdog().SetEnabled(true);
+	while (IsAutonomous()) {
+		GetWatchdog().Feed();
+		Wait(kMotorWait);
 	}
+}
 
-	/**
-	 * Drive left & right motors for 2 seconds then stop
-	 */
-	void Autonomous(void)
+void MainRobot::OperatorControl(void) 
+{
+	GetWatchdog().SetEnabled(true);
+	SmartDashboard::GetInstance()->Log("Operator Control", "State");
+	
+	while (IsOperatorControl())
 	{
-		myRobot.SetSafetyEnabled(false);
-		myRobot.Drive(0.5, 0.0); 	// drive forwards half speed
-		Wait(2.0); 				//    for 2 seconds
-		myRobot.Drive(0.0, 0.0); 	// stop robot
-	}
-
-	/**
-	 * Runs the motors with arcade steering. 
-	 */
-	void OperatorControl(void)
-	{
-		myRobot.SetSafetyEnabled(true);
-		while (IsOperatorControl())
-		{
-			myRobot.ArcadeDrive(stick); // drive with arcade style (use right stick)
-			Wait(0.005);				// wait for a motor update time
+		for(int i=0; i<kControllerLen; i++) {
+			mControllers[i]->Run();
+			GetWatchdog().Feed();
 		}
+		SdLog(mDistance->FromWallInches(), "Ultrasound");
+		SmartDashboard::GetInstance()->Log("Still alive", "MainRobot::OperatorControl loop");
+		GetWatchdog().Feed();
+		Wait(kMotorWait);
 	}
-};
+	return;
+}
 
-START_ROBOT_CLASS(RobotDemo);
+
+START_ROBOT_CLASS(MainRobot);
 
