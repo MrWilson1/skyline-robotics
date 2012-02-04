@@ -97,7 +97,7 @@ void MainRobot::InitializeInputDevices(void)
 	mRightJoystick = new Joystick(
 			Ports::Usb2);
 	mKinect = Kinect::GetInstance();
-}	
+}
 
 /**
  * MainRobot::InitializeSoftware
