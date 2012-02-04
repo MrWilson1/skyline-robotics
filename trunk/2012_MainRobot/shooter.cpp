@@ -38,7 +38,7 @@ Shooter::Shooter(SpeedController *SpeedController1, SpeedController *SpeedContro
 
 
 void Shooter::Shoot() {
-	float position = mRangeFinder->GetDistanceInches();
+	float position = mRangeFinder->FromWallInches();
 	float speed = Shooter::CalculateSpeed(position);
 	
 	bool trigger_state = mJoystick->GetTrigger();
@@ -72,5 +72,5 @@ void Shooter::LoadBall() {
  */
 
 float Shooter::CalculateSpeed(float position) {
-	
+	return 0.0;
 }

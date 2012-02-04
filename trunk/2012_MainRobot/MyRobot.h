@@ -40,7 +40,7 @@ protected:
 	// Input devices
 	Joystick *mLeftJoystick;
 	Joystick *mRightJoystick;
-	Joystick *mMotorTestJoystick;
+	Joystick *mTwistJoystick;
 	Kinect *mKinect;
 	
 	// Software

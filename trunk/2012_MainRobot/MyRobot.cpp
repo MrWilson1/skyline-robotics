@@ -96,6 +96,8 @@ void MainRobot::InitializeInputDevices(void)
 			Ports::Usb1);
 	mRightJoystick = new Joystick(
 			Ports::Usb2);
+	mTwistJoystick = new Joystick(
+			Ports::Usb3);
 	mKinect = Kinect::GetInstance();
 }
 
@@ -122,9 +124,11 @@ void MainRobot::InitializeInputDevices(void)
 void MainRobot::InitializeSoftware(void)
 {
 	mRangeFinder = new RangeFinder(mUltrasoundSensor);
-	//mRangeFinderTest = new RangeFinderTest(mRangeFinder);
+	
 	
 	mComponentCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	mComponentCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
+	// TODO: change the below to use the new vector collection.
 	//mControllers[0] = new KinectController(mRobotDrive, mKinect);
 	//mControllers[1] = new MotorTestController(mRobotDrive, mMotorTestJoystick, mMotorTestJaguar);
 	//mControllers[2] = new ServoTestController(mRobotDrive, mTopServo, mBottomServo, mRightJoystick, mLeftJoystick);

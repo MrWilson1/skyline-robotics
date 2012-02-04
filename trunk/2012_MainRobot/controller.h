@@ -28,8 +28,25 @@ protected:
 	Joystick *mRightJoystick;
 	RobotDrive *mRobotDrive;
 	
+	static const float kSpeedFactorMin = 0.3;
+	static const float kSpeedFactorMax = 1.0;
+	
 public:
 	TankJoysticks(RobotDrive *, Joystick *, Joystick *);
+	void Run(void);
+
+protected:
+	float GetSpeedDecreaseFactor(void);
+};
+
+class SingleJoystick : public BaseComponent
+{
+protected:
+	RobotDrive *mRobotDrive;
+	Joystick *mJoystick;
+	
+public:
+	SingleJoystick(RobotDrive *, Joystick *);
 	void Run(void);
 };
 

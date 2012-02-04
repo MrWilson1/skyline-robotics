@@ -22,6 +22,12 @@ void TankJoysticks::Run(void)
 {
 	float leftY = mLeftJoystick->GetY();
 	float rightY = mRightJoystick->GetY();
+	
+	float speedFactor = GetSpeedDecreaseFactor(); 
+	
+	leftY *= speedFactor;
+	rightY *= speedFactor;
+	
 	mRobotDrive->TankDrive(leftY, rightY);
 	
 	SmartDashboard::GetInstance()->Log(leftY, "left_y");
@@ -29,6 +35,36 @@ void TankJoysticks::Run(void)
 	return;
 }
 
+/**
+ * TankController::GetSpeedDecreaseFactor
+ * 
+ * Reads the throttle on the left joystick to determine the
+ * overall robot speed.  You multiply the value returned by
+ * this function to the actual raw speed to slow the overall
+ * power down based on user input.
+ * 
+ * The higher the throttle, the more the
+ * power.  There's no way to choke the speed all the way
+ * down to zero for usability reasons -- the lowest number this
+ * will return is about 0.3, and the highest is exactly 1.0 to
+ * prevent the robot from totally halting.
+ * 
+ * Inputs:
+ *   - None
+ * 
+ * Outputs:
+ *   - A float, ranging from about 0.3 to 1.0
+ * 
+ * Side-effects:
+ *   - None
+ */
+float TankJoysticks::GetSpeedDecreaseFactor(void)
+{
+	float rawFactor = mLeftJoystick->GetThrottle();	// Returns a range from 0.0 to 1.0
+	float range = kSpeedFactorMax - kSpeedFactorMin;
+	float speedFactor = rawFactor * range + kSpeedFactorMin;  // This relies on the rawFactor being from 0.0 to 1.0.
+	return speedFactor;
+}
 
 
 /*
@@ -130,6 +166,39 @@ float KinectController::Coerce(float number, float rawMin, float rawMax, float a
 	float percentage = (number - rawMin) / (rawMax - rawMin);
 	return percentage * (adjustedMax - adjustedMin) - 1; 
 }
+
+
+/**
+ * SingleJoystick::SingleJoystick
+ * 
+ * This is a form of controlling the robot by using the single
+ * Extreme 3D Pro joystick.  This differs from our other
+ * joysticks because it comes with twisting motions.
+ */
+SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
+{
+	mRobotDrive = robotDrive;
+	mJoystick = joystick;
+}
+
+
+void SingleJoystick::Run()
+{
+	float rawX = mJoystick->GetX();
+	float rawY = mJoystick->GetY();
+	float rawZ = mJoystick->GetZ();
+	float rawTwist = mJoystick->GetTwist();
+	float rawThrottle = mJoystick->GetThrottle();
+	bool isTriggerOn = mJoystick->GetTrigger();
+	
+	SmartDashboard::GetInstance()->Log(rawX, "SingleJoystick::rawX");
+	SmartDashboard::GetInstance()->Log(rawY, "SingleJoystick::rawY");
+	SmartDashboard::GetInstance()->Log(rawZ, "SingleJoystick::rawZ");
+	SmartDashboard::GetInstance()->Log(rawTwist, "SingleJoystick::rawTwist");
+	SmartDashboard::GetInstance()->Log(rawThrottle, "SingleJoystick::rawThrottle");
+	SmartDashboard::GetInstance()->Log(isTriggerOn, "SingleJoystick::isTriggerOn");
+}
+
 
 
 int Prettify(float input, int power) 

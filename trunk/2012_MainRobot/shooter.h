@@ -11,6 +11,7 @@
 #define SHOOTER_H_
 
 #include "WPILib.h"
+#include "sensors.h"
 
 class Shooter : public BaseComponent 
 {
