@@ -5,7 +5,7 @@
  * any subcomponent of the robot.  In specific, it provides
  * a single abstract base class ('BaseComponent') to simplify
  * functionality, and a series of typedefs corresponding to
- * every motor port, digital IO, and USB ports. 
+ * every motor port, digital IO, and USB ports.
  */
 
 #ifndef COMPONENT_H_
@@ -27,6 +27,7 @@ public:
 	BaseComponent();
 	virtual void Run() = 0;
 };
+
 
 // Namespaces:
 // To use a port, use the double-colon syntax:

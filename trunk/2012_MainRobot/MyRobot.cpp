@@ -124,7 +124,7 @@ void MainRobot::InitializeSoftware(void)
 	mRangeFinder = new RangeFinder(mUltrasoundSensor);
 	//mRangeFinderTest = new RangeFinderTest(mRangeFinder);
 	
-	mControllers[0] = new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick);
+	mComponentCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	//mControllers[0] = new KinectController(mRobotDrive, mKinect);
 	//mControllers[1] = new MotorTestController(mRobotDrive, mMotorTestJoystick, mMotorTestJaguar);
 	//mControllers[2] = new ServoTestController(mRobotDrive, mTopServo, mBottomServo, mRightJoystick, mLeftJoystick);
@@ -188,10 +188,12 @@ void MainRobot::OperatorControl(void)
 	GetWatchdog().SetEnabled(true);
 	SmartDashboard::GetInstance()->Log("Operator Control", "State");
 	
+	int collectionSize = (int) mComponentCollection.size();
+	
 	while (IsOperatorControl())
 	{
-		for(int i=0; i<kControllerLen; i++) {
-			mControllers[i]->Run();
+		for(int i=0; i<collectionSize; i++) {
+			mComponentCollection.at(i)->Run();
 			GetWatchdog().Feed();
 			Wait(kMotorWait);
 		}

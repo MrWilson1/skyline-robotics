@@ -10,7 +10,8 @@
 #include <math.h>
 #include "controller.h"
 
-BaseController::BaseController(RobotDrive *robotDrive)
+BaseController::BaseController(RobotDrive *robotDrive):
+		BaseComponent()
 {
 	mRobotDrive = robotDrive;
 	return;

@@ -23,7 +23,7 @@
  * All classes that take input from the user and manipulate and
  * drive the robot should inherit this class.  
  */
-class BaseController: BaseComponent
+class BaseController: public BaseComponent
 {
 protected:
 	RobotDrive *mRobotDrive;

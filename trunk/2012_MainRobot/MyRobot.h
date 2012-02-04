@@ -12,6 +12,9 @@
 #ifndef MYROBOT_H_
 #define MYROBOT_H_
 
+// System libraries
+#include <vector>
+
 // 3rd party libraries
 #include "WPILib.h"
 
@@ -45,8 +48,7 @@ protected:
 	RangeFinderTest *mRangeFinderTest;
 	
 	// Controller -- see controller.h
-	static const int kControllerLen = 1;
-	BaseController *mControllers[kControllerLen];
+	std::vector<BaseComponent*> mComponentCollection;
 
 public:
 	MainRobot(void);
