@@ -10,23 +10,9 @@
 #include <math.h>
 #include "controller.h"
 
-BaseController::BaseController(RobotDrive *robotDrive):
-		BaseComponent()
+TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joystick *rightJoystick)
 {
 	mRobotDrive = robotDrive;
-	return;
-}
-
-void BaseController::Run(void)
-{
-	// Implement this.
-	return;
-}
-
-
-TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joystick *rightJoystick):
-		BaseController(robotDrive)
-{
 	mLeftJoystick = leftJoystick;
 	mRightJoystick = rightJoystick;
 	return;
@@ -76,8 +62,7 @@ void ServoTestController::Run(void)
 
 
 
-KinectController::KinectController(RobotDrive *robotDrive, Kinect *kinect):
-	BaseController(robotDrive)
+KinectController::KinectController(RobotDrive *robotDrive, Kinect *kinect)
 {
 	mRobotDrive = robotDrive;
 	mKinect = kinect;

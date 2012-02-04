@@ -16,33 +16,17 @@
 // Program libraries
 #include "component.h"
 
-
-/**
- * BaseController
- * 
- * All classes that take input from the user and manipulate and
- * drive the robot should inherit this class.  
- */
-class BaseController: public BaseComponent
-{
-protected:
-	RobotDrive *mRobotDrive;
-	
-public:
-	BaseController(RobotDrive *);
-	virtual void Run(void);
-};
-
 /**
  * TankJoysticks
  * 
  * Takes two joysticks and drives the robot, tank-style
  */
-class TankJoysticks : public BaseController
+class TankJoysticks : public BaseComponent
 {
 protected:
 	Joystick *mLeftJoystick;
 	Joystick *mRightJoystick;
+	RobotDrive *mRobotDrive;
 	
 public:
 	TankJoysticks(RobotDrive *, Joystick *, Joystick *);
@@ -54,11 +38,11 @@ public:
  * 
  * Takes a Kinect and uses hand gestures to drive the robot.
  */
-class KinectController : public BaseController
+class KinectController : public BaseComponent
 {
 protected:
 	RobotDrive *mRobotDrive;
-	Kinect *mKinect;	
+	Kinect *mKinect;
 	
 public:
 	KinectController(RobotDrive *, Kinect *);
