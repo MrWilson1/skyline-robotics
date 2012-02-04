@@ -22,7 +22,7 @@ Shooter::Shooter(SpeedController *SpeedController1, SpeedController *SpeedContro
  * 
  * Finds position of robot, and gives it to Shooter::CalculateSpeed, 
  * from which it gets the correct speed for the wheels to turn. 
- * When the joystick trigger is pulled,
+ * When the joystick trigger is pulled, 
  * the wheels spin at the speed from Shooter::CalculateSpeed, 
  * and the ball is loaded into the shooter.
  * 
@@ -45,7 +45,7 @@ void Shooter::Shoot() {
 	
 	if (trigger_state) {
 		mSpeedController1->Set(speed);
-		mSpeedController2->Set(-speed);
+		mSpeedController2->Set(-speed); // todo make sure wheels are spinning correctly
 		load ball into shooter
 	}
 }
@@ -55,9 +55,7 @@ void Shooter::Shoot() {
  * 
  * Receives position of robot from Shooter::Shoot,
  * and performs calculations to find the speed at which the wheels
- * need
- * 
- * Returns speed.
+ * need to turn in order to shoot the ball the correct distance.
  * 
  * Input:
  * 	-None
