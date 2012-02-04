@@ -19,11 +19,14 @@ protected:
 	SpeedController *mSpeedController2;
 	Joystick *mJoystick;
 	RangeFinder *mRangeFinder;
+	static const int kMaxSpeed = 96;
+	static const int kMinSpeed = 12;
 	
 public:
 	Shooter(SpeedController*, SpeedController*, Joystick*, RangeFinder*);
 	void Shoot();
 	float CalculateSpeed(float);
+	void LoadBall();
 };
 
 #endif

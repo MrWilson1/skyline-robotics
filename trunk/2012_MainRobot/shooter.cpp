@@ -46,8 +46,12 @@ void Shooter::Shoot() {
 	if (trigger_state) {
 		mSpeedController1->Set(speed);
 		mSpeedController2->Set(-speed); // todo make sure wheels are spinning correctly
-		load ball into shooter
+		LoadBall();
 	}
+}
+
+void Shooter::LoadBall() {
+	// empty
 }
 
 /**
