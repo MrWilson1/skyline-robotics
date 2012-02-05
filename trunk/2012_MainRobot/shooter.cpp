@@ -8,6 +8,7 @@
  */
 
 #include "shooter.h"
+#include <cmath>
 
 Shooter::Shooter(SpeedController *SpeedController1, SpeedController *SpeedController2, Joystick *Joystick, RangeFinder *RangeFinder)
 {
@@ -62,7 +63,7 @@ void Shooter::LoadBall() {
  * need to turn in order to shoot the ball the correct distance.
  * 
  * Input:
- * 	-None
+ * 	-position
  * 
  * Output:
  * 	-speed
@@ -72,5 +73,14 @@ void Shooter::LoadBall() {
  */
 
 float Shooter::CalculateSpeed(float position) {
-	return 0.0;
+	float height = kBasketHeight - kShooterHeight;
+	float distance; // do something with position
+		
+	// calculates how fast the ball needs to be (initialVelocity) as it leaves the shooter
+	float initialVelocityNum = -gravity * distance * distance;
+	float initialVelocityDenom = 2 * ( height - ( distance * tan(kAngle) ) * ( cos(kAngle) ) * ( cos (kAngle) ) ); 
+	float initialVelocity = sqrt ( initialVelocityNum / initialVelocityDen );
+		
+	float speed; // calculate how fast wheels need to spin in order to accelerate ball to initialVelocity
+	return speed;
 }

@@ -22,6 +22,11 @@ protected:
 	RangeFinder *mRangeFinder;
 	static const int kMaxSpeed = 96;
 	static const int kMinSpeed = 12;
+	static const float kAngle;
+	static const float kShooterHeight;
+	static const float kBasketHeight;
+	static const float gravity; // will add values later
+	
 	
 public:
 	Shooter(SpeedController*, SpeedController*, Joystick*, RangeFinder*);
