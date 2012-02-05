@@ -136,6 +136,41 @@ void MainRobot::InitializeSoftware(void)
 }
 
 /**
+ * MainRobot::~MainRobot
+ *
+ * Destroys all hardware, input devices, and software
+ * created for the entire robot.
+ *
+ * Inputs:
+ *   - None
+ *
+ * Outputs:
+ *   - None
+ *
+ * Side-effects:
+ *   - See description
+ */
+MainRobot::~MainRobot(void)
+{
+	delete mRobotDrive;
+	delete mUltrasoundSensor;
+	delete mMotorTestJaguar;
+	delete mTopServo;
+	delete mBottomServo;
+	
+	delete mLeftJoystick;
+	delete mRightJoystick;
+	delete mTwistJoystick;
+	
+	delete mRangeFinder;
+	int collectionSize = (int) mComponentCollection.size();
+	for (int i=0; i<collectionSize; i++) {
+		delete mComponentCollection.at(i);
+	}
+}
+
+
+/**
  * MainRobot::Autonomous
  * 
  * This is a mandatory function required for the robot to function.

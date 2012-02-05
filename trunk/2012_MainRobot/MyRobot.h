@@ -51,14 +51,16 @@ protected:
 	std::vector<BaseComponent*> mComponentCollection;
 
 public:
-	MainRobot(void);
-	void Autonomous(void);
-	void OperatorControl(void);
+	MainRobot();
+	~MainRobot();
+	void Autonomous();
+	void OperatorControl();
 	
 protected:
-	void InitializeHardware(void);
-	void InitializeInputDevices(void);
-	void InitializeSoftware(void);
+	void InitializeHardware();
+	void InitializeInputDevices();
+	void InitializeSoftware();
 };
 
 #endif
+
