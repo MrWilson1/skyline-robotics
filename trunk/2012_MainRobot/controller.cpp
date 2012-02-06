@@ -7,7 +7,6 @@
  * Made for 2012 Robot Rumble
  */
 
-#include <math.h>
 #include "controller.h"
 
 TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joystick *rightJoystick)
@@ -15,7 +14,6 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
 	mRobotDrive = robotDrive;
 	mLeftJoystick = leftJoystick;
 	mRightJoystick = rightJoystick;
-	return;
 }
 
 void TankJoysticks::Run(void)
@@ -60,10 +58,21 @@ void TankJoysticks::Run(void)
  */
 float TankJoysticks::GetSpeedDecreaseFactor(void)
 {
-	float rawFactor = mLeftJoystick->GetThrottle();	// Returns a range from 0.0 to 1.0
+	float rawFactor = mLeftJoystick->GetThrottle();	// Returns a range from -1.0 to 1.0
+	float normalizedFactor = (rawFactor + 1) / 2; 	// Sets the range from between 0.0 to 1.0
+
 	float range = kSpeedFactorMax - kSpeedFactorMin;
-	float speedFactor = rawFactor * range + kSpeedFactorMin;  // This relies on the rawFactor being from 0.0 to 1.0.
-	return speedFactor;
+	float speedFactor = normalizedFactor * range + kSpeedFactorMin;  // This relies on the rawFactor being from 0.0 to 1.0.
+	
+	// Something peculiar is happening with the abs functions:
+	// std::abs seems to do integers only, and I find it 
+	// suspicious that fabs isn't in the std namespace.
+	// Doing it manually just in case.
+	float absSpeedFactor = (speedFactor < 0) ? -speedFactor : speedFactor;
+	
+	SmartDashboard::GetInstance()->Log(rawFactor, "raw factor");
+	SmartDashboard::GetInstance()->Log(absSpeedFactor, "speed factor");
+	return absSpeedFactor;
 }
 
 
@@ -184,6 +193,49 @@ SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
 
 void SingleJoystick::Run()
 {
+	//WheelSpeeds powerValues = GetPowerValues();
+	//WheelSpeeds turningValues = GetTurnValues(powerValues);
+	/*
+	// Turn
+	float rawX = mJoystick->GetX();
+	if (rawX < 0) {
+		// Turning left; increase right wheel speeds
+		rightTurn *= 1 + rawX;
+	} else if (rawX > 0) {
+		// Turning right; increase left wheel speeds
+		leftTurn *= 1 + rawX;
+	}
+	
+	// Rotation
+	float rawZ = mJoystick->GetZ();	// Z-axis is the twist.
+	leftTurn += rawZ;
+	rightTurn -= rawZ;
+	
+	// Power adjust
+	float rawTwist = mJoystick->GetTwist(); // Twist is the flipping thing.  Range: -1.0 to 1.0
+	float twist = (rawTwist + 1.0) / 2.0;
+	leftTurn *= twist;
+	rightTurn *= twist;
+	*/
+}
+/*
+SingleJoystick::WheelSpeeds SingleJoystick::GetPowerValues()
+{
+	float left = mJoystick->GetY();
+	float right = mJoystick->GetY();
+	return std::make_pair(left, right);
+}
+
+SingleJoystick::WheelSpeeds SingleJoystick::GetTurnValues(WheelSpeeds wheelSpeeds)
+{
+	float left = wheelSpeeds.first;
+	float right = wheelSpeeds.second;
+	
+	return std::make_pair(left, right);
+}
+	
+void SingleJoystick::GetDiagnostics()
+{
 	float rawX = mJoystick->GetX();
 	float rawY = mJoystick->GetY();
 	float rawZ = mJoystick->GetZ();
@@ -198,16 +250,4 @@ void SingleJoystick::Run()
 	SmartDashboard::GetInstance()->Log(rawThrottle, "SingleJoystick::rawThrottle");
 	SmartDashboard::GetInstance()->Log(isTriggerOn, "SingleJoystick::isTriggerOn");
 }
-
-
-
-int Prettify(float input, int power) 
-{
-	int output = (int) (input * pow(10, power));
-	return output;
-}
-
-int Prettify(float input)
-{
-	return Prettify(input, 3);
-}
+*/

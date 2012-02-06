@@ -10,6 +10,10 @@
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
+// System libraries
+#include <utility>
+#include <math.h>
+
 // 3rd-party libraries
 #include "WPILib.h"
 
@@ -45,9 +49,14 @@ protected:
 	RobotDrive *mRobotDrive;
 	Joystick *mJoystick;
 	
+	typedef std::pair<float, float> WheelSpeeds;
+	
 public:
 	SingleJoystick(RobotDrive *, Joystick *);
 	void Run(void);
+	void GetDiagnostics(void);
+	WheelSpeeds GetPowerValues(void);
+	WheelSpeeds GetTurnValues(WheelSpeeds);
 };
 
 /**

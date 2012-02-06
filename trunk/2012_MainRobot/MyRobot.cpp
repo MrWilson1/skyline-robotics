@@ -127,7 +127,7 @@ void MainRobot::InitializeSoftware(void)
 	
 	
 	mComponentCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
-	mComponentCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
+	//mComponentCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	// TODO: change the below to use the new vector collection.
 	//mControllers[0] = new KinectController(mRobotDrive, mKinect);
 	//mControllers[1] = new MotorTestController(mRobotDrive, mMotorTestJoystick, mMotorTestJaguar);
