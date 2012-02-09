@@ -10,12 +10,12 @@
 #include "shooter.h"
 #include <cmath>
 
-Shooter::Shooter(SpeedController *SpeedController1, SpeedController *SpeedController2, Joystick *Joystick, RangeFinder *RangeFinder)
+Shooter::Shooter(SpeedController *speedController1, SpeedController *speedController2, Joystick *joystick, RangeFinder *rangeFinder)
 {
-	mSpeedController1 = SpeedController1;
-	mSpeedController2 = SpeedController2;
-	mJoystick = Joystick;
-	mRangeFinder = RangeFinder;
+	mSpeedController1 = speedController1;
+	mSpeedController2 = speedController2;
+	mJoystick = joystick;
+	mRangeFinder = rangeFinder;
 }
 
 /**
@@ -102,16 +102,18 @@ void Shooter::LoadBall() {
  */
 
 float Shooter::CalculateSpeed(float position) {
+	/*
 	float height = kBasketHeight - kShooterHeight;
-	float distance; // do something with position
+	float distance = 100; // do something with position
 		
 	// calculates how fast the ball needs to be (initialVelocity) as it leaves the shooter
-	float initialVelocityNum = -gravity * distance * distance;
+	float initialVelocityNum = -kGravity * distance * distance;
 	float initialVelocityDenom = 2 * ( height - ( distance * tan(kAngle) ) * ( cos(kAngle) ) * ( cos (kAngle) ) ); 
 	float initialVelocity = sqrt ( initialVelocityNum / initialVelocityDenom );
 		
 	float speed; // calculate how fast wheels need to spin in order to accelerate ball to initialVelocity
 	
 	speed = initialVelocity; // Temporary, to get rid of the 'unused variable' warning.  todo: delete or modify this line.
+	*/
 	return 0.0;
 }

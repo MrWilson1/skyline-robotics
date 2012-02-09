@@ -1,7 +1,12 @@
 /**
  * controller.h
  * 
- * Various implementation of controllers.
+ * This file contains all the code used to allow a human
+ * to control any aspect of the robot.
+ * 
+ * Every class in here should have 'BaseComponent' as
+ * their parent class, so they can be placed under
+ * MyRobot::mComponentCollection.
  * 
  * Skyline Spartabots, Team 2976
  * Made for 2012 Robot Rumble
@@ -11,7 +16,7 @@
 #define CONTROLLER_H_
 
 // System libraries
-#include <utility>
+#include <utility.h>
 #include <math.h>
 
 // 3rd-party libraries
@@ -23,7 +28,9 @@
 /**
  * TankJoysticks
  * 
- * Takes two joysticks and drives the robot, tank-style
+ * Takes two joysticks and drives the robot, tank-style.
+ * 
+ * Todo: document what every button on the Joystick does.
  */
 class TankJoysticks : public BaseComponent
 {
@@ -49,58 +56,44 @@ protected:
 	RobotDrive *mRobotDrive;
 	Joystick *mJoystick;
 	
-	typedef std::pair<float, float> WheelSpeeds;
+	typedef std::pair<float, float> Wheel;
 	
 public:
 	SingleJoystick(RobotDrive *, Joystick *);
 	void Run(void);
-	void GetDiagnostics(void);
-	WheelSpeeds GetPowerValues(void);
-	WheelSpeeds GetTurnValues(WheelSpeeds);
+	void GetDiagnostics(void);;
+	
 };
 
 /**
  * KinectController
  * 
  * Takes a Kinect and uses hand gestures to drive the robot.
+ * 
+ * Todo: Document what hand gestures this uses.
  */
 class KinectController : public BaseComponent
 {
 protected:
 	RobotDrive *mRobotDrive;
 	Kinect *mKinect;
+	static const float kArmMinZ = 0;
+	static const float kArmMaxZ = 0.38;
+	static const float kShootThresholdY = 0.2;
 	
 public:
 	KinectController(RobotDrive *, Kinect *);
 	void Run(void);
+	
+protected:
 	void HaltRobot(void);
+	bool IsPlayerReady(void);
+	bool IsPlayerShooting(void);
 	float GetLeftArmDistance(void);
 	float GetRightArmDistance(void);
 	float Coerce(float, float, float, float, float);
 };
 
-/*
-class MotorTestController : public BaseController
-{
-protected:
-	Joystick *mJoystick;
-	SpeedController *mSpeedController;
-	
-public:
-	MotorTestController(RobotDrive *, Joystick *, SpeedController *);
-	void Run(void);
-};
+float Round(float, int);
 
-class ServoTestController : public BaseController
-{
-protected:
-	Joystick *mTopJoystick, *mBottomJoystick;
-	Servo *mTopServo, *mBottomServo;
-	
-	
-public:
-	ServoTestController(RobotDrive *, Servo *, Servo *, Joystick *, Joystick *);
-	void Run(void);
-};
-*/
 #endif

@@ -21,21 +21,21 @@
 // Program modules
 #include "sensors.h"
 #include "controller.h"
+#include "component.h"
 
 class MainRobot : public SimpleRobot
 {
 private:
 	// Safety constants
-	static const double kMotorWait = 0.005;		// In seconds
+	static const double kMotorWait = 0.01;		// In seconds
 	static const double kWatchdogExpiration = 0.1;	// In seconds
 	
 protected:
 	// Hardware
 	RobotDrive *mRobotDrive;
 	AnalogChannel *mUltrasoundSensor;	// For ultrasound
-	Jaguar *mMotorTestJaguar;
-	Servo *mTopServo;
-	Servo *mBottomServo;
+	Gyro *mGyro;
+	SpeedController *mElevatorSpeedController;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
@@ -45,7 +45,7 @@ protected:
 	
 	// Software
 	RangeFinder *mRangeFinder;
-	RangeFinderTest *mRangeFinderTest;
+	GyroTest *mGyroTest;
 	
 	// Controller -- see controller.h
 	std::vector<BaseComponent*> mComponentCollection;

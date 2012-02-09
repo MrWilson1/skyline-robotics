@@ -10,7 +10,6 @@
  */
 
 #include "MyRobot.h"
-#include "component.h"
 
 /**
  * MainRobot::MainRobot
@@ -60,15 +59,18 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm3, 		// Right front
 			Ports::Pwm4);		// Right back
 	
+	mElevatorSpeedController = new Jaguar(	// Assuming a jaguar for now
+			Ports::Pwm5);
+	
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
-			Ports::AnalogChannel1); 
-	mMotorTestJaguar = new Jaguar(
-			Ports::Pwm5);
-	mTopServo = new Servo(
-			Ports::DigitalIo1);
-	mBottomServo = new Servo(
-			Ports::DigitalIo2);
+			Ports::AnalogChannel1);
+	mGyro = new Gyro(
+			Ports::Module1,
+			Ports::AnalogChannel2);
+	// The camera is technically a hardware component, but WPILib's
+	// AxisCamera class has a built-in static method for returning
+	// instances of a camera
 	return;
 }
 
@@ -125,8 +127,9 @@ void MainRobot::InitializeSoftware(void)
 {
 	mRangeFinder = new RangeFinder(mUltrasoundSensor);
 	
-	
-	mComponentCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	//mComponentCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	mComponentCollection.push_back(new GyroTest(mGyro));
+	mComponentCollection.push_back(new KinectController(mRobotDrive, mKinect));
 	//mComponentCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	// TODO: change the below to use the new vector collection.
 	//mControllers[0] = new KinectController(mRobotDrive, mKinect);
@@ -139,7 +142,9 @@ void MainRobot::InitializeSoftware(void)
  * MainRobot::~MainRobot
  *
  * Destroys all hardware, input devices, and software
- * created for the entire robot.
+ * created for the entire robot.  I believe this should
+ * be automatically handled, but I just wanted to
+ * make sure.
  *
  * Inputs:
  *   - None
@@ -153,10 +158,9 @@ void MainRobot::InitializeSoftware(void)
 MainRobot::~MainRobot(void)
 {
 	delete mRobotDrive;
+	delete mElevatorSpeedController;
 	delete mUltrasoundSensor;
-	delete mMotorTestJaguar;
-	delete mTopServo;
-	delete mBottomServo;
+	delete mGyro;
 	
 	delete mLeftJoystick;
 	delete mRightJoystick;

@@ -1,7 +1,12 @@
 /**
  * controller.cpp
  * 
- * Various implementation of controllers.
+ * This file contains all the code used to allow a human
+ * to control any aspect of the robot.
+ * 
+ * Every class in here should have 'BaseComponent' as
+ * their parent class, so they can be placed under
+ * MyRobot::mComponentCollection.
  * 
  * Skyline Spartabots, Team 2976
  * Made for 2012 Robot Rumble
@@ -9,6 +14,26 @@
 
 #include "controller.h"
 
+/**
+ * TankJoysticks::TankJoysticks
+ * 
+ * Creates an instance of a controller.  It requires the
+ * robot drive, and two joysticks.
+ * 
+ * Inputs:
+ *   - RobotDrive *robotDrive
+ *     A pointer to the RobotDrive object created in MyRobot::InitiateHardware
+ *   - Joystick *leftJoystick
+ *     A pointer to the left joystick (controls the left side of the robot)
+ *   - Joystick *rightJoystick
+ *     A pointer to the right joystick (controls the right side of the robot)
+ * 
+ * Outputs:
+ *   - None
+ * 
+ * Side-effects:
+ *   - See description
+ */
 TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joystick *rightJoystick)
 {
 	mRobotDrive = robotDrive;
@@ -16,6 +41,23 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
 	mRightJoystick = rightJoystick;
 }
 
+/**
+ * TankJoysticks::Run
+ * 
+ * This method is called automatically during MyRobot::OperatorControl
+ * It should contain no 'Wait' statements or excessive loops.
+ * 
+ * Inputs:
+ *   - None
+ * 
+ * Outputs:
+ *   - None
+ * 
+ * Side-effects:
+ *   - Drives the robot
+ *   - Logs the left and right speed values to the SmartDashboard
+ *   - Reads values from both joysticks 
+ */
 void TankJoysticks::Run(void)
 {
 	float leftY = mLeftJoystick->GetY();
@@ -54,7 +96,8 @@ void TankJoysticks::Run(void)
  *   - A float, ranging from about 0.3 to 1.0
  * 
  * Side-effects:
- *   - None
+ *   - Logs data to SmartDashboard
+ *   - Reads data from the joystick
  */
 float TankJoysticks::GetSpeedDecreaseFactor(void)
 {
@@ -76,37 +119,83 @@ float TankJoysticks::GetSpeedDecreaseFactor(void)
 }
 
 
-/*
-MotorTestController::MotorTestController(RobotDrive *robotdrive, Joystick *joystick, SpeedController *speedController):
-		BaseController(robotdrive)
+///////////////////////
+
+
+/**
+ * SingleJoystick::SingleJoystick
+ * 
+ * This is a form of controlling the robot by using the single
+ * Extreme 3D Pro joystick.  This differs from our other
+ * joysticks because it comes with twisting motions.
+ * 
+ * Inputs:
+ *   - RobotDrive *robotDrive
+ *     A pointer to the robotDrive
+ *   - Joystick *joystick
+ *     A pointer to the joystick -- must be the Extreme 3D Pro
+ *     joystick
+ * 
+ * Output:
+ *   - None
+ * 
+ * Side-effects:
+ *   - Creates the object
+ */
+SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
 {
+	mRobotDrive = robotDrive;
 	mJoystick = joystick;
-	mSpeedController = speedController;
-	return;
 }
 
-
-ServoTestController::ServoTestController(RobotDrive *robotDrive, Servo *topServo, Servo *bottomServo, 
-		Joystick *topJoystick, Joystick *bottomJoystick):
-		BaseController(robotDrive)
+/**
+ * SingleJoystick::Run()
+ * 
+ * In progress, currently empty.
+ */
+void SingleJoystick::Run()
 {
-	mTopServo = topServo;
-	mBottomServo = bottomServo;
-	mTopJoystick = topJoystick;
-	mBottomJoystick = bottomJoystick;
+	//float magnitude = GetMagnitude();
+	//float magnitudeMultiplier = GetMagnitudeMultiplier();
+	
+	
 }
 
-void ServoTestController::Run(void)
+/**
+ * SingleJoystick::GetDiagnostics()
+ * 
+ * Get diagnostic data.
+ * 
+ * Inputs:
+ *   - None
+ * 
+ * Outputs:
+ *   - None
+ *   
+ * Side-effects:
+ *   - Logs all the joystick values to SmartDashboard
+ */
+void SingleJoystick::GetDiagnostics()
 {
-	mTopServo->Set((mTopJoystick->GetThrottle() + 1.0) * 0.5);
-	mBottomServo->Set((mBottomJoystick->GetThrottle() + 1.0) * 0.5);
-	return;
+	float rawX = mJoystick->GetX();
+	float rawY = mJoystick->GetY();
+	float rawZ = mJoystick->GetZ();
+	float rawTwist = mJoystick->GetTwist();
+	float rawThrottle = mJoystick->GetThrottle();
+	bool isTriggerOn = mJoystick->GetTrigger();
+	
+	SmartDashboard::GetInstance()->Log(rawX, "SingleJoystick::rawX");
+	SmartDashboard::GetInstance()->Log(rawY, "SingleJoystick::rawY");
+	SmartDashboard::GetInstance()->Log(rawZ, "SingleJoystick::rawZ");
+	SmartDashboard::GetInstance()->Log(rawTwist, "SingleJoystick::rawTwist");
+	SmartDashboard::GetInstance()->Log(rawThrottle, "SingleJoystick::rawThrottle");
+	SmartDashboard::GetInstance()->Log(isTriggerOn, "SingleJoystick::isTriggerOn");
 }
-*/
 
 
 
 
+// Todo: Document KinectController
 KinectController::KinectController(RobotDrive *robotDrive, Kinect *kinect)
 {
 	mRobotDrive = robotDrive;
@@ -115,13 +204,24 @@ KinectController::KinectController(RobotDrive *robotDrive, Kinect *kinect)
 
 void KinectController::Run(void)
 {
-	SmartDashboard::GetInstance()->Log("Apparently alive", "Kinect Code");
 	if (mKinect->GetTrackingState() == Kinect::kTracked) {
 		SmartDashboard::GetInstance()->Log("Tracked", "Kinect State");
-		mRobotDrive->TankDrive(GetLeftArmDistance(), GetRightArmDistance());
+		if (IsPlayerReady()) {
+			SmartDashboard::GetInstance()->Log("Apparently alive", "Kinect Code");
+			mRobotDrive->TankDrive(GetLeftArmDistance(), GetRightArmDistance());
+		} else {
+			SmartDashboard::GetInstance()->Log("Frozen", "Kinect State");
+			HaltRobot();
+		}
 	} else {
 		SmartDashboard::GetInstance()->Log("Not tracked", "Kinect State");
 		HaltRobot();
+	}
+	
+	if (IsPlayerShooting()) {
+		SmartDashboard::GetInstance()->Log("Shooting", "Player shooting");
+	} else {
+		SmartDashboard::GetInstance()->Log(" ", "Player shooting");
 	}
 }
 
@@ -136,9 +236,9 @@ float KinectController::GetLeftArmDistance(void)
 	float movingJoint = mKinect->GetSkeleton().GetWristLeft().z;
 	
 	float distance = originJoint - movingJoint;
-	float output = Coerce(distance, 0, 0.45, -1, 1);
+	float output = Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
 	
-	SmartDashboard::GetInstance()->Log(output, "Left movement");
+	SmartDashboard::GetInstance()->Log(Round(output, 2), "Left movement");
 	
 	return output;
 }
@@ -149,9 +249,44 @@ float KinectController::GetRightArmDistance(void)
 	float movingJoint = mKinect->GetSkeleton().GetWristRight().z;
 	
 	float distance = originJoint - movingJoint;
-	float output = Coerce(distance, 0, 0.45, -1, 1);
-	SmartDashboard::GetInstance()->Log(output, "Right movement");
+	float output = Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
+	
+	SmartDashboard::GetInstance()->Log(Round(output, 2), "Right movement");
+	
 	return output;	
+}
+
+bool KinectController::IsPlayerReady(void)
+{
+	float rightOrigin = mKinect->GetSkeleton().GetShoulderRight().x;
+	float rightMoving = mKinect->GetSkeleton().GetWristRight().x;
+	
+	float leftOrigin = mKinect->GetSkeleton().GetShoulderLeft().x;
+	float leftMoving = mKinect->GetSkeleton().GetWristLeft().x;
+	
+	if ((rightOrigin > rightMoving) or (leftOrigin < leftMoving)) {
+		return false;
+	}
+	return true;
+}
+
+bool KinectController::IsPlayerShooting(void)
+{
+	float rightOrigin = mKinect->GetSkeleton().GetShoulderRight().y;
+	float rightMoving = mKinect->GetSkeleton().GetWristRight().y;
+	
+	float leftOrigin = mKinect->GetSkeleton().GetShoulderLeft().y;
+	float leftMoving = mKinect->GetSkeleton().GetWristLeft().y;
+	
+	float rightDelta = rightMoving - rightOrigin;
+	float leftDelta = leftMoving - leftOrigin;
+	
+	// Like shooting a basketball.
+	if ((rightDelta > kShootThresholdY) or (leftDelta > kShootThresholdY)) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 float KinectController::Coerce(float number, float rawMin, float rawMax, float adjustedMin, float adjustedMax)
@@ -176,78 +311,19 @@ float KinectController::Coerce(float number, float rawMin, float rawMax, float a
 	return percentage * (adjustedMax - adjustedMin) - 1; 
 }
 
-
 /**
- * SingleJoystick::SingleJoystick
+ * Round
  * 
- * This is a form of controlling the robot by using the single
- * Extreme 3D Pro joystick.  This differs from our other
- * joysticks because it comes with twisting motions.
+ * A helper function to round numbers to a given
+ * precision.
+ * 
+ * Todo: Remove this function.
  */
-SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
+float Round(float input, int precision)
 {
-	mRobotDrive = robotDrive;
-	mJoystick = joystick;
+	float multiple = pow(10, precision);
+	SmartDashboard::GetInstance()->Log(multiple, "Multiple");
+	return floorf(input * multiple + 0.5) / multiple;
 }
 
 
-void SingleJoystick::Run()
-{
-	//WheelSpeeds powerValues = GetPowerValues();
-	//WheelSpeeds turningValues = GetTurnValues(powerValues);
-	/*
-	// Turn
-	float rawX = mJoystick->GetX();
-	if (rawX < 0) {
-		// Turning left; increase right wheel speeds
-		rightTurn *= 1 + rawX;
-	} else if (rawX > 0) {
-		// Turning right; increase left wheel speeds
-		leftTurn *= 1 + rawX;
-	}
-	
-	// Rotation
-	float rawZ = mJoystick->GetZ();	// Z-axis is the twist.
-	leftTurn += rawZ;
-	rightTurn -= rawZ;
-	
-	// Power adjust
-	float rawTwist = mJoystick->GetTwist(); // Twist is the flipping thing.  Range: -1.0 to 1.0
-	float twist = (rawTwist + 1.0) / 2.0;
-	leftTurn *= twist;
-	rightTurn *= twist;
-	*/
-}
-/*
-SingleJoystick::WheelSpeeds SingleJoystick::GetPowerValues()
-{
-	float left = mJoystick->GetY();
-	float right = mJoystick->GetY();
-	return std::make_pair(left, right);
-}
-
-SingleJoystick::WheelSpeeds SingleJoystick::GetTurnValues(WheelSpeeds wheelSpeeds)
-{
-	float left = wheelSpeeds.first;
-	float right = wheelSpeeds.second;
-	
-	return std::make_pair(left, right);
-}
-	
-void SingleJoystick::GetDiagnostics()
-{
-	float rawX = mJoystick->GetX();
-	float rawY = mJoystick->GetY();
-	float rawZ = mJoystick->GetZ();
-	float rawTwist = mJoystick->GetTwist();
-	float rawThrottle = mJoystick->GetThrottle();
-	bool isTriggerOn = mJoystick->GetTrigger();
-	
-	SmartDashboard::GetInstance()->Log(rawX, "SingleJoystick::rawX");
-	SmartDashboard::GetInstance()->Log(rawY, "SingleJoystick::rawY");
-	SmartDashboard::GetInstance()->Log(rawZ, "SingleJoystick::rawZ");
-	SmartDashboard::GetInstance()->Log(rawTwist, "SingleJoystick::rawTwist");
-	SmartDashboard::GetInstance()->Log(rawThrottle, "SingleJoystick::rawThrottle");
-	SmartDashboard::GetInstance()->Log(isTriggerOn, "SingleJoystick::isTriggerOn");
-}
-*/

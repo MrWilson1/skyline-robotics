@@ -81,14 +81,34 @@ bool RangeFinder::IsInShootingRange(void)
 	return isInRange;
 }
 
-/*
-RangeFinderTest::RangeFinder(RangeFinder *rangeFinder)
+/**
+ * GyroTest::GyroTest(Gyro *)
+ * 
+ * Tests the gyro
+ * 
+ * Inputs:
+ *   - Gyro *gyro
+ *     A pointer to a gyro object
+ * 
+ * Outputs:
+ *   - None
+ * 
+ * Side-effects:
+ *   - Creates the object
+ */
+GyroTest::GyroTest(Gyro *gyro)
 {
-	mRangeFinder = rangeFinder
+	mGyro = gyro;
+	mGyro->Reset();
 }
 
-void RangeFinderTest::Run(void)
+/**
+ * GyroTest::Run
+ * 
+ * Side-effects:
+ *   - Prints the value of the gyro to SmartDashboard
+ */
+void GyroTest::Run()
 {
-	SmartDashboard::GetInstance()->Log(mRangeFinder->GetDistanceInInches(), "Distance from wall;")
+	SmartDashboard::GetInstance()->Log(mGyro->GetAngle(), "Gyro");
 }
-*/

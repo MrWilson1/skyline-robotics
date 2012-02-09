@@ -30,6 +30,7 @@ protected:
 	static const float kBasketYCoordinate; // will add values later
 	static const float kArenaXMaximum = 648;
 	static const float kArenaYMaximum = 324;
+
 	
 	
 public:
