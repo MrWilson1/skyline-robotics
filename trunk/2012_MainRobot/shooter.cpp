@@ -19,6 +19,36 @@ Shooter::Shooter(SpeedController *SpeedController1, SpeedController *SpeedContro
 }
 
 /**
+ * Shooter::CalculateDistance
+ * 
+ * Takes position of the robot on the x-axis, position of the robot on the y-axis, and orientation (angle) of the robot to calculate its distance from the hoop.
+ * 
+ * Input:
+ * 	-None
+ * 
+ * Output:
+ * 	-distance
+ * 	
+ * Side-effects:
+ * 	-None
+ */
+
+float Shooter::CalculateDistance()
+{
+	float xRawPosition = kArenaXMaximum - mRangeFinder->FromWallInches();
+	float yRawPosition = kArenaYMaximum - mRangeFinder->FromWallInches(); // todo still need to add another Ultrasound sensor.
+	float angle; // todo need to add Gyro
+	
+	// todo this code only works if the basket is on the right side of the court. Need to modify it so it works both ways.
+	
+	float xPosition = xRawPosition * cos(angle);
+	float yPosition = yRawPosition * cos(angle);
+	
+	float distance = sqrt( (kBasketYCoordinate - yPosition)*(kBasketYCoordinate - yPosition) + (kBasketXCoordinate - xPosition)*(kBasketXCoordinate - xPosition) );	
+	return distance;
+}
+
+/**
  * Shooter::Shoot
  * 
  * Finds position of robot, and gives it to Shooter::CalculateSpeed, 
@@ -37,10 +67,9 @@ Shooter::Shooter(SpeedController *SpeedController1, SpeedController *SpeedContro
  * 	-None
  */
 
-
 void Shooter::Shoot() {
-	float position = mRangeFinder->FromWallInches();
-	float speed = Shooter::CalculateSpeed(position);
+	float distance = Shooter::CalculateDistance();
+	float speed = Shooter::CalculateSpeed(distance);
 	
 	bool trigger_state = mJoystick->GetTrigger();
 	

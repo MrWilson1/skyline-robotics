@@ -24,8 +24,12 @@ protected:
 	static const int kMinSpeed = 12;
 	static const float kAngle;
 	static const float kShooterHeight;
-	static const float kBasketHeight;
-	static const float gravity; // will add values later
+	static const float kBasketHeight = 98;
+	static const float gravity;
+	static const float kBasketXCoordinate;
+	static const float kBasketYCoordinate; // will add values later
+	static const float kArenaXMaximum = 648;
+	static const float kArenaYMaximum = 324;
 	
 	
 public:
@@ -33,6 +37,7 @@ public:
 	void Shoot();
 	float CalculateSpeed(float);
 	void LoadBall();
+	float CalculateDistance();
 };
 
 #endif
