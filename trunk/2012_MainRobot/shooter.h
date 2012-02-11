@@ -20,14 +20,12 @@ protected:
 	SpeedController *mSpeedController2;
 	Joystick *mJoystick;
 	RangeFinder *mRangeFinder;
-	static const int kMaxSpeed = 96;
-	static const int kMinSpeed = 12;
-	static const float kAngle;
-	static const float kShooterHeight;
+	static const int kMaxDistance = 144;
+	static const int kMinDistance = 12;
+	static const float kShooterAngle = 45;
+	static const float kShooterHeight = 50;
 	static const float kBasketHeight = 98;
-	static const float gravity;
-	static const float kBasketXCoordinate;
-	static const float kBasketYCoordinate; // will add values later
+	static const float gravity = 386.4; // inches per second per second
 	static const float kArenaXMaximum = 648;
 	static const float kArenaYMaximum = 324;
 

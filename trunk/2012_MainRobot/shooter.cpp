@@ -36,26 +36,7 @@ Shooter::Shooter(SpeedController *speedController1, SpeedController *speedContro
 
 float Shooter::CalculateDistance()
 {
-	float xFromWall = mRangeFinder->FromWallInches();
-	float yFromWall = mRangeFinder->FromWallInches(); // todo need to add another Ultrasound sensor.
-	float angle = mGyro->GetAngle();
-	
-	float xRawPosition;
-	float yRawPosition; // "raw" meaning the angle has not yet been taken into account
-	
-	if ( cos(angle) < 0 ) {
-		xRawPosition = kArenaXMaximum - xFromWall;
-		yRawPosition = kArenaYMaximum - yFromWall;
-	}
-	else {
-		xRawPosition = xFromWall;
-		yRawPosition = yFromWall;
-	}
-	
-	float xPosition = xRawPosition * fabs(cos(angle));
-	float yPosition = yRawPosition * fabs(cos(angle));
-
-	float distance = sqrt( (kBasketYCoordinate - yPosition)*(kBasketYCoordinate - yPosition) + (kBasketXCoordinate - xPosition)*(kBasketXCoordinate - xPosition) );	
+	float distance = mRangeFinder->FromWallInches();
 	return distance;
 }
 
@@ -82,14 +63,40 @@ void Shooter::Shoot() {
 	float distance = Shooter::CalculateDistance();
 	float speed = Shooter::CalculateSpeed(distance);
 	
-	bool trigger_state = mJoystick->GetTrigger();
+	bool setToManual = mJoystick->GetTrigger(); // manual	
+	bool setToPreset = mJoystick->GetRawButton(3); // preset
+	bool manualFire = mJoystick->GetRawButton(2); // button to fire when shooter is set to manual
+	float throttle = mJoystick->GetThrottle();
 	
-	if (trigger_state) {
+	if (setToPreset) {
 		mSpeedController1->Set(speed);
 		mSpeedController2->Set(-speed); // todo make sure wheels are spinning correctly
 		LoadBall();
 	}
+	else if (setToManual) {
+		mSpeedController1->Set(throttle);
+		mSpeedController2->Set(-throttle);
+			if ( manualFire ) {
+				LoadBall();
+			}		
+		}
 }
+
+/**
+ * Shooter::LoadBall
+ * 
+ * Loads ball into shooter after wheels start turning.
+ * Not quite sure how this will work yet.
+ * 
+ * Input:
+ * 	-none
+ * 
+ * Output:
+ * 	-none
+ * 	
+ * Side-effects:
+ * 	-none
+ */
 
 void Shooter::LoadBall() {
 	// empty
@@ -112,23 +119,19 @@ void Shooter::LoadBall() {
  * 	-None
  */
 
-float Shooter::CalculateSpeed(float position) {
-	/*
+float Shooter::CalculateSpeed(float distance) {
 	float height = kBasketHeight - kShooterHeight;
-	float distance = 100; // do something with position
 		
 	// calculates how fast the ball needs to be (initialVelocity) as it leaves the shooter
-	float initialVelocityNum = -kGravity * distance * distance;
-	float initialVelocityDenom = 2 * ( height - ( distance * tan(kAngle) ) * ( cos(kAngle) ) * ( cos (kAngle) ) ); 
+	float initialVelocityNum = -gravity * distance * distance;
+	float initialVelocityDenom = 2 * ( height - ( distance * tan(kShooterAngle) ) * ( cos(kShooterAngle) ) * ( cos (kShooterAngle) ) ); 
 	float initialVelocity = sqrt ( initialVelocityNum / initialVelocityDenom );
 		
-	float speed; // calculate how fast wheels need to spin in order to accelerate ball to initialVelocity
-	
-	speed = initialVelocity; // Temporary, to get rid of the 'unused variable' warning.  todo: delete or modify this line.
-	*/
-	return 0.0;
+	float speed; // calculates how fast wheels need to spin in order to accelerate ball to initialVelocity.
+	// todo: experiment to find actual maximum initial velocity to which wheels can accelerate ball
+	return speed;
 }
 
 void Shooter::Run() {
-	// empty
+	Shoot();
 }
