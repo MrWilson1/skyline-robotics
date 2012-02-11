@@ -10,11 +10,10 @@
 #include "shooter.h"
 #include <cmath>
 
-Shooter::Shooter(SpeedController *speedController1, SpeedController *speedController2, Joystick *joystick, RangeFinder *rangeFinder)
+Shooter::Shooter(SpeedController *speedController1, SpeedController *speedController2, RangeFinder *rangeFinder)
 {
 	mSpeedController1 = speedController1;
 	mSpeedController2 = speedController2;
-	mJoystick = joystick;
 	mRangeFinder = rangeFinder;
 }
 
@@ -59,47 +58,25 @@ float Shooter::CalculateDistance()
  * 	-None
  */
 
-void Shooter::Shoot() {
+void Shooter::SetSpeedManually(float speed)
+{
+	mSpeedController1->Set(speed);
+	mSpeedController2->Set(-speed);
+}
+
+void Shooter::SetSpeedAutomatically()
+{
 	float distance = Shooter::CalculateDistance();
 	float speed = Shooter::CalculateSpeed(distance);
 	
-	bool setToManual = mJoystick->GetTrigger(); // manual	
-	bool setToPreset = mJoystick->GetRawButton(3); // preset
-	bool manualFire = mJoystick->GetRawButton(2); // button to fire when shooter is set to manual
-	float throttle = mJoystick->GetThrottle();
+	SmartDashboard::GetInstance()->Log(speed, "Shooter speed: ");
 	
-	if (setToPreset) {
-		mSpeedController1->Set(speed);
-		mSpeedController2->Set(-speed); // todo make sure wheels are spinning correctly
-		LoadBall();
-	}
-	else if (setToManual) {
-		mSpeedController1->Set(throttle);
-		mSpeedController2->Set(-throttle);
-			if ( manualFire ) {
-				LoadBall();
-			}		
-		}
-}
-
-/**
- * Shooter::LoadBall
- * 
- * Loads ball into shooter after wheels start turning.
- * Not quite sure how this will work yet.
- * 
- * Input:
- * 	-none
- * 
- * Output:
- * 	-none
- * 	
- * Side-effects:
- * 	-none
- */
-
-void Shooter::LoadBall() {
-	// empty
+	float coercedSpeed = Tools::Coerce(speed, kMinSpeed, kMaxSpeed, 0, 1);
+	
+	SmartDashboard::GetInstance()->Log(coercedSpeed, "Coerced speed: ");
+	
+	mSpeedController1->Set(coercedSpeed);
+	mSpeedController2->Set(-coercedSpeed);
 }
 
 /**
@@ -120,18 +97,55 @@ void Shooter::LoadBall() {
  */
 
 float Shooter::CalculateSpeed(float distance) {
+	float pi = 4 * atan(1);
 	float height = kBasketHeight - kShooterHeight;
+	float angle = ( kShooterAngle * 2 * pi ) / ( 360 ); // converts from degrees to radians
 		
 	// calculates how fast the ball needs to be (initialVelocity) as it leaves the shooter
-	float initialVelocityNum = -gravity * distance * distance;
-	float initialVelocityDenom = 2 * ( height - ( distance * tan(kShooterAngle) ) * ( cos(kShooterAngle) ) * ( cos (kShooterAngle) ) ); 
+	float initialVelocityNum = -kGravity * distance * distance;
+	float initialVelocityDenom = 2 * ( height - ( distance * tan(angle) ) ) * ( cos(angle) ) * ( cos(angle) ); 
 	float initialVelocity = sqrt ( initialVelocityNum / initialVelocityDenom );
 		
-	float speed; // calculates how fast wheels need to spin in order to accelerate ball to initialVelocity.
+	float speed = initialVelocity / 336;
 	// todo: experiment to find actual maximum initial velocity to which wheels can accelerate ball
 	return speed;
 }
 
-void Shooter::Run() {
-	Shoot();
+ShooterController::ShooterController(Shooter *shooter, Joystick *leftJoystick)
+{
+	mShooter = shooter;
+	mLeftJoystick = leftJoystick;
+}
+
+/**
+ * ShooterController::Run
+ * 
+ * Uses manual and preset modes for the shooter depending on joystick input.
+ * 
+ * Input:
+ * 	-None
+ * 
+ * Output:
+ * 	-None
+ * 	
+ * Side-effects:
+ * 	-None
+ */
+
+void ShooterController::Run(void)
+{
+	bool setToManual = mLeftJoystick->GetRawButton(2); // manual	
+	bool setToPreset = mLeftJoystick->GetTrigger(); // preset
+	float throttle = mLeftJoystick->GetThrottle();
+	
+	SmartDashboard::GetInstance()->Log(throttle, "Throttle: ");
+	
+	if ( setToManual )
+	{
+		mShooter->SetSpeedManually(throttle);
+	}
+	else if ( setToPreset )
+	{
+		mShooter->SetSpeedAutomatically();
+	}
 }

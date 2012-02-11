@@ -12,30 +12,39 @@
 
 #include "WPILib.h"
 #include "sensors.h"
+#include "tools.h"
 
-class Shooter : public BaseComponent 
+class Shooter
 {
 protected:
 	SpeedController *mSpeedController1;
 	SpeedController *mSpeedController2;
-	Joystick *mJoystick;
 	RangeFinder *mRangeFinder;
-	static const int kMaxDistance = 144;
-	static const int kMinDistance = 12;
 	static const float kShooterAngle = 45;
 	static const float kShooterHeight = 50;
 	static const float kBasketHeight = 98;
-	static const float gravity = 386.4; // inches per second per second
-	static const float kArenaXMaximum = 648;
-	static const float kArenaYMaximum = 324;
+	static const float kGravity = 386.4; // inches per second per second
+	static const float kMaxSpeed = 28.373;
+	static const float kMinSpeed = 22.698; // assuming that the minimum distance is 5 feet, and the maximum distance is 12 feet
 
 public:
-    Shooter(SpeedController*, SpeedController*, Joystick*, RangeFinder*);
-    void Shoot();
+    Shooter(SpeedController*, SpeedController*, RangeFinder*);
+    void SetSpeedManually(float);
+    void SetSpeedAutomatically();
     float CalculateSpeed(float);
-    void LoadBall();
 	float CalculateDistance();
 	void Run();
+};
+
+class ShooterController : public BaseController
+{
+protected:
+	Shooter *mShooter;
+	Joystick *mLeftJoystick;
+public:
+	ShooterController(Shooter *, Joystick *);
+	void Run(void);
+	
 };
 
 #endif

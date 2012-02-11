@@ -22,6 +22,7 @@
 #include "sensors.h"
 #include "controller.h"
 #include "component.h"
+#include "shooter.h"
 
 class MainRobot : public SimpleRobot
 {
@@ -36,6 +37,8 @@ protected:
 	AnalogChannel *mUltrasoundSensor;	// For ultrasound
 	Gyro *mGyro;
 	SpeedController *mElevatorSpeedController;
+	SpeedController *mShooter1;
+	SpeedController *mShooter2;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
@@ -45,9 +48,10 @@ protected:
 	
 	// Software
 	RangeFinder *mRangeFinder;
+	Shooter *mShooter;
 	
 	// Controller -- see controller.h
-	std::vector<BaseComponent*> mComponentCollection;
+	std::vector<BaseController*> mComponentCollection;
 
 public:
 	MainRobot();

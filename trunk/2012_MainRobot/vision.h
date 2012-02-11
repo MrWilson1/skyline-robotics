@@ -54,7 +54,7 @@ public:
  * The TargetFinder class is responsible for interfacing with the
  * camera, and doing any image analysis code.
  */
-class TargetFinder : public BaseComponent
+class TargetFinder : public BaseController
 {
 protected:
 	
@@ -71,7 +71,7 @@ protected:
  * getting data from a TargetFinder and sending it 
  * it over to the dashboard.
  */
-class DashboardDataSender : public BaseComponent
+class DashboardDataSender : public BaseController
 {
 public:
 	DashboardDataSender();

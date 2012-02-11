@@ -10,7 +10,7 @@
 
 #include "component.h"
 
-BaseComponent::BaseComponent() {
+BaseController::BaseController() {
 	// Does nothing
 	return;
 }

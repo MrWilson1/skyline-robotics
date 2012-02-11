@@ -12,7 +12,7 @@
 #define COMPONENT_H_
 
 /**
- * BaseComponent
+ * BaseController
  * 
  * This class is meant to be overwritten.  It provides a 
  * convenient base class so you could easily iterate through
@@ -21,10 +21,10 @@
  * In every case, the 'Run' function is meant to be called
  * in a loop.
  */
-class BaseComponent
+class BaseController
 {
 public:
-	BaseComponent();
+	BaseController();
 	virtual void Run() = 0;
 };
 

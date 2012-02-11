@@ -33,7 +33,7 @@
  * 
  * Todo: document what every button on the Joystick does.
  */
-class TankJoysticks : public BaseComponent
+class TankJoysticks : public BaseController
 {
 protected:
 	Joystick *mLeftJoystick;
@@ -51,7 +51,7 @@ protected:
 	float GetSpeedDecreaseFactor(void);
 };
 
-class SingleJoystick : public BaseComponent
+class SingleJoystick : public BaseController
 {
 protected:
 	RobotDrive *mRobotDrive;
@@ -73,7 +73,7 @@ public:
  * 
  * Todo: Document what hand gestures this uses.
  */
-class KinectController : public BaseComponent
+class KinectController : public BaseController
 {
 protected:
 	RobotDrive *mRobotDrive;

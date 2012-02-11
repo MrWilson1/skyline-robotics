@@ -62,6 +62,11 @@ void MainRobot::InitializeHardware(void)
 	//mElevatorSpeedController = new Jaguar(	// Assuming a jaguar for now
 	//		Ports::Pwm5);
 	
+	mShooter1 = new Jaguar(
+			Ports::Pwm5);
+	mShooter2 = new Jaguar(
+			Ports::Pwm6);
+	
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
 			Ports::AnalogChannel1);
@@ -127,7 +132,10 @@ void MainRobot::InitializeSoftware(void)
 {
 	mRangeFinder = new RangeFinder(mUltrasoundSensor);
 	
+	mShooter = new Shooter(mShooter1, mShooter2, mRangeFinder);
+	
 	mComponentCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	mComponentCollection.push_back(new ShooterController(mShooter, mLeftJoystick));
 	mComponentCollection.push_back(new RangeFinderTest(mRangeFinder));
 	mComponentCollection.push_back(new GyroTest(mGyro));
 	//mComponentCollection.push_back(new KinectController(mRobotDrive, mKinect));
