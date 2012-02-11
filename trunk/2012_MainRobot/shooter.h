@@ -31,14 +31,13 @@ protected:
 	static const float kArenaXMaximum = 648;
 	static const float kArenaYMaximum = 324;
 
-	
-	
 public:
-	Shooter(SpeedController*, SpeedController*, Joystick*, RangeFinder*);
-	void Shoot();
-	float CalculateSpeed(float);
-	void LoadBall();
+    Shooter(SpeedController*, SpeedController*, Joystick*, RangeFinder*);
+    void Shoot();
+    float CalculateSpeed(float);
+    void LoadBall();
 	float CalculateDistance();
+	void Run();
 };
 
 #endif

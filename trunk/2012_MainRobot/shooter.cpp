@@ -22,6 +22,7 @@ Shooter::Shooter(SpeedController *speedController1, SpeedController *speedContro
  * Shooter::CalculateDistance
  * 
  * Takes position of the robot on the x-axis, position of the robot on the y-axis, and orientation (angle) of the robot to calculate its distance from the hoop.
+ * This assumes that one ultrasound sensor is on the north side of the robot, and the other ultrasound sensor is on the west side.
  * 
  * Input:
  * 	-None
@@ -35,15 +36,25 @@ Shooter::Shooter(SpeedController *speedController1, SpeedController *speedContro
 
 float Shooter::CalculateDistance()
 {
-	float xRawPosition = kArenaXMaximum - mRangeFinder->FromWallInches();
-	float yRawPosition = kArenaYMaximum - mRangeFinder->FromWallInches(); // todo still need to add another Ultrasound sensor.
-	float angle; // todo need to add Gyro
+	float xFromWall = mRangeFinder->FromWallInches();
+	float yFromWall = mRangeFinder->FromWallInches(); // todo need to add another Ultrasound sensor.
+	float angle = mGyro->GetAngle();
 	
-	// todo this code only works if the basket is on the right side of the court. Need to modify it so it works both ways.
+	float xRawPosition;
+	float yRawPosition; // "raw" meaning the angle has not yet been taken into account
 	
-	float xPosition = xRawPosition * cos(angle);
-	float yPosition = yRawPosition * cos(angle);
+	if ( cos(angle) < 0 ) {
+		xRawPosition = kArenaXMaximum - xFromWall;
+		yRawPosition = kArenaYMaximum - yFromWall;
+	}
+	else {
+		xRawPosition = xFromWall;
+		yRawPosition = yFromWall;
+	}
 	
+	float xPosition = xRawPosition * fabs(cos(angle));
+	float yPosition = yRawPosition * fabs(cos(angle));
+
 	float distance = sqrt( (kBasketYCoordinate - yPosition)*(kBasketYCoordinate - yPosition) + (kBasketXCoordinate - xPosition)*(kBasketXCoordinate - xPosition) );	
 	return distance;
 }
@@ -116,4 +127,8 @@ float Shooter::CalculateSpeed(float position) {
 	speed = initialVelocity; // Temporary, to get rid of the 'unused variable' warning.  todo: delete or modify this line.
 	*/
 	return 0.0;
+}
+
+void Shooter::Run() {
+	// empty
 }
