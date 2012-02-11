@@ -30,6 +30,16 @@ public:
 	bool IsInShootingRange(void);
 };
 
+class RangeFinderTest : public BaseComponent
+{
+protected:
+	RangeFinder *mRangeFinder;
+	
+public:
+	RangeFinderTest(RangeFinder *);
+	void Run(void);
+};
+
 class GyroTest : public BaseComponent
 {
 protected:

@@ -45,7 +45,6 @@ protected:
 	
 	// Software
 	RangeFinder *mRangeFinder;
-	GyroTest *mGyroTest;
 	
 	// Controller -- see controller.h
 	std::vector<BaseComponent*> mComponentCollection;

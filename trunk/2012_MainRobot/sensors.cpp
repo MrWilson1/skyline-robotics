@@ -81,6 +81,18 @@ bool RangeFinder::IsInShootingRange(void)
 	return isInRange;
 }
 
+
+RangeFinderTest::RangeFinderTest(RangeFinder *rangeFinder)
+{
+	mRangeFinder = rangeFinder;
+}
+
+void RangeFinderTest::Run(void)
+{
+	SmartDashboard::GetInstance()->Log(mRangeFinder->FromWallInches(), "Ultrasound");
+}
+
+
 /**
  * GyroTest::GyroTest(Gyro *)
  * 

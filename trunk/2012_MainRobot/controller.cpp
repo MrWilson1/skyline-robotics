@@ -60,18 +60,24 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
  */
 void TankJoysticks::Run(void)
 {
+	SmartDashboard::GetInstance()->Log("Alive", "Tank status");
 	float leftY = mLeftJoystick->GetY();
-	float rightY = mRightJoystick->GetY();
+	float rightY = mRightJoystick->GetY(); 
 	
-	float speedFactor = GetSpeedDecreaseFactor(); 
+	float squaredLeftY = (leftY < 0) ? -(leftY * leftY) : (leftY * leftY);
+	float squaredRightY = (rightY < 0) ? -(rightY * rightY) : (rightY * rightY);
 	
-	leftY *= speedFactor;
-	rightY *= speedFactor;
+	float speedFactor = GetSpeedDecreaseFactor();
 	
-	mRobotDrive->TankDrive(leftY, rightY);
+	squaredLeftY *= speedFactor;
+	squaredRightY *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(leftY, "left_y");
-	SmartDashboard::GetInstance()->Log(rightY, "right_y");
+	SmartDashboard::GetInstance()->Log(squaredLeftY, "left_y");
+	SmartDashboard::GetInstance()->Log(squaredRightY, "right_y");
+	
+	mRobotDrive->TankDrive(squaredLeftY, squaredRightY);
+	
+	
 	return;
 }
 
@@ -113,8 +119,6 @@ float TankJoysticks::GetSpeedDecreaseFactor(void)
 	// Doing it manually just in case.
 	float absSpeedFactor = (speedFactor < 0) ? -speedFactor : speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(rawFactor, "raw factor");
-	SmartDashboard::GetInstance()->Log(absSpeedFactor, "speed factor");
 	return absSpeedFactor;
 }
 
@@ -236,7 +240,7 @@ float KinectController::GetLeftArmDistance(void)
 	float movingJoint = mKinect->GetSkeleton().GetWristLeft().z;
 	
 	float distance = originJoint - movingJoint;
-	float output = Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
+	float output = Tools::Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
 	
 	SmartDashboard::GetInstance()->Log(Round(output, 2), "Left movement");
 	
@@ -249,7 +253,7 @@ float KinectController::GetRightArmDistance(void)
 	float movingJoint = mKinect->GetSkeleton().GetWristRight().z;
 	
 	float distance = originJoint - movingJoint;
-	float output = Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
+	float output = Tools::Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
 	
 	SmartDashboard::GetInstance()->Log(Round(output, 2), "Right movement");
 	
@@ -287,28 +291,6 @@ bool KinectController::IsPlayerShooting(void)
 	} else {
 		return false;
 	}
-}
-
-float KinectController::Coerce(float number, float rawMin, float rawMax, float adjustedMin, float adjustedMax)
-{
-	// Check inputs for validity.
-	if (rawMin >= rawMax) {
-		HaltRobot();
-		SmartDashboard::GetInstance()->Log("Input rawMin greater then rawMax.", "ERROR @ KinectController::Coerce");
-	}
-	if (adjustedMin >= adjustedMax) {
-		HaltRobot();
-		SmartDashboard::GetInstance()->Log("Input adjustedMin greater then adjustedMax", "ERROR @ KinectController::Coerce");
-	}
-	
-	if (number < rawMin) {
-		number = rawMin;
-	} else if (number > rawMax) {
-		number = rawMax;
-	}
-	
-	float percentage = (number - rawMin) / (rawMax - rawMin);
-	return percentage * (adjustedMax - adjustedMin) - 1; 
 }
 
 /**

@@ -33,7 +33,7 @@ void TargetFinder::Run()
 {
 	AxisCamera &camera = GetCamera();
 	HSLImage *image = camera.GetImage();	// Get image.
-	vector<Target> targets = GetTargets(image);
+	//vector<Target> targets = GetTargets(image);
 	
 }
 /*

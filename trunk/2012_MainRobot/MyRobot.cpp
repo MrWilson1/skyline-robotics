@@ -59,8 +59,8 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm3, 		// Right front
 			Ports::Pwm4);		// Right back
 	
-	mElevatorSpeedController = new Jaguar(	// Assuming a jaguar for now
-			Ports::Pwm5);
+	//mElevatorSpeedController = new Jaguar(	// Assuming a jaguar for now
+	//		Ports::Pwm5);
 	
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
@@ -98,9 +98,9 @@ void MainRobot::InitializeInputDevices(void)
 			Ports::Usb1);
 	mRightJoystick = new Joystick(
 			Ports::Usb2);
-	mTwistJoystick = new Joystick(
-			Ports::Usb3);
-	mKinect = Kinect::GetInstance();
+	//mTwistJoystick = new Joystick(
+	//		Ports::Usb3);
+	//mKinect = Kinect::GetInstance();
 }
 
 /**
@@ -127,9 +127,10 @@ void MainRobot::InitializeSoftware(void)
 {
 	mRangeFinder = new RangeFinder(mUltrasoundSensor);
 	
-	//mComponentCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	mComponentCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	mComponentCollection.push_back(new RangeFinderTest(mRangeFinder));
 	mComponentCollection.push_back(new GyroTest(mGyro));
-	mComponentCollection.push_back(new KinectController(mRobotDrive, mKinect));
+	//mComponentCollection.push_back(new KinectController(mRobotDrive, mKinect));
 	//mComponentCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	// TODO: change the below to use the new vector collection.
 	//mControllers[0] = new KinectController(mRobotDrive, mKinect);
@@ -158,7 +159,7 @@ void MainRobot::InitializeSoftware(void)
 MainRobot::~MainRobot(void)
 {
 	delete mRobotDrive;
-	delete mElevatorSpeedController;
+	//delete mElevatorSpeedController;
 	delete mUltrasoundSensor;
 	delete mGyro;
 	

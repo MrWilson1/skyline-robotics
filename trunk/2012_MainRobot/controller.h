@@ -24,6 +24,7 @@
 
 // Program libraries
 #include "component.h"
+#include "tools.h"
 
 /**
  * TankJoysticks
@@ -91,7 +92,6 @@ protected:
 	bool IsPlayerShooting(void);
 	float GetLeftArmDistance(void);
 	float GetRightArmDistance(void);
-	float Coerce(float, float, float, float, float);
 };
 
 float Round(float, int);

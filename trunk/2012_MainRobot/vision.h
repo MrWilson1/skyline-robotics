@@ -61,7 +61,7 @@ protected:
 public:
 	TargetFinder();
 	void Run();
-	vector<Target> GetTargets(HSLImage *);
+	//vector<Target> GetTargets(HSLImage *);
 protected:
 	AxisCamera & GetCamera();
 };
