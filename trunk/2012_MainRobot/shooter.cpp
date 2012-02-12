@@ -102,7 +102,8 @@ float Shooter::CalculateSpeed(float distance) {
 	float angle = ( kShooterAngle * 2 * pi ) / ( 360 ); // converts from degrees to radians
 		
 	// calculates how fast the ball needs to be (initialVelocity) as it leaves the shooter
-	float initialVelocityNum = -kGravity * distance * distance;
+	float gravity = kGravity;
+	float initialVelocityNum = gravity * distance * distance;
 	float initialVelocityDenom = 2 * ( height - ( distance * tan(angle) ) ) * ( cos(angle) ) * ( cos(angle) ); 
 	float initialVelocity = sqrt ( initialVelocityNum / initialVelocityDenom );
 		
