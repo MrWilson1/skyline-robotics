@@ -112,10 +112,10 @@ float Shooter::CalculateSpeed(float distance) {
 	return speed;
 }
 
-ShooterController::ShooterController(Shooter *shooter, Joystick *leftJoystick)
+ShooterController::ShooterController(Shooter *shooter, Joystick *joystick)
 {
 	mShooter = shooter;
-	mLeftJoystick = leftJoystick;
+	mJoystick = joystick;
 }
 
 /**
@@ -135,18 +135,18 @@ ShooterController::ShooterController(Shooter *shooter, Joystick *leftJoystick)
 
 void ShooterController::Run(void)
 {
-	bool setToManual = mLeftJoystick->GetRawButton(2); // manual	
-	bool setToPreset = mLeftJoystick->GetTrigger(); // preset
-	float throttle = mLeftJoystick->GetThrottle();
+	bool setToManual = mJoystick->GetRawButton(2); // manual	
+	bool setToPreset = mJoystick->GetTrigger(); // preset
+	float throttle = mJoystick->GetThrottle();
 	
-	SmartDashboard::GetInstance()->Log(throttle, "Throttle: ");
+	SmartDashboard::GetInstance()->Log(throttle, "Shooter Throttle: ");
 	
 	if ( setToManual )
 	{
 		mShooter->SetSpeedManually(throttle);
-	}
-	else if ( setToPreset )
-	{
+	} else if ( setToPreset ) {
 		mShooter->SetSpeedAutomatically();
+	} else {
+		mShooter->SetSpeedManually(0);
 	}
 }

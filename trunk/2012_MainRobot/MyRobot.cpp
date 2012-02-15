@@ -1,55 +1,43 @@
-/**
- * MyRobot.h
- * 
- * This is the main class for the robot.  It bundles together all
- * the software and hardware, and is the main entry point to
- * the robot.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
- */
+
 
 #include "MyRobot.h"
 
+
+MainRobot::MainRobot(void)
+{
+}
+
 /**
- * MainRobot::MainRobot
- * 
- * Initializes all hardware, input devices, and software 
+ * @brief Initializes all hardware, input devices, and software 
  * for the entire robot.
  * 
- * Inputs:
- *   - None
- * 
- * Outputs:
- *   - None
- * 
- * Side effects:
- *   - See description
- *   - Enables the watchdog
+ * @details This class will also enable the watchdog.
  */
-MainRobot::MainRobot(void)
+void MainRobot::RobotInit(void)
 {
 	InitializeHardware();
 	InitializeInputDevices();
-	InitializeSoftware();
+	InitializeComponents();
+	InitializeControllers();
+	
+	//mTargetTask = Task(
+	//		"TargetFinder",
+	//		mTargetFinder->Run,
+	//		Task::kDefaultPriority);
+	
 	GetWatchdog().SetExpiration(kWatchdogExpiration);
 	return;
 }
 
 /**
- * MainRobot::InitializeHardware
- * 
- * Initializes any code provided by WPILib meant to
+ * @brief Initializes any code provided by WPILib meant to
  * interface directly with specific hardware components.
  * 
- * Inputs:
- *   - None
- * 
- * Outputs:
- *   - None
- * 
- * Side effects:
- *   - See description
+ * @details Currently initializes the 
+ *   - Robot drive
+ *   - Jaguars for the shooter
+ *   - Ultrasound sensor
+ *   - Gyro 
  */
 void MainRobot::InitializeHardware(void)
 {
@@ -58,9 +46,6 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm2, 		// Left back
 			Ports::Pwm3, 		// Right front
 			Ports::Pwm4);		// Right back
-	
-	//mElevatorSpeedController = new Jaguar(	// Assuming a jaguar for now
-	//		Ports::Pwm5);
 	
 	mShooter1 = new Jaguar(
 			Ports::Pwm5);
@@ -80,22 +65,12 @@ void MainRobot::InitializeHardware(void)
 }
 
 /**
- * MainRobot::InitializeInputDevices
- * 
- * Initializes any hardware used by the laptop to send
+ * @brief Initializes any hardware used by the laptop to send
  * data over to the robot (joysticks, etc).
  * 
- * Inputs:
- *   - None
- * 
- * Outputs:
- *   - None
- * 
- * Side-effects:
- *   - See description
- * 
- * Notes:
- *   - Also gets an instance of the Kinect.
+ * @details Currently initializes the
+ *   - Joysticks
+ *   - Kinect
  */
 void MainRobot::InitializeInputDevices(void)
 {
@@ -109,37 +84,42 @@ void MainRobot::InitializeInputDevices(void)
 }
 
 /**
- * MainRobot::InitializeSoftware
+ * @brief Initializes any software components that 
+ * bundles together hardware needed to provide 
+ * additional functionality.
  * 
- * Initializes any software components that 
- * bundle together input devices or hardware
- * code that provided related functionality.
- * 
- * For example, code to run the shooter would
+ * @details For example, code to run the shooter would
  * be initialized here because it uses several
  * Jaguars and a Joystick to function.
  * 
- * Inputs:
- *   - None
- * 
- * Outputs:
- *   - None
- * 
- * Side-effects:
- *   - See description
+ * Ideally, each class instantiated should have BaseComponent
+ * as a parent class.
  */
-void MainRobot::InitializeSoftware(void)
+void MainRobot::InitializeComponents(void)
 {
 	mRangeFinder = new RangeFinder(mUltrasoundSensor);
-	
 	mShooter = new Shooter(mShooter1, mShooter2, mRangeFinder);
+}
+
+/**
+ * @brief Initializes any software that takes in user input to 
+ * manipulate hardware or software, or needs to be called
+ * periodically during operator control
+ * 
+ * @details Each object initialized in this file must inherit 
+ * BaseController.  They are assigned to the heap, and appended 
+ * to the end of MainRobot::mControllerCollection, 
+ */
+void MainRobot::InitializeControllers(void)
+{
+	mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
+	mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
+	mControllerCollection.push_back(new GyroTest(mGyro));
+	mControllerCollection.push_back(new TargetFinder());
 	
-	mComponentCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
-	mComponentCollection.push_back(new ShooterController(mShooter, mLeftJoystick));
-	mComponentCollection.push_back(new RangeFinderTest(mRangeFinder));
-	mComponentCollection.push_back(new GyroTest(mGyro));
-	//mComponentCollection.push_back(new KinectController(mRobotDrive, mKinect));
-	//mComponentCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
+	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
+	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	// TODO: change the below to use the new vector collection.
 	//mControllers[0] = new KinectController(mRobotDrive, mKinect);
 	//mControllers[1] = new MotorTestController(mRobotDrive, mMotorTestJoystick, mMotorTestJaguar);
@@ -176,9 +156,9 @@ MainRobot::~MainRobot(void)
 	delete mTwistJoystick;
 	
 	delete mRangeFinder;
-	int collectionSize = (int) mComponentCollection.size();
+	int collectionSize = (int) mControllerCollection.size();
 	for (int i=0; i<collectionSize; i++) {
-		delete mComponentCollection.at(i);
+		delete mControllerCollection.at(i);
 	}
 }
 
@@ -240,12 +220,12 @@ void MainRobot::OperatorControl(void)
 	GetWatchdog().SetEnabled(true);
 	SmartDashboard::GetInstance()->Log("Operator Control", "State");
 	
-	int collectionSize = (int) mComponentCollection.size();
+	int collectionSize = (int) mControllerCollection.size();
 	
 	while (IsOperatorControl())
 	{
 		for(int i=0; i<collectionSize; i++) {
-			mComponentCollection.at(i)->Run();
+			mControllerCollection.at(i)->Run();
 			GetWatchdog().Feed();
 			Wait(kMotorWait);
 		}

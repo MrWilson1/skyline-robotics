@@ -72,8 +72,9 @@ void TankJoysticks::Run(void)
 	squaredLeftY *= speedFactor;
 	squaredRightY *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(squaredLeftY, "left_y");
-	SmartDashboard::GetInstance()->Log(squaredRightY, "right_y");
+	SmartDashboard::GetInstance()->Log(squaredLeftY, "Drive left power");
+	SmartDashboard::GetInstance()->Log(squaredRightY, "Drive right power");
+	SmartDashboard::GetInstance()->Log(speedFactor, "Drive max power");
 	
 	mRobotDrive->TankDrive(squaredLeftY, squaredRightY);
 	

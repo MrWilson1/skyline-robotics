@@ -40,7 +40,7 @@ class ShooterController : public BaseController
 {
 protected:
 	Shooter *mShooter;
-	Joystick *mLeftJoystick;
+	Joystick *mJoystick;
 public:
 	ShooterController(Shooter *, Joystick *);
 	void Run(void);

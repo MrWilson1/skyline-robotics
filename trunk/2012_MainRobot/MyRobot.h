@@ -1,12 +1,21 @@
 /**
- * MyRobot.h
+ * @brief The main entry point of the robot.
  * 
- * This is the main class for the robot.  It is the only class allowed to 
- * initialize any hardware components, and is responsible for bundling
- * together everything.
+ * @details FIRST has provided a macro that takes the name of 
+ * this class and runs it once deployed on the cRIO (see
+ * the bottom of this file).
  * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
+ * This class is obliged to provide two public methods --
+ * MainRobot::Autonomous() and MainRobot::OperatorControl.
+ * 
+ * This class is also responsible for instantiating 
+ * every possible class that will be used in this program.
+ * The instantiated objects are then passed as pointers to
+ * any classes that need them.
+ * 
+ * @author Michael Lee
+ * 
+ * @license	GNU Lesser GPL
  */
 
 #ifndef MYROBOT_H_
@@ -23,13 +32,14 @@
 #include "controller.h"
 #include "component.h"
 #include "shooter.h"
+#include "target.h"
 
 class MainRobot : public SimpleRobot
 {
 private:
 	// Safety constants
 	static const double kMotorWait = 0.01;		// In seconds
-	static const double kWatchdogExpiration = 0.1;	// In seconds
+	static const double kWatchdogExpiration = 1;	// In seconds
 	
 protected:
 	// Hardware
@@ -46,23 +56,28 @@ protected:
 	Joystick *mTwistJoystick;
 	Kinect *mKinect;
 	
-	// Software
+	// Components
 	RangeFinder *mRangeFinder;
 	Shooter *mShooter;
 	
 	// Controller -- see controller.h
-	std::vector<BaseController*> mComponentCollection;
+	std::vector<BaseController*> mControllerCollection;
+	//TargetFinder mTargetFinder;
+	//Task mTargetTask;
 
 public:
 	MainRobot();
 	~MainRobot();
+	void RobotInit();
 	void Autonomous();
 	void OperatorControl();
+	//void Disabled();
 	
 protected:
 	void InitializeHardware();
 	void InitializeInputDevices();
-	void InitializeSoftware();
+	void InitializeComponents();
+	void InitializeControllers();
 };
 
 #endif
