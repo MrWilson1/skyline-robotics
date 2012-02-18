@@ -242,7 +242,7 @@ AxisCamera & TargetFinder::GetCamera()
 
 
 
-
+/*
 TargetFinderThread::TargetFinderThread(
 			const char *threadName,
 			const char *cameraIp,
@@ -347,3 +347,4 @@ double TargetFinderThread::CalculateDistanceBasedOnWidth(double widthInPixels)
 	double distance = (17490 / widthInPixels) - 6.97; 
 	return distance;
 }
+*/

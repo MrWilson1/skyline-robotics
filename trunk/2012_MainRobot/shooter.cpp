@@ -66,8 +66,10 @@ float Shooter::CalculateDistance()
  */
 void Shooter::SetSpeedManually(float speed)
 {
-	mTopLeftSpeedController->Set(speed * kReductionFactor);
-	mTopRightSpeedController->Set(-speed * kReductionFactor);
+	float slowSpeed = speed * kReductionFactor;
+	
+	mTopLeftSpeedController->Set(-1 * slowSpeed);
+	mTopRightSpeedController->Set(slowSpeed);
 	mBottomLeftSpeedController->Set(-1 * speed);
 	mBottomRightSpeedController->Set(speed);
 }
@@ -146,6 +148,8 @@ void ShooterController::Run(void)
 	bool setToPreset = mJoystick->GetTrigger(); // preset
 	float throttle = mJoystick->GetThrottle();
 	
+	SmartDashboard::GetInstance()->Log(setToManual, "Set to manual? ");
+	SmartDashboard::GetInstance()->Log(setToPreset, "Set to preset? ");
 	SmartDashboard::GetInstance()->Log(throttle, "Shooter Throttle: ");
 	
 	if ( setToManual )

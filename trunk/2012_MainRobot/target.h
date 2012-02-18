@@ -163,7 +163,7 @@ protected:
 	static const double kTargetWidthInches = 24;
 	static const double kTargetHeightInches = 18;
 };
-
+/*
 class TargetFinderThread : public Task
 {
 protected:
@@ -189,5 +189,5 @@ protected:
 	double CalculateDistanceBasedOnWidth(double);
 };
 
-
+*/
 #endif
