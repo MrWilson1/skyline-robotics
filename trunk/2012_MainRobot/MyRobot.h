@@ -47,8 +47,10 @@ protected:
 	AnalogChannel *mUltrasoundSensor;	// For ultrasound
 	Gyro *mGyro;
 	SpeedController *mElevatorSpeedController;
-	SpeedController *mShooter1;
-	SpeedController *mShooter2;
+	SpeedController *mTopLeftShooter;
+	SpeedController *mTopRightShooter;
+	SpeedController *mBottomLeftShooter;
+	SpeedController *mBottomRightShooter;
 	
 	// Input devices
 	Joystick *mLeftJoystick;

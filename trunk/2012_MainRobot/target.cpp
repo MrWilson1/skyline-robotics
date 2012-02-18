@@ -266,19 +266,84 @@ void TargetFinderThread::TaskWrapper(void *ThisObject)
 	self->Run();
 }
 
-
-/*
-	~TargetFinderThread();
+void TargetFinderThread::Run(void)
+{
+	AxisCamera &camera = GetCamera();
+	HSLImage *image = camera.GetImage();	// Get image.
+	vector<Target> *targets = GetTargets(image);
+	delete image;
 	
-protected:
-	static void TaskWrapper(void *);
-	static void LogStatus(TargetFinderThread *);
-	void Run();
+	
+	
+	
+}
 
+vector<Target> *TargetFinderThread::GetTargets(HSLImage *image)
+{
+	BinaryImage *thresholdImage = image->ThresholdRGB(TargetUtils::threshold);    // Get only colors within range
+	BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 1);  // Remove small objects
+	BinaryImage *convexHullImage = bigObjectsImage->ConvexHull(false);  		  // Rill in partial and full rectangles
+	TargetUtils::SaneBinaryImage *preRectangleImage = (TargetUtils::SaneBinaryImage *) convexHullImage;
+	vector<RectangleMatch> *rectangles = preRectangleImage->DetectRectangles(
+			&TargetUtils::rectangleDescriptor,
+			&TargetUtils::curveOptions,
+			&TargetUtils::shapeDetectionOptions,
+			NULL
+	);
 
-*/
+	delete thresholdImage;
+	delete bigObjectsImage;
+	delete convexHullImage;
+	delete preRectangleImage;
 
+	vector<Target> *targets = new vector<Target>;
+	
+	int size = (int) rectangles->size();
+	
+	if (size == 0) {
+		delete rectangles;
+		return targets;		// Empty vector
+	}
+	
+	for (int i=0; i<size; i++) {
+		Target t;
+		RectangleMatch r = rectangles->at(i);
+		
+		t.Width = r.width;
+		t.Height = r.height;
+		t.Rotation = r.rotation;	// Rotation from camera's horizontal axis.
+		
+		t.Score = r.score;
+		t.TopLeft.Set(r.corner[0].x, r.corner[0].y);
+		t.TopRight.Set(r.corner[1].x, r.corner[1].y);
+		t.BottomRight.Set(r.corner[2].x, r.corner[2].y);
+		t.BottomLeft.Set(r.corner[3].x, r.corner[3].y);
+		
+		t.DistanceFromCamera = CalculateDistanceBasedOnWidth(t.Width);
+		targets->push_back(t);
+	}
+	
+	delete rectangles;
+	return targets;
+}
 
+AxisCamera & TargetFinderThread::GetCamera()
+{
+	AxisCamera &camera = AxisCamera::GetInstance(mCameraIp);
+	camera.WriteResolution(AxisCamera::kResolution_320x240);
+	camera.WriteCompression(20);
+	camera.WriteBrightness(0);
+	return camera;	
+}
 
-
-
+double TargetFinderThread::CalculateDistanceBasedOnWidth(double widthInPixels)
+{
+	// Based on exeriments we conducted...
+	// Axis 206 Network camera
+	// 640x480
+	// The dial contains a focus -- the groove over the 'ar' in
+	// 'Near' should be just a hair to the left of the bump.
+	
+	double distance = (17490 / widthInPixels) - 6.97; 
+	return distance;
+}

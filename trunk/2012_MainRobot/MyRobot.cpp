@@ -47,10 +47,14 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm3, 		// Right front
 			Ports::Pwm4);		// Right back
 	
-	mShooter1 = new Jaguar(
+	mTopLeftShooter = new Jaguar(
 			Ports::Pwm5);
-	mShooter2 = new Jaguar(
+	mTopRightShooter = new Jaguar(
 			Ports::Pwm6);
+	mBottomLeftShooter = new Jaguar(
+			Ports::Pwm7);
+	mBottomRightShooter = new Jaguar(
+			Ports::Pwm8);
 	
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
@@ -98,7 +102,12 @@ void MainRobot::InitializeInputDevices(void)
 void MainRobot::InitializeComponents(void)
 {
 	mRangeFinder = new RangeFinder(mUltrasoundSensor);
-	mShooter = new Shooter(mShooter1, mShooter2, mRangeFinder);
+	mShooter = new Shooter(
+			mTopLeftShooter,
+			mTopRightShooter,
+			mBottomLeftShooter,
+			mBottomRightShooter,
+			mRangeFinder);
 }
 
 /**

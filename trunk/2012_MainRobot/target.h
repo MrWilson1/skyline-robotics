@@ -170,6 +170,7 @@ protected:
 	const char *mName;
 	const char *mCameraIp;
 	vector<Target> *mVectorTarget;
+	vector<Target> *mVectorTargetCached;
 	static const double kTargetWidthInches = 24;
 	static const double kTargetHeightInches = 18;
 	
@@ -183,6 +184,9 @@ public:
 protected:
 	static void TaskWrapper(void *);
 	virtual void Run();
+	vector<Target> *GetTargets(HSLImage *);
+	AxisCamera & GetCamera(void);
+	double CalculateDistanceBasedOnWidth(double);
 };
 
 

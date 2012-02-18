@@ -10,10 +10,17 @@
 #include "shooter.h"
 #include <cmath>
 
-Shooter::Shooter(SpeedController *speedController1, SpeedController *speedController2, RangeFinder *rangeFinder)
+Shooter::Shooter(
+		SpeedController *topLeftSpeedController, 
+		SpeedController *topRightSpeedController,
+		SpeedController *bottomLeftSpeedController,
+		SpeedController *bottomRightSpeedController, 
+		RangeFinder *rangeFinder)
 {
-	mSpeedController1 = speedController1;
-	mSpeedController2 = speedController2;
+	mTopLeftSpeedController = topLeftSpeedController;
+	mTopRightSpeedController = topRightSpeedController;
+	mBottomLeftSpeedController = bottomLeftSpeedController;
+	mBottomRightSpeedController = bottomRightSpeedController;
 	mRangeFinder = rangeFinder;
 }
 
@@ -57,11 +64,12 @@ float Shooter::CalculateDistance()
  * Side-effects:
  * 	-None
  */
-
 void Shooter::SetSpeedManually(float speed)
 {
-	mSpeedController1->Set(speed);
-	mSpeedController2->Set(-speed);
+	mTopLeftSpeedController->Set(speed * kReductionFactor);
+	mTopRightSpeedController->Set(-speed * kReductionFactor);
+	mBottomLeftSpeedController->Set(-1 * speed);
+	mBottomRightSpeedController->Set(speed);
 }
 
 void Shooter::SetSpeedAutomatically()
@@ -75,8 +83,7 @@ void Shooter::SetSpeedAutomatically()
 	
 	SmartDashboard::GetInstance()->Log(coercedSpeed, "Coerced speed: ");
 	
-	mSpeedController1->Set(coercedSpeed);
-	mSpeedController2->Set(-coercedSpeed);
+	Shooter::SetSpeedManually(coercedSpeed);
 }
 
 /**

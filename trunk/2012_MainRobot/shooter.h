@@ -17,8 +17,10 @@
 class Shooter
 {
 protected:
-	SpeedController *mSpeedController1;
-	SpeedController *mSpeedController2;
+	SpeedController *mTopLeftSpeedController;
+	SpeedController *mTopRightSpeedController;
+	SpeedController *mBottomLeftSpeedController;
+	SpeedController *mBottomRightSpeedController;
 	RangeFinder *mRangeFinder;
 	static const float kShooterAngle = 45;
 	static const float kShooterHeight = 50;
@@ -26,9 +28,10 @@ protected:
 	static const float kGravity = 386.4; // inches per second per second
 	static const float kMaxSpeed = 28.373;
 	static const float kMinSpeed = 22.698; // assuming that the minimum distance is 5 feet, and the maximum distance is 12 feet
+	static const float kReductionFactor = 0.9;
 
 public:
-    Shooter(SpeedController*, SpeedController*, RangeFinder*);
+    Shooter(SpeedController*, SpeedController*, SpeedController*, SpeedController*, RangeFinder*);
     void SetSpeedManually(float);
     void SetSpeedAutomatically();
     float CalculateSpeed(float);
