@@ -1,4 +1,6 @@
 /**
+ * @file robot.ht
+ * 
  * @brief The main entry point of the robot.
  * 
  * @details FIRST has provided a macro that takes the name of 

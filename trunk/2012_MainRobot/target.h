@@ -1,13 +1,10 @@
 /**
- * vision.h
+ * @ target.h
  * 
  * Classes all about using the camera, analyzing images, and sending
  * data back to the computer.
  * 
  * In progress, do not use.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
  */
 
 #ifndef TARGET_H_

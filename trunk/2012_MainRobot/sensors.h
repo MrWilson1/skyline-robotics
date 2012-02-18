@@ -1,10 +1,7 @@
 /**
- * sensors.h
+ * @file sensors.h
  * 
  * Classes that uses sensors (in a complex manner) and returns data.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
  */
 
 #ifndef SENSORS_H_

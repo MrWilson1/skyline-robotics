@@ -1,4 +1,6 @@
 /**
+ * @file controller.h
+ * 
  * @brief Contains the code used to control the robot
  * based on user input.
  * 

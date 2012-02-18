@@ -121,18 +121,15 @@ void MainRobot::InitializeComponents(void)
 void MainRobot::InitializeControllers(void)
 {
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
-	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
-	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
-	//mControllerCollection.push_back(new GyroTest(mGyro));
-	//mControllerCollection.push_back(new TargetFinder());
-	
-	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
-	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
 	mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
-	// TODO: change the below to use the new vector collection.
-	//mControllers[0] = new KinectController(mRobotDrive, mKinect);
-	//mControllers[1] = new MotorTestController(mRobotDrive, mMotorTestJoystick, mMotorTestJaguar);
-	//mControllers[2] = new ServoTestController(mRobotDrive, mTopServo, mBottomServo, mRightJoystick, mLeftJoystick);
+	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
+	
+	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
+	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
+	
+	mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
+	mControllerCollection.push_back(new GyroTest(mGyro));
+	//mControllerCollection.push_back(new TargetFinder());
 	return;
 }
 

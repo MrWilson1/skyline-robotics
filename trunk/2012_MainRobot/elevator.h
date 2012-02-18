@@ -1,4 +1,6 @@
 /**
+ * @file elevator.h
+ * 
  * @brief Provides code to control and manipulate the elevator, and 
  * the shooter-elevator interface.
  */
@@ -13,26 +15,46 @@
 #include "components.h"
 
 
+/**
+ * @brief Transfers the ball from the elevator to the shooter.
+ */
+class BallTransfer : public BaseComponent
+{
+protected:
+	Servo *mServo;
+	DigitalInput *mTopLimitSwitch;
+	DigitalInput *mShooterLimitSwitch;
+	static const float kServoSafePosition = 0.0;		// 0.0 to 1.0
+	static const float kServoExtendedPosition = 1.0;	// 0.0 to 1.0
+	
+public:
+	BallTransfer(Servo *, DigitalInput *, DigitalInput *);
+	bool IsShooterOccupied();
+	bool IsBallAtTop();
+	bool IsBallTransfering();
+	bool IsReady();
+	
+	bool StartTransfer();
+	bool EndTransfer();
+	void HaltTransfer();
+};
+
+
 class Elevator : public BaseComponent
 {
 protected:
 	SpeedController *mSpeedController; 	// Controls the belt
-	Servo *mBasketServo;				// Can push balls into the basket
-	DigitalInput *mTopLimitSwitch;		// Is the ball hitting the top of the lift?
-	DigitalInput *mBasketLimitSwitch;	// Is the ball in the basket?
-	bool mIsTransitioning;
-	bool mIsRecovering;
+	BallTransfer *mBallTransfer;
+	static const float kDefaultSpeed = 1.0;		// -1.0 to 1.0
 	
 public:
-	Elevator(SpeedController *, Servo *, DigitalInput *, DigitalInput *);
-	bool MoveUp(void);
+	Elevator(SpeedController *, BallTransfer *);
+	bool MoveUp();
 	bool MoveUp(double);
-	bool MoveDown(void);
+	bool MoveDown();
 	bool MoveDown(double);
-	bool IsBallInBasket(void);
-	bool IsBallAtTop(void);
-	bool PushBallToBasket(void);
-	bool IsBallTransitioning(void);
 };
+
+
 
 #endif

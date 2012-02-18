@@ -1,10 +1,7 @@
 /**
- * shooter.h
+ * @file shooter.h
  * 
  * Operates device that shoots basketballs by spinning wheels.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
  */
 
 #ifndef SHOOTER_H_
