@@ -57,12 +57,18 @@ protected:
 	RobotDrive *mRobotDrive;
 	Joystick *mJoystick;
 	
+	static const float kSpeedFactorMin = 0.3;
+	static const float kSpeedFactorMax = 1.0;
+	
 	typedef std::pair<float, float> Wheel;
 	
 public:
 	SingleJoystick(RobotDrive *, Joystick *);
 	void Run(void);
-	void GetDiagnostics(void);;
+	void GetDiagnostics(void);
+	
+protected:
+	float GetSpeedDecreaseFactor(void);
 	
 };
 

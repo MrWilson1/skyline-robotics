@@ -160,11 +160,48 @@ SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
  */
 void SingleJoystick::Run()
 {
-	//float magnitude = GetMagnitude();
-	//float magnitudeMultiplier = GetMagnitudeMultiplier();
+	float x = mJoystick->GetX();
+	float y = mJoystick->GetY();
 	
+	float squaredX = (x < 0) ? -(x * x) : (x * x);
+	float squaredY = (y < 0) ? -(y * y) : (y * y);
 	
+	float speedFactor = GetSpeedDecreaseFactor();
+	SmartDashboard::GetInstance()->Log(speedFactor, "SingleJoystick::speedFactor");	
+	squaredY *= speedFactor;
+	squaredX *= speedFactor;
+		
+	mRobotDrive->ArcadeDrive(squaredY,-squaredX);
 }
+
+/**
+ * SingleJoystick::GetSpeedDecreaseFactor
+ * 
+ * Identical to TankJoysticks::GetSpeedDecreaseFactor but uses just one joystick.
+ * 
+ * Input:
+ * 	-None
+ * 	
+ * Outputs:
+ *   - A float, ranging from about 0.3 to 1.0
+ * 
+ * Side-effects:
+ *   - Logs data to SmartDashboard
+ *   - Reads data from the joystick
+ */
+
+float SingleJoystick::GetSpeedDecreaseFactor(void)
+{
+	float rawFactor = mJoystick->GetTwist();
+	float normalizedFactor = Tools::Coerce(
+			rawFactor,
+			-1.0,
+			1.0,
+			kSpeedFactorMin,
+			kSpeedFactorMax);
+	return -normalizedFactor;
+}
+
 
 /**
  * SingleJoystick::GetDiagnostics()
