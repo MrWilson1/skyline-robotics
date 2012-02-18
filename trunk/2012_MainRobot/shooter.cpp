@@ -157,8 +157,7 @@ void ShooterController::Run(void)
 	
 	// SmartDashboard::GetInstance()->Log(throttle, "Shooter Throttle: ");
 	
-	if ( setToManual )
-	{
+	if ( setToManual ) {
 		// mShooter->SetSpeedManually(throttle);
 		mShooter->SetSpeedManually(twist);
 	} else if ( setToPreset ) {
