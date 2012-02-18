@@ -1,15 +1,11 @@
 /**
- * controller.h
+ * @brief Contains the code used to control the robot
+ * based on user input.
  * 
- * This file contains all the code used to allow a human
- * to control any aspect of the robot.
- * 
- * Every class in here should have 'BaseComponent' as
+ * @details
+ * Every class in here should have 'BaseController' as
  * their parent class, so they can be placed under
  * MyRobot::mComponentCollection.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
  */
 
 #ifndef CONTROLLER_H_
@@ -22,18 +18,37 @@
 // 3rd-party libraries
 #include "WPILib.h"
 
-// Program libraries
-#include "component.h"
-#include "tools.h"
+// Our code
+#include "components.h"
 
 /**
- * TankJoysticks
+ * @brief A baseclass for any controller that uses 
+ * a joystick.
  * 
- * Takes two joysticks and drives the robot, tank-style.
+ * @details
+ * Implements some common functions.
+ */
+class BaseJoystickController : public BaseController
+{
+protected:
+	static const float kSpeedFactorMin = 0.3;
+	static const float kSpeedFactorMax = 1.0;
+	float squareInput(float);
+	float getSpeedFactor(Joystick *);
+	
+public:
+	BaseJoystickController();
+	void Run() = 0;
+};
+
+
+/**
+ * @brief Takes two joysticks and drives the robot, tank-style.
  * 
+ * @details
  * Todo: document what every button on the Joystick does.
  */
-class TankJoysticks : public BaseController
+class TankJoysticks : public BaseJoystickController
 {
 protected:
 	Joystick *mLeftJoystick;
@@ -51,33 +66,34 @@ protected:
 	float GetSpeedDecreaseFactor(void);
 };
 
-class SingleJoystick : public BaseController
+/**
+ * @brief Takes a single joystick and drives the robot,
+ * arcade style.
+ * 
+ * @details
+ * Todo: document what every button on the Joystick
+ * does.
+ */
+class SingleJoystick : public BaseJoystickController
 {
 protected:
 	RobotDrive *mRobotDrive;
 	Joystick *mJoystick;
-	
-	static const float kSpeedFactorMin = 0.3;
-	static const float kSpeedFactorMax = 1.0;
-	
-	typedef std::pair<float, float> Wheel;
-	
+		
 public:
 	SingleJoystick(RobotDrive *, Joystick *);
+	float GetSpeedDecreaseFactor();
 	void Run(void);
-	void GetDiagnostics(void);
-	
-protected:
-	float GetSpeedDecreaseFactor(void);
-	
 };
 
 /**
- * KinectController
+ * @brief Takes a Kinect and uses hand gestures to drive the robot.
  * 
- * Takes a Kinect and uses hand gestures to drive the robot.
+ * @details
+ * This particular KinectController uses the z-axis of the hands
+ * to set the speeds of each side of the robot (tank-style)
  * 
- * Todo: Document what hand gestures this uses.
+ * Todo: Document specifically what hand gestures this uses.
  */
 class KinectController : public BaseController
 {
@@ -99,7 +115,5 @@ protected:
 	float GetLeftArmDistance(void);
 	float GetRightArmDistance(void);
 };
-
-float Round(float, int);
 
 #endif

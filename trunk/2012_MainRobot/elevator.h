@@ -1,11 +1,6 @@
 /**
- * elevator.h
- * 
- * Provides code to control and manipulate the elevator, and 
+ * @brief Provides code to control and manipulate the elevator, and 
  * the shooter-elevator interface.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
  */
 
 #ifndef ELEVATOR_H_
@@ -14,7 +9,11 @@
 // 3rd-party libraries
 #include "WPILib.h"
 
-class Elevator
+// Our code
+#include "components.h"
+
+
+class Elevator : public BaseComponent
 {
 protected:
 	SpeedController *mSpeedController; 	// Controls the belt
@@ -35,6 +34,5 @@ public:
 	bool PushBallToBasket(void);
 	bool IsBallTransitioning(void);
 };
-
 
 #endif

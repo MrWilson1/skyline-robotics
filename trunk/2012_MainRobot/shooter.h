@@ -12,7 +12,7 @@
 
 #include "WPILib.h"
 #include "sensors.h"
-#include "tools.h"
+#include "components.h"
 
 class Shooter
 {

@@ -30,7 +30,7 @@
 // Program modules
 #include "sensors.h"
 #include "controller.h"
-#include "component.h"
+#include "components.h"
 #include "shooter.h"
 #include "target.h"
 

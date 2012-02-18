@@ -14,7 +14,7 @@
 #include "WPILib.h"
 
 // Program modules
-#include "component.h"
+#include "components.h"
 
 class RangeFinder
 {

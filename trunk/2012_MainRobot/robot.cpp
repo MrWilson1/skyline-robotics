@@ -1,10 +1,9 @@
-
-
-#include "MyRobot.h"
+#include "robot.h"
 
 
 MainRobot::MainRobot(void)
 {
+	// Empty
 }
 
 /**

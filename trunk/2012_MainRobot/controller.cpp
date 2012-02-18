@@ -1,40 +1,69 @@
-/**
- * controller.cpp
- * 
- * This file contains all the code used to allow a human
- * to control any aspect of the robot.
- * 
- * Every class in here should have 'BaseComponent' as
- * their parent class, so they can be placed under
- * MyRobot::mComponentCollection.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
- */
-
 #include "controller.h"
 
+
 /**
- * TankJoysticks::TankJoysticks
- * 
- * Creates an instance of a controller.  It requires the
- * robot drive, and two joysticks.
- * 
- * Inputs:
- *   - RobotDrive *robotDrive
- *     A pointer to the RobotDrive object created in MyRobot::InitiateHardware
- *   - Joystick *leftJoystick
- *     A pointer to the left joystick (controls the left side of the robot)
- *   - Joystick *rightJoystick
- *     A pointer to the right joystick (controls the right side of the robot)
- * 
- * Outputs:
- *   - None
- * 
- * Side-effects:
- *   - See description
+ * @brief An empty constructor -- currently does nothing.
  */
-TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joystick *rightJoystick)
+BaseJoystickController::BaseJoystickController():
+		BaseController()
+{
+	// Empty
+}
+
+/**
+ * @brief Squares the input of any number to allow more
+ * sensitive driving when the joystick is pushed less.
+ * 
+ * @param[in] number The number to square.  Should be
+ * between -1.0 and 1.0
+ * 
+ * @returns The squared number (between -1.0 and 1.0, 
+ * depending on the original number)
+ */
+float BaseJoystickController::squareInput(float number)
+{
+	return (number < 0) ? - (number * number) : (number *number);
+}
+
+/**
+ * @brief Gets the magnitude of the robot based on the
+ * throttle.
+ * 
+ * @param[in] joystick A pointer to the joystick to get the 
+ * throttle value from.
+ * 
+ * @returns A number between BaseJoystickController::kSpeedFactorMin 
+ * BaseJoystickController::kSpeedFactorMax. 
+ */
+float BaseJoystickController::getSpeedFactor(Joystick *joystick)
+{
+	float rawFactor = joystick->GetTwist();
+	float normalizedFactor = Tools::Coerce(
+			rawFactor,
+			-1.0,
+			1.0,
+			kSpeedFactorMin,
+			kSpeedFactorMax);
+	return normalizedFactor;
+}
+
+
+
+/**
+ * @brief A method of driving the robot via TankDrive with two
+ * joysticks
+ * 
+ * @param[in] robotDrive A pointer to the RobotDrive object created 
+ * in MyRobot::InitiateHardware
+ * 
+ * @param[in] leftJoystick A pointer to the left joystick 
+ * (controls the left side of the robot)
+ * 
+ * @param[in] rightJoystick A pointer to the right joystick 
+ * (controls the right side of the robot)
+ */
+TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joystick *rightJoystick):
+		BaseJoystickController()
 {
 	mRobotDrive = robotDrive;
 	mLeftJoystick = leftJoystick;
@@ -42,110 +71,49 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
 }
 
 /**
- * TankJoysticks::Run
+ * @brief This method is called automatically during MyRobot::OperatorControl
  * 
- * This method is called automatically during MyRobot::OperatorControl
+ * @details
  * It should contain no 'Wait' statements or excessive loops.
  * 
- * Inputs:
- *   - None
- * 
- * Outputs:
- *   - None
- * 
- * Side-effects:
- *   - Drives the robot
- *   - Logs the left and right speed values to the SmartDashboard
- *   - Reads values from both joysticks 
+ * This will currently also log the left and right speed values to the
+ * SmartDashboard. 
  */
 void TankJoysticks::Run(void)
 {
 	SmartDashboard::GetInstance()->Log("Alive", "Tank status");
-	float leftY = mLeftJoystick->GetY();
-	float rightY = mRightJoystick->GetY(); 
+	float left = mLeftJoystick->GetY();
+	float right = mRightJoystick->GetY(); 
 	
-	float squaredLeftY = (leftY < 0) ? -(leftY * leftY) : (leftY * leftY);
-	float squaredRightY = (rightY < 0) ? -(rightY * rightY) : (rightY * rightY);
+	float squaredLeft = squareInput(left);
+	float squaredRight = squareInput(right);
 	
-	float speedFactor = GetSpeedDecreaseFactor();
+	float speedFactor = getSpeedFactor(mLeftJoystick);
 	
-	squaredLeftY *= speedFactor;
-	squaredRightY *= speedFactor;
+	squaredLeft *= speedFactor;
+	squaredRight *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(squaredLeftY, "Drive left power");
-	SmartDashboard::GetInstance()->Log(squaredRightY, "Drive right power");
-	SmartDashboard::GetInstance()->Log(speedFactor, "Drive max power");
+	SmartDashboard::GetInstance()->Log(squaredLeft, "TankJoysticks::squaredLeft");
+	SmartDashboard::GetInstance()->Log(squaredRight, "TankJoysticks::squaredRight");
+	SmartDashboard::GetInstance()->Log(speedFactor, "TankJoysticks::speedFactor");
 	
-	mRobotDrive->TankDrive(squaredLeftY, squaredRightY);
-	
-	
-	return;
-}
-
-/**
- * TankController::GetSpeedDecreaseFactor
- * 
- * Reads the throttle on the left joystick to determine the
- * overall robot speed.  You multiply the value returned by
- * this function to the actual raw speed to slow the overall
- * power down based on user input.
- * 
- * The higher the throttle, the more the
- * power.  There's no way to choke the speed all the way
- * down to zero for usability reasons -- the lowest number this
- * will return is about 0.3, and the highest is exactly 1.0 to
- * prevent the robot from totally halting.
- * 
- * Inputs:
- *   - None
- * 
- * Outputs:
- *   - A float, ranging from about 0.3 to 1.0
- * 
- * Side-effects:
- *   - Logs data to SmartDashboard
- *   - Reads data from the joystick
- */
-float TankJoysticks::GetSpeedDecreaseFactor(void)
-{
-	float rawFactor = mLeftJoystick->GetThrottle();	// Returns a range from -1.0 to 1.0
-	float normalizedFactor = (rawFactor + 1) / 2; 	// Sets the range from between 0.0 to 1.0
-
-	float range = kSpeedFactorMax - kSpeedFactorMin;
-	float speedFactor = normalizedFactor * range + kSpeedFactorMin;  // This relies on the rawFactor being from 0.0 to 1.0.
-	
-	// Something peculiar is happening with the abs functions:
-	// std::abs seems to do integers only, and I find it 
-	// suspicious that fabs isn't in the std namespace.
-	// Doing it manually just in case.
-	float absSpeedFactor = (speedFactor < 0) ? -speedFactor : speedFactor;
-	
-	return absSpeedFactor;
+	mRobotDrive->TankDrive(squaredLeft, squaredRight);
 }
 
 
-///////////////////////
-
 
 /**
- * SingleJoystick::SingleJoystick
+ * @brief A method of controlling the robot by using only
+ * one joystick.
  * 
+ * @details
  * This is a form of controlling the robot by using the single
  * Extreme 3D Pro joystick.  This differs from our other
  * joysticks because it comes with twisting motions.
  * 
- * Inputs:
- *   - RobotDrive *robotDrive
- *     A pointer to the robotDrive
- *   - Joystick *joystick
- *     A pointer to the joystick -- must be the Extreme 3D Pro
- *     joystick
- * 
- * Output:
- *   - None
- * 
- * Side-effects:
- *   - Creates the object
+ * @param[in] robotDrive A pointer to the robotdrive
+ * @param[in] joystick A pointer to the joystick (use the Extreme
+ * 3d Pro joystick)
  */
 SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
 {
@@ -154,40 +122,36 @@ SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
 }
 
 /**
- * SingleJoystick::Run()
+ * @brief This method is called automatically during MyRobot::OperatorControl
  * 
- * In progress, currently empty.
+ * @details
+ * It should contain no 'Wait' statements or excessive loops.
+ * 
+ * This will currently also log values to the SmartDashboard.
  */
 void SingleJoystick::Run()
 {
 	float x = mJoystick->GetX();
 	float y = mJoystick->GetY();
 	
-	float squaredX = (x < 0) ? -(x * x) : (x * x);
-	float squaredY = (y < 0) ? -(y * y) : (y * y);
+	float squaredX = squareInput(x);
+	float squaredY = squareInput(y);
 	
-	float speedFactor = GetSpeedDecreaseFactor();
-	SmartDashboard::GetInstance()->Log(speedFactor, "SingleJoystick::speedFactor");	
+	// Temporary
+	float speedFactor = GetSpeedDecreaseFactor();	
+	
 	squaredY *= speedFactor;
 	squaredX *= speedFactor;
+	
+	SmartDashboard::GetInstance()->Log(squaredX, "SingleJoystick::squaredX");
+	SmartDashboard::GetInstance()->Log(squaredY, "SingleJoystick::squaredY");
+	SmartDashboard::GetInstance()->Log(speedFactor, "SingleJoystick::speedFactor");
 		
 	mRobotDrive->ArcadeDrive(squaredY,-squaredX);
 }
 
 /**
- * SingleJoystick::GetSpeedDecreaseFactor
- * 
- * Identical to TankJoysticks::GetSpeedDecreaseFactor but uses just one joystick.
- * 
- * Input:
- * 	-None
- * 	
- * Outputs:
- *   - A float, ranging from about 0.3 to 1.0
- * 
- * Side-effects:
- *   - Logs data to SmartDashboard
- *   - Reads data from the joystick
+ * @brief Temporary.
  */
 
 float SingleJoystick::GetSpeedDecreaseFactor(void)
@@ -199,51 +163,43 @@ float SingleJoystick::GetSpeedDecreaseFactor(void)
 			1.0,
 			kSpeedFactorMin,
 			kSpeedFactorMax);
-	return -normalizedFactor;
+	return normalizedFactor;
 }
+
 
 
 /**
- * SingleJoystick::GetDiagnostics()
+ * @brief A way to control the robot by using the Kinect, during
+ * Hybrid mode.
  * 
- * Get diagnostic data.
- * 
- * Inputs:
- *   - None
- * 
- * Outputs:
- *   - None
- *   
- * Side-effects:
- *   - Logs all the joystick values to SmartDashboard
+ * @param[in] robotDrive A pointer to the robotdrive.
+ * @param[in] kinect A pointer to the Kinect.
  */
-void SingleJoystick::GetDiagnostics()
-{
-	float rawX = mJoystick->GetX();
-	float rawY = mJoystick->GetY();
-	float rawZ = mJoystick->GetZ();
-	float rawTwist = mJoystick->GetTwist();
-	float rawThrottle = mJoystick->GetThrottle();
-	bool isTriggerOn = mJoystick->GetTrigger();
-	
-	SmartDashboard::GetInstance()->Log(rawX, "SingleJoystick::rawX");
-	SmartDashboard::GetInstance()->Log(rawY, "SingleJoystick::rawY");
-	SmartDashboard::GetInstance()->Log(rawZ, "SingleJoystick::rawZ");
-	SmartDashboard::GetInstance()->Log(rawTwist, "SingleJoystick::rawTwist");
-	SmartDashboard::GetInstance()->Log(rawThrottle, "SingleJoystick::rawThrottle");
-	SmartDashboard::GetInstance()->Log(isTriggerOn, "SingleJoystick::isTriggerOn");
-}
-
-
-
-
-// Todo: Document KinectController
 KinectController::KinectController(RobotDrive *robotDrive, Kinect *kinect)
 {
 	mRobotDrive = robotDrive;
 	mKinect = kinect;
 }
 
+/**
+ * @brief This method is called automatically during MyRobot::OperatorControl
+ * 
+ * @details
+ * It should contain no 'Wait' statements or excessive loops.
+ * 
+ * The left hand controls the left treads.  The right hand controls the
+ * right treads.  The closer the hands are to the robot, the faster
+ * that side spins.  Pulling your hands back will soon make the robot back up.
+ * 
+ * The moment any of your hands are between the shoulders, the robot will
+ * freeze.  Therefore, the safest way to immediately halt the robot is 
+ * to suddenly cross your arms in an 'X' shape.
+ * 
+ * Raising both your hands up will make the robot shoot (like shooting a
+ * basketball)
+ * 
+ * This will currently also log values to the SmartDashboard.
+ */
 void KinectController::Run(void)
 {
 	if (mKinect->GetTrackingState() == Kinect::kTracked) {
@@ -267,11 +223,21 @@ void KinectController::Run(void)
 	}
 }
 
+/**
+ * @brief Halts the robot.
+ */
 void KinectController::HaltRobot(void)
 {
 	mRobotDrive->TankDrive(0.0, 0.0);
 }
 
+/**
+ * @brief Returns how far the left hand is.
+ * 
+ * @returns A number between -1.0 and 1.0.
+ * The closer the hand is to the Kinect, the higher the 
+ * returned value.
+ */
 float KinectController::GetLeftArmDistance(void)
 {
 	float originJoint = mKinect->GetSkeleton().GetShoulderLeft().z;
@@ -280,11 +246,18 @@ float KinectController::GetLeftArmDistance(void)
 	float distance = originJoint - movingJoint;
 	float output = Tools::Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
 	
-	SmartDashboard::GetInstance()->Log(Round(output, 2), "Left movement");
+	SmartDashboard::GetInstance()->Log(output, "Left movement");
 	
 	return output;
 }
 
+/**
+ * @brief Returns how far the right hand is.
+ * 
+ * @returns A number between -1.0 and 1.0.
+ * The closer the hand is to the Kinect, the higher the 
+ * returned value.
+ */
 float KinectController::GetRightArmDistance(void)
 {
 	float originJoint = mKinect->GetSkeleton().GetShoulderRight().z;
@@ -293,11 +266,21 @@ float KinectController::GetRightArmDistance(void)
 	float distance = originJoint - movingJoint;
 	float output = Tools::Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
 	
-	SmartDashboard::GetInstance()->Log(Round(output, 2), "Right movement");
+	SmartDashboard::GetInstance()->Log(output, "Right movement");
 	
 	return output;	
 }
 
+/**
+ * @brief Checks to see if the player is crossing their arms.
+ * 
+ * @details
+ * If any of the hands fall between the two shoulders,
+ * the robot will stop movement.
+ * 
+ * @returns 'true' if the hands are outside of the shoulders;
+ * 'false' if they are.
+ */
 bool KinectController::IsPlayerReady(void)
 {
 	float rightOrigin = mKinect->GetSkeleton().GetShoulderRight().x;
@@ -312,6 +295,17 @@ bool KinectController::IsPlayerReady(void)
 	return true;
 }
 
+/**
+ * @brief Checks to see if the player is shooting.
+ * 
+ * @details
+ * The robot will check to see if the player has made
+ * a 'basketball shooting' movement to shoot
+ * the ball.
+ * 
+ * @returns 'true' if the player's hands are
+ * elevated above the head; 'false' if they aren't.
+ */
 bool KinectController::IsPlayerShooting(void)
 {
 	float rightOrigin = mKinect->GetSkeleton().GetShoulderRight().y;
@@ -330,20 +324,4 @@ bool KinectController::IsPlayerShooting(void)
 		return false;
 	}
 }
-
-/**
- * Round
- * 
- * A helper function to round numbers to a given
- * precision.
- * 
- * Todo: Remove this function.
- */
-float Round(float input, int precision)
-{
-	float multiple = pow(10, precision);
-	SmartDashboard::GetInstance()->Log(multiple, "Multiple");
-	return floorf(input * multiple + 0.5) / multiple;
-}
-
 

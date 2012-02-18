@@ -25,7 +25,7 @@
 #include "Vision/MonoImage.h"
 
 // Program modules
-#include "component.h"
+#include "components.h"
 
 
 // Used for the corners of targets.
