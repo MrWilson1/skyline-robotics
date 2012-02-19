@@ -1,13 +1,15 @@
+/*
+ * @file arm.h
+ * 
+ * @brief Provides code to control the arm.
+ */
+
 #ifndef ARM_H_
 #define ARM_H_
 
 #include "WPILib.h"
 #include "motorLimitWatchdog.h"
 #include "components.h"
-
-/**
- * @brief Provides code to control the arm.
- */
 
 class Arm
 {

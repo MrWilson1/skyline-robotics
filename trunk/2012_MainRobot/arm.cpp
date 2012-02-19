@@ -1,12 +1,10 @@
 #include "arm.h"
 
 /**
- * @brief Controls the arm.
+ * @brief Constructor for Arm class.
  * 
  * @param[in] armMotor A pointer to the motor that controls the arm.
- * 
  * @param[in] topLimit A pointer to the top limit switch.
- * 
  * @param[in] bottomLimit A pointer to the bottom limit switch.
  */
 
@@ -51,11 +49,11 @@ Arm::~Arm ()
 }
 
 /**
- * @brief Makes the arm go up. If the top limit switch is pressed, then the arm stops going up.
+ * @brief Makes the arm go up. 
  * 
- * @param[in] None.
- * 
- * @param[out] None.
+ * @details
+ * If the top limit switch is pressed, then the arm stops going up.
+ * In other words, when the arm is at maximum height, it stops automatically.
  */
 
 void Arm::GoUp()
@@ -70,9 +68,9 @@ void Arm::GoUp()
 /**
  * @brief Makes the arm go down.
  * 
- * @param[in] None.
- * 
- * @param[out] None.
+ * @details
+ * If the bottom limit switch is pressed, then the arms stop going down.
+ * In other words, when the arm is at minimum height, it stops automatically.
  */
 
 void Arm::GoDown()
@@ -86,10 +84,6 @@ void Arm::GoDown()
 
 /**
  * @brief Makes the arm stop.
- * 
- * @param[in] None.
- * 
- * @param[out] None.
  */
 
 void Arm::Stop() {
@@ -100,7 +94,6 @@ void Arm::Stop() {
  * @brief Interacts with joystick to control arm.
  * 
  * @param[in] arm Pointer to the arm.
- * 
  * @param[in] joystick Pointer to the joystick.
  */
 
@@ -113,7 +106,8 @@ ArmController::ArmController (Arm *arm, Joystick *joystick) {
  * @brief This method is called automatically during MyRobot::OperatorControl.
  * 
  * @details
- * While button 4 is pushed, the arm goes up. While button 5 is pushed, the arm goes down.
+ * While button 4 is pushed, the arm goes up. 
+ * While button 5 is pushed, the arm goes down.
  * While neither button is pushed, the arm stops.
  */
 

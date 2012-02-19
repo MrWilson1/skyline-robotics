@@ -1,14 +1,15 @@
-/**
- * shooter.h
- * 
- * Operates device that shoots basketballs by spinning wheels.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
- */
-
 #include "shooter.h"
 #include <cmath>
+
+/**
+ * @brief Constructor for shooter class.
+ * 
+ * @param[in] topLeftSpeedController Pointer to the top left speed controller.
+ * @param[in] topRightSpeedController Pointer to the top right speed controller.
+ * @param[in] bottomLeftSpeedController Pointer to the bottom left speed controller.
+ * @param[in] bottomRightSpeedController Pointer to the bottom right speed controller.
+ * @param[in] rangeFinder Pointer to a RangeFinder instance.
+ */
 
 Shooter::Shooter(
 		SpeedController *topLeftSpeedController, 
@@ -25,19 +26,9 @@ Shooter::Shooter(
 }
 
 /**
- * Shooter::CalculateDistance
+ * @brief Calculates distance of robot from the hoop.
  * 
- * Takes position of the robot on the x-axis, position of the robot on the y-axis, and orientation (angle) of the robot to calculate its distance from the hoop.
- * This assumes that one ultrasound sensor is on the north side of the robot, and the other ultrasound sensor is on the west side.
- * 
- * Input:
- * 	-None
- * 
- * Output:
- * 	-distance
- * 	
- * Side-effects:
- * 	-None
+ * @returns Distance of robot from the hoop in inches.
  */
 
 float Shooter::CalculateDistance()
@@ -47,23 +38,11 @@ float Shooter::CalculateDistance()
 }
 
 /**
- * Shooter::Shoot
+ * @brief Makes the wheels spin at a certain speed, set manually in Manual mode.
  * 
- * Finds position of robot, and gives it to Shooter::CalculateSpeed, 
- * from which it gets the correct speed for the wheels to turn. 
- * When the joystick trigger is pulled, 
- * the wheels spin at the speed from Shooter::CalculateSpeed, 
- * and the ball is loaded into the shooter.
- * 
- * Input:
- * 	-None
- * 
- * Output:
- * 	-None
- * 	
- * Side-effects:
- * 	-None
+ * @param[in] speed Manually set speed.
  */
+
 void Shooter::SetSpeedManually(float speed)
 {
 	float slowSpeed = speed * kReductionFactor;
@@ -73,6 +52,19 @@ void Shooter::SetSpeedManually(float speed)
 	mBottomLeftSpeedController->Set(-1 * speed);
 	mBottomRightSpeedController->Set(speed);
 }
+
+/**
+ * @brief Makes the wheels spin at a certain speed, 
+ * set automatically in Preset mode.
+ * 
+ * @details
+ * Takes distance between robot and hoop and
+ * determines the necessary initial velocity for the ball. 
+ * Converts the velocity to a valid value for the
+ * speed controller and passes that value to 
+ * Shooter::SetSpeedManually to set the wheels to that speed.
+ * 
+ */
 
 void Shooter::SetSpeedAutomatically()
 {
@@ -89,20 +81,12 @@ void Shooter::SetSpeedAutomatically()
 }
 
 /**
- * Shooter::CalculateSpeed
+ * @brief Calculates how fast the ball needs to be as it leaves the shooter
+ * depending on the distance between the shooter and the hoop.
  * 
- * Receives position of robot from Shooter::Shoot,
- * and performs calculations to find the speed at which the wheels
- * need to turn in order to shoot the ball the correct distance.
+ * @param[in] distance Distance from shooter to hoop.
  * 
- * Input:
- * 	-position
- * 
- * Output:
- * 	-speed
- * 	
- * Side-effects:
- * 	-None
+ * @returns Necessary initial velocity for ball.
  */
 
 float Shooter::CalculateSpeed(float distance) {
@@ -121,6 +105,13 @@ float Shooter::CalculateSpeed(float distance) {
 	return speed;
 }
 
+/**
+ * @brief Constructor for ShooterController class.
+ * 
+ * @param[in] shooter Pointer to shooter.
+ * @param[in] joystick Pointer to joystick.
+ */
+
 ShooterController::ShooterController(Shooter *shooter, Joystick *joystick)
 {
 	mShooter = shooter;
@@ -128,18 +119,7 @@ ShooterController::ShooterController(Shooter *shooter, Joystick *joystick)
 }
 
 /**
- * ShooterController::Run
- * 
- * Uses manual and preset modes for the shooter depending on joystick input.
- * 
- * Input:
- * 	-None
- * 
- * Output:
- * 	-None
- * 	
- * Side-effects:
- * 	-None
+ * @brief Uses manual and preset modes for the shooter depending on joystick input.
  */
 
 void ShooterController::Run(void)
