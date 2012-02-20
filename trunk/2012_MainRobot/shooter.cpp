@@ -118,7 +118,7 @@ float Shooter::CalculateSpeed(float distance) {
 	float initialVelocityDenom = 2 * ( height - ( distance * tan(angle) ) ) * ( cos(angle) ) * ( cos(angle) ); 
 	float initialVelocity = sqrt ( initialVelocityNum / initialVelocityDenom );
 		
-	float speed = initialVelocity / 336;
+	float speed = initialVelocity / kMaxInitialVelocity;
 	// todo: experiment to find actual maximum initial velocity to which wheels can accelerate ball
 	
 	return speed;
@@ -152,20 +152,20 @@ void ShooterController::Run(void)
 {
 	bool setToManual = mJoystick->GetRawButton(2); // manual	
 	bool setToPreset = mJoystick->GetTrigger(); // preset
-	// float throttle = mJoystick->GetThrottle();
+	float throttle = mJoystick->GetThrottle();
 	
-	float twist = mJoystick->GetTwist();
-	float z = mJoystick->GetZ();
-	SmartDashboard::GetInstance()->Log(setToManual, "Set to manual? ");
-	SmartDashboard::GetInstance()->Log(setToPreset, "Set to preset? ");
-	SmartDashboard::GetInstance()->Log(twist, "Shooter Twist: ");
-	SmartDashboard::GetInstance()->Log(z, "Shooter z: ");
+	// float twist = mJoystick->GetTwist();
+	// float z = mJoystick->GetZ();
+	// SmartDashboard::GetInstance()->Log(setToManual, "Set to manual? ");
+	// SmartDashboard::GetInstance()->Log(setToPreset, "Set to preset? ");
+	// SmartDashboard::GetInstance()->Log(twist, "Shooter Twist: ");
+	// SmartDashboard::GetInstance()->Log(z, "Shooter z: ");
 	
-	// SmartDashboard::GetInstance()->Log(throttle, "Shooter Throttle: ");
+	SmartDashboard::GetInstance()->Log(throttle, "Shooter Throttle: ");
 	
 	if ( setToManual ) {
-		// mShooter->SetSpeedManually(throttle);
-		mShooter->SetSpeedManually(twist);
+		mShooter->SetSpeedManually(throttle);
+		// mShooter->SetSpeedManually(twist);
 	} else if ( setToPreset ) {
 		mShooter->SetSpeedAutomatically();
 	} else {

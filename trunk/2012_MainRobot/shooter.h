@@ -38,6 +38,7 @@ protected:
 	static const float kMaxSpeed = 28.373;
 	static const float kMinSpeed = 22.698; // assuming that the minimum distance is 5 feet, and the maximum distance is 12 feet
 	static const float kReductionFactor = 0.9;
+	static const float kMaxInitialVelocity = 336;
 
 public:
     Shooter(SpeedController*, SpeedController*, SpeedController*, SpeedController*, RangeFinder*);

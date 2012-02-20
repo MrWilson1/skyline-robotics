@@ -109,6 +109,8 @@ void MainRobot::InitializeComponents(void)
 			mBottomLeftShooter,
 			mBottomRightShooter,
 			mRangeFinder);
+	mLeftKinectStick = new KinectStick::KinectStick(1);
+	mRightKinectStick = new KinectStick::KinectStick(2);
 }
 
 /**
@@ -122,9 +124,10 @@ void MainRobot::InitializeComponents(void)
  */
 void MainRobot::InitializeControllers(void)
 {
-	mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
+	mControllerCollection.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect));
 	
 	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
 	//mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));

@@ -86,6 +86,8 @@ protected:
 	Shooter *mShooter;
 	BallTransfer *mBallTransfer;
 	Elevator *mElevator;
+	KinectStick *mLeftKinectStick;
+	KinectStick *mRightKinectStick;
 	
 	// Controller -- see controller.h
 	std::vector<BaseController*> mControllerCollection;

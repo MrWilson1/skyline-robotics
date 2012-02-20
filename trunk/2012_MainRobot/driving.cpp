@@ -235,8 +235,6 @@ void BaseKinectController::HaltRobot(void)
 	mRobotDrive->TankDrive(0.0, 0.0);
 }
 
-
-
 /**
  * @brief A way to control the robot by using the Kinect during
  * Hybrid mode, using the z-distance of the hands to control 
@@ -365,3 +363,88 @@ bool KinectController::IsPlayerShooting(void)
 	}
 }
 
+/**
+ * @brief Constructor for KinectAngleController class.
+ * 
+ * @param[in] robotDrive Pointer to RobotDrive object.
+ * @param[in] leftKinectStick Pointer to left Kinectstick.
+ * @param[in] rightKinectStick Pointer to right Kinectstick.
+ * @param[in] kinect Pointer to the Kinect.
+ */
+KinectAngleController::KinectAngleController(RobotDrive *robotDrive, KinectStick *leftKinectStick, 
+		KinectStick *rightKinectStick, Kinect *kinect) :
+		BaseKinectController(robotDrive, kinect)
+{
+	mLeftKinectStick = leftKinectStick;
+	mRightKinectStick = rightKinectStick;
+}
+
+/**
+ * @brief Checks to see if player has made a pushing-forward motion to shoot.
+ * 
+ * @returns True if both of the player's wrists are 
+ * a certain distance (0.3) away from his or her shoulders.
+ * 
+ * False otherwise.
+ */
+bool KinectAngleController::IsManuallyShooting(void)
+{
+	float rightOrigin = mKinect->GetSkeleton().GetShoulderRight().z;
+	float leftOrigin = mKinect->GetSkeleton().GetShoulderLeft().z;
+	float rightMoving = mKinect->GetSkeleton().GetWristRight().z;
+	float leftMoving = mKinect->GetSkeleton().GetWristLeft().z;
+	
+	float rightDelta = rightMoving - rightOrigin;
+	float leftDelta = leftMoving - leftOrigin;
+	
+	// Pushing forward to shoot.
+	if ((fabs(rightDelta) > kPushThreshold) and (fabs(leftDelta) > kPushThreshold)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * @brief This method is called automatically during MyRobot:AutonomousControl.
+ * 
+ * @details
+ * Uses KinectStick class to drive the robot like a tank.
+ * 
+ * When the arms are straight out (perpendicular to the rest of the body), 
+ * the speed of the robot is set to 0.0.
+ * Raising the arms in an arc increases the speed forward.
+ * Lowering the arms in an arc increases the speed backward.
+ * 
+ * The robot will freeze when either of the driver's hands is between
+ * the shoulders. Therefore, the easiest way to stop the robot
+ * is to cross one's arms in an 'X' shape.
+ * 
+ * Moving both one's wrists a certain distance forward (0.3) 
+ * will tell the robot to shoot.
+ * 
+ * This will log values to SmartDashboard.
+ */
+void KinectAngleController::Run(void)
+{
+	bool isPlayerReady = IsPlayerReady();
+	SmartDashboard::GetInstance()->Log(isPlayerReady, "KinectAngleController::IsReady()");
+	
+	if ( isPlayerReady ) {
+		float rightY = mRightKinectStick->GetY();
+		float leftY = mLeftKinectStick->GetY();
+		SmartDashboard::GetInstance()->Log(rightY, "Right Kinectstick y-value: ");
+		SmartDashboard::GetInstance()->Log(leftY, "Left Kinectstick y-value: ");
+		mRobotDrive->TankDrive(leftY * kSpeedDecreaseFactor * -1, rightY * kSpeedDecreaseFactor * -1);
+	} else {
+		HaltRobot();
+	}
+	
+	bool isShooting = IsManuallyShooting();
+	SmartDashboard::GetInstance()->Log(isShooting, "KinectAngleController::IsManuallyShooting()");
+	if (isShooting) {
+		// empty
+	} else {
+		// empty
+	}
+}

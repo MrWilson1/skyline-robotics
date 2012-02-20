@@ -25,6 +25,7 @@
 
 // Our code
 #include "components.h"
+#include "shooter.h"
 
 /**
  * @brief A baseclass for any controller that uses 
@@ -160,16 +161,23 @@ protected:
  * @brief Uses a kinect to drive the robot -- this time, based on the
  * angle of the hands to the shoulders.
  */
+
 class KinectAngleController : public BaseKinectController
 {
 public:
-	KinectAngleController(RobotDrive *, Kinect*);
+	KinectAngleController(RobotDrive *, KinectStick *, KinectStick *, Kinect *);
 	void Run();
 	
 protected:
+	KinectStick *mLeftKinectStick;
+	KinectStick *mRightKinectStick;
+	
 	static const float kPushThreshold = 0.3;
-	bool isAutoShooting();
-	bool isManuallyShooting();
+	static const float kSpeedDecreaseFactor = 0.4;
+	// bool isAutoShooting();
+	//bool IsPlayerReady();
+	bool IsManuallyShooting();
+	
 };
 
 #endif
