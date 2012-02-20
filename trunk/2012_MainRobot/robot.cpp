@@ -66,6 +66,9 @@ void MainRobot::InitializeHardware(void)
 	// The camera is technically a hardware component, but WPILib's
 	// AxisCamera class has a built-in static method for returning
 	// instances of a camera
+	
+	mTestDigitalInput = new DigitalInput(
+			Ports::DigitalIo1);
 	return;
 }
 
@@ -109,6 +112,7 @@ void MainRobot::InitializeComponents(void)
 			mBottomLeftShooter,
 			mBottomRightShooter,
 			mRangeFinder);
+	//mTestThreadListener = new TestThreadListener();
 	mLeftKinectStick = new KinectStick::KinectStick(1);
 	mRightKinectStick = new KinectStick::KinectStick(2);
 }
@@ -137,6 +141,7 @@ void MainRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new TargetFinder());
 	
 	mControllerCollection.push_back(new TestMotor(mLeftJoystick, mTestMotor));
+	//mControllerCollection.push_back(new TestThreadController(mTestThreadListener));
 	return;
 }
 

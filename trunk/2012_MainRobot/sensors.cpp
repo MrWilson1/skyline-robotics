@@ -105,3 +105,21 @@ void GyroTest::Run()
 {
 	SmartDashboard::GetInstance()->Log(mGyro->GetAngle(), "Gyro");
 }
+
+
+/**
+ * @brief Creates an instance of the class.
+ */
+DigitalInputTestController::DigitalInputTestController(DigitalInput *digitalInput)
+{
+	mDigitalInput = digitalInput;
+}
+
+/**
+ * @brief Prints the value of the digital input to the
+ * SmartDashboard.
+ */
+void DigitalInputTestController::Run()
+{
+	SmartDashboard::GetInstance()->Log((bool) mDigitalInput->Get(), "DigitalInputTestController");
+}

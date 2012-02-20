@@ -1,9 +1,10 @@
 /**
- * @ target.h
+ * @file target.h
  * 
- * Classes all about using the camera, analyzing images, and sending
+ * @brief Classes all about using the camera, analyzing images, and sending
  * data back to the computer.
  * 
+ * @warning
  * In progress, do not use.
  */
 
@@ -23,6 +24,88 @@
 
 // Program modules
 #include "components.h"
+
+
+
+class TestThread : public Task
+{
+protected:
+	const char *mThreadName;
+	int *mSharedNumber;
+	int mCachedNumber;
+
+public:
+	TestThread(
+			const char *,
+			int *);
+	static void TaskWrapper(void *);
+	virtual void Run();
+	int CalcNum();
+};
+
+
+class TestThreadListener : public BaseComponent
+{
+protected:
+	int *mSharedNumber;
+	int mCachedNumber;
+	int mLonelyNumber;
+	TestThread mTestThread;
+	
+public:
+	TestThreadListener();
+	void Update();
+	int GetSharedNumber();
+	int GetLonelyNumber();
+};
+
+class TestThreadController : public BaseController
+{
+protected:
+	TestThreadListener *mTestThreadListener;
+	
+public:
+	TestThreadController(TestThreadListener *);
+	void Run();
+};
+
+
+/*
+class TargetFinderThread : public Task
+{
+protected:
+	const char *mName;
+	const char *mCameraIp;
+	vector<Target> *mVectorTarget;
+	vector<Target> *mVectorTargetCached;
+	static const double kTargetWidthInches = 24;
+	static const double kTargetHeightInches = 18;
+	
+public:
+	TargetFinderThread(
+			const char *,
+			const char *,
+			vector<Target> *);
+	~TargetFinderThread();
+	
+protected:
+	static void TaskWrapper(void *);
+	virtual void Run();
+	vector<Target> *GetTargets(HSLImage *);
+	AxisCamera & GetCamera(void);
+	double CalculateDistanceBasedOnWidth(double);
+};
+
+*/
+
+
+
+
+
+
+
+
+
 
 
 // Used for the corners of targets.

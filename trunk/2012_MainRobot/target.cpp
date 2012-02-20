@@ -1,20 +1,94 @@
-/**
- * vision.h
- * 
- * Classes all about using the camera, analyzing images, and sending
- * data back to the computer.
- * 
- * In progress, do not use.
- * 
- * TODO: Write this.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
- */
-
 // 3rd party modules
 #include "target.h"
 #include "Vision/ImageBase.h"
+
+
+TestThread::TestThread(
+		const char *threadName,
+		int *sharedNumber) :	
+		Task("TestThread", (FUNCPTR)TestThread::TaskWrapper)
+{
+	mThreadName = threadName;
+	CRITICAL_REGION(SEM_ID);
+		mSharedNumber = sharedNumber;
+	END_REGION;
+}
+
+void TestThread::TaskWrapper(void *thisObject)
+{
+	TestThread *self = (TestThread *) thisObject;
+	self->Run();
+}
+
+void TestThread::Run()
+{
+	while (this->Verify()) {
+		mCachedNumber += CalcNum();
+		CRITICAL_REGION(SEM_ID);
+			*mSharedNumber = mCachedNumber;
+		END_REGION;
+	}
+}
+
+int TestThread::CalcNum()
+{
+	Wait(10.0);
+	return 1;
+}
+
+
+
+TestThreadListener::TestThreadListener() :
+		BaseComponent(),
+		mTestThread("TestThread1", mSharedNumber)
+{
+	CRITICAL_REGION(SEM_ID);
+		mSharedNumber = new int(2);
+	END_REGION;
+	mLonelyNumber = 0;
+	bool result = mTestThread.Start();
+	SmartDashboard::GetInstance()->Log(result, "Listener::Result");
+}
+
+void TestThreadListener::Update()
+{
+	CRITICAL_REGION(SEM_ID);
+		mCachedNumber = *mSharedNumber;
+	END_REGION;
+	mLonelyNumber += 1;
+}
+
+int TestThreadListener::GetSharedNumber()
+{
+	return mCachedNumber;
+}
+
+int TestThreadListener::GetLonelyNumber()
+{
+	return mLonelyNumber;
+}
+
+
+TestThreadController::TestThreadController(TestThreadListener *testThreadListener) :
+		BaseController()
+{
+	mTestThreadListener = testThreadListener;
+}
+
+void TestThreadController::Run()
+{
+	mTestThreadListener->Update();
+	SmartDashboard::GetInstance()->Log(mTestThreadListener->GetSharedNumber(), "TestThread::SharedNumber");
+	SmartDashboard::GetInstance()->Log(mTestThreadListener->GetLonelyNumber(), "TestThread::LonelyNumber");
+}
+
+
+
+
+
+
+
+
 
 
 

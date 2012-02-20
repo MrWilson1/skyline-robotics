@@ -74,6 +74,7 @@ protected:
 	SpeedController *mBottomLeftShooter;
 	SpeedController *mBottomRightShooter;
 	SpeedController *mTestMotor;
+	DigitalInput *mTestDigitalInput;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
@@ -86,6 +87,7 @@ protected:
 	Shooter *mShooter;
 	BallTransfer *mBallTransfer;
 	Elevator *mElevator;
+	TestThreadListener *mTestThreadListener;
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
 	

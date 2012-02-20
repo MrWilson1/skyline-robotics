@@ -68,4 +68,19 @@ public:
 	void Run(void);
 };
 
+/**
+ * @brief A thin layer to test input and output 
+ * from a limit switch or other DigitalIO
+ * device.
+ */
+class DigitalInputTestController : public BaseController
+{
+protected:
+	DigitalInput * mDigitalInput;
+	
+public:
+	DigitalInputTestController(DigitalInput *);
+	void Run();
+};
+
 #endif
