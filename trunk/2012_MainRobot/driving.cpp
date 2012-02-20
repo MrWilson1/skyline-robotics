@@ -1,4 +1,4 @@
-#include "controller.h"
+#include "driving.h"
 
 
 /**
@@ -45,6 +45,21 @@ float BaseJoystickController::getSpeedFactor(Joystick *joystick)
 			kSpeedFactorMin,
 			kSpeedFactorMax);
 	return normalizedFactor;
+}
+
+
+
+TestMotor::TestMotor(Joystick *joystick, SpeedController *speedController)
+{
+	mJoystick = joystick;
+	mSpeedController = speedController;
+}
+
+void TestMotor::Run()
+{
+	float speed = mJoystick->GetY();
+	SmartDashboard::GetInstance()->Log(speed, "TestMotor::speed");
+	mSpeedController->Set(speed);
 }
 
 
@@ -169,16 +184,71 @@ float SingleJoystick::GetSpeedDecreaseFactor(void)
 
 
 /**
- * @brief A way to control the robot by using the Kinect, during
- * Hybrid mode.
+ * @brief A way to control the robot during Hybrid mode,
+ * using the angle of the hands to the shoulders on the 
+ * Y-axis.
+ * 
+ * @param[in] robotDrive A pointer to the robotdrive.
+ * @param[in] kinect A pointer to the kinect.
+ */
+BaseKinectController::BaseKinectController(
+		RobotDrive *robotDrive,
+		Kinect *kinect) :
+		BaseController()
+{
+	mRobotDrive = robotDrive;
+	mKinect = kinect;
+}
+
+/**
+ * @brief Checks to see if the player is ready to
+ * operate the robot.
+ * 
+ * @todo
+ * This assumes that the x-value of the left hand is lesser
+ * then the x-value of the right hand.  This assumption 
+ * needs to be tested.
+ * 
+ * @returns Returns false if:
+ *   - The skeleton is not being tracked
+ *   - The player's hands are crossed (relative 
+ *     to each other)
+ *     
+ *
+ */
+bool BaseKinectController::IsPlayerReady()
+{	
+	bool isPlayerTracked = mKinect->GetTrackingState() == Kinect::kTracked;
+	
+	float leftX = mKinect->GetSkeleton().GetWristLeft().x;
+	float rightX = mKinect->GetSkeleton().GetWristRight().y;
+	bool areHandsCrossed = leftX > rightX;
+	
+	return isPlayerTracked or areHandsCrossed;
+}
+
+/**
+ * @brief Halts the robot.
+ */
+void BaseKinectController::HaltRobot(void)
+{
+	mRobotDrive->TankDrive(0.0, 0.0);
+}
+
+
+
+/**
+ * @brief A way to control the robot by using the Kinect during
+ * Hybrid mode, using the z-distance of the hands to control 
+ * the robot.
  * 
  * @param[in] robotDrive A pointer to the robotdrive.
  * @param[in] kinect A pointer to the Kinect.
  */
-KinectController::KinectController(RobotDrive *robotDrive, Kinect *kinect)
+KinectController::KinectController(RobotDrive *robotDrive, Kinect *kinect):
+		BaseKinectController(robotDrive, kinect)
 {
-	mRobotDrive = robotDrive;
-	mKinect = kinect;
+	// Empty.
 }
 
 /**
@@ -202,33 +272,27 @@ KinectController::KinectController(RobotDrive *robotDrive, Kinect *kinect)
  */
 void KinectController::Run(void)
 {
-	if (mKinect->GetTrackingState() == Kinect::kTracked) {
-		SmartDashboard::GetInstance()->Log("Tracked", "Kinect State");
-		if (IsPlayerReady()) {
-			SmartDashboard::GetInstance()->Log("Apparently alive", "Kinect Code");
-			mRobotDrive->TankDrive(GetLeftArmDistance(), GetRightArmDistance());
-		} else {
-			SmartDashboard::GetInstance()->Log("Frozen", "Kinect State");
-			HaltRobot();
-		}
+	bool isPlayerReady = IsPlayerReady();
+	SmartDashboard::GetInstance()->Log(isPlayerReady, "KinectController::IsReady()");
+	
+	if (isPlayerReady) {
+		float left = GetLeftArmDistance();
+		float right = GetRightArmDistance();
+		mRobotDrive->TankDrive(left, right);
+			
+		SmartDashboard::GetInstance()->Log(left, "KinectController::GetLeftArmDistance()");
+		SmartDashboard::GetInstance()->Log(right, "KinectController::GetRightArmDistance()");
 	} else {
-		SmartDashboard::GetInstance()->Log("Not tracked", "Kinect State");
-		HaltRobot();
+		HaltRobot();		
 	}
 	
-	if (IsPlayerShooting()) {
-		SmartDashboard::GetInstance()->Log("Shooting", "Player shooting");
+	bool isShooting = IsPlayerShooting();
+	SmartDashboard::GetInstance()->Log(isShooting, "KinectController::IsPlayerShooting()");
+	if (isShooting) {
+		// Empty
 	} else {
-		SmartDashboard::GetInstance()->Log(" ", "Player shooting");
+		// Empty
 	}
-}
-
-/**
- * @brief Halts the robot.
- */
-void KinectController::HaltRobot(void)
-{
-	mRobotDrive->TankDrive(0.0, 0.0);
 }
 
 /**
@@ -269,30 +333,6 @@ float KinectController::GetRightArmDistance(void)
 	SmartDashboard::GetInstance()->Log(output, "Right movement");
 	
 	return output;	
-}
-
-/**
- * @brief Checks to see if the player is crossing their arms.
- * 
- * @details
- * If any of the hands fall between the two shoulders,
- * the robot will stop movement.
- * 
- * @returns 'true' if the hands are outside of the shoulders;
- * 'false' if they are.
- */
-bool KinectController::IsPlayerReady(void)
-{
-	float rightOrigin = mKinect->GetSkeleton().GetShoulderRight().x;
-	float rightMoving = mKinect->GetSkeleton().GetWristRight().x;
-	
-	float leftOrigin = mKinect->GetSkeleton().GetShoulderLeft().x;
-	float leftMoving = mKinect->GetSkeleton().GetWristLeft().x;
-	
-	if ((rightOrigin > rightMoving) or (leftOrigin < leftMoving)) {
-		return false;
-	}
-	return true;
 }
 
 /**

@@ -1,19 +1,12 @@
-/**
- * elevator.h
- * 
- * Provides code to control and manipulate the elevator, and 
- * the shooter-elevator interface.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
- */
-
 #include "elevator.h"
 
-
+/**
+ * @brief Creates an instance of this class.
+ */
 Elevator::Elevator(
 		SpeedController *speedController, 
-		BallTransfer *ballTransfer)
+		BallTransfer *ballTransfer) :
+		BaseComponent()
 {
 	mSpeedController = speedController;
 	mBallTransfer = ballTransfer;

@@ -1,22 +1,21 @@
 #include "shooter.h"
-#include <cmath>
 
 /**
- * @brief Constructor for shooter class.
- * 
+ * @brief Creates an instance of this class.
+ *
  * @param[in] topLeftSpeedController Pointer to the top left speed controller.
  * @param[in] topRightSpeedController Pointer to the top right speed controller.
  * @param[in] bottomLeftSpeedController Pointer to the bottom left speed controller.
  * @param[in] bottomRightSpeedController Pointer to the bottom right speed controller.
  * @param[in] rangeFinder Pointer to a RangeFinder instance.
  */
-
 Shooter::Shooter(
 		SpeedController *topLeftSpeedController, 
 		SpeedController *topRightSpeedController,
 		SpeedController *bottomLeftSpeedController,
 		SpeedController *bottomRightSpeedController, 
-		RangeFinder *rangeFinder)
+		RangeFinder *rangeFinder) : 
+		BaseComponent()
 {
 	mTopLeftSpeedController = topLeftSpeedController;
 	mTopRightSpeedController = topRightSpeedController;
@@ -26,11 +25,16 @@ Shooter::Shooter(
 }
 
 /**
- * @brief Calculates distance of robot from the hoop.
+ * @brief Calculates the distance from the wall in inches.
  * 
- * @returns Distance of robot from the hoop in inches.
+ * @details
+ * Uses both the rangefinder and camera to calculate distance
+ * 
+ * @todo Add code for the camera.
+ * 
+ * @todo Investigate if the logic in the method needs to be
+ * moved elsewhere.
  */
-
 float Shooter::CalculateDistance()
 {
 	float distance = mRangeFinder->FromWallInches();
@@ -38,11 +42,18 @@ float Shooter::CalculateDistance()
 }
 
 /**
- * @brief Makes the wheels spin at a certain speed, set manually in Manual mode.
+ * @brief Makes the wheels spin at a certain speed, typically set during manual mode.
  * 
- * @param[in] speed Manually set speed.
+ * @details
+ * The input should be in the range -1.0 to 1.0.
+ * 
+ * @todo
+ * Investigate if the motor requires a positive or 
+ * negative speed to spin in the correct direction to 
+ * shoot.
+ * 
+ * @param[in] speed The speed of the motor (from -1.0 to 1.0).
  */
-
 void Shooter::SetSpeedManually(float speed)
 {
 	float slowSpeed = speed * kReductionFactor;
@@ -54,8 +65,8 @@ void Shooter::SetSpeedManually(float speed)
 }
 
 /**
- * @brief Makes the wheels spin at a certain speed, 
- * set automatically in Preset mode.
+ * @brief Gets the position of the robot relative to the hoop and
+ * attempts to aim and hit it.
  * 
  * @details
  * Takes distance between robot and hoop and
@@ -64,8 +75,9 @@ void Shooter::SetSpeedManually(float speed)
  * speed controller and passes that value to 
  * Shooter::SetSpeedManually to set the wheels to that speed.
  * 
+ * @todo
+ * Investigate if this needs to be moved into another class.
  */
-
 void Shooter::SetSpeedAutomatically()
 {
 	float distance = Shooter::CalculateDistance();
@@ -81,12 +93,18 @@ void Shooter::SetSpeedAutomatically()
 }
 
 /**
- * @brief Calculates how fast the ball needs to be as it leaves the shooter
- * depending on the distance between the shooter and the hoop.
+ * @brief Calculates the speed the motors need to turn based on 
+ * the distance to the wall.
  * 
- * @param[in] distance Distance from shooter to hoop.
+ * @details
+ * Receives position of robot from Shooter::Shoot,
+ * and performs calculations to find the speed at which the wheels
+ * need to turn in order to shoot the ball the correct distance.
  * 
- * @returns Necessary initial velocity for ball.
+ * @param[in] distance Distance from shooter to hoop in inches.
+ *
+ * @returns Returns the speed the speedControllers need to
+ * turn to fire the ball and hit the hoop (from -1.0 to 1.0).
  */
 
 float Shooter::CalculateSpeed(float distance) {
@@ -102,8 +120,12 @@ float Shooter::CalculateSpeed(float distance) {
 		
 	float speed = initialVelocity / 336;
 	// todo: experiment to find actual maximum initial velocity to which wheels can accelerate ball
+	
 	return speed;
 }
+
+
+
 
 /**
  * @brief Constructor for ShooterController class.
@@ -111,15 +133,19 @@ float Shooter::CalculateSpeed(float distance) {
  * @param[in] shooter Pointer to shooter.
  * @param[in] joystick Pointer to joystick.
  */
-
-ShooterController::ShooterController(Shooter *shooter, Joystick *joystick)
+ShooterController::ShooterController(Shooter *shooter, Joystick *joystick) :
+		BaseController()
 {
 	mShooter = shooter;
 	mJoystick = joystick;
 }
 
 /**
- * @brief Uses manual and preset modes for the shooter depending on joystick input.
+ * @brief Contains code to control the shooter manually and automatically.
+ * 
+ * @details
+ * Uses a joystick for manual mode -- use button 2 to fire normally
+ * and the trigger for the preset.
  */
 
 void ShooterController::Run(void)

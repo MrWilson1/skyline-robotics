@@ -1,7 +1,8 @@
 /**
  * @file sensors.h
  * 
- * Classes that uses sensors (in a complex manner) and returns data.
+ * @brief A collection of component classes that combine provides 
+ * extra functionality by using sensors.
  */
 
 #ifndef SENSORS_H_
@@ -13,7 +14,19 @@
 // Program modules
 #include "components.h"
 
-class RangeFinder
+/**
+ * @brief Uses the rangefinder to find the distance from the 
+ * wall.
+ * 
+ * @details
+ * This is best used when facing the wall with the hoops.
+ * 
+ * @warning
+ * The ultrasound sensor this uses is somewhat inaccurate,
+ * therefore the values returned by this class will also
+ * jump around.
+ */
+class RangeFinder : public BaseComponent
 {
 protected:
 	AnalogChannel *mUltrasoundSensor;
@@ -27,6 +40,10 @@ public:
 	bool IsInShootingRange(void);
 };
 
+/**
+ * @brief A thin layer to print data from the Rangefinder
+ * to the SmartDashboard.
+ */
 class RangeFinderTest : public BaseController
 {
 protected:
@@ -37,6 +54,10 @@ public:
 	void Run(void);
 };
 
+/**
+ * @brief A thin layer to print data from the WPILib
+ * Gyro to the SmartDashboard.
+ */
 class GyroTest : public BaseController
 {
 protected:

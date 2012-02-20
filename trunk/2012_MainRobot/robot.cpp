@@ -54,6 +54,8 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm7);
 	mBottomRightShooter = new Jaguar(
 			Ports::Pwm8);
+	mTestMotor = new Jaguar(
+			Ports::Pwm9);
 	
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
@@ -120,35 +122,26 @@ void MainRobot::InitializeComponents(void)
  */
 void MainRobot::InitializeControllers(void)
 {
-	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
-	mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
+	mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
 	
 	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
-	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
+	//mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
 	
 	mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
 	mControllerCollection.push_back(new GyroTest(mGyro));
 	//mControllerCollection.push_back(new TargetFinder());
+	
+	mControllerCollection.push_back(new TestMotor(mLeftJoystick, mTestMotor));
 	return;
 }
 
 /**
- * MainRobot::~MainRobot
- *
- * Destroys all hardware, input devices, and software
- * created for the entire robot.  I believe this should
- * be automatically handled, but I just wanted to
- * make sure.
- *
- * Inputs:
- *   - None
- *
- * Outputs:
- *   - None
- *
- * Side-effects:
- *   - See description
+ * @brief Destroys all hardware, input devices, and software
+ * created for the entire robot.
+ * 
+ * @warning This is frequently out-of-date.  
  */
 MainRobot::~MainRobot(void)
 {
@@ -163,6 +156,7 @@ MainRobot::~MainRobot(void)
 	
 	delete mRangeFinder;
 	int collectionSize = (int) mControllerCollection.size();
+	
 	for (int i=0; i<collectionSize; i++) {
 		delete mControllerCollection.at(i);
 	}
@@ -170,23 +164,18 @@ MainRobot::~MainRobot(void)
 
 
 /**
- * MainRobot::Autonomous
+ * @brief The code to be run during Autonomous mode.
  * 
+ * @details
  * This is a mandatory function required for the robot to function.
  * When the 'Autonomous' toggle is selected and enabled on the 
  * FRC Dashboard, this function will run.
  * 
  * It is meant to be run once, at the start of the match, during
- * Hybrid mode.
+ * Hybrid mode, for 15 seconds.
  * 
- * Inputs:
- *   - None
- * 
- * Outputs:
- *   - None
- * 
- * Side-effects:
- *   - See description
+ * @todo
+ * Currently waits until Autonomous is disabled.
  */
 void MainRobot::Autonomous(void)
 {
@@ -198,33 +187,20 @@ void MainRobot::Autonomous(void)
 }
 
 /**
- * MainRobot::OperatorControl
+ * @brief The code to be run during Teleoperated mode.
  * 
+ * @detail
  * This is a mandatory function required for the robot to function.
  * When the 'Autonomous' toggle is selected and enabled on the 
  * FRC Dashboard, this function will run.
  * 
- * It currently uses the two joysticks to drive (tank drive).
- * Specifically, it takes any object that's been added to
- * 'mControllers' and calls the 'run' function on it.
- * 
- * Any object that wants to be run during Operator Control
- * should inherit either 'BaseComponent' or 
- * 'BaseController' and be added to mControllers.
- * 
- * Inputs:
- *   - None
- * 
- * Outputs:
- *   - None
- * 
- * Side-effects:
- *   - See description 
+ * This method will repeatedly call the 'Run' methods of any
+ * class (that inherited BaseController) that has been 
+ * added to mControllerCollection.  
  */
 void MainRobot::OperatorControl(void) 
 {
 	GetWatchdog().SetEnabled(true);
-	SmartDashboard::GetInstance()->Log("Operator Control", "State");
 	
 	int collectionSize = (int) mControllerCollection.size();
 	

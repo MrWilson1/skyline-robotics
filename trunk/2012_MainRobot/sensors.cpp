@@ -1,35 +1,20 @@
-/**
- * sensors.cpp
- * 
- * Classes that uses sensors (in a complex manner) and returns data.
- * 
- * Skyline Spartabots, Team 2976
- * Made for 2012 Robot Rumble
- */
-
 #include "sensors.h"
 
-RangeFinder::RangeFinder(AnalogChannel *ultrasoundSensor)
+/**
+ * @brief Creates an instance of the rangefinder class.
+ */
+RangeFinder::RangeFinder(AnalogChannel *ultrasoundSensor) :
+		BaseComponent()
 {
 	mUltrasoundSensor = ultrasoundSensor;
 	return;
 }
 
 /**
- * RangeFinder::FromWallInches
+ * @brief Finds the distance from the wall in inches.
  * 
- * Finds the distance from the wall in inches.
- * Note that this can at times be inaccurate.
- * 
- * Input:
- *   - None
- * 
- * Output:
- *   - The distance from the wall to the ultrasound
- *     sensor in inches.
- * 
- * Side-effects:
- *   - None
+ * @returns Returns the distance from the wall to the
+ * ultrasound sensor in inches.
  */
 float RangeFinder::FromWallInches(void)
 {
@@ -39,19 +24,12 @@ float RangeFinder::FromWallInches(void)
 }
 
 /**
- * RangeFinder::FromWallRaw
+ * @brief Finds the raw distance from the wall.
  * 
- * Finds the raw distance from the wall.
- * Use RangeFinder::FromWallInches over this one.
+ * @details
+ * Prefer using RangeFinder::FromWallInches over this one.
  * 
- * Input:
- *   - None
- * 
- * Output:
- *   - The raw distance returned by the ultrasonic sensor
- * 
- * Side-effects:
- *   - None
+ * @returns The raw distance returned by the ultrasonic sensor
  */
 INT32 RangeFinder::FromWallRaw(void)
 {
@@ -59,17 +37,23 @@ INT32 RangeFinder::FromWallRaw(void)
 }
 
 /**
- * RangeFinder::IsInShootingRange(void)
+ * @brief Tests to see if the robot is positioned roughly in
+ * the key.
  * 
- * Input:
- *   - None
+ * @details
+ * It accomplishes this by measuring the distance from
+ * the wall and seeing if it falls within the distance
+ * the key is from the wall.
  * 
- * Output:
- *   - Returns true if the robot is within a certain distance from the wall.
- *     (...which means this should return true whenever the robot is in the key)
- *  
- * Side-effects:
- *   - None 
+ * The min and max distances permitted are 
+ * RangeFinder::kWallDistanceMin and RangeFinder::kWallDistanceMax.
+ * 
+ * @warning
+ * This may be inaccurate (the robot could be off at a
+ * wild angle).
+ * 
+ * @returns Returns true if the robot is within a certain distance from the wall.
+ * (...which means this should return true whenever the robot is in the key) 
  */
 bool RangeFinder::IsInShootingRange(void)
 {
@@ -82,11 +66,19 @@ bool RangeFinder::IsInShootingRange(void)
 }
 
 
-RangeFinderTest::RangeFinderTest(RangeFinder *rangeFinder)
+/**
+ * @brief Creates an instance of the RangeFinderTest class.
+ */
+RangeFinderTest::RangeFinderTest(RangeFinder *rangeFinder) :
+		BaseController()
 {
 	mRangeFinder = rangeFinder;
 }
 
+/**
+ * @brief Prints the distance in inches from the ultrasound 
+ * sensor to the SmartDashboard.
+ */
 void RangeFinderTest::Run(void)
 {
 	SmartDashboard::GetInstance()->Log(mRangeFinder->FromWallInches(), "Ultrasound");
@@ -94,31 +86,20 @@ void RangeFinderTest::Run(void)
 
 
 /**
- * GyroTest::GyroTest(Gyro *)
+ * @brief Creates an instance of this class.
  * 
- * Tests the gyro
- * 
- * Inputs:
- *   - Gyro *gyro
- *     A pointer to a gyro object
- * 
- * Outputs:
- *   - None
- * 
- * Side-effects:
- *   - Creates the object
+ * @param[in] gyro A pointer to a gyro
  */
-GyroTest::GyroTest(Gyro *gyro)
+GyroTest::GyroTest(Gyro *gyro) :
+		BaseController()
 {
 	mGyro = gyro;
 	mGyro->Reset();
 }
 
 /**
- * GyroTest::Run
- * 
- * Side-effects:
- *   - Prints the value of the gyro to SmartDashboard
+ * @brief Prints the value of the gyro to the SmartDashboard
+ * in degrees.
  */
 void GyroTest::Run()
 {

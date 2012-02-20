@@ -7,11 +7,23 @@
 #ifndef SHOOTER_H_
 #define SHOOTER_H_
 
+// System libraries
+#include <cmath>
+
+// 3rd party libraries
 #include "WPILib.h"
+
+// Our code
 #include "sensors.h"
 #include "components.h"
 
-class Shooter
+/**
+ * @brief Controls the shooter.
+ * 
+ * @todo Investigate if the functionality of this
+ * class needs to be split up.
+ */
+class Shooter : public BaseComponent
 {
 protected:
 	SpeedController *mTopLeftSpeedController;
@@ -36,6 +48,9 @@ public:
 	void Run();
 };
 
+/**
+ * @brief Controls the shooter using a joystick.
+ */
 class ShooterController : public BaseController
 {
 protected:
@@ -44,7 +59,6 @@ protected:
 public:
 	ShooterController(Shooter *, Joystick *);
 	void Run(void);
-	
 };
 
 #endif

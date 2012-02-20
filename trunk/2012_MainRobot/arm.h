@@ -1,4 +1,4 @@
-/*
+/**
  * @file arm.h
  * 
  * @brief Provides code to control the arm.
@@ -11,7 +11,15 @@
 #include "motorLimitWatchdog.h"
 #include "components.h"
 
-class Arm
+/**
+ * @brief Provides code to control the arm.
+ * 
+ * @details
+ * The arm is used to both corral and herd the
+ * balls near the entry point to the elevator,
+ * and to lower the bridge.
+ */
+class Arm : public BaseComponent
 {
 public:
 	static const float kMotorDirection = 1.0;
@@ -33,7 +41,6 @@ public:
 /**
  * @brief Interacts with joystick to control the arm.
  */
-
 class ArmController : public BaseController
 {
 protected:

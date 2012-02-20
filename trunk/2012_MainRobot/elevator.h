@@ -39,7 +39,9 @@ public:
 	void HaltTransfer();
 };
 
-
+/**
+ * @brief Transfers the ball from the floor to the top of the elevator.
+ */
 class Elevator : public BaseComponent
 {
 protected:

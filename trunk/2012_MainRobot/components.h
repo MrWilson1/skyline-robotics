@@ -255,6 +255,7 @@ namespace Ports
 namespace Tools
 {
 double Coerce(double, double, double, double, double);
+double Limit(double, double, double);
 }
 
 #endif

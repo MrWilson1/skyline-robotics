@@ -1,5 +1,5 @@
 /**
- * @file robot.ht
+ * @file robot.h
  * 
  * @brief The main entry point of the robot.
  * 
@@ -16,8 +16,6 @@
  * any classes that need them.
  * 
  * @author Michael Lee
- * 
- * @license	GNU Lesser GPL
  */
 
 #ifndef MYROBOT_H_
@@ -31,11 +29,33 @@
 
 // Program modules
 #include "sensors.h"
-#include "controller.h"
+#include "driving.h"
 #include "components.h"
 #include "shooter.h"
 #include "target.h"
+#include "elevator.h"
 
+/**
+ * @brief This class bundles together everything to ultimately
+ * run and control the robot.
+ * 
+ * @details
+ * When the robot starts, a single instance of this class is 
+ * created by a macro (provided by WPILib).  This class
+ * must provide several methods in order to be fully
+ * functional:
+ *   - Autonomous()
+ *   - OperatorControl()
+ * 
+ * It may also provide additional methods provided by
+ * WPILib and SimpleRobot.
+ * 
+ * This class is the only one that is allowed to
+ * create instances of any WPILib classes, Components,
+ * and Controllers (to prevent accidental memory leaks
+ * with pointers).  However, any class is allowed to
+ * create instances of normal classes.
+ */
 class MainRobot : public SimpleRobot
 {
 private:
@@ -53,6 +73,7 @@ protected:
 	SpeedController *mTopRightShooter;
 	SpeedController *mBottomLeftShooter;
 	SpeedController *mBottomRightShooter;
+	SpeedController *mTestMotor;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
@@ -63,6 +84,8 @@ protected:
 	// Components
 	RangeFinder *mRangeFinder;
 	Shooter *mShooter;
+	BallTransfer *mBallTransfer;
+	Elevator *mElevator;
 	
 	// Controller -- see controller.h
 	std::vector<BaseController*> mControllerCollection;

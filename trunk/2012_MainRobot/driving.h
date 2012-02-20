@@ -1,17 +1,20 @@
 /**
- * @file controller.h
+ * @file driving.h
  * 
- * @brief Contains the code used to control the robot
+ * @brief Contains the code used to drive the robot
  * based on user input.
  * 
  * @details
+ * Code for shooting the robot or manipulating the
+ * elevator is kept seperately
+ * 
  * Every class in here should have 'BaseController' as
  * their parent class, so they can be placed under
  * MyRobot::mComponentCollection.
  */
 
-#ifndef CONTROLLER_H_
-#define CONTROLLER_H_
+#ifndef DRIVING_H_
+#define DRIVING_H_
 
 // System libraries
 #include <utility.h>
@@ -41,6 +44,25 @@ protected:
 public:
 	BaseJoystickController();
 	void Run() = 0;
+};
+
+
+/**
+ * @brief Tests a motor using a joystick.
+ * 
+ * @details
+ * This lets us debug an arbitary motor using a 
+ * joystick.
+ */
+class TestMotor : public BaseJoystickController
+{
+protected:
+	Joystick *mJoystick;
+	SpeedController *mSpeedController;
+	
+public:
+	TestMotor(Joystick *, SpeedController *);
+	void Run();
 };
 
 
@@ -89,6 +111,25 @@ public:
 };
 
 /**
+ * @brief A base class for any controller using a Kinect.
+ */
+class BaseKinectController : public BaseController
+{
+protected:
+	RobotDrive *mRobotDrive;
+	Kinect *mKinect;
+	
+public:
+	BaseKinectController(RobotDrive *, Kinect *);
+	virtual void Run(void) = 0;
+	
+protected:
+	bool IsPlayerReady(void);
+	void HaltRobot(void);
+};
+
+
+/**
  * @brief Takes a Kinect and uses hand gestures to drive the robot.
  * 
  * @details
@@ -97,25 +138,38 @@ public:
  * 
  * Todo: Document specifically what hand gestures this uses.
  */
-class KinectController : public BaseController
+class KinectController : public BaseKinectController
 {
 protected:
-	RobotDrive *mRobotDrive;
-	Kinect *mKinect;
 	static const float kArmMinZ = 0;
 	static const float kArmMaxZ = 0.38;
 	static const float kShootThresholdY = 0.2;
 	
 public:
 	KinectController(RobotDrive *, Kinect *);
-	void Run(void);
+	void Run();
 	
 protected:
-	void HaltRobot(void);
-	bool IsPlayerReady(void);
-	bool IsPlayerShooting(void);
-	float GetLeftArmDistance(void);
-	float GetRightArmDistance(void);
+	bool IsPlayerShooting();
+	float GetLeftArmDistance();
+	float GetRightArmDistance();
+};
+
+
+/**
+ * @brief Uses a kinect to drive the robot -- this time, based on the
+ * angle of the hands to the shoulders.
+ */
+class KinectAngleController : public BaseKinectController
+{
+public:
+	KinectAngleController(RobotDrive *, Kinect*);
+	void Run();
+	
+protected:
+	static const float kPushThreshold = 0.3;
+	bool isAutoShooting();
+	bool isManuallyShooting();
 };
 
 #endif
