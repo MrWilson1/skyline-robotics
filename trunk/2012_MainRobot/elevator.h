@@ -34,6 +34,9 @@ public:
 	void MoveUp();
 };
 
+/**
+ * @brief Interacts with the joystick to control the elevator.
+ */
 class ElevatorController : public BaseController
 {
 protected:
@@ -44,6 +47,5 @@ public:
 	ElevatorController (Elevator *, Joystick* );
 	void Run();
 };
-
 
 #endif
