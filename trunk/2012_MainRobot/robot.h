@@ -85,7 +85,6 @@ protected:
 	// Components
 	RangeFinder *mRangeFinder;
 	Shooter *mShooter;
-	BallTransfer *mBallTransfer;
 	Elevator *mElevator;
 	TestThreadListener *mTestThreadListener;
 	KinectStick *mLeftKinectStick;

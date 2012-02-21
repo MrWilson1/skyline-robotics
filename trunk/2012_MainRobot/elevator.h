@@ -14,49 +14,36 @@
 // Our code
 #include "components.h"
 
-
-/**
- * @brief Transfers the ball from the elevator to the shooter.
- */
-class BallTransfer : public BaseComponent
-{
-protected:
-	Servo *mServo;
-	DigitalInput *mTopLimitSwitch;
-	DigitalInput *mShooterLimitSwitch;
-	static const float kServoSafePosition = 0.0;		// 0.0 to 1.0
-	static const float kServoExtendedPosition = 1.0;	// 0.0 to 1.0
-	
-public:
-	BallTransfer(Servo *, DigitalInput *, DigitalInput *);
-	bool IsShooterOccupied();
-	bool IsBallAtTop();
-	bool IsBallTransfering();
-	bool IsReady();
-	
-	bool StartTransfer();
-	bool EndTransfer();
-	void HaltTransfer();
-};
-
 /**
  * @brief Transfers the ball from the floor to the top of the elevator.
  */
 class Elevator : public BaseComponent
 {
 protected:
+	DigitalInput *mMiddleLimitSwitch;
+	DigitalInput *mTopLimitSwitch;
 	SpeedController *mSpeedController; 	// Controls the belt
-	BallTransfer *mBallTransfer;
 	static const float kDefaultSpeed = 1.0;		// -1.0 to 1.0
 	
 public:
-	Elevator(SpeedController *, BallTransfer *);
-	bool MoveUp();
-	bool MoveUp(double);
-	bool MoveDown();
-	bool MoveDown(double);
+	Elevator(DigitalInput *, DigitalInput *, SpeedController *);
+	bool IsBallIn();
+	bool IsBallAtTop();
+	bool IsShooterOccupied();
+	void Stop();
+	void MoveUp();
 };
 
+class ElevatorController : public BaseController
+{
+protected:
+	Elevator *mElevator;
+	Joystick *mJoystick;
+	
+public:
+	ElevatorController (Elevator *, Joystick* );
+	void Run();
+};
 
 
 #endif
