@@ -58,8 +58,8 @@ void Shooter::SetSpeedManually(float speed)
 {
 	float slowSpeed = speed * kReductionFactor;
 	
-	mTopLeftSpeedController->Set(-1 * slowSpeed);
-	mTopRightSpeedController->Set(slowSpeed);
+	mTopLeftSpeedController->Set(slowSpeed);
+	mTopRightSpeedController->Set(-1 * slowSpeed);
 	mBottomLeftSpeedController->Set(-1 * speed);
 	mBottomRightSpeedController->Set(speed);
 }
@@ -152,20 +152,20 @@ void ShooterController::Run(void)
 {
 	bool setToManual = mJoystick->GetRawButton(2); // manual	
 	bool setToPreset = mJoystick->GetTrigger(); // preset
-	float throttle = mJoystick->GetThrottle();
+	//float throttle = mJoystick->GetThrottle();
 	
-	// float twist = mJoystick->GetTwist();
+	 float twist = mJoystick->GetTwist();
 	// float z = mJoystick->GetZ();
-	// SmartDashboard::GetInstance()->Log(setToManual, "Set to manual? ");
-	// SmartDashboard::GetInstance()->Log(setToPreset, "Set to preset? ");
-	// SmartDashboard::GetInstance()->Log(twist, "Shooter Twist: ");
+	SmartDashboard::GetInstance()->Log(setToManual, "Set to manual? ");
+	SmartDashboard::GetInstance()->Log(setToPreset, "Set to preset? ");
+	SmartDashboard::GetInstance()->Log(twist, "Shooter Twist: ");
 	// SmartDashboard::GetInstance()->Log(z, "Shooter z: ");
 	
-	SmartDashboard::GetInstance()->Log(throttle, "Shooter Throttle: ");
+	SmartDashboard::GetInstance()->Log(twist, "Shooter Throttle: ");
 	
 	if ( setToManual ) {
-		mShooter->SetSpeedManually(throttle);
-		// mShooter->SetSpeedManually(twist);
+		//mShooter->SetSpeedManually(throttle);
+		mShooter->SetSpeedManually(twist);
 	} else if ( setToPreset ) {
 		mShooter->SetSpeedAutomatically();
 	} else {

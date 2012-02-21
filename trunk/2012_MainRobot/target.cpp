@@ -1,8 +1,7 @@
 // 3rd party modules
 #include "target.h"
 #include "Vision/ImageBase.h"
-
-
+/*
 TestThread::TestThread(
 		const char *threadName,
 		int *sharedNumber) :	
@@ -35,8 +34,6 @@ int TestThread::CalcNum()
 	Wait(10.0);
 	return 1;
 }
-
-
 
 TestThreadListener::TestThreadListener() :
 		BaseComponent(),
@@ -82,6 +79,7 @@ void TestThreadController::Run()
 	SmartDashboard::GetInstance()->Log(mTestThreadListener->GetLonelyNumber(), "TestThread::LonelyNumber");
 }
 
+*/
 
 
 
@@ -91,14 +89,13 @@ void TestThreadController::Run()
 
 
 
-
-Coordinate::Coordinate()
+TargetUtils::Coordinate::Coordinate()
 {
 	Coordinate::X = 0;
 	Coordinate::Y = 0;
 }
 
-void Coordinate::Set(float x, float y)
+void TargetUtils::Coordinate::Set(float x, float y)
 {
 	Coordinate::X = x;
 	Coordinate::Y = y;
@@ -121,6 +118,7 @@ vector<RectangleMatch> *TargetUtils::SaneBinaryImage::DetectRectangles(
 		ROI *roi)
 {
 	int numberOfMatches;
+	
 	RectangleMatch *rectangleMatch = imaqDetectRectangles(
 			m_imaqImage,			// Inherited member value
 			rectangleDescriptor,
@@ -129,10 +127,11 @@ vector<RectangleMatch> *TargetUtils::SaneBinaryImage::DetectRectangles(
 			roi,
 			&numberOfMatches		// Is modified by function.
 	);
-	
 	vector<RectangleMatch> *rectangles = new vector<RectangleMatch>;
 	
-	if (rectangleMatch = NULL) {
+	SmartDashboard::GetInstance()->Log(numberOfMatches, "DetectRectangles");
+	
+	if (rectangleMatch == NULL) {
 		return rectangles;
 	}
 	for (int i = 0; i < numberOfMatches; i++) {
@@ -154,61 +153,12 @@ vector<RectangleMatch> *TargetUtils::SaneBinaryImage::DetectRectangles(
 }
 
 
-
-
-
-TargetFinder::TargetFinder()
-{
-	mTimer = new Timer();
-	mTimer->Start();
-}
-
-
-void TargetFinder::Run()
-{
-	SmartDashboard::GetInstance()->Log(mTimer->Get(), "Camera timer");
-	if (mTimer->HasPeriodPassed(kTimerPeriod)) {
-		SmartDashboard::GetInstance()->Log(mTimer->Get(), "Camera timer prev");
-		AxisCamera &camera = GetCamera();
-		HSLImage *image = camera.GetImage();	// Get image.
-		vector<Target> targets = GetTargets(image);
-		delete image;
-		int size = (int) targets.size();
-		if (size > 0) {
-			// Just the first target
-			Target t = targets.at(0);
-			
-			SmartDashboard::GetInstance()->Log(t.Width, "t.Width");
-			SmartDashboard::GetInstance()->Log(t.Height, "t.Height");
-			SmartDashboard::GetInstance()->Log(t.Rotation, "t.Rotation");
-			
-			SmartDashboard::GetInstance()->Log(t.Score, "t.Score");
-			
-			SmartDashboard::GetInstance()->Log(t.TopLeft.X, "t.TopLeft.x");
-			SmartDashboard::GetInstance()->Log(t.TopLeft.Y, "t.TopLeft.y");
-			SmartDashboard::GetInstance()->Log(t.TopRight.X, "t.TopRight.x");
-			SmartDashboard::GetInstance()->Log(t.TopRight.Y, "t.TopRight.y");
-			SmartDashboard::GetInstance()->Log(t.BottomLeft.X, "t.BottomLeft.x");
-			SmartDashboard::GetInstance()->Log(t.BottomLeft.Y, "t.BottomLeft.y");
-			SmartDashboard::GetInstance()->Log(t.BottomRight.X, "t.BottomRight.x");
-			SmartDashboard::GetInstance()->Log(t.BottomRight.Y, "t.BottomRight.y");
-			
-			SmartDashboard::GetInstance()->Log(t.Middle.X, "t.Middle.x");
-			SmartDashboard::GetInstance()->Log(t.Middle.Y, "t.Middle.y");
-			SmartDashboard::GetInstance()->Log(t.DistanceFromCamera, "t.DistanceFromCamera");
-		}
-	}
-}
-
-namespace TargetUtils
-{
 static RectangleDescriptor rectangleDescriptor = {
 		10,		// minWidth
 		400,	// maxWidth
 		10,		// minHeight
 		400,	// maxHeight
 };
-
 static CurveOptions curveOptions = {
 		IMAQ_NORMAL_IMAGE,	// Extraction mode
 		1,					// Edge threshold
@@ -225,34 +175,50 @@ static ShapeDetectionOptions shapeDetectionOptions = {
 		NULL,				// Angle ranges (all)
 		0,					// Num angle ranges
 		{0, 100},			// Scale range
-		700					// Minimum score
+		0					// Minimum score
 };
 
+
+
+
+
+
+
+TargetFinder::TargetFinder() :
+		BaseComponent()
+{
+	// Empty
 }
 
-vector<Target> TargetFinder::GetTargets(HSLImage *image)
+vector<TargetUtils::Target> TargetFinder::GetTargets()
 {
-	SmartDashboard::GetInstance()->Log("Grabbing Picture", "TargetFinder::GetTargets");
+	AxisCamera &camera = GetCamera();
+	HSLImage *image = camera.GetImage();
+	
+	SmartDashboard::GetInstance()->Log(image->GetWidth(), "Image width");
+	SmartDashboard::GetInstance()->Log(image->GetHeight(), "Image height");
+	
 	BinaryImage *thresholdImage = image->ThresholdRGB(TargetUtils::threshold);    // Get only colors within range
 	BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 1);  // Remove small objects
 	BinaryImage *convexHullImage = bigObjectsImage->ConvexHull(false);  		  // Rill in partial and full rectangles
-	TargetUtils::SaneBinaryImage *preRectangleImage = (TargetUtils::SaneBinaryImage *) convexHullImage;
-	vector<RectangleMatch> *rectangles = preRectangleImage->DetectRectangles(
-			&TargetUtils::rectangleDescriptor,
-			&TargetUtils::curveOptions,
-			&TargetUtils::shapeDetectionOptions,
+	TargetUtils::SaneBinaryImage *processedImage = (TargetUtils::SaneBinaryImage *) convexHullImage;
+	
+	vector<RectangleMatch> *rectangles = processedImage->DetectRectangles(
+			&rectangleDescriptor,
+			&curveOptions,
+			&shapeDetectionOptions,
 			NULL
 	);
-
+	delete image;
 	delete thresholdImage;
 	delete bigObjectsImage;
 	delete convexHullImage;
-	delete preRectangleImage;
-
-	vector<Target> targets;
+	delete processedImage;
 	
 	int size = (int) rectangles->size();
 	SmartDashboard::GetInstance()->Log(size, "Number of targets");
+	
+	vector<TargetUtils::Target> targets;
 	
 	if (size == 0) {
 		SmartDashboard::GetInstance()->Log("None found", "Camera Pics");
@@ -262,7 +228,7 @@ vector<Target> TargetFinder::GetTargets(HSLImage *image)
 	SmartDashboard::GetInstance()->Log("Found", "Camera Pics");
 	
 	for (int i=0; i<size; i++) {
-		Target t;
+		TargetUtils::Target t;
 		RectangleMatch r = rectangles->at(i);
 		
 		t.Width = r.width;
@@ -275,14 +241,14 @@ vector<Target> TargetFinder::GetTargets(HSLImage *image)
 		t.BottomRight.Set(r.corner[2].x, r.corner[2].y);
 		t.BottomLeft.Set(r.corner[3].x, r.corner[3].y);
 		
-		t.DistanceFromCamera = CalculateDistanceBasedOnWidth(t.Width);
-		
-		
+		t.DistanceFromCamera = CalculateDistanceBasedOnWidth(t.Width);	
+		targets.push_back(t);
 	}
 	
 	delete rectangles;
 	return targets;
 }
+
 
 /**
  * Input:
@@ -307,11 +273,71 @@ double TargetFinder::CalculateDistanceBasedOnWidth(double widthInPixels)
 AxisCamera & TargetFinder::GetCamera()
 {
 	AxisCamera &camera = AxisCamera::GetInstance("10.29.76.11");
-	camera.WriteResolution(AxisCamera::kResolution_320x240);
-	camera.WriteCompression(100);
-	camera.WriteBrightness(0);
+	camera.WriteResolution(AxisCamera::kResolution_640x480);
+	camera.WriteCompression(20);
+	camera.WriteBrightness(AxisCamera::kWhiteBalance_Automatic);
 	return camera;
 }
+
+
+
+
+TargetSnapshotController::TargetSnapshotController(TargetFinder *targetFinder, Joystick *joystick, Watchdog &watchdog) :
+		BaseController(),
+		mWatchdog(watchdog)
+{
+	mTargetFinder = targetFinder;
+	mJoystick = joystick;
+}
+
+void TargetSnapshotController::Run()
+{
+	if (mJoystick->GetRawButton(3)) {
+		mWatchdog.SetEnabled(false);
+		vector<TargetUtils::Target> targets = mTargetFinder->GetTargets();
+		mWatchdog.SetEnabled(true);
+		SmartDashboard::GetInstance()->Log("Yes", "Snapshot");
+		
+		if ((int)targets.size() != 0) {
+			TargetUtils::Target t = targets.at(0);
+			
+			SmartDashboard::GetInstance()->Log(t.Width, "t.Width");
+			SmartDashboard::GetInstance()->Log(t.Height, "t.Height");
+			SmartDashboard::GetInstance()->Log(t.Rotation, "t.Rotation");
+	
+			SmartDashboard::GetInstance()->Log(t.Score, "t.Score");
+	
+			SmartDashboard::GetInstance()->Log(t.TopLeft.X, "t.TopLeft.x");
+			SmartDashboard::GetInstance()->Log(t.TopLeft.Y, "t.TopLeft.y");
+			SmartDashboard::GetInstance()->Log(t.TopRight.X, "t.TopRight.x");
+			SmartDashboard::GetInstance()->Log(t.TopRight.Y, "t.TopRight.y");
+			SmartDashboard::GetInstance()->Log(t.BottomLeft.X, "t.BottomLeft.x");
+			SmartDashboard::GetInstance()->Log(t.BottomLeft.Y, "t.BottomLeft.y");
+			SmartDashboard::GetInstance()->Log(t.BottomRight.X, "t.BottomRight.x");
+			SmartDashboard::GetInstance()->Log(t.BottomRight.Y, "t.BottomRight.y");
+	
+			SmartDashboard::GetInstance()->Log(t.Middle.X, "t.Middle.x");
+			SmartDashboard::GetInstance()->Log(t.Middle.Y, "t.Middle.y");
+			SmartDashboard::GetInstance()->Log(t.DistanceFromCamera, "t.DistanceFromCamera");
+		}
+	} else {
+		SmartDashboard::GetInstance()->Log("No", "Snapshot");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

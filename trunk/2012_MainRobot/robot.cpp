@@ -56,6 +56,8 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm8);
 	mTestMotor = new Jaguar(
 			Ports::Pwm9);
+	//mArmSpeedController = new Victor(
+	//		Ports::Pwm10);
 	
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
@@ -82,12 +84,12 @@ void MainRobot::InitializeHardware(void)
  */
 void MainRobot::InitializeInputDevices(void)
 {
-	mLeftJoystick = new Joystick(
-			Ports::Usb1);
-	mRightJoystick = new Joystick(
-			Ports::Usb2);
+	//mLeftJoystick = new Joystick(
+	//		Ports::Usb1);
+	//mRightJoystick = new Joystick(
+	//		Ports::Usb2);
 	mTwistJoystick = new Joystick(
-			Ports::Usb3);
+			Ports::Usb1);
 	mKinect = Kinect::GetInstance();
 }
 
@@ -115,6 +117,8 @@ void MainRobot::InitializeComponents(void)
 	//mTestThreadListener = new TestThreadListener();
 	mLeftKinectStick = new KinectStick::KinectStick(1);
 	mRightKinectStick = new KinectStick::KinectStick(2);
+	//mTargetFinder = new TargetFinder();
+	//mArm = new SimpleArm(mArmSpeedController);
 }
 
 /**
@@ -131,16 +135,19 @@ void MainRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
-	mControllerCollection.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect));
+	//mControllerCollection.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect));
+	mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	
 	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
-	//mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
+	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
 	
 	mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
 	mControllerCollection.push_back(new GyroTest(mGyro));
 	//mControllerCollection.push_back(new TargetFinder());
+	//mControllerCollection.push_back(new ArmController(mArm, mRightJoystick));
 	
-	mControllerCollection.push_back(new TestMotor(mLeftJoystick, mTestMotor));
+	//mControllerCollection.push_back(new TargetSnapshotController(mTargetFinder, mLeftJoystick, GetWatchdog()));
+	//mControllerCollection.push_back(new TestMotor(mLeftJoystick, mTestMotor));
 	//mControllerCollection.push_back(new TestThreadController(mTestThreadListener));
 	return;
 }

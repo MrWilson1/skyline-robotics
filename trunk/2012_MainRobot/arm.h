@@ -11,27 +11,52 @@
 #include "motorLimitWatchdog.h"
 #include "components.h"
 
+
+/**
+ * @brief A base class to lower the arm.
+ */
+class BaseArmComponent : public BaseComponent
+{
+protected:
+	static const float kMotorSpeed = 0.3;
+	static const float kMotorDirection = 1.0;
+	SpeedController *mSpeedController;
+	
+public:
+	BaseArmComponent(SpeedController *);
+	virtual ~BaseArmComponent();
+	virtual void GoUp() = 0;
+	virtual void GoDown() = 0;
+	virtual void Stop() = 0;
+};
+
+class SimpleArm : public BaseArmComponent
+{
+public:
+	SimpleArm(SpeedController *);
+	void GoUp();
+	void GoDown();
+	void Stop();
+};
+
 /**
  * @brief Provides code to control the arm.
  * 
  * @details
- * The arm is used to both corral and herd the
- * balls near the entry point to the elevator,
- * and to lower the bridge.
+ * The arm is used to lower the bridge.
  */
-class Arm : public BaseComponent
+class GuardedArm : public BaseArmComponent
 {
 public:
 	static const float kMotorDirection = 1.0;
-	static const float kMotorSpeed = 1.0;
+	static const float kMotorSpeed = 0.2;
 protected:
-	SpeedController *mArmMotor;
 	DigitalInput *mTopLimit;
 	DigitalInput *mBottomLimit;
 	MotorLimitWatchdog *mMotorWatchdog;
 public:
-	Arm (SpeedController *, DigitalInput *, DigitalInput *);
-	~Arm ();
+	GuardedArm (SpeedController *, DigitalInput *, DigitalInput *);
+	~GuardedArm ();
 	
 	void GoUp(void);
 	void GoDown(void);
@@ -44,10 +69,10 @@ public:
 class ArmController : public BaseController
 {
 protected:
-	Arm *mArm;
+	BaseArmComponent *mArm;
 	Joystick *mJoystick;
 public:
-	ArmController (Arm *, Joystick *);
+	ArmController (BaseArmComponent *, Joystick *);
 	void Run(void);
 };
 

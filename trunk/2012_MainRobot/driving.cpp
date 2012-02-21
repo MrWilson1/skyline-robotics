@@ -37,7 +37,7 @@ float BaseJoystickController::squareInput(float number)
  */
 float BaseJoystickController::getSpeedFactor(Joystick *joystick)
 {
-	float rawFactor = joystick->GetTwist();
+	float rawFactor = joystick->GetThrottle();
 	float normalizedFactor = Tools::Coerce(
 			rawFactor,
 			-1.0,
@@ -62,6 +62,17 @@ void TestMotor::Run()
 	mSpeedController->Set(speed);
 }
 
+
+MinimalistDrive::MinimalistDrive(RobotDrive *robotDrive) :
+		BaseController()
+{
+	mRobotDrive = robotDrive;
+}
+
+void MinimalistDrive::Run()
+{
+	mRobotDrive->TankDrive(0.0, 0.0);
+}
 
 
 /**

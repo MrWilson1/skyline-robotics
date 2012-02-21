@@ -66,6 +66,21 @@ public:
 	void Run();
 };
 
+/**
+ * @brief A driving system designed to keep the robot from
+ * moving without the watchdogs complaining there's no
+ * signal being sent to the drive system.
+ */
+class MinimalistDrive : public BaseController
+{
+protected:
+	RobotDrive *mRobotDrive;
+	
+public:
+	MinimalistDrive(RobotDrive *);
+	void Run();
+};
+
 
 /**
  * @brief Takes two joysticks and drives the robot, tank-style.

@@ -28,6 +28,7 @@
 #include "WPILib.h"
 
 // Program modules
+#include "arm.h"
 #include "sensors.h"
 #include "driving.h"
 #include "components.h"
@@ -73,6 +74,7 @@ protected:
 	SpeedController *mTopRightShooter;
 	SpeedController *mBottomLeftShooter;
 	SpeedController *mBottomRightShooter;
+	//SpeedController *mArmSpeedController;
 	SpeedController *mTestMotor;
 	DigitalInput *mTestDigitalInput;
 	
@@ -86,9 +88,11 @@ protected:
 	RangeFinder *mRangeFinder;
 	Shooter *mShooter;
 	Elevator *mElevator;
-	TestThreadListener *mTestThreadListener;
+	//TestThreadListener *mTestThreadListener;
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
+	TargetFinder *mTargetFinder;
+	//BaseArmComponent *mArm;
 	
 	// Controller -- see controller.h
 	std::vector<BaseController*> mControllerCollection;

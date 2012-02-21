@@ -1,5 +1,21 @@
 #include "arm.h"
 
+
+
+/**
+ * @brief Creates an instance of this class.
+ */
+BaseArmComponent::BaseArmComponent(SpeedController *speedController) :
+		BaseComponent()
+{
+	mSpeedController = speedController;
+}
+
+BaseArmComponent::~BaseArmComponent()
+{
+	//Empty
+}
+
 /**
  * @brief Constructor for Arm class.
  * 
@@ -7,18 +23,18 @@
  * @param[in] topLimit A pointer to the top limit switch.
  * @param[in] bottomLimit A pointer to the bottom limit switch.
  */
-Arm::Arm (
-		SpeedController *armMotor,
+GuardedArm::GuardedArm (
+		SpeedController *speedController,
 		DigitalInput *topLimit,
-		DigitalInput *bottomLimit)
+		DigitalInput *bottomLimit) :
+		BaseArmComponent(speedController)
 {
-	mArmMotor = armMotor;
 	mTopLimit = topLimit;
 	mBottomLimit = bottomLimit;
 	
 	mMotorWatchdog = new MotorLimitWatchdog(
 			"Arm",
-			mArmMotor,
+			mSpeedController,
 			mTopLimit,
 			mBottomLimit);
 }
@@ -29,23 +45,11 @@ Arm::Arm (
  * @details
  * Used to kill the motor watchdog.
  */
-Arm::~Arm ()
+GuardedArm::~GuardedArm ()
 {
 	if (mMotorWatchdog) {
 		mMotorWatchdog->Stop();
 		delete mMotorWatchdog;
-	}
-	
-	if (mArmMotor) {
-		delete mArmMotor;
-	}
-	
-	if (mTopLimit) {
-		delete mTopLimit;
-	}
-	
-	if (mBottomLimit) {
-		delete mBottomLimit;
 	}
 }
 
@@ -56,12 +60,12 @@ Arm::~Arm ()
  * If the top limit switch is pressed, then the arm stops going up.
  * In other words, when the arm is at maximum height, it stops automatically.
  */
-void Arm::GoUp()
+void GuardedArm::GoUp()
 {
 	if (mTopLimit->Get()) {
-		mArmMotor->Set(0);
+		mSpeedController->Set(0);
 	} else {
-		mArmMotor->Set(kMotorSpeed * kMotorDirection);
+		mSpeedController->Set(kMotorSpeed * kMotorDirection);
 	}
 }
 
@@ -72,21 +76,46 @@ void Arm::GoUp()
  * If the bottom limit switch is pressed, then the arms stop going down.
  * In other words, when the arm is at minimum height, it stops automatically.
  */
-void Arm::GoDown()
+void GuardedArm::GoDown()
 {
 	if (mBottomLimit->Get()) {
-		mArmMotor->Set(0);
+		mSpeedController->Set(0);
 	} else {
-		mArmMotor->Set(kMotorSpeed * kMotorDirection * -1);
+		mSpeedController->Set(kMotorSpeed * kMotorDirection * -1);
 	}
 }
 
 /**
  * @brief Makes the arm stop.
  */
-void Arm::Stop() {
-	mArmMotor->Set(0);
+void GuardedArm::Stop() {
+	mSpeedController->Set(0);
 }
+
+
+
+
+SimpleArm::SimpleArm(SpeedController *speedController) :
+		BaseArmComponent(speedController)
+{
+	//Empty
+}
+
+void SimpleArm::GoUp()
+{
+	mSpeedController->Set(kMotorSpeed * kMotorDirection);
+}
+
+void SimpleArm::GoDown()
+{
+	mSpeedController->Set(kMotorSpeed * kMotorDirection * -1);
+}
+
+void SimpleArm::Stop()
+{
+	mSpeedController->Set(0);
+}
+
 
 
 /**
@@ -95,7 +124,7 @@ void Arm::Stop() {
  * @param[in] arm Pointer to the arm.
  * @param[in] joystick Pointer to the joystick.
  */
-ArmController::ArmController (Arm *arm, Joystick *joystick) {
+ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick) {
 	mArm = arm;
 	mJoystick = joystick;
 }
@@ -110,8 +139,8 @@ ArmController::ArmController (Arm *arm, Joystick *joystick) {
  * While neither button is pushed, the arm stops.
  */
 void ArmController::Run() {
-	bool armUp = mJoystick->GetRawButton(4);
-	bool armDown = mJoystick->GetRawButton(5);
+	bool armUp = mJoystick->GetRawButton(6);
+	bool armDown = mJoystick->GetRawButton(7);
 	if ( armUp ) {
 		mArm->GoUp();
 	} else if ( armDown ) {
