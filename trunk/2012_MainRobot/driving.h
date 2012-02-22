@@ -197,7 +197,6 @@ protected:
  * @brief Uses a kinect to drive the robot -- this time, based on the
  * angle of the hands to the shoulders.
  */
-
 class KinectAngleController : public BaseKinectController
 {
 public:

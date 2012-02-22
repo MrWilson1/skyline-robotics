@@ -434,6 +434,7 @@ bool KinectController::IsPlayerShooting(void)
  * @param[in] leftKinectStick Pointer to left Kinectstick.
  * @param[in] rightKinectStick Pointer to right Kinectstick.
  * @param[in] kinect Pointer to the Kinect.
+ * @param[in] shooter Pointer to Shooter object.
  */
 KinectAngleController::KinectAngleController(RobotDrive *robotDrive, KinectStick *leftKinectStick, 
 		KinectStick *rightKinectStick, Kinect *kinect, Shooter *shooter) :
@@ -445,10 +446,11 @@ KinectAngleController::KinectAngleController(RobotDrive *robotDrive, KinectStick
 }
 
 /**
- * @brief Checks to see if player has made a pushing-forward motion to shoot.
+ * @brief Checks to see if player has made a pushing-forward motion with
+ * his or her right wrist to shoot manually (at full speed).
  * 
- * @returns True if both of the player's wrists are 
- * a certain distance (0.3) away from his or her shoulders.
+ * @returns True if the player's right wrist is 
+ * a certain distance (0.3) away from his or her right shoulder.
  * 
  * False otherwise.
  */
@@ -467,6 +469,16 @@ bool KinectAngleController::IsManuallyShooting(void)
 	}
 }
 
+/**
+ * @brief Checks to see if player has made a pushing-forward motion with
+ * his or her left wrist to shoot at a speed calculated from the 
+ * distance between the shooter and the hoop.
+ * 
+ * @returns True if the player's left wrist is 
+ * a certain distance (0.3) away from his or her left shoulder.
+ * 
+ * False otherwise.
+ */
 bool KinectAngleController::IsAutomaticallyShooting(void)
 {
 	float leftOrigin = mKinect->GetSkeleton().GetShoulderLeft().z;
@@ -520,9 +532,11 @@ void KinectAngleController::Run(void)
 	
 	bool isManuallyShooting = IsManuallyShooting();
 	bool isAutomaticallyShooting = IsAutomaticallyShooting();
+	
 	SmartDashboard::GetInstance()->Log(isManuallyShooting, "(KINECT) Player is shooting manually ");
 	SmartDashboard::GetInstance()->Log(isAutomaticallyShooting, "(KINECT) Player is shooting automatically ");
 	SmartDashboard::GetInstance()->Log((isManuallyShooting && isAutomaticallyShooting), "(KINECT) Player is being stupid ");
+	
 	if (isManuallyShooting && !isAutomaticallyShooting) {
 		mShooter->SetTestSpeed(1.0);
 	} else if (isAutomaticallyShooting && !isManuallyShooting) {

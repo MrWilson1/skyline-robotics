@@ -63,6 +63,9 @@ public:
 	void Run(void);
 };
 
+/**
+ * @brief Class for testing the shooter.
+ */
 class ShooterControllerTest : public BaseController
 {
 protected:

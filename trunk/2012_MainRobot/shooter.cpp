@@ -64,6 +64,11 @@ void Shooter::SetSpeedManually(float speed)
 	mBottomRightSpeedController->Set(speed);
 }
 
+/**
+ * @brief Makes the wheels spin at a raw speed given as the parameter.
+ * 
+ * @param[in] speed The speed of the motor (from -1.0 to 1.0).
+ */
 void Shooter::SetTestSpeed(float speed)
 {
 	mTopLeftSpeedController->Set(speed);
@@ -112,7 +117,6 @@ void Shooter::SetSpeedAutomatically()
  * @returns Returns the speed the speedControllers need to
  * turn to fire the ball and hit the hoop (from -1.0 to 1.0).
  */
-
 float Shooter::CalculateSpeed(float distance) {
 	float pi = 4 * atan(1);
 	float height = kBasketHeight - kShooterHeight;
@@ -129,9 +133,6 @@ float Shooter::CalculateSpeed(float distance) {
 	
 	return speed;
 }
-
-
-
 
 /**
  * @brief Constructor for ShooterController class.
@@ -153,7 +154,6 @@ ShooterController::ShooterController(Shooter *shooter, Joystick *joystick) :
  * Uses a joystick for manual mode -- use button 2 to fire normally
  * and the trigger for the preset.
  */
-
 void ShooterController::Run(void)
 {
 	bool setToManual = mJoystick->GetRawButton(2); // manual	
@@ -179,6 +179,12 @@ void ShooterController::Run(void)
 	}
 }
 
+/**
+ * @brief Constructor for ShooterControllerTest class.
+ * 
+ * @param[in] shooter Pointer to shooter.
+ * @param[in] joystick Pointer to joystick.
+ */
 ShooterControllerTest::ShooterControllerTest(Shooter *shooter, Joystick *joystick) :
 		BaseController()
 {
@@ -186,6 +192,18 @@ ShooterControllerTest::ShooterControllerTest(Shooter *shooter, Joystick *joystic
 	mJoystick = joystick;
 }
 
+/**
+ * @brief Contains code to test the shooter.
+ * 
+ * @details
+ * Button 3 sets the speed of the shooter to 0.0.
+ * Button 4 sets the speed of the shooter to -1.0.
+ * Button 5 sets the speed of the sohoter to 1.0.
+ * Button 6 increases the speed by 0.01.
+ * Button 7 decreases the speed by 0.01.
+ * Button 10 increases the speed by 0.1.
+ * Button 11 decreases the speed by 0.1.
+ */
 void ShooterControllerTest::Run(void)
 {
 	bool upSmall = mJoystick->GetRawButton(11);
