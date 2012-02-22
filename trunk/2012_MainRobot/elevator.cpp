@@ -85,8 +85,8 @@ ElevatorController::ElevatorController(Elevator *elevator, Joystick *joystick)
  * moving the belt (and shoot the ball).
  */
 void ElevatorController::Run(void) {
-	bool moveUp = mJoystick->GetRawButton(6) or mJoystick->GetRawButton(11);
-	bool moveDown = mJoystick->GetRawButton(7) or mJoystick->GetRawButton(10);
+	bool moveUp = mJoystick->GetRawButton(11);
+	bool moveDown = mJoystick->GetRawButton(10);
 	
 	if (moveUp and moveDown) {
 		mElevator->Stop();
