@@ -64,6 +64,14 @@ void Shooter::SetSpeedManually(float speed)
 	mBottomRightSpeedController->Set(speed);
 }
 
+void Shooter::SetTestSpeed(float speed)
+{
+	mTopLeftSpeedController->Set(speed);
+	mTopRightSpeedController->Set(-1 * speed);
+	mBottomLeftSpeedController->Set(-1 * speed);
+	mBottomRightSpeedController->Set(speed);
+}
+
 /**
  * @brief Gets the position of the robot relative to the hoop and
  * attempts to aim and hit it.
@@ -171,4 +179,50 @@ void ShooterController::Run(void)
 	} else {
 		mShooter->SetSpeedManually(0);
 	}
+}
+
+ShooterControllerTest::ShooterControllerTest(Shooter *shooter, Joystick *joystick) :
+		BaseController()
+{
+	mShooter = shooter;
+	mJoystick = joystick;
+}
+
+void ShooterControllerTest::Run(void)
+{
+	bool upSmall = mJoystick->GetRawButton(11);
+	bool downSmall = mJoystick->GetRawButton(10);
+	bool upBig = mJoystick->GetRawButton(6);
+	bool downBig = mJoystick->GetRawButton(7);
+	bool setLow = mJoystick->GetRawButton(4);
+	bool setMiddle = mJoystick->GetRawButton(3);
+	bool setHigh = mJoystick->GetRawButton(5);
+	
+	float shooterSpeed = 0.0;
+	
+	if ( upSmall ) {
+		shooterSpeed += .01;
+	} else if ( downSmall ) {
+		shooterSpeed -= .01;
+	} else if ( upBig ) {
+		shooterSpeed += .1;
+	} else if ( downBig ) {
+		shooterSpeed -= .1;
+	} else if ( setLow ) {
+		shooterSpeed = -1.0;
+	} else if ( setMiddle ) {
+		shooterSpeed = 0.0;
+	} else if ( setHigh ) {
+		shooterSpeed = 1.0;
+	}
+	
+	if ( shooterSpeed > 1.0 ) {
+		shooterSpeed = 1.0;
+	} else if ( shooterSpeed < -1.0 ) {
+		shooterSpeed = -1.0;
+	}
+	
+	SmartDashboard::GetInstance()->Log(shooterSpeed, "Shooter speed: ");
+	
+	mShooter->SetTestSpeed(shooterSpeed);
 }

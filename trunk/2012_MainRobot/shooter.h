@@ -44,6 +44,7 @@ public:
     Shooter(SpeedController*, SpeedController*, SpeedController*, SpeedController*, RangeFinder*);
     void SetSpeedManually(float);
     void SetSpeedAutomatically();
+    void SetTestSpeed(float);
     float CalculateSpeed(float);
 	float CalculateDistance();
 	void Run();
@@ -59,6 +60,16 @@ protected:
 	Joystick *mJoystick;
 public:
 	ShooterController(Shooter *, Joystick *);
+	void Run(void);
+};
+
+class ShooterControllerTest : public BaseController
+{
+protected:
+	Shooter *mShooter;
+	Joystick *mJoystick;
+public:
+	ShooterControllerTest(Shooter *, Joystick *);
 	void Run(void);
 };
 
