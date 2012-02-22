@@ -51,7 +51,7 @@ double Tools::Coerce(double number, double rawMin, double rawMax, double adjuste
 	}
 	
 	double percentage = (number - rawMin) / (rawMax - rawMin);
-	return percentage * (adjustedMax - adjustedMin); 
+	return percentage * (adjustedMax - adjustedMin) + adjustedMin; 
 }
 
 /**

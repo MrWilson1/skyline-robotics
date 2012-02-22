@@ -27,6 +27,10 @@
 #include "components.h"
 #include "shooter.h"
 
+
+
+
+
 /**
  * @brief A baseclass for any controller that uses 
  * a joystick.
@@ -46,6 +50,23 @@ public:
 	BaseJoystickController();
 	void Run() = 0;
 };
+
+class ControllerSwitcher : public BaseController
+{
+protected:
+	vector <BaseController*> mControllers;
+	vector <Joystick*> mJoysticks;
+	int mControllerSize;
+	int mJoystickSize;
+	int mCurrent;
+	bool mIsHeld;
+	
+public:
+	ControllerSwitcher(vector<BaseController*>, vector<Joystick*>);
+	virtual ~ControllerSwitcher();
+	void Run();
+};
+
 
 
 /**

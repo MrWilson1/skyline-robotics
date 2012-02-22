@@ -3,23 +3,23 @@
 /**
  * @brief Creates an instance of this class.
  * 
- * @param[in] middleLimitSwitch Pointer to the middle limit switch.
+ * @param[in] bottomLimitSwitch Pointer to the bottom limit switch.
  * @param[in] topLimitSwitch Pointer to the top limit switch.
  * @param[in] speedController Pointer to the elevator speed controller.
  */
-Elevator::Elevator(DigitalInput *middleLimitSwitch, DigitalInput *topLimitSwitch, SpeedController *speedController)
+Elevator::Elevator(DigitalInput *bottomLimitSwitch, DigitalInput *topLimitSwitch, SpeedController *speedController)
 {
-	mMiddleLimitSwitch = middleLimitSwitch;
+	mBottomLimitSwitch = bottomLimitSwitch;
 	mTopLimitSwitch = topLimitSwitch;
 	mSpeedController = speedController;
 }
 
 /*
  * @brief Checks to see if there is a ball
- * in the middle of the elevator.
+ * in the bottom of the elevator.
  */
-bool Elevator::IsBallIn(void) {
-	return (bool) mMiddleLimitSwitch->Get();
+bool Elevator::IsBallAtBottom(void) {
+	return (bool) mBottomLimitSwitch->Get();
 }
 
 /**
@@ -32,23 +32,26 @@ bool Elevator::IsBallAtTop(void) {
 
 /**
  * @brief Makes the elevator stop.
- * 
- * @details
- * In other words, sets the elevator motor speed to 0.0.
  */
 void Elevator::Stop(void) {
 	mSpeedController->Set(0.0);
 }
 
 /**
- * @brief Makes the elevator move.
- * 
- * @details
- * In other words, sets the elevator motor speed to default speed.
+ * @brief Makes the elevator move up.
  */
 void Elevator::MoveUp(void) {
 	mSpeedController->Set(kDefaultSpeed);
 }
+
+/**
+ * @brief Makes the elevator move down.
+ */
+void Elevator::MoveDown(void)
+{
+	mSpeedController->Set(kDefaultSpeed * -1);
+}
+
 
 /**
  * @brief Makes an instance of this class.
@@ -66,6 +69,9 @@ ElevatorController::ElevatorController(Elevator *elevator, Joystick *joystick)
  * @brief Provides a thin layer to control the elevator
  * using a joystick.
  * 
+ * @warning 
+ * Inaccurate details.
+ * 
  * @details
  * Button 8 causes the conveyor belt to move the ball up
  * until it reaches the top. The driver must press button 9
@@ -79,17 +85,19 @@ ElevatorController::ElevatorController(Elevator *elevator, Joystick *joystick)
  * moving the belt (and shoot the ball).
  */
 void ElevatorController::Run(void) {
-	bool moveBall = mJoystick->GetRawButton(8);
-	bool loadBall = mJoystick->GetRawButton(9);
+	bool moveUp = mJoystick->GetRawButton(6) or mJoystick->GetRawButton(11);
+	bool moveDown = mJoystick->GetRawButton(7) or mJoystick->GetRawButton(10);
 	
-    if ( moveBall && !mElevator->IsBallAtTop() ) {
-    	mElevator->MoveUp();
-    } else if ( mElevator->IsBallAtTop() && !loadBall ) {
-    	mElevator->Stop();
-    } else if ( mElevator->IsBallAtTop() && loadBall ) {
-    	mElevator->MoveUp();
-    }
-    
-    SmartDashboard::GetInstance()->Log(mElevator->IsBallIn(), "Ball in middle: ");
-    SmartDashboard::GetInstance()->Log(mElevator->IsBallAtTop(), "Ball at top: ");
+	if (moveUp and moveDown) {
+		mElevator->Stop();
+	} else if (moveUp) {
+		mElevator->MoveUp();
+	} else if (moveDown) {
+		mElevator->MoveDown();
+	} else {
+		mElevator->Stop();
+	}
+	
+	SmartDashboard::GetInstance()->Log(mElevator->IsBallAtTop(), "Elevator: Ball at top");
+    SmartDashboard::GetInstance()->Log(mElevator->IsBallAtBottom(), "Elevator: Ball at bottom");
 }

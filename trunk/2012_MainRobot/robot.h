@@ -77,6 +77,8 @@ protected:
 	//SpeedController *mArmSpeedController;
 	SpeedController *mTestMotor;
 	DigitalInput *mTestDigitalInput;
+	DigitalInput *mElevatorBottomLimitSwitch;
+	DigitalInput *mElevatorTopLimitSwitch;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
@@ -91,11 +93,11 @@ protected:
 	//TestThreadListener *mTestThreadListener;
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
-	TargetFinder *mTargetFinder;
+	//TargetFinder *mTargetFinder;
 	//BaseArmComponent *mArm;
 	
 	// Controller -- see controller.h
-	std::vector<BaseController*> mControllerCollection;
+	vector<BaseController*> mControllerCollection;
 	//TargetFinder mTargetFinder;
 	//Task mTargetTask;
 

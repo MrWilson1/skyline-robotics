@@ -48,6 +48,64 @@ float BaseJoystickController::getSpeedFactor(Joystick *joystick)
 }
 
 
+ControllerSwitcher::ControllerSwitcher(
+		vector<BaseController*> controllers, 
+		vector<Joystick*> joysticks) :
+		BaseController()
+{
+	mControllers = controllers;
+	mJoysticks = joysticks;
+		
+	mControllerSize = (int) mControllers.size();
+	mJoystickSize = (int) mJoysticks.size();
+	
+	mCurrent = 0;
+	mIsHeld = false;
+}
+
+ControllerSwitcher::~ControllerSwitcher()
+{
+	// Empty
+}
+
+void ControllerSwitcher::Run()
+{
+	for (int i=0; i<mJoystickSize; i++) {
+		if (mJoysticks.at(i)->GetRawButton(11)) {
+			if (!mIsHeld) {
+				mCurrent = (mCurrent + 1) % mJoystickSize;
+				mIsHeld = true;
+			}
+		} else {
+			mIsHeld = false;
+		}
+		
+	}
+	mControllers.at(mCurrent)->Run();
+	
+	SmartDashboard::GetInstance()->Log(mCurrent, "Current Controller:");
+	SmartDashboard::GetInstance()->Log(mControllerSize, "Max Controllers:");
+}
+
+
+
+
+/*
+class JoystickControllerSwitcher : public BaseController
+{
+protected:
+	vector <BaseJoystickController*> *mControllers;
+	vector <Joystick*> *mJoysticks;
+	
+public:
+	JoystickControllerSwitcher(vector<BaseJoystickController*> *, vector<Joystick*> *);
+	void Run();
+};*/
+
+
+
+
+
 
 TestMotor::TestMotor(Joystick *joystick, SpeedController *speedController)
 {
