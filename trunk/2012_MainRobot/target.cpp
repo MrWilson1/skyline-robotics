@@ -192,11 +192,15 @@ TargetFinder::TargetFinder() :
 
 vector<TargetUtils::Target> TargetFinder::GetTargets()
 {
+	vector<TargetUtils::Target> targets;
+	
 	AxisCamera &camera = GetCamera();
 	HSLImage *image = camera.GetImage();
 	
-	SmartDashboard::GetInstance()->Log(image->GetWidth(), "Image width");
-	SmartDashboard::GetInstance()->Log(image->GetHeight(), "Image height");
+	if ((image->GetWidth() == 0) or (image->GetHeight() == 0)) {
+		delete image;
+		return targets;
+	}
 	
 	BinaryImage *thresholdImage = image->ThresholdRGB(TargetUtils::threshold);    // Get only colors within range
 	BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 1);  // Remove small objects
@@ -209,7 +213,7 @@ vector<TargetUtils::Target> TargetFinder::GetTargets()
 			&shapeDetectionOptions,
 			NULL
 	);
-	delete image;
+	
 	delete thresholdImage;
 	delete bigObjectsImage;
 	delete convexHullImage;
@@ -218,11 +222,10 @@ vector<TargetUtils::Target> TargetFinder::GetTargets()
 	int size = (int) rectangles->size();
 	SmartDashboard::GetInstance()->Log(size, "Number of targets");
 	
-	vector<TargetUtils::Target> targets;
-	
 	if (size == 0) {
 		SmartDashboard::GetInstance()->Log("None found", "Camera Pics");
 		delete rectangles;
+		delete image;
 		return targets;		// Empty vector
 	}
 	SmartDashboard::GetInstance()->Log("Found", "Camera Pics");
@@ -241,10 +244,17 @@ vector<TargetUtils::Target> TargetFinder::GetTargets()
 		t.BottomRight.Set(r.corner[2].x, r.corner[2].y);
 		t.BottomLeft.Set(r.corner[3].x, r.corner[3].y);
 		
-		t.DistanceFromCamera = CalculateDistanceBasedOnWidth(t.Width);	
+		float avgMiddleX = (r.corner[0].x + r.corner[1].x + r.corner[2].x + r.corner[3].x) / 4;
+		float avgMiddleY = (r.corner[0].y + r.corner[1].y + r.corner[2].y + r.corner[3].y) / 4;
+		t.Middle.Set(avgMiddleX, avgMiddleY);
+		
+		t.DistanceFromCamera = CalculateDistanceBasedOnWidth(t.Width);
+		t.XAngleFromCamera = FindXAngle(avgMiddleX);
+		t.YAngleFromCamera = FindYAngle(avgMiddleY);
 		targets.push_back(t);
 	}
 	
+	delete image;
 	delete rectangles;
 	return targets;
 }
@@ -265,9 +275,24 @@ double TargetFinder::CalculateDistanceBasedOnWidth(double widthInPixels)
 	// 640x480
 	// The dial contains a focus -- the groove over the 'ar' in
 	// 'Near' should be just a hair to the left of the bump.
+	// Original formula: (17490 / widthInPixels) - 6.97
 	
 	double distance = (17490 / widthInPixels) - 6.97; 
 	return distance;
+}
+
+double TargetFinder::FindXAngle(double middleXCoordinate) {
+	double delta = middleXCoordinate - kMiddleXOfImage;
+	double percentage = delta / kMiddleXOfImage;
+	double angle = percentage * kMaxXAngleOfCamera;
+	return angle;
+}
+
+double TargetFinder::FindYAngle(double middleYCoordinate) {
+	double delta = middleYCoordinate - kMiddleYOfImage;
+	double percentage = delta / kMiddleYOfImage;
+	double angle = percentage * kMaxYAngleOfCamera;
+	return angle;
 }
 
 AxisCamera & TargetFinder::GetCamera()
@@ -298,7 +323,7 @@ void TargetSnapshotController::Run()
 		mWatchdog.SetEnabled(true);
 		SmartDashboard::GetInstance()->Log("Yes", "Snapshot");
 		
-		if ((int)targets.size() != 0) {
+		if (((int)targets.size()) != 0) {
 			TargetUtils::Target t = targets.at(0);
 			
 			SmartDashboard::GetInstance()->Log(t.Width, "t.Width");
@@ -319,6 +344,8 @@ void TargetSnapshotController::Run()
 			SmartDashboard::GetInstance()->Log(t.Middle.X, "t.Middle.x");
 			SmartDashboard::GetInstance()->Log(t.Middle.Y, "t.Middle.y");
 			SmartDashboard::GetInstance()->Log(t.DistanceFromCamera, "t.DistanceFromCamera");
+			SmartDashboard::GetInstance()->Log(t.XAngleFromCamera, "t.XAngleFromCamera");
+			SmartDashboard::GetInstance()->Log(t.YAngleFromCamera, "t.YAngleFromCamera");
 		}
 	} else {
 		SmartDashboard::GetInstance()->Log("No", "Snapshot");

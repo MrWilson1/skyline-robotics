@@ -178,8 +178,14 @@ public:
 protected:
 	AxisCamera & GetCamera();
 	double CalculateDistanceBasedOnWidth(double);
+	double FindXAngle(double);
+	double FindYAngle(double);
 	static const double kTargetWidthInches = 24;
 	static const double kTargetHeightInches = 18;
+	static const double kMiddleXOfImage = 320.0;
+	static const double kMaxXAngleOfCamera = 30;	// In degrees
+	static const double kMiddleYOfImage = 240.0;
+	static const double kMaxYAngleOfCamera = 20;		// In degrees
 };
 
 

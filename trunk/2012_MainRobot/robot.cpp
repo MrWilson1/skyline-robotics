@@ -123,7 +123,7 @@ void MainRobot::InitializeComponents(void)
 	mLeftKinectStick = new KinectStick::KinectStick(1);
 	mRightKinectStick = new KinectStick::KinectStick(2);
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorTopLimitSwitch, mElevatorSpeedController);
-	//mTargetFinder = new TargetFinder();
+	mTargetFinder = new TargetFinder();
 	//mArm = new SimpleArm(mArmSpeedController);
 	
 }
@@ -139,8 +139,7 @@ void MainRobot::InitializeComponents(void)
  */
 void MainRobot::InitializeControllers(void)
 {
-#ifdef ROBOT_MULTIPLE_CONTROLLERS
-	vector<BaseController *> controllers;
+	/*vector<BaseController *> controllers;
 	vector<Joystick *> joysticks;
 	controllers.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	controllers.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
@@ -149,16 +148,14 @@ void MainRobot::InitializeControllers(void)
 	joysticks.push_back(mLeftJoystick);
 	joysticks.push_back(mRightJoystick);
 	joysticks.push_back(mTwistJoystick);
+	*/
+	//mControllerCollection.push_back(new ControllerSwitcher(controllers, joysticks));
+
+	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
+
 	
-	mControllerCollection.push_back(new ControllerSwitcher(controllers, joysticks));
-#endif
-	
-#ifndef ROBOT_MULTIPLE_CONTROLLERS
-	mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
-#endif
-	
-	mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
-	mControllerCollection.push_back(new ElevatorController(mElevator, mRightJoystick));
+	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
+	//mControllerCollection.push_back(new ElevatorController(mElevator, mRightJoystick));
 		
 	mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
 	mControllerCollection.push_back(new GyroTest(mGyro));
@@ -169,9 +166,9 @@ void MainRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
 	//mControllerCollection.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect));
-	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
+	mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	
-	//mControllerCollection.push_back(new TargetSnapshotController(mTargetFinder, mLeftJoystick, GetWatchdog()));
+	mControllerCollection.push_back(new TargetSnapshotController(mTargetFinder, mLeftJoystick, GetWatchdog()));
 	//mControllerCollection.push_back(new TestMotor(mLeftJoystick, mTestMotor));
 	//mControllerCollection.push_back(new TestThreadController(mTestThreadListener));
 	return;

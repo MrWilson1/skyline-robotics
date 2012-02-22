@@ -93,7 +93,7 @@ protected:
 	//TestThreadListener *mTestThreadListener;
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
-	//TargetFinder *mTargetFinder;
+	TargetFinder *mTargetFinder;
 	//BaseArmComponent *mArm;
 	
 	// Controller -- see controller.h
