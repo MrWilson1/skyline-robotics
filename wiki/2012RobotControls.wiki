@@ -12,8 +12,8 @@ There are three main control schemes for the robot: Tank Joysticks (using two jo
   * *Button 2* - Set shooter to manual mode
   * *Button 6* - Arm up
   * *Button 7* - Arm down
-  * *Button 8* - Move elevator (until ball at top)
-  * *Button 9* - Continue moving elevator, i.e. load ball into shooter
+  * *Button 10* - Move elevator down
+  * *Button 11* - Move elevator up
   * *Trigger* - Set shooter to preset mode
   * *Throttle* - Set shooter speed in manual mode
 ===Left===
@@ -28,8 +28,8 @@ There are three main control schemes for the robot: Tank Joysticks (using two jo
   * *Button 3* - Get target from camera
   * *Button 6* - Arm up
   * *Button 7* - Arm down
-  * *Button 8* - Move elevator (until ball at top)
-  * *Button 9* - Continue moving elevator, i.e. load ball into shooter
+  * *Button 10* - Move elevator down
+  * *Button 11* - Move elevator up
   * *Trigger* - Set shooter to preset mode
   * *Throttle* - Set speed factor for driving
 
