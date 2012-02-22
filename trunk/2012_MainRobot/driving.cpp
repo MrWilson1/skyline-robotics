@@ -83,8 +83,8 @@ void ControllerSwitcher::Run()
 	}
 	mControllers.at(mCurrent)->Run();
 	
-	SmartDashboard::GetInstance()->Log(mCurrent, "Current Controller:");
-	SmartDashboard::GetInstance()->Log(mControllerSize, "Max Controllers:");
+	SmartDashboard::GetInstance()->Log(mCurrent, "Current controller ");
+	SmartDashboard::GetInstance()->Log(mControllerSize, "Max controllers ");
 }
 
 
@@ -116,7 +116,7 @@ TestMotor::TestMotor(Joystick *joystick, SpeedController *speedController)
 void TestMotor::Run()
 {
 	float speed = mJoystick->GetY();
-	SmartDashboard::GetInstance()->Log(speed, "TestMotor::speed");
+	SmartDashboard::GetInstance()->Log(speed, "Test motor speed ");
 	mSpeedController->Set(speed);
 }
 
@@ -165,7 +165,6 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
  */
 void TankJoysticks::Run(void)
 {
-	SmartDashboard::GetInstance()->Log("Alive", "Tank status");
 	float left = mLeftJoystick->GetY();
 	float right = mRightJoystick->GetY(); 
 	
@@ -177,9 +176,9 @@ void TankJoysticks::Run(void)
 	squaredLeft *= speedFactor;
 	squaredRight *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(squaredLeft, "TankJoysticks::squaredLeft");
-	SmartDashboard::GetInstance()->Log(squaredRight, "TankJoysticks::squaredRight");
-	SmartDashboard::GetInstance()->Log(speedFactor, "TankJoysticks::speedFactor");
+	SmartDashboard::GetInstance()->Log(squaredLeft, "(JOYSTICK) Left speed ");
+	SmartDashboard::GetInstance()->Log(squaredRight, "(JOYSTICK) Right speed ");
+	SmartDashboard::GetInstance()->Log(speedFactor, "(JOYSTICK) Speed factor ");
 	
 	mRobotDrive->TankDrive(squaredLeft, squaredRight);
 }
@@ -227,9 +226,9 @@ void SingleJoystick::Run()
 	squaredY *= speedFactor;
 	squaredX *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(squaredX, "SingleJoystick::squaredX");
-	SmartDashboard::GetInstance()->Log(squaredY, "SingleJoystick::squaredY");
-	SmartDashboard::GetInstance()->Log(speedFactor, "SingleJoystick::speedFactor");
+	SmartDashboard::GetInstance()->Log(squaredX, "(JOYSTICK) Rotate ");
+	SmartDashboard::GetInstance()->Log(squaredY, "(JOYSTICK) Speed ");
+	SmartDashboard::GetInstance()->Log(speedFactor, "(JOYSTICK) Speed factor ");
 		
 	mRobotDrive->ArcadeDrive(squaredY,-squaredX);
 }
@@ -340,21 +339,21 @@ KinectController::KinectController(RobotDrive *robotDrive, Kinect *kinect):
 void KinectController::Run(void)
 {
 	bool isPlayerReady = IsPlayerReady();
-	SmartDashboard::GetInstance()->Log(isPlayerReady, "KinectController::IsReady()");
+	SmartDashboard::GetInstance()->Log(isPlayerReady, "(KINECT) Player is ready ");
 	
 	if (isPlayerReady) {
 		float left = GetLeftArmDistance();
 		float right = GetRightArmDistance();
 		mRobotDrive->TankDrive(left, right);
 			
-		SmartDashboard::GetInstance()->Log(left, "KinectController::GetLeftArmDistance()");
-		SmartDashboard::GetInstance()->Log(right, "KinectController::GetRightArmDistance()");
+		SmartDashboard::GetInstance()->Log(left, "(KINECT) Left speed ");
+		SmartDashboard::GetInstance()->Log(right, "(KINECT) Right speed ");
 	} else {
 		HaltRobot();		
 	}
 	
 	bool isShooting = IsPlayerShooting();
-	SmartDashboard::GetInstance()->Log(isShooting, "KinectController::IsPlayerShooting()");
+	SmartDashboard::GetInstance()->Log(isShooting, "(KINECT) Player is shooting ");
 	if (isShooting) {
 		// Empty
 	} else {
@@ -377,8 +376,6 @@ float KinectController::GetLeftArmDistance(void)
 	float distance = originJoint - movingJoint;
 	float output = Tools::Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
 	
-	SmartDashboard::GetInstance()->Log(output, "Left movement");
-	
 	return output;
 }
 
@@ -396,8 +393,6 @@ float KinectController::GetRightArmDistance(void)
 	
 	float distance = originJoint - movingJoint;
 	float output = Tools::Coerce(distance, kArmMinZ, kArmMaxZ, -1, 1);
-	
-	SmartDashboard::GetInstance()->Log(output, "Right movement");
 	
 	return output;	
 }
@@ -497,20 +492,20 @@ bool KinectAngleController::IsManuallyShooting(void)
 void KinectAngleController::Run(void)
 {
 	bool isPlayerReady = IsPlayerReady();
-	SmartDashboard::GetInstance()->Log(isPlayerReady, "KinectAngleController::IsReady()");
+	SmartDashboard::GetInstance()->Log(isPlayerReady, "(KINECT) Player is ready ");
 	
 	if ( isPlayerReady ) {
 		float rightY = mRightKinectStick->GetY();
 		float leftY = mLeftKinectStick->GetY();
-		SmartDashboard::GetInstance()->Log(rightY, "Right Kinectstick y-value: ");
-		SmartDashboard::GetInstance()->Log(leftY, "Left Kinectstick y-value: ");
+		SmartDashboard::GetInstance()->Log(rightY, "(KINECT) Right speed ");
+		SmartDashboard::GetInstance()->Log(leftY, "(KINECT) Left speed ");
 		mRobotDrive->TankDrive(leftY * kSpeedDecreaseFactor * -1, rightY * kSpeedDecreaseFactor * -1);
 	} else {
 		HaltRobot();
 	}
 	
 	bool isShooting = IsManuallyShooting();
-	SmartDashboard::GetInstance()->Log(isShooting, "KinectAngleController::IsManuallyShooting()");
+	SmartDashboard::GetInstance()->Log(isShooting, "(KINECT) Player is shooting ");
 	if (isShooting) {
 		// empty
 	} else {

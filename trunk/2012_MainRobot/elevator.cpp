@@ -98,6 +98,6 @@ void ElevatorController::Run(void) {
 		mElevator->Stop();
 	}
 	
-	SmartDashboard::GetInstance()->Log(mElevator->IsBallAtTop(), "Elevator: Ball at top");
-    SmartDashboard::GetInstance()->Log(mElevator->IsBallAtBottom(), "Elevator: Ball at bottom");
+	SmartDashboard::GetInstance()->Log(mElevator->IsBallAtTop(), "(ELEVATOR) Ball at top ");
+    SmartDashboard::GetInstance()->Log(mElevator->IsBallAtBottom(), "(ELEVATOR) Ball at bottom ");
 }

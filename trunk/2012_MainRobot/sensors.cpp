@@ -81,7 +81,7 @@ RangeFinderTest::RangeFinderTest(RangeFinder *rangeFinder) :
  */
 void RangeFinderTest::Run(void)
 {
-	SmartDashboard::GetInstance()->Log(mRangeFinder->FromWallInches(), "Ultrasound");
+	SmartDashboard::GetInstance()->Log(mRangeFinder->FromWallInches(), "(ULTRASOUND) Distance ");
 }
 
 
@@ -103,7 +103,7 @@ GyroTest::GyroTest(Gyro *gyro) :
  */
 void GyroTest::Run()
 {
-	SmartDashboard::GetInstance()->Log(mGyro->GetAngle(), "Gyro");
+	SmartDashboard::GetInstance()->Log(mGyro->GetAngle(), "(GYRO) Rotation ");
 }
 
 

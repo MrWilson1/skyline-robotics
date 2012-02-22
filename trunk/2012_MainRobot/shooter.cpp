@@ -91,11 +91,9 @@ void Shooter::SetSpeedAutomatically()
 	float distance = Shooter::CalculateDistance();
 	float speed = Shooter::CalculateSpeed(distance);
 	
-	SmartDashboard::GetInstance()->Log(speed, "Shooter speed: ");
-	
 	float coercedSpeed = Tools::Coerce(speed, kMinSpeed, kMaxSpeed, 0, 1);
 	
-	SmartDashboard::GetInstance()->Log(coercedSpeed, "Coerced speed: ");
+	SmartDashboard::GetInstance()->Log(coercedSpeed, "(SHOOTER) Auto speed ");
 	
 	Shooter::SetSpeedManually(coercedSpeed);
 }
@@ -164,12 +162,12 @@ void ShooterController::Run(void)
 	
 	 float twist = mJoystick->GetTwist();
 	// float z = mJoystick->GetZ();
-	SmartDashboard::GetInstance()->Log(setToManual, "Set to manual? ");
-	SmartDashboard::GetInstance()->Log(setToPreset, "Set to preset? ");
-	SmartDashboard::GetInstance()->Log(twist, "Shooter Twist: ");
+	SmartDashboard::GetInstance()->Log(setToManual, "(SHOOTER) Manual ");
+	SmartDashboard::GetInstance()->Log(setToPreset, "(SHOOTER) Preset ");
+	SmartDashboard::GetInstance()->Log(twist, "(SHOOTER) Speed Factor ");
 	// SmartDashboard::GetInstance()->Log(z, "Shooter z: ");
 	
-	SmartDashboard::GetInstance()->Log(twist, "Shooter Throttle: ");
+	SmartDashboard::GetInstance()->Log(twist, "(SHOOTER) Speed Factor ");
 	
 	if ( setToManual ) {
 		//mShooter->SetSpeedManually(throttle);
@@ -222,7 +220,7 @@ void ShooterControllerTest::Run(void)
 		shooterSpeed = -1.0;
 	}
 	
-	SmartDashboard::GetInstance()->Log(shooterSpeed, "Shooter speed: ");
+	SmartDashboard::GetInstance()->Log(shooterSpeed, "(SHOOTER) Test speed ");
 	
 	mShooter->SetTestSpeed(shooterSpeed);
 }
