@@ -436,11 +436,12 @@ bool KinectController::IsPlayerShooting(void)
  * @param[in] kinect Pointer to the Kinect.
  */
 KinectAngleController::KinectAngleController(RobotDrive *robotDrive, KinectStick *leftKinectStick, 
-		KinectStick *rightKinectStick, Kinect *kinect) :
+		KinectStick *rightKinectStick, Kinect *kinect, Shooter *shooter) :
 		BaseKinectController(robotDrive, kinect)
 {
 	mLeftKinectStick = leftKinectStick;
 	mRightKinectStick = rightKinectStick;
+	mShooter = shooter;
 }
 
 /**
@@ -454,15 +455,26 @@ KinectAngleController::KinectAngleController(RobotDrive *robotDrive, KinectStick
 bool KinectAngleController::IsManuallyShooting(void)
 {
 	float rightOrigin = mKinect->GetSkeleton().GetShoulderRight().z;
-	float leftOrigin = mKinect->GetSkeleton().GetShoulderLeft().z;
 	float rightMoving = mKinect->GetSkeleton().GetWristRight().z;
-	float leftMoving = mKinect->GetSkeleton().GetWristLeft().z;
 	
 	float rightDelta = rightMoving - rightOrigin;
+	
+	// Pushing right hand forward to shoot.
+	if (fabs(rightDelta) > kPushThreshold) {   
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool KinectAngleController::IsAutomaticallyShooting(void)
+{
+	float leftOrigin = mKinect->GetSkeleton().GetShoulderLeft().z;
+	float leftMoving = mKinect->GetSkeleton().GetWristLeft().z;
+	
 	float leftDelta = leftMoving - leftOrigin;
 	
-	// Pushing forward to shoot.
-	if ((fabs(rightDelta) > kPushThreshold) and (fabs(leftDelta) > kPushThreshold)) {
+	if (fabs(leftDelta) > kPushThreshold) {
 		return true;
 	} else {
 		return false;
@@ -484,8 +496,10 @@ bool KinectAngleController::IsManuallyShooting(void)
  * the shoulders. Therefore, the easiest way to stop the robot
  * is to cross one's arms in an 'X' shape.
  * 
- * Moving both one's wrists a certain distance forward (0.3) 
- * will tell the robot to shoot.
+ * Moving one's right wrist a certain distance (0.3) forward will tell
+ * the robot to shoot at full speed. Moving one's left wrist the same
+ * distance forward will tell the robot to shoot at a speed
+ * calculated from the distance between the shooter and the hoop.
  * 
  * This will log values to SmartDashboard.
  */
@@ -504,11 +518,16 @@ void KinectAngleController::Run(void)
 		HaltRobot();
 	}
 	
-	bool isShooting = IsManuallyShooting();
-	SmartDashboard::GetInstance()->Log(isShooting, "(KINECT) Player is shooting ");
-	if (isShooting) {
-		// empty
-	} else {
-		// empty
+	bool isManuallyShooting = IsManuallyShooting();
+	bool isAutomaticallyShooting = IsAutomaticallyShooting();
+	SmartDashboard::GetInstance()->Log(isManuallyShooting, "(KINECT) Player is shooting manually ");
+	SmartDashboard::GetInstance()->Log(isAutomaticallyShooting, "(KINECT) Player is shooting automatically ");
+	SmartDashboard::GetInstance()->Log((isManuallyShooting && isAutomaticallyShooting), "(KINECT) Player is being stupid ");
+	if (isManuallyShooting && !isAutomaticallyShooting) {
+		mShooter->SetTestSpeed(1.0);
+	} else if (isAutomaticallyShooting && !isManuallyShooting) {
+		mShooter->SetSpeedAutomatically();
+	} else if (isAutomaticallyShooting && isManuallyShooting) {
+		mShooter->SetTestSpeed(0.0);
 	}
 }

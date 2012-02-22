@@ -144,6 +144,7 @@ void MainRobot::InitializeControllers(void)
 	controllers.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	controllers.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	controllers.push_back(new MinimalistDrive(mRobotDrive));
+	controllers.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter));
 	
 	joysticks.push_back(mLeftJoystick);
 	joysticks.push_back(mRightJoystick);
@@ -153,7 +154,6 @@ void MainRobot::InitializeControllers(void)
 
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 
-	
 	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
 	//mControllerCollection.push_back(new ElevatorController(mElevator, mRightJoystick));
 		
@@ -165,8 +165,8 @@ void MainRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
-	//mControllerCollection.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect));
-	mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
+	mControllerCollection.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter));
+	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	
 	mControllerCollection.push_back(new TargetSnapshotController(mTargetFinder, mLeftJoystick, GetWatchdog()));
 	//mControllerCollection.push_back(new TestMotor(mLeftJoystick, mTestMotor));

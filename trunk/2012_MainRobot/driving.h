@@ -201,18 +201,20 @@ protected:
 class KinectAngleController : public BaseKinectController
 {
 public:
-	KinectAngleController(RobotDrive *, KinectStick *, KinectStick *, Kinect *);
+	KinectAngleController(RobotDrive *, KinectStick *, KinectStick *, Kinect *, Shooter *);
 	void Run();
 	
 protected:
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
+	Shooter *mShooter;
 	
 	static const float kPushThreshold = 0.3;
 	static const float kSpeedDecreaseFactor = 0.4;
 	// bool isAutoShooting();
 	//bool IsPlayerReady();
 	bool IsManuallyShooting();
+	bool IsAutomaticallyShooting();
 	
 };
 
