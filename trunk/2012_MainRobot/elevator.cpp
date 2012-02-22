@@ -7,10 +7,10 @@
  * @param[in] topLimitSwitch Pointer to the top limit switch.
  * @param[in] speedController Pointer to the elevator speed controller.
  */
-Elevator::Elevator(DigitalInput *bottomLimitSwitch, DigitalInput *topLimitSwitch, SpeedController *speedController)
+Elevator::Elevator(DigitalInput *bottomLimitSwitch, SpeedController *speedController)
 {
 	mBottomLimitSwitch = bottomLimitSwitch;
-	mTopLimitSwitch = topLimitSwitch;
+	//mTopLimitSwitch = topLimitSwitch;
 	mSpeedController = speedController;
 }
 
@@ -26,9 +26,9 @@ bool Elevator::IsBallAtBottom(void) {
  * @brief Checks to see if there is a ball
  * at the top of the elevator.
  */
-bool Elevator::IsBallAtTop(void) {
-	return (bool) mTopLimitSwitch->Get();
-}
+//bool Elevator::IsBallAtTop(void) {
+	//return (bool) mTopLimitSwitch->Get();
+//}
 
 /**
  * @brief Makes the elevator stop.
@@ -98,6 +98,6 @@ void ElevatorController::Run(void) {
 		mElevator->Stop();
 	}
 	
-	SmartDashboard::GetInstance()->Log(mElevator->IsBallAtTop(), "(ELEVATOR) Ball at top ");
+	//SmartDashboard::GetInstance()->Log(mElevator->IsBallAtTop(), "(ELEVATOR) Ball at top ");
     SmartDashboard::GetInstance()->Log(mElevator->IsBallAtBottom(), "(ELEVATOR) Ball at bottom ");
 }

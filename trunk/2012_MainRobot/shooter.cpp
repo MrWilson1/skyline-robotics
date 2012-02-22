@@ -164,7 +164,7 @@ void ShooterController::Run(void)
 	// float z = mJoystick->GetZ();
 	SmartDashboard::GetInstance()->Log(setToManual, "(SHOOTER) Manual ");
 	SmartDashboard::GetInstance()->Log(setToPreset, "(SHOOTER) Preset ");
-	SmartDashboard::GetInstance()->Log(twist, "(SHOOTER) Speed Factor ");
+	// SmartDashboard::GetInstance()->Log(throttle, "(SHOOTER) Speed Factor ");
 	// SmartDashboard::GetInstance()->Log(z, "Shooter z: ");
 	
 	SmartDashboard::GetInstance()->Log(twist, "(SHOOTER) Speed Factor ");

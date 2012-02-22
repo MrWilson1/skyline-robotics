@@ -55,10 +55,10 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm7);
 	mBottomRightShooter = new Jaguar(
 			Ports::Pwm8);
-	mTestMotor = new Jaguar(
+	mElevatorSpeedController = new Jaguar(
 			Ports::Pwm9);
-	//mArmSpeedController = new Victor(
-	//		Ports::Pwm10);
+	mArmSpeedController = new Victor(
+			Ports::Pwm10);
 	
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
@@ -72,10 +72,10 @@ void MainRobot::InitializeHardware(void)
 	
 	mElevatorBottomLimitSwitch = new DigitalInput(
 			Ports::DigitalIo1);
-	mElevatorTopLimitSwitch = new DigitalInput(
-			Ports::DigitalIo2);
-	mTestDigitalInput = new DigitalInput(
-				Ports::DigitalIo9);
+	//mElevatorTopLimitSwitch = new DigitalInput(
+			//Ports::DigitalIo2);
+	//mTestDigitalInput = new DigitalInput(
+				//Ports::DigitalIo9);
 	return;
 }
 
@@ -122,9 +122,10 @@ void MainRobot::InitializeComponents(void)
 			mRangeFinder);
 	mLeftKinectStick = new KinectStick::KinectStick(1);
 	mRightKinectStick = new KinectStick::KinectStick(2);
-	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorTopLimitSwitch, mElevatorSpeedController);
-	mTargetFinder = new TargetFinder();
-	//mArm = new SimpleArm(mArmSpeedController);
+	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
+	//mTargetFinder = new TargetFinder();
+	mArm = new SimpleArm(mArmSpeedController);
+	
 	
 }
 
@@ -154,21 +155,22 @@ void MainRobot::InitializeControllers(void)
 
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 
-	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
-	//mControllerCollection.push_back(new ElevatorController(mElevator, mRightJoystick));
-		
-	mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
-	mControllerCollection.push_back(new GyroTest(mGyro));
+	mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
+	mControllerCollection.push_back(new ElevatorController(mElevator, mRightJoystick));
+	
+	//mControllerCollection.push_back(new TimerTest());
+	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
+	//mControllerCollection.push_back(new GyroTest(mGyro));
 	//mControllerCollection.push_back(new TargetFinder());
 	//mControllerCollection.push_back(new ArmController(mArm, mRightJoystick));
 	
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
-	mControllerCollection.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter));
-	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
+	//mControllerCollection.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter));
+	mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	
-	mControllerCollection.push_back(new TargetSnapshotController(mTargetFinder, mLeftJoystick, GetWatchdog()));
+	//mControllerCollection.push_back(new TargetSnapshotController(mTargetFinder, mLeftJoystick, GetWatchdog()));
 	//mControllerCollection.push_back(new TestMotor(mLeftJoystick, mTestMotor));
 	//mControllerCollection.push_back(new TestThreadController(mTestThreadListener));
 	return;
@@ -183,7 +185,7 @@ void MainRobot::InitializeControllers(void)
 MainRobot::~MainRobot(void)
 {
 	delete mRobotDrive;
-	//delete mElevatorSpeedController;
+	delete mElevatorSpeedController;
 	delete mUltrasoundSensor;
 	delete mGyro;
 	
@@ -228,7 +230,7 @@ void MainRobot::Autonomous(void)
  * 
  * @detail
  * This is a mandatory function required for the robot to function.
- * When the 'Autonomous' toggle is selected and enabled on the 
+ * When the 'Teleoperated' toggle is selected and enabled on the 
  * FRC Dashboard, this function will run.
  * 
  * This method will repeatedly call the 'Run' methods of any

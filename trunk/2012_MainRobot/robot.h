@@ -35,6 +35,7 @@
 #include "shooter.h"
 #include "target.h"
 #include "elevator.h"
+#include "timertest.h"
 
 /**
  * @brief This class bundles together everything to ultimately
@@ -74,11 +75,11 @@ protected:
 	SpeedController *mTopRightShooter;
 	SpeedController *mBottomLeftShooter;
 	SpeedController *mBottomRightShooter;
-	//SpeedController *mArmSpeedController;
-	SpeedController *mTestMotor;
-	DigitalInput *mTestDigitalInput;
+	SpeedController *mArmSpeedController;
+	//SpeedController *mTestMotor;
+	//DigitalInput *mTestDigitalInput;
 	DigitalInput *mElevatorBottomLimitSwitch;
-	DigitalInput *mElevatorTopLimitSwitch;
+	//DigitalInput *mElevatorTopLimitSwitch;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
@@ -93,8 +94,8 @@ protected:
 	//TestThreadListener *mTestThreadListener;
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
-	TargetFinder *mTargetFinder;
-	//BaseArmComponent *mArm;
+	//TargetFinder *mTargetFinder;
+	BaseArmComponent *mArm;
 	
 	// Controller -- see controller.h
 	vector<BaseController*> mControllerCollection;
