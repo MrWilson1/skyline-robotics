@@ -41,24 +41,47 @@ void MainRobot::RobotInit(void)
  */
 void MainRobot::InitializeHardware(void)
 {
+	mLeftFrontDrive = new Jaguar(
+			Ports::Module1,
+			Ports::Pwm1);
+	mLeftBackDrive = new Jaguar(
+			Ports::Module1,
+			Ports::Pwm2);
+	mRightFrontDrive = new Jaguar(
+			Ports::Module1,
+			Ports::Pwm3);
+	mRightBackDrive = new Jaguar(
+			Ports::Module1,
+			Ports::Pwm4);
+	
 	mRobotDrive = new RobotDrive(
-			Ports::Pwm1,		// Left front 
-			Ports::Pwm2, 		// Left back
-			Ports::Pwm3, 		// Right front
-			Ports::Pwm4);		// Right back
+			mLeftFrontDrive,
+			mLeftBackDrive,
+			mRightFrontDrive,
+			mRightBackDrive);
 	
 	mTopLeftShooter = new Jaguar(
+			Ports::Module1,
 			Ports::Pwm5);
 	mTopRightShooter = new Jaguar(
+			Ports::Module1,
 			Ports::Pwm6);
 	mBottomLeftShooter = new Jaguar(
+			Ports::Module1,
 			Ports::Pwm7);
 	mBottomRightShooter = new Jaguar(
+			Ports::Module1,
 			Ports::Pwm8);
 	mElevatorSpeedController = new Jaguar(
+			Ports::Module1,
 			Ports::Pwm9);
 	mArmSpeedController = new Victor(
+			Ports::Module1,
 			Ports::Pwm10);
+	
+	mTestMotor = new Victor(
+			//Ports::Module1,
+			Ports::Pwm5);
 	
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
@@ -71,6 +94,7 @@ void MainRobot::InitializeHardware(void)
 	// instances of a camera
 	
 	mElevatorBottomLimitSwitch = new DigitalInput(
+			Ports::Module1,
 			Ports::DigitalIo1);
 	//mElevatorTopLimitSwitch = new DigitalInput(
 			//Ports::DigitalIo2);
@@ -89,13 +113,16 @@ void MainRobot::InitializeHardware(void)
  */
 void MainRobot::InitializeInputDevices(void)
 {
-	mLeftJoystick = new Joystick(
+	/*mLeftJoystick = new Joystick(
 			Ports::Usb1);
 	mRightJoystick = new Joystick(
 			Ports::Usb2);
+	*/
 	mTwistJoystick = new Joystick(
-			Ports::Usb3);
-
+			Ports::Usb1);
+	mTestJoystick = new Joystick(
+			Ports::Usb2);
+	
 	mKinect = Kinect::GetInstance();
 }
 
@@ -125,8 +152,6 @@ void MainRobot::InitializeComponents(void)
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
 	//mTargetFinder = new TargetFinder();
 	mArm = new SimpleArm(mArmSpeedController);
-	
-	
 }
 
 /**
@@ -155,8 +180,8 @@ void MainRobot::InitializeControllers(void)
 
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 
-	mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
-	mControllerCollection.push_back(new ElevatorController(mElevator, mRightJoystick));
+	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
+	//mControllerCollection.push_back(new ElevatorController(mElevator, mRightJoystick));
 	
 	//mControllerCollection.push_back(new TimerTest());
 	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
@@ -171,7 +196,7 @@ void MainRobot::InitializeControllers(void)
 	mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	
 	//mControllerCollection.push_back(new TargetSnapshotController(mTargetFinder, mLeftJoystick, GetWatchdog()));
-	//mControllerCollection.push_back(new TestMotor(mLeftJoystick, mTestMotor));
+	mControllerCollection.push_back(new TestMotor(mTestJoystick, mTestMotor));
 	//mControllerCollection.push_back(new TestThreadController(mTestThreadListener));
 	return;
 }

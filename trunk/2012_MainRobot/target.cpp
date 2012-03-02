@@ -352,126 +352,86 @@ void TargetSnapshotController::Run()
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-TargetFinderThread::TargetFinderThread(
-			const char *threadName,
-			const char *cameraIp,
-			vector<Target> *vectorTarget) :
-	Task("TargetFinderThread", (FUNCPTR)TargetFinderThread::TaskWrapper)
+/**
+ * @brief Creates an instance of this class.
+ * 
+ * @param[in] servo A pointer to the servo the camera is
+ * mounted on.
+ */
+CameraAdjuster::CameraAdjuster(Servo *servo) :
+		BaseComponent()
 {
-	mName = threadName;
-	mCameraIp = cameraIp;
-	mVectorTarget = vectorTarget;
-	
-	Task::Start((UINT32)this);
+	mServo = servo;
 }
 
-void TargetFinderThread::TaskWrapper(void *ThisObject)
+/**
+ * @brief Adjusts the camera so it looks straight on at
+ * the targets.
+ */
+void CameraAdjuster::LookAtTargets() 
 {
-	// The task can only run C-style functions (ie static methods of
-	// classes.  This function is a static function, but points the
-	// actual object to its appropiate 'Run' method.
-	TargetFinderThread *self = (TargetFinderThread *) ThisObject;
-	
-	self->Run();
+	mServo->Set(kTargets);
 }
 
-void TargetFinderThread::Run(void)
+/**
+ * @brief Adjusts the camera so it looks down where the
+ * robot sucks in the balls.
+ */
+void CameraAdjuster::LookAtFloor() 
 {
-	AxisCamera &camera = GetCamera();
-	HSLImage *image = camera.GetImage();	// Get image.
-	vector<Target> *targets = GetTargets(image);
-	delete image;
-	
-	
-	
-	
+	mServo->Set(kFloor);
 }
 
-vector<Target> *TargetFinderThread::GetTargets(HSLImage *image)
+/**
+ * @brief Adjusts the camera so it looks as high as
+ * possible.
+ */
+void CameraAdjuster::LookVeryHigh()
 {
-	BinaryImage *thresholdImage = image->ThresholdRGB(TargetUtils::threshold);    // Get only colors within range
-	BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 1);  // Remove small objects
-	BinaryImage *convexHullImage = bigObjectsImage->ConvexHull(false);  		  // Rill in partial and full rectangles
-	TargetUtils::SaneBinaryImage *preRectangleImage = (TargetUtils::SaneBinaryImage *) convexHullImage;
-	vector<RectangleMatch> *rectangles = preRectangleImage->DetectRectangles(
-			&TargetUtils::rectangleDescriptor,
-			&TargetUtils::curveOptions,
-			&TargetUtils::shapeDetectionOptions,
-			NULL
-	);
+	mServo->Set(kTop);
+}
 
-	delete thresholdImage;
-	delete bigObjectsImage;
-	delete convexHullImage;
-	delete preRectangleImage;
+/**
+ * @brief Adjusts the camera so it looks as low
+ * as possible.
+ */
+void CameraAdjuster::LookVeryLow()
+{
+	mServo->Set(kLowest);
+}
 
-	vector<Target> *targets = new vector<Target>;
-	
-	int size = (int) rectangles->size();
-	
-	if (size == 0) {
-		delete rectangles;
-		return targets;		// Empty vector
+/**
+ * @brief Adjusts the camera by the provided
+ * amount.
+ * 
+ * @param[in] amount A number from 0.0 to 1.0, where
+ * 0.0 is the lowest possible.
+ */
+void CameraAdjuster::Adjust(float amount)
+{
+	mServo->Set(amount);
+}
+
+
+
+CameraAdjusterController::CameraAdjusterController(
+		CameraAdjuster *cameraAdjuster,
+		Joystick *joystick) :
+		BaseController()
+{
+	mCameraAdjuster = cameraAdjuster;
+	mJoystick = joystick;
+}
+
+void CameraAdjusterController::Run()
+{
+	bool moveUp = mJoystick->GetRawButton(kButtonLookUp);
+	bool moveDown = mJoystick->GetRawButton(kButtonLookDown);
+	if (moveUp and moveDown) {
+		return;	// Do nothing in case of conflict.
+	} else if (moveUp) {
+		mCameraAdjuster->LookAtTargets();
+	} else if (moveDown) {
+		mCameraAdjuster->LookAtFloor();
 	}
-	
-	for (int i=0; i<size; i++) {
-		Target t;
-		RectangleMatch r = rectangles->at(i);
-		
-		t.Width = r.width;
-		t.Height = r.height;
-		t.Rotation = r.rotation;	// Rotation from camera's horizontal axis.
-		
-		t.Score = r.score;
-		t.TopLeft.Set(r.corner[0].x, r.corner[0].y);
-		t.TopRight.Set(r.corner[1].x, r.corner[1].y);
-		t.BottomRight.Set(r.corner[2].x, r.corner[2].y);
-		t.BottomLeft.Set(r.corner[3].x, r.corner[3].y);
-		
-		t.DistanceFromCamera = CalculateDistanceBasedOnWidth(t.Width);
-		targets->push_back(t);
-	}
-	
-	delete rectangles;
-	return targets;
 }
-
-AxisCamera & TargetFinderThread::GetCamera()
-{
-	AxisCamera &camera = AxisCamera::GetInstance(mCameraIp);
-	camera.WriteResolution(AxisCamera::kResolution_320x240);
-	camera.WriteCompression(20);
-	camera.WriteBrightness(0);
-	return camera;	
-}
-
-double TargetFinderThread::CalculateDistanceBasedOnWidth(double widthInPixels)
-{
-	// Based on exeriments we conducted...
-	// Axis 206 Network camera
-	// 640x480
-	// The dial contains a focus -- the groove over the 'ar' in
-	// 'Near' should be just a hair to the left of the bump.
-	
-	double distance = (17490 / widthInPixels) - 6.97; 
-	return distance;
-}
-*/

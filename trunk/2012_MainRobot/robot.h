@@ -70,13 +70,19 @@ protected:
 	RobotDrive *mRobotDrive;
 	AnalogChannel *mUltrasoundSensor;	// For ultrasound
 	Gyro *mGyro;
+	
+	SpeedController *mLeftFrontDrive;
+	SpeedController *mLeftBackDrive;
+	SpeedController *mRightFrontDrive;
+	SpeedController *mRightBackDrive;	
+	
 	SpeedController *mElevatorSpeedController;
 	SpeedController *mTopLeftShooter;
 	SpeedController *mTopRightShooter;
 	SpeedController *mBottomLeftShooter;
 	SpeedController *mBottomRightShooter;
 	SpeedController *mArmSpeedController;
-	//SpeedController *mTestMotor;
+	SpeedController *mTestMotor;
 	//DigitalInput *mTestDigitalInput;
 	DigitalInput *mElevatorBottomLimitSwitch;
 	//DigitalInput *mElevatorTopLimitSwitch;
@@ -85,6 +91,7 @@ protected:
 	Joystick *mLeftJoystick;
 	Joystick *mRightJoystick;
 	Joystick *mTwistJoystick;
+	Joystick *mTestJoystick;
 	Kinect *mKinect;
 	
 	// Components

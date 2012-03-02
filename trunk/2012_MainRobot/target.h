@@ -189,6 +189,12 @@ protected:
 };
 
 
+/**
+ * @brief This class is responsible for taking a picture 
+ * snapshot.  
+ * 
+ * @warning This will freeze the robot for half a second.
+ */
 class TargetSnapshotController : public BaseController
 {
 protected:
@@ -198,6 +204,55 @@ protected:
 	
 public:
 	TargetSnapshotController(TargetFinder *, Joystick *, Watchdog &);
+	void Run();
+};
+
+/**
+ * @brief A class that can adjust the angle the
+ * camera is mounted on so it can easily look at the
+ * ground then at the targets.
+ */
+class CameraAdjuster : public BaseComponent
+{
+protected:
+	Servo *mServo;
+	static const float kLowest = 0.0;
+	static const float kFloor = 0.0;
+	static const float kTargets = 0.4;
+	static const float kTop = 1.0;
+	
+public:
+	CameraAdjuster(Servo *);
+	void LookAtTargets();
+	void LookAtFloor();
+	void LookVeryHigh();
+	void LookVeryLow();
+	void Adjust(float);
+};
+
+
+/**
+ * @brief Creates an instance of this class.
+ * 
+ * @details
+ * Button 9 on the joystick raises the camera to 
+ * look at the targets, and button 8 lowers the 
+ * camera to look at the ball feed region.
+ * 
+ * @param[in] A pointer to the CameraAdjuster.
+ * @param[in] A pointer to the joystick to adjust 
+ * the camera.
+ */
+class CameraAdjusterController : public BaseController
+{
+protected:
+	CameraAdjuster *mCameraAdjuster;
+	Joystick *mJoystick;
+	static const int kButtonLookUp = 9;
+	static const int kButtonLookDown = 8;
+	
+public:
+	CameraAdjusterController(CameraAdjuster *, Joystick *);
 	void Run();
 };
 

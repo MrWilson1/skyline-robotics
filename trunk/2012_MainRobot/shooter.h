@@ -16,6 +16,7 @@
 // Our code
 #include "sensors.h"
 #include "components.h"
+#include "target.h"
 
 /**
  * @brief Controls the shooter.
@@ -75,5 +76,37 @@ public:
 	ShooterControllerTest(Shooter *, Joystick *);
 	void Run(void);
 };
+
+
+/**
+ * @brief Adjusts the robot to face the target more accurately.
+ * 
+ * @details
+ * This will take command over the drive system temporarily, and
+ * will disable or feed the watchdog during the duration.
+ * 
+ * @warning
+ * Using this class will pause the robot for approximately 0.5 
+ * seconds to obtain the image, then a few more seconds to
+ * move the robot into the correct position.
+ */
+class ShooterAdjuster : public BaseComponent
+{
+protected:
+	Shooter *mShooter;
+	Gyro *mGyro;
+	TargetFinder *mTargetFinder;
+	Watchdog &mWatchdog;
+	static const float kRotationSpeed = 0.4;
+	
+	TargetUtils::Target ObtainHighestTarget();
+	
+	
+public:
+	ShooterAdjuster(Shooter *, Gyro *, TargetFinder *, Watchdog &);
+	
+};
+
+
 
 #endif

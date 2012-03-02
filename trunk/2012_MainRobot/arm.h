@@ -13,7 +13,7 @@
 
 
 /**
- * @brief A base class to lower the arm.
+ * @brief A base class to lower the arm using limit switches.
  */
 class BaseArmComponent : public BaseComponent
 {
@@ -30,6 +30,14 @@ public:
 	virtual void Stop() = 0;
 };
 
+/**
+ * @brief A simple arm object that does not use limit switches.
+ * 
+ * @details Later, replace all isntances of SimpleArm with GuardedArm
+ * once all limit switches are installed.
+ * @todo Depreciate this class
+ * @warning Misuse of this class could result in a damaged robot.
+ */
 class SimpleArm : public BaseArmComponent
 {
 public:

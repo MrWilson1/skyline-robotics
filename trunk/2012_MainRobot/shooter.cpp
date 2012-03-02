@@ -160,18 +160,15 @@ void ShooterController::Run(void)
 	bool setToPreset = mJoystick->GetTrigger(); // preset
 	//float throttle = mJoystick->GetThrottle();
 	
-	 float twist = mJoystick->GetTwist();
-	// float z = mJoystick->GetZ();
+	 float throttle = mJoystick->GetThrottle();
+	
 	SmartDashboard::GetInstance()->Log(setToManual, "(SHOOTER) Manual ");
 	SmartDashboard::GetInstance()->Log(setToPreset, "(SHOOTER) Preset ");
-	// SmartDashboard::GetInstance()->Log(throttle, "(SHOOTER) Speed Factor ");
-	// SmartDashboard::GetInstance()->Log(z, "Shooter z: ");
 	
-	SmartDashboard::GetInstance()->Log(twist, "(SHOOTER) Speed Factor ");
+	SmartDashboard::GetInstance()->Log(throttle, "(SHOOTER) Speed Factor ");
 	
 	if ( setToManual ) {
-		//mShooter->SetSpeedManually(throttle);
-		mShooter->SetSpeedManually(twist);
+		mShooter->SetSpeedManually(throttle);
 	} else if ( setToPreset ) {
 		mShooter->SetSpeedAutomatically();
 	} else {

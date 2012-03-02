@@ -116,7 +116,7 @@ TestMotor::TestMotor(Joystick *joystick, SpeedController *speedController)
 void TestMotor::Run()
 {
 	float speed = mJoystick->GetY();
-	SmartDashboard::GetInstance()->Log(speed, "Test motor speed ");
+	SmartDashboard::GetInstance()->Log(speed, "(TEST MOTOR) speed ");
 	mSpeedController->Set(speed);
 }
 
