@@ -80,7 +80,7 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm10);
 	
 	mTestMotor = new Victor(
-			//Ports::Module1,
+			Ports::Module1,
 			Ports::Pwm5);
 	
 	mUltrasoundSensor = new AnalogChannel(

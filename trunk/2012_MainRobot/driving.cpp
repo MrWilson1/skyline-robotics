@@ -20,7 +20,7 @@ BaseJoystickController::BaseJoystickController():
  * @returns The squared number (between -1.0 and 1.0, 
  * depending on the original number)
  */
-float BaseJoystickController::squareInput(float number)
+float BaseJoystickController::SquareInput(float number)
 {
 	return (number < 0) ? - (number * number) : (number *number);
 }
@@ -35,7 +35,7 @@ float BaseJoystickController::squareInput(float number)
  * @returns A number between BaseJoystickController::kSpeedFactorMin 
  * BaseJoystickController::kSpeedFactorMax. 
  */
-float BaseJoystickController::getSpeedFactor(Joystick *joystick)
+float BaseJoystickController::GetSpeedFactor(Joystick *joystick)
 {
 	float rawFactor = joystick->GetThrottle();
 	float normalizedFactor = Tools::Coerce(
@@ -47,6 +47,92 @@ float BaseJoystickController::getSpeedFactor(Joystick *joystick)
 	return normalizedFactor;
 }
 
+/**
+ * @brief Shapes speed curve, joystick position v.s. speed,
+ * into sigmoid (s-shaped) function.
+ * 
+ * @param[in] number The number to shape.  Should be
+ * between -1.0 and 1.0
+ * 
+ * @returns Number shaped by sigmoid function.
+ */
+float BaseJoystickController::SigmoidInput(float x)
+{
+	// todo check if we actually want to use this function
+	float a = kSigmoidA;
+	float epsilon = 0.00001;
+	float min_param_a = 0.0 + epsilon;
+	float max_param_a = 1.0 - epsilon;
+	a = min(max_param_a, max(min_param_a, a));
+	a = 1.0 - a;
+
+	float y;
+	  if ( x <= 0.5 ) {
+	    y = ( pow(2.0*x, 1.0/a) ) / 2.0;
+	  } else {
+	    y = 1.0 - ( pow(2.0*(1.0 - x), 1.0/a) ) / 2.0;
+	  }
+	return y;
+}
+
+/**
+ * @brief Shapes speed curve, joystick position v.s. speed,
+ * into double-exponential (seat-shaped) function.
+ * 
+ * @param[in] number The number to shape.  Should be
+ * between -1.0 and 1.0
+ * 
+ * @returns Number shaped by double-exponential function.
+ */
+float BaseJoystickController::DoubleExponInput(float x) 
+{
+	// todo check if we actually want to use this function
+	float a = kDoubleExponA;
+	float epsilon = 0.00001;
+	float min_param_a = 0.0 + epsilon;
+	float max_param_a = 1.0 - epsilon;
+	a = min(max_param_a, max(min_param_a, a)); 
+	
+	float y = 0;
+	if (x<=0.5){
+	y = (pow(2.0*x, 1-a))/2.0;
+	} else {
+	y = 1.0 - (pow(2.0*(1.0-x), 1-a))/2.0;
+	}
+	return y;
+}
+
+/**
+ * @brief Takes raw values of joystick position for speed
+ * and shapes them depending on what buttons the driver presses.
+ * 
+ * @param[in] joystick A pointer to the joystick from which
+ * to get the buttons.
+ * rawValue The raw joystick position.
+ * 
+ * @returns The shaped value.
+ */
+float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
+	if ( joystick->GetRawButton(4) ) {
+		mShape = 0;
+	} else if ( joystick->GetRawButton(5) ) {
+		mShape = 1;
+	} else if ( joystick->GetRawButton(8) ) {
+		mShape = 2;
+	}
+
+	float shapedValue = 0.0;
+	
+	if ( mShape == 0 ) {
+		shapedValue = SquareInput(rawValue);
+	} else if ( mShape == 1 ) {
+		shapedValue = SigmoidInput(rawValue);
+	} else if ( mShape == 2 ) {
+		shapedValue = DoubleExponInput(rawValue);
+	}
+	
+	return shapedValue;
+}
 
 ControllerSwitcher::ControllerSwitcher(
 		vector<BaseController*> controllers, 
@@ -87,9 +173,6 @@ void ControllerSwitcher::Run()
 	SmartDashboard::GetInstance()->Log(mControllerSize, "Max controllers ");
 }
 
-
-
-
 /*
 class JoystickControllerSwitcher : public BaseController
 {
@@ -101,11 +184,6 @@ public:
 	JoystickControllerSwitcher(vector<BaseJoystickController*> *, vector<Joystick*> *);
 	void Run();
 };*/
-
-
-
-
-
 
 TestMotor::TestMotor(Joystick *joystick, SpeedController *speedController)
 {
@@ -152,6 +230,7 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
 	mRobotDrive = robotDrive;
 	mLeftJoystick = leftJoystick;
 	mRightJoystick = rightJoystick;
+	mShape = 0;
 }
 
 /**
@@ -166,21 +245,21 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
 void TankJoysticks::Run(void)
 {
 	float left = mLeftJoystick->GetY();
-	float right = mRightJoystick->GetY(); 
+	float right = mRightJoystick->GetY();
+		
+	float shapedLeft = Shaper(mLeftJoystick, left);
+	float shapedRight = Shaper(mLeftJoystick, right);
 	
-	float squaredLeft = squareInput(left);
-	float squaredRight = squareInput(right);
+	float speedFactor = GetSpeedDecreaseFactor();	
 	
-	float speedFactor = getSpeedFactor(mLeftJoystick);
+	shapedLeft *= speedFactor;
+	shapedRight *= speedFactor;
 	
-	squaredLeft *= speedFactor;
-	squaredRight *= speedFactor;
-	
-	SmartDashboard::GetInstance()->Log(squaredLeft, "(JOYSTICK) Left speed ");
-	SmartDashboard::GetInstance()->Log(squaredRight, "(JOYSTICK) Right speed ");
+	SmartDashboard::GetInstance()->Log(shapedLeft, "(JOYSTICK) Left speed ");
+	SmartDashboard::GetInstance()->Log(shapedRight, "(JOYSTICK) Right speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(JOYSTICK) Speed factor ");
 	
-	mRobotDrive->TankDrive(squaredLeft, squaredRight);
+	mRobotDrive->TankDrive(shapedLeft, shapedRight);
 }
 
 
@@ -217,20 +296,20 @@ void SingleJoystick::Run()
 	float x = mJoystick->GetX();
 	float y = mJoystick->GetY();
 	
-	float squaredX = squareInput(x);
-	float squaredY = squareInput(y);
+	float shapedX = Shaper(mJoystick, x);
+	float shapedY = Shaper(mJoystick, y);
 	
 	// Temporary
 	float speedFactor = GetSpeedDecreaseFactor();	
 	
-	squaredY *= speedFactor;
-	squaredX *= speedFactor;
+	shapedY *= speedFactor;
+	shapedX *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(squaredX, "(JOYSTICK) Rotate ");
-	SmartDashboard::GetInstance()->Log(squaredY, "(JOYSTICK) Speed ");
+	SmartDashboard::GetInstance()->Log(shapedX, "(JOYSTICK) Rotate ");
+	SmartDashboard::GetInstance()->Log(shapedY, "(JOYSTICK) Speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(JOYSTICK) Speed factor ");
 		
-	mRobotDrive->ArcadeDrive(squaredY,-squaredX);
+	mRobotDrive->ArcadeDrive(shapedY,shapedX);
 }
 
 /**
@@ -248,8 +327,6 @@ float SingleJoystick::GetSpeedDecreaseFactor(void)
 			kSpeedFactorMax);
 	return normalizedFactor;
 }
-
-
 
 /**
  * @brief A way to control the robot during Hybrid mode,
