@@ -412,6 +412,10 @@ void CameraAdjuster::Adjust(float amount)
 	mServo->Set(amount);
 }
 
+float CameraAdjuster::GetValue() {
+	return mServo->Get();
+}
+
 
 
 CameraAdjusterController::CameraAdjusterController(
@@ -434,4 +438,20 @@ void CameraAdjusterController::Run()
 	} else if (moveDown) {
 		mCameraAdjuster->LookAtFloor();
 	}
+	SmartDashboard::GetInstance()->Log(mCameraAdjuster->GetValue(), "(CAMERA SERVO)");
+}
+
+
+ServoTestController::ServoTestController(Servo *servo, Joystick *joystick):
+                BaseController()
+{
+        mServo = servo;
+        mJoystick = joystick;
+}
+
+void ServoTestController::Run(void)
+{
+        mServo->Set((mJoystick->GetThrottle() + 1.0) * 0.5);
+        SmartDashboard::GetInstance()->Log(mServo->Get(), "(SERVO TESTER)");
+        return;
 }

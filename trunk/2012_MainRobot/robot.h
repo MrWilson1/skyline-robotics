@@ -82,10 +82,14 @@ protected:
 	SpeedController *mBottomLeftShooter;
 	SpeedController *mBottomRightShooter;
 	SpeedController *mArmSpeedController;
+	
 	SpeedController *mTestMotor;
+	SpeedController *mTestMotor2;
 	//DigitalInput *mTestDigitalInput;
 	DigitalInput *mElevatorBottomLimitSwitch;
 	//DigitalInput *mElevatorTopLimitSwitch;
+	
+	Servo *mCameraServo;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
@@ -103,6 +107,7 @@ protected:
 	KinectStick *mRightKinectStick;
 	//TargetFinder *mTargetFinder;
 	BaseArmComponent *mArm;
+	CameraAdjuster *mCameraAdjuster;
 	
 	// Controller -- see controller.h
 	vector<BaseController*> mControllerCollection;

@@ -87,11 +87,13 @@ class TestMotor : public BaseJoystickController
 protected:
 	Joystick *mJoystick;
 	SpeedController *mSpeedController;
+	const char *mName;
 	
 public:
-	TestMotor(Joystick *, SpeedController *);
+	TestMotor(Joystick *, SpeedController *, const char *);
 	void Run();
 };
+
 
 /**
  * @brief A driving system designed to keep the robot from

@@ -185,16 +185,17 @@ public:
 	void Run();
 };*/
 
-TestMotor::TestMotor(Joystick *joystick, SpeedController *speedController)
+TestMotor::TestMotor(Joystick *joystick, SpeedController *speedController, const char* name)
 {
 	mJoystick = joystick;
 	mSpeedController = speedController;
+	mName = name;
 }
 
 void TestMotor::Run()
 {
 	float speed = mJoystick->GetY();
-	SmartDashboard::GetInstance()->Log(speed, "(TEST MOTOR) speed ");
+	SmartDashboard::GetInstance()->Log(speed, mName);
 	mSpeedController->Set(speed);
 }
 

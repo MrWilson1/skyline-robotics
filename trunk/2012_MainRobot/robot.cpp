@@ -100,6 +100,10 @@ void MainRobot::InitializeHardware(void)
 			//Ports::DigitalIo2);
 	//mTestDigitalInput = new DigitalInput(
 				//Ports::DigitalIo9);
+	
+	mCameraServo = new Servo(
+			Ports::Pwm7);
+			
 	return;
 }
 
@@ -113,15 +117,15 @@ void MainRobot::InitializeHardware(void)
  */
 void MainRobot::InitializeInputDevices(void)
 {
-	/*mLeftJoystick = new Joystick(
+	mLeftJoystick = new Joystick(
 			Ports::Usb1);
 	mRightJoystick = new Joystick(
 			Ports::Usb2);
-	*/
+	
 	mTwistJoystick = new Joystick(
-			Ports::Usb1);
-	mTestJoystick = new Joystick(
-			Ports::Usb2);
+			Ports::Usb3);
+	//mTestJoystick = new Joystick(
+	//		Ports::Usb1);
 	
 	mKinect = Kinect::GetInstance();
 }
@@ -152,6 +156,7 @@ void MainRobot::InitializeComponents(void)
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
 	//mTargetFinder = new TargetFinder();
 	mArm = new SimpleArm(mArmSpeedController);
+	mCameraAdjuster = new CameraAdjuster(mCameraServo);
 }
 
 /**
@@ -165,7 +170,8 @@ void MainRobot::InitializeComponents(void)
  */
 void MainRobot::InitializeControllers(void)
 {
-	/*vector<BaseController *> controllers;
+	
+	vector<BaseController *> controllers;
 	vector<Joystick *> joysticks;
 	controllers.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	controllers.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
@@ -175,11 +181,14 @@ void MainRobot::InitializeControllers(void)
 	joysticks.push_back(mLeftJoystick);
 	joysticks.push_back(mRightJoystick);
 	joysticks.push_back(mTwistJoystick);
-	*/
-	//mControllerCollection.push_back(new ControllerSwitcher(controllers, joysticks));
+	
+	mControllerCollection.push_back(new ControllerSwitcher(controllers, joysticks));
 
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
-
+	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
+	
+	//mControllerCollection.push_back(new ServoTestController(mCameraServo, mTestJoystick));
+	//mControllerCollection.push_back(new CameraAdjusterController(mCameraAdjuster, mTestJoystick));
 	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
 	//mControllerCollection.push_back(new ElevatorController(mElevator, mRightJoystick));
 	
@@ -189,14 +198,7 @@ void MainRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new TargetFinder());
 	//mControllerCollection.push_back(new ArmController(mArm, mRightJoystick));
 	
-	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
-	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
-	//mControllerCollection.push_back(new KinectController(mRobotDrive, mKinect));
-	//mControllerCollection.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter));
-	mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
-	
 	//mControllerCollection.push_back(new TargetSnapshotController(mTargetFinder, mLeftJoystick, GetWatchdog()));
-	mControllerCollection.push_back(new TestMotor(mTestJoystick, mTestMotor));
 	//mControllerCollection.push_back(new TestThreadController(mTestThreadListener));
 	return;
 }

@@ -228,6 +228,7 @@ public:
 	void LookVeryHigh();
 	void LookVeryLow();
 	void Adjust(float);
+	float GetValue();
 };
 
 
@@ -253,6 +254,17 @@ protected:
 	
 public:
 	CameraAdjusterController(CameraAdjuster *, Joystick *);
+	void Run();
+};
+
+class ServoTestController : public BaseController
+{
+protected:
+	Servo *mServo;
+	Joystick *mJoystick;
+	
+public:
+	ServoTestController(Servo *, Joystick*);
 	void Run();
 };
 
