@@ -7,22 +7,7 @@
 BaseJoystickController::BaseJoystickController():
 		BaseController()
 {
-	// Empty
-}
-
-/**
- * @brief Squares the input of any number to allow more
- * sensitive driving when the joystick is pushed less.
- * 
- * @param[in] number The number to square.  Should be
- * between -1.0 and 1.0
- * 
- * @returns The squared number (between -1.0 and 1.0, 
- * depending on the original number)
- */
-float BaseJoystickController::SquareInput(float number)
-{
-	return (number < 0) ? - (number * number) : (number *number);
+	mShape = 0;
 }
 
 /**
@@ -48,6 +33,21 @@ float BaseJoystickController::GetSpeedFactor(Joystick *joystick)
 }
 
 /**
+ * @brief Squares the input of any number to allow more
+ * sensitive driving when the joystick is pushed less.
+ * 
+ * @param[in] number The number to square.  Should be
+ * between -1.0 and 1.0
+ * 
+ * @returns The squared number (between -1.0 and 1.0, 
+ * depending on the original number)
+ */
+float BaseJoystickController::SquareInput(float number)
+{
+	return (number < 0) ? (-number * number) : (number * number);
+}
+
+/**
  * @brief Shapes speed curve, joystick position v.s. speed,
  * into sigmoid (s-shaped) function.
  * 
@@ -67,11 +67,11 @@ float BaseJoystickController::SigmoidInput(float x)
 	a = 1.0 - a;
 
 	float y;
-	  if ( x <= 0.5 ) {
+	if ( x <= 0.5 ) {
 	    y = ( pow(2.0*x, 1.0/a) ) / 2.0;
-	  } else {
+	} else {
 	    y = 1.0 - ( pow(2.0*(1.0 - x), 1.0/a) ) / 2.0;
-	  }
+	}
 	return y;
 }
 
@@ -111,6 +111,10 @@ float BaseJoystickController::DoubleExponInput(float x)
  * rawValue The raw joystick position.
  * 
  * @returns The shaped value.
+ * 
+ * todo This does two different things: change mShape then 
+ * shape the rawValue using mShape.  Split those two different
+ * tasks into two separate functions.
  */
 float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
 	if ( joystick->GetRawButton(4) ) {
@@ -123,12 +127,17 @@ float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
 
 	float shapedValue = 0.0;
 	
-	if ( mShape == 0 ) {
-		shapedValue = SquareInput(rawValue);
-	} else if ( mShape == 1 ) {
-		shapedValue = SigmoidInput(rawValue);
-	} else if ( mShape == 2 ) {
-		shapedValue = DoubleExponInput(rawValue);
+	// This does (nearly) the same thing as the previous
+	// series of if-else statements.
+	switch (mShape) {
+		case 1:
+			shapedValue = SigmoidInput(rawValue);
+			break;
+		case 2:
+			shapedValue = DoubleExponInput(rawValue);
+			break;
+		default:
+			shapedValue = 0.0;
 	}
 	
 	return shapedValue;
@@ -256,9 +265,9 @@ void TankJoysticks::Run(void)
 	shapedLeft *= speedFactor;
 	shapedRight *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(shapedLeft, "(JOYSTICK) Left speed ");
-	SmartDashboard::GetInstance()->Log(shapedRight, "(JOYSTICK) Right speed ");
-	SmartDashboard::GetInstance()->Log(speedFactor, "(JOYSTICK) Speed factor ");
+	SmartDashboard::GetInstance()->Log(shapedLeft, "(TANK DRIVE) Left speed ");
+	SmartDashboard::GetInstance()->Log(shapedRight, "(TANK DRIVE) Right speed ");
+	SmartDashboard::GetInstance()->Log(speedFactor, "(TANK DRIVE) Speed factor ");
 	
 	mRobotDrive->TankDrive(shapedLeft, shapedRight);
 }
@@ -294,23 +303,22 @@ SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
  */
 void SingleJoystick::Run()
 {
-	float x = mJoystick->GetX();
-	float y = mJoystick->GetY();
+	float rotate = mJoystick->GetX();
+	float speed = -mJoystick->GetY();
 	
-	float shapedX = Shaper(mJoystick, x);
-	float shapedY = Shaper(mJoystick, y);
+	float shapedRotate = Shaper(mJoystick, rotate);
+	float shapedSpeed = Shaper(mJoystick, speed);
 	
-	// Temporary
 	float speedFactor = GetSpeedDecreaseFactor();	
 	
-	shapedY *= speedFactor;
-	shapedX *= speedFactor;
+	shapedRotate *= speedFactor;
+	shapedSpeed *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(shapedX, "(JOYSTICK) Rotate ");
-	SmartDashboard::GetInstance()->Log(shapedY, "(JOYSTICK) Speed ");
-	SmartDashboard::GetInstance()->Log(speedFactor, "(JOYSTICK) Speed factor ");
+	SmartDashboard::GetInstance()->Log(shapedRotate, "(ARCADE DRIVE) Rotate ");
+	SmartDashboard::GetInstance()->Log(shapedSpeed, "(ARCADE DRIVE) Speed ");
+	SmartDashboard::GetInstance()->Log(speedFactor, "(ARCADE DRIVE) Speed factor ");
 		
-	mRobotDrive->ArcadeDrive(shapedY,shapedX);
+	mRobotDrive->ArcadeDrive(shapedSpeed,shapedRotate);
 }
 
 /**

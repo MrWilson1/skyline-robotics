@@ -128,6 +128,8 @@ void MainRobot::InitializeInputDevices(void)
 	//		Ports::Usb1);
 	
 	mKinect = Kinect::GetInstance();
+	mLeftKinectStick = new KinectStick::KinectStick(1);
+	mRightKinectStick = new KinectStick::KinectStick(2);
 }
 
 /**
@@ -151,8 +153,6 @@ void MainRobot::InitializeComponents(void)
 			mBottomLeftShooter,
 			mBottomRightShooter,
 			mRangeFinder);
-	mLeftKinectStick = new KinectStick::KinectStick(1);
-	mRightKinectStick = new KinectStick::KinectStick(2);
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
 	//mTargetFinder = new TargetFinder();
 	mArm = new SimpleArm(mArmSpeedController);
@@ -176,7 +176,7 @@ void MainRobot::InitializeControllers(void)
 	controllers.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	controllers.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	controllers.push_back(new MinimalistDrive(mRobotDrive));
-	controllers.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter));
+	//controllers.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter));
 	
 	joysticks.push_back(mLeftJoystick);
 	joysticks.push_back(mRightJoystick);
