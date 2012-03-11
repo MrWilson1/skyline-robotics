@@ -130,9 +130,6 @@ protected:
 public:
 	TankJoysticks(RobotDrive *, Joystick *, Joystick *);
 	void Run(void);
-
-protected:
-	float GetSpeedDecreaseFactor(void);
 };
 
 /**

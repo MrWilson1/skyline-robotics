@@ -243,18 +243,6 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
 	mShape = 0;
 }
 
-float TankJoysticks::GetSpeedDecreaseFactor(void)
-{
-	float rawFactor = mLeftJoystick->GetThrottle();
-	float normalizedFactor = Tools::Coerce(
-			rawFactor,
-			-1.0,
-			1.0,
-			kSpeedFactorMin,
-			kSpeedFactorMax);
-	return normalizedFactor;
-}
-
 /**
  * @brief This method is called automatically during MyRobot::OperatorControl
  * 
@@ -275,7 +263,7 @@ void TankJoysticks::Run(void)
 	float squaredLeft = SquareInput(left);
 	float squaredRight = SquareInput(right);
 	
-	float speedFactor = GetSpeedDecreaseFactor();	
+	float speedFactor = GetSpeedFactor(mLeftJoystick);	
 	
 	squaredLeft *= speedFactor;
 	squaredRight *= speedFactor;
@@ -325,8 +313,8 @@ SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
  */
 void SingleJoystick::Run()
 {
-	float rotate = mJoystick->GetX();
-	float speed = -mJoystick->GetY();
+	float shapedRotate = mJoystick->GetX();
+	float shapedSpeed = -mJoystick->GetY();
 	
 	//float shapedRotate = Shaper(mJoystick, rotate);
 	//float shapedSpeed = Shaper(mJoystick, speed);
