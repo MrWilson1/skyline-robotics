@@ -43,11 +43,10 @@ class BaseJoystickController : public BaseController
 protected:
 	static const float kSpeedFactorMin = 0.3;
 	static const float kSpeedFactorMax = 1.0;
-	static const float kSigmoidA = 0.367;
 	static const float kDoubleExponA = 0.607;
 	float SquareInput(float);
-	float SigmoidInput(float);
 	float DoubleExponInput(float);
+	float PiecewiseLinear (float);
 	float GetSpeedFactor(Joystick *);
 	float Shaper(Joystick *, float);
 	int mShape;

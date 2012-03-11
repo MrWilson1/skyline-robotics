@@ -49,34 +49,6 @@ float BaseJoystickController::SquareInput(float number)
 
 /**
  * @brief Shapes speed curve, joystick position v.s. speed,
- * into sigmoid (s-shaped) function.
- * 
- * @param[in] number The number to shape.  Should be
- * between -1.0 and 1.0
- * 
- * @returns Number shaped by sigmoid function.
- */
-float BaseJoystickController::SigmoidInput(float x)
-{
-	// todo check if we actually want to use this function
-	float a = kSigmoidA;
-	float epsilon = 0.00001;
-	float min_param_a = 0.0 + epsilon;
-	float max_param_a = 1.0 - epsilon;
-	a = min(max_param_a, max(min_param_a, a));
-	a = 1.0 - a;
-
-	float y;
-	if ( x <= 0.5 ) {
-	    y = ( pow(2.0*x, 1.0/a) ) / 2.0;
-	} else {
-	    y = 1.0 - ( pow(2.0*(1.0 - x), 1.0/a) ) / 2.0;
-	}
-	return y;
-}
-
-/**
- * @brief Shapes speed curve, joystick position v.s. speed,
  * into double-exponential (seat-shaped) function.
  * 
  * @param[in] number The number to shape.  Should be
@@ -93,11 +65,40 @@ float BaseJoystickController::DoubleExponInput(float x)
 	float max_param_a = 1.0 - epsilon;
 	a = min(max_param_a, max(min_param_a, a)); 
 	
-	float y = 0;
-	if (x<=0.5){
-	y = (pow(2.0*x, 1-a))/2.0;
-	} else {
-	y = 1.0 - (pow(2.0*(1.0-x), 1-a))/2.0;
+	float y = 0.0;
+	
+	if (x<=0.5 && x > 0 ){
+		y = (pow(2.0*x, 1-a))/2.0;
+	} else if ( x > -0.5 && x < 0 ) {
+		y = -((pow(2.0*-x, 1-a))/2.0);
+	} else if ( x < -0.5 )
+		y = -(1.0 - (pow(2.0*(1.0+x), 1-a))/2.0);
+	else {
+		y = 1.0 - (pow(2.0*(1.0-x), 1-a))/2.0;
+	}
+	return y;
+}
+
+float BaseJoystickController::PiecewiseLinear(float x)
+{
+	float y = 0.0;
+	
+	if ( x >= 0 && x <= 0.32 ) {
+		y = 0.375*x;
+	} else if ( x > 0.32 && x <= 0.6 ) {
+		y = 0.679*x - 0.097;
+	} else if ( x > 0.6 && x <= 0.86 ) {
+		y = 1.269*x - .45;
+	} else if ( x > 0.86 && x <= 1.0) {
+		y = 2.571*x - 1.57;
+	} else if ( x >= -0.32 && x < 0 ) {
+		y = -(0.375*-x);
+	} else if ( x >= -0.6 && x < -0.32 ) {
+		y = -(0.679*-x - 0.097);
+	} else if ( x >= -0.86 && x < -0.6 ) {
+		y = -(1.269*-x - .45);
+	} else if ( x >= -1.0 && x < -0.86 ) {
+		y = -(2.571*-x - 1.57);
 	}
 	return y;
 }
@@ -130,8 +131,11 @@ float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
 	// This does (nearly) the same thing as the previous
 	// series of if-else statements.
 	switch (mShape) {
+		case 0:
+			shapedValue = SquareInput(rawValue);
+			break;
 		case 1:
-			shapedValue = SigmoidInput(rawValue);
+			shapedValue = PiecewiseLinear(rawValue);
 			break;
 		case 2:
 			shapedValue = DoubleExponInput(rawValue);
@@ -257,29 +261,29 @@ void TankJoysticks::Run(void)
 	float left = mLeftJoystick->GetY();
 	float right = mRightJoystick->GetY();
 		
-	//float shapedLeft = Shaper(mLeftJoystick, left);
-	//float shapedRight = Shaper(mLeftJoystick, right);
+	float shapedLeft = Shaper(mLeftJoystick, left);
+	float shapedRight = Shaper(mLeftJoystick, right);
 	
-	float squaredLeft = SquareInput(left);
-	float squaredRight = SquareInput(right);
+	//float squaredLeft = SquareInput(left);
+	//float squaredRight = SquareInput(right);
 	
 	float speedFactor = GetSpeedFactor(mLeftJoystick);	
 	
-	squaredLeft *= speedFactor;
-	squaredRight *= speedFactor;
+	//squaredLeft *= speedFactor;
+	//squaredRight *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(squaredLeft, "(TANK DRIVE) Left speed ");
+	/*SmartDashboard::GetInstance()->Log(squaredLeft, "(TANK DRIVE) Left speed ");
 	SmartDashboard::GetInstance()->Log(squaredRight, "(TANK DRIVE) Right speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(TANK DRIVE) Speed factor ");
 	
-	mRobotDrive->TankDrive(squaredLeft, squaredRight);
+	mRobotDrive->TankDrive(squaredLeft, squaredRight); */
 	
-	/*SmartDashboard::GetInstance()->Log(shapedLeft, "(TANK DRIVE) Left speed ");
+	SmartDashboard::GetInstance()->Log(shapedLeft, "(TANK DRIVE) Left speed ");
 	SmartDashboard::GetInstance()->Log(shapedRight, "(TANK DRIVE) Right speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(TANK DRIVE) Speed factor ");
 	SmartDashboard::GetInstance()->Log(mShape, "(TANK DRIVE) Shaping function ");
 	
-	mRobotDrive->TankDrive(shapedLeft, shapedRight);*/
+	mRobotDrive->TankDrive(shapedLeft, shapedRight);
 }
 
 
