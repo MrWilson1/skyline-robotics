@@ -60,7 +60,7 @@ void MainRobot::InitializeHardware(void)
 			mRightFrontDrive,
 			mRightBackDrive);
 	
-	mTopLeftShooter = new Jaguar(
+	/*mTopLeftShooter = new Jaguar(
 			Ports::Module1,
 			Ports::Pwm5);
 	mTopRightShooter = new Jaguar(
@@ -88,21 +88,21 @@ void MainRobot::InitializeHardware(void)
 			Ports::AnalogChannel1);
 	mGyro = new Gyro(
 			Ports::Module1,
-			Ports::AnalogChannel2);
+			Ports::AnalogChannel2);*/
 	// The camera is technically a hardware component, but WPILib's
 	// AxisCamera class has a built-in static method for returning
 	// instances of a camera
 	
-	mElevatorBottomLimitSwitch = new DigitalInput(
-			Ports::Module1,
-			Ports::DigitalIo1);
+	//mElevatorBottomLimitSwitch = new DigitalInput(
+			//Ports::Module1,
+			//Ports::DigitalIo1);
 	//mElevatorTopLimitSwitch = new DigitalInput(
 			//Ports::DigitalIo2);
 	//mTestDigitalInput = new DigitalInput(
 				//Ports::DigitalIo9);
 	
-	mCameraServo = new Servo(
-			Ports::Pwm7);
+	//mCameraServo = new Servo(
+			//Ports::Pwm7);
 			
 	return;
 }
@@ -146,7 +146,7 @@ void MainRobot::InitializeInputDevices(void)
  */
 void MainRobot::InitializeComponents(void)
 {
-	mRangeFinder = new RangeFinder(mUltrasoundSensor);
+	/*mRangeFinder = new RangeFinder(mUltrasoundSensor);
 	mShooter = new Shooter(
 			mTopLeftShooter,
 			mTopRightShooter,
@@ -156,7 +156,7 @@ void MainRobot::InitializeComponents(void)
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
 	//mTargetFinder = new TargetFinder();
 	mArm = new SimpleArm(mArmSpeedController);
-	mCameraAdjuster = new CameraAdjuster(mCameraServo);
+	mCameraAdjuster = new CameraAdjuster(mCameraServo);*/
 }
 
 /**

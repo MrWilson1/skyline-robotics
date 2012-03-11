@@ -243,6 +243,18 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
 	mShape = 0;
 }
 
+float TankJoysticks::GetSpeedDecreaseFactor(void)
+{
+	float rawFactor = mLeftJoystick->GetThrottle();
+	float normalizedFactor = Tools::Coerce(
+			rawFactor,
+			-1.0,
+			1.0,
+			kSpeedFactorMin,
+			kSpeedFactorMax);
+	return normalizedFactor;
+}
+
 /**
  * @brief This method is called automatically during MyRobot::OperatorControl
  * 
@@ -257,19 +269,29 @@ void TankJoysticks::Run(void)
 	float left = mLeftJoystick->GetY();
 	float right = mRightJoystick->GetY();
 		
-	float shapedLeft = Shaper(mLeftJoystick, left);
-	float shapedRight = Shaper(mLeftJoystick, right);
+	//float shapedLeft = Shaper(mLeftJoystick, left);
+	//float shapedRight = Shaper(mLeftJoystick, right);
+	
+	float squaredLeft = SquareInput(left);
+	float squaredRight = SquareInput(right);
 	
 	float speedFactor = GetSpeedDecreaseFactor();	
 	
-	shapedLeft *= speedFactor;
-	shapedRight *= speedFactor;
+	squaredLeft *= speedFactor;
+	squaredRight *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(shapedLeft, "(TANK DRIVE) Left speed ");
-	SmartDashboard::GetInstance()->Log(shapedRight, "(TANK DRIVE) Right speed ");
+	SmartDashboard::GetInstance()->Log(squaredLeft, "(TANK DRIVE) Left speed ");
+	SmartDashboard::GetInstance()->Log(squaredRight, "(TANK DRIVE) Right speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(TANK DRIVE) Speed factor ");
 	
-	mRobotDrive->TankDrive(shapedLeft, shapedRight);
+	mRobotDrive->TankDrive(squaredLeft, squaredRight);
+	
+	/*SmartDashboard::GetInstance()->Log(shapedLeft, "(TANK DRIVE) Left speed ");
+	SmartDashboard::GetInstance()->Log(shapedRight, "(TANK DRIVE) Right speed ");
+	SmartDashboard::GetInstance()->Log(speedFactor, "(TANK DRIVE) Speed factor ");
+	SmartDashboard::GetInstance()->Log(mShape, "(TANK DRIVE) Shaping function ");
+	
+	mRobotDrive->TankDrive(shapedLeft, shapedRight);*/
 }
 
 
@@ -306,8 +328,8 @@ void SingleJoystick::Run()
 	float rotate = mJoystick->GetX();
 	float speed = -mJoystick->GetY();
 	
-	float shapedRotate = Shaper(mJoystick, rotate);
-	float shapedSpeed = Shaper(mJoystick, speed);
+	//float shapedRotate = Shaper(mJoystick, rotate);
+	//float shapedSpeed = Shaper(mJoystick, speed);
 	
 	float speedFactor = GetSpeedDecreaseFactor();	
 	
