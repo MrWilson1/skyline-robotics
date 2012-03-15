@@ -90,6 +90,16 @@ double Tools::Limit(double number, double lowest, double highest)
 	}
 }
 
+float Tools::Min(int a, float b)
+{
+	return !(b<a)?a:b;
+}
+
+float Tools::Max(int a, float b)
+{
+	return (a<b)?b:a;     
+}
+
 float Tools::StringToFloat(std::string input)
 {
 	float output;

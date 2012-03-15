@@ -47,9 +47,12 @@ protected:
 	float SquareInput(float);
 	float DoubleExponInput(float);
 	float PiecewiseLinear (float);
+	float BezierInput(float, float, float);
 	float GetSpeedFactor(Joystick *);
 	float Shaper(Joystick *, float);
 	const char *mLabel;
+	const char *mBezierLabelA;
+	const char *mBezierLabelB;
 	
 public:
 	BaseJoystickController();

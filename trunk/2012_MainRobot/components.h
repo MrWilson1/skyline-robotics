@@ -255,10 +255,12 @@ namespace Ports
  */
 namespace Tools
 {
-double Coerce(double, double, double, double, double);
-double Limit(double, double, double);
-float StringToFloat(std::string);
-float StringToFloat(const char *);
+	double Coerce(double, double, double, double, double);
+	double Limit(double, double, double);
+	float Min(int, float);
+	float Max(int, float);
+	float StringToFloat(std::string);
+	float StringToFloat(const char *);
 }
 
 #endif

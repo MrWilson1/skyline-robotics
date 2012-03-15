@@ -1,4 +1,5 @@
 #include "driving.h"
+#include "algorithm"
 
 
 /**
@@ -9,6 +10,11 @@ BaseJoystickController::BaseJoystickController():
 {
 	mLabel = "(SHAPING FUNCTION) << ";
 	SmartDashboard::GetInstance()->PutString(mLabel, "0");
+	
+	mBezierLabelA = "(BEZIER A) << ";
+	SmartDashboard::GetInstance()->PutString(mBezierLabelA, ".940");
+	mBezierLabelB = "(BEZIER B) << ";
+	SmartDashboard::GetInstance()->PutString(mBezierLabelB, ".280");
 }
 
 /**
@@ -104,6 +110,22 @@ float BaseJoystickController::PiecewiseLinear(float x)
 	return y;
 }
 
+float BaseJoystickController::BezierInput(float x, float a, float b)
+{	
+	float epsilon = 0.00001;
+	a = Tools::Max(0, Tools::Min(1, a)); 
+	b = Tools::Max(0, Tools::Min(1, b)); 
+	if (a == 0.5){
+		a += epsilon;
+	}
+	  
+	// solve t from x (an inverse operation)
+	float om2a = 1 - 2*a;
+	float t = (sqrt(a*a + om2a*x) - a)/om2a;
+	float y = (1-2*b)*(t*t) + (2*b)*t;
+	return y;
+}
+
 /**
  * @brief Takes raw values of joystick position for speed
  * and shapes them depending on what buttons the driver presses.
@@ -120,6 +142,8 @@ float BaseJoystickController::PiecewiseLinear(float x)
  */
 float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
 	int shape = (int) Tools::StringToFloat(SmartDashboard::GetInstance()->GetString(mLabel));
+	float bezierA = (float) Tools::StringToFloat(SmartDashboard::GetInstance()->GetString(mBezierLabelA));
+	float bezierB = (float) Tools::StringToFloat(SmartDashboard::GetInstance()->GetString(mBezierLabelB));
 	
 	float shapedValue = 0.0;
 	
@@ -135,6 +159,8 @@ float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
 		case 2:
 			shapedValue = DoubleExponInput(rawValue);
 			break;
+		case 3:
+			shapedValue = BezierInput(rawValue, bezierA, bezierB);
 		default:
 			shapedValue = 0.0;
 	}
