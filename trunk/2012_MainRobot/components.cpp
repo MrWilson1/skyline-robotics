@@ -89,3 +89,18 @@ double Tools::Limit(double number, double lowest, double highest)
 		return number;
 	}
 }
+
+float Tools::StringToFloat(std::string input)
+{
+	float output;
+	sscanf(input.c_str(), "%f", &output);
+	return output;
+}
+
+float Tools::StringToFloat(const char *input)
+{
+	float output;
+	sscanf(input, "%f", &output);
+	return output;
+	
+}

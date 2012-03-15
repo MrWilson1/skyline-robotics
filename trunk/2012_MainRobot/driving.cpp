@@ -120,9 +120,9 @@ float BaseJoystickController::PiecewiseLinear(float x)
 float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
 	if ( joystick->GetRawButton(4) ) {
 		mShape = 0;
-	} else if ( joystick->GetRawButton(5) ) {
+	} else if ( joystick->GetRawButton(2) ) {
 		mShape = 1;
-	} else if ( joystick->GetRawButton(8) ) {
+	} else if ( joystick->GetRawButton(5) ) {
 		mShape = 2;
 	}
 
@@ -158,8 +158,9 @@ ControllerSwitcher::ControllerSwitcher(
 	mControllerSize = (int) mControllers.size();
 	mJoystickSize = (int) mJoysticks.size();
 	
-	mCurrent = 0;
-	mIsHeld = false;
+	mLabel = "(CONTROLLER) << ";
+	
+	SmartDashboard::GetInstance()->PutString(mLabel, "0");
 }
 
 ControllerSwitcher::~ControllerSwitcher()
@@ -169,6 +170,7 @@ ControllerSwitcher::~ControllerSwitcher()
 
 void ControllerSwitcher::Run()
 {
+	/*
 	for (int i=0; i<mJoystickSize; i++) {
 		if (mJoysticks.at(i)->GetRawButton(11)) {
 			if (!mIsHeld) {
@@ -180,10 +182,11 @@ void ControllerSwitcher::Run()
 		}
 		
 	}
-	mControllers.at(mCurrent)->Run();
+	*/
 	
-	SmartDashboard::GetInstance()->Log(mCurrent, "Current controller ");
-	SmartDashboard::GetInstance()->Log(mControllerSize, "Max controllers ");
+	int current = (int) Tools::StringToFloat(SmartDashboard::GetInstance()->GetString(mLabel));
+	
+	mControllers.at(current)->Run();
 }
 
 /*
@@ -264,19 +267,28 @@ void TankJoysticks::Run(void)
 	float shapedLeft = Shaper(mLeftJoystick, left);
 	float shapedRight = Shaper(mLeftJoystick, right);
 	
-	//float squaredLeft = SquareInput(left);
-	//float squaredRight = SquareInput(right);
-	
 	float speedFactor = GetSpeedFactor(mLeftJoystick);	
 	
-	//squaredLeft *= speedFactor;
-	//squaredRight *= speedFactor;
+	shapedLeft *= speedFactor;
+	shapedRight *= speedFactor;
 	
-	/*SmartDashboard::GetInstance()->Log(squaredLeft, "(TANK DRIVE) Left speed ");
-	SmartDashboard::GetInstance()->Log(squaredRight, "(TANK DRIVE) Right speed ");
-	SmartDashboard::GetInstance()->Log(speedFactor, "(TANK DRIVE) Speed factor ");
+	// Straightened driving.
+	if (mLeftJoystick->GetRawButton(3) or mRightJoystick->GetRawButton(3)) {
+		float average = (shapedLeft + shapedRight) / 2;
+		shapedLeft = average;
+		shapedRight = average;
+		SmartDashboard::GetInstance()->Log("Yes", "(TANK DRIVE) Driving locked?");
+	} else {
+		SmartDashboard::GetInstance()->Log("No", "(TANK DRIVE) Driving locked?");
+	}
 	
-	mRobotDrive->TankDrive(squaredLeft, squaredRight); */
+	// Braking
+	float breakSpeed = mRightJoystick->GetThrottle();
+	SmartDashboard::GetInstance()->Log(breakSpeed, "(TANK DRIVE) Raw breaking power");
+	if (mLeftJoystick->GetTrigger() or mRightJoystick->GetTrigger()) {
+		shapedLeft = breakSpeed * speedFactor;
+		shapedRight = breakSpeed * speedFactor;
+	}
 	
 	SmartDashboard::GetInstance()->Log(shapedLeft, "(TANK DRIVE) Left speed ");
 	SmartDashboard::GetInstance()->Log(shapedRight, "(TANK DRIVE) Right speed ");
@@ -317,16 +329,23 @@ SingleJoystick::SingleJoystick(RobotDrive *robotDrive, Joystick *joystick)
  */
 void SingleJoystick::Run()
 {
-	float shapedRotate = mJoystick->GetX();
-	float shapedSpeed = -mJoystick->GetY();
+	float rotate = -mJoystick->GetZ();
+	float speed = mJoystick->GetY();
 	
-	//float shapedRotate = Shaper(mJoystick, rotate);
-	//float shapedSpeed = Shaper(mJoystick, speed);
+	float shapedRotate = Shaper(mJoystick, rotate);
+	float shapedSpeed = Shaper(mJoystick, speed);
 	
 	float speedFactor = GetSpeedDecreaseFactor();	
 	
 	shapedRotate *= speedFactor;
 	shapedSpeed *= speedFactor;
+	
+	float breakSpeed = mJoystick->GetTwist();
+	SmartDashboard::GetInstance()->Log(breakSpeed, "(ARCADE DRIVE) Raw breaking power");
+	if (mJoystick->GetTrigger()) {
+		shapedRotate = 0.0;
+		shapedSpeed = breakSpeed * speedFactor;
+	}
 	
 	SmartDashboard::GetInstance()->Log(shapedRotate, "(ARCADE DRIVE) Rotate ");
 	SmartDashboard::GetInstance()->Log(shapedSpeed, "(ARCADE DRIVE) Speed ");

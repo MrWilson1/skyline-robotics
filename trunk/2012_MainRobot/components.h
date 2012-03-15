@@ -40,6 +40,7 @@
 
 // Standard libraries
 #include <assert.h>
+#include <string>
 
 /**
  * @brief A base class meant to be inherited from any
@@ -256,6 +257,8 @@ namespace Tools
 {
 double Coerce(double, double, double, double, double);
 double Limit(double, double, double);
+float StringToFloat(std::string);
+float StringToFloat(const char *);
 }
 
 #endif

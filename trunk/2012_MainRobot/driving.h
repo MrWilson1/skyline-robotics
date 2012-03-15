@@ -63,8 +63,7 @@ protected:
 	vector <Joystick*> mJoysticks;
 	int mControllerSize;
 	int mJoystickSize;
-	int mCurrent;
-	bool mIsHeld;
+	const char *mLabel;
 	
 public:
 	ControllerSwitcher(vector<BaseController*>, vector<Joystick*>);
