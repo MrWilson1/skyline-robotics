@@ -7,7 +7,8 @@
 BaseJoystickController::BaseJoystickController():
 		BaseController()
 {
-	mShape = 0;
+	mLabel = "(SHAPING FUNCTION) << ";
+	SmartDashboard::GetInstance()->PutString(mLabel, "0");
 }
 
 /**
@@ -118,19 +119,13 @@ float BaseJoystickController::PiecewiseLinear(float x)
  * tasks into two separate functions.
  */
 float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
-	if ( joystick->GetRawButton(4) ) {
-		mShape = 0;
-	} else if ( joystick->GetRawButton(2) ) {
-		mShape = 1;
-	} else if ( joystick->GetRawButton(5) ) {
-		mShape = 2;
-	}
-
+	int shape = (int) Tools::StringToFloat(SmartDashboard::GetInstance()->GetString(mLabel));
+	
 	float shapedValue = 0.0;
 	
 	// This does (nearly) the same thing as the previous
 	// series of if-else statements.
-	switch (mShape) {
+	switch (shape) {
 		case 0:
 			shapedValue = SquareInput(rawValue);
 			break;
@@ -247,7 +242,6 @@ TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joy
 	mRobotDrive = robotDrive;
 	mLeftJoystick = leftJoystick;
 	mRightJoystick = rightJoystick;
-	mShape = 0;
 }
 
 /**
@@ -293,7 +287,6 @@ void TankJoysticks::Run(void)
 	SmartDashboard::GetInstance()->Log(shapedLeft, "(TANK DRIVE) Left speed ");
 	SmartDashboard::GetInstance()->Log(shapedRight, "(TANK DRIVE) Right speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(TANK DRIVE) Speed factor ");
-	SmartDashboard::GetInstance()->Log(mShape, "(TANK DRIVE) Shaping function ");
 	
 	mRobotDrive->TankDrive(shapedLeft, shapedRight);
 }

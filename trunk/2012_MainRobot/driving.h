@@ -49,7 +49,7 @@ protected:
 	float PiecewiseLinear (float);
 	float GetSpeedFactor(Joystick *);
 	float Shaper(Joystick *, float);
-	int mShape;
+	const char *mLabel;
 	
 public:
 	BaseJoystickController();
