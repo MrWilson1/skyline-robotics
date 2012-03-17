@@ -86,9 +86,10 @@ void MainRobot::InitializeHardware(void)
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
 			Ports::AnalogChannel1);
+			*/
 	mGyro = new Gyro(
 			Ports::Module1,
-			Ports::AnalogChannel2);*/
+			Ports::AnalogChannel1);
 	// The camera is technically a hardware component, but WPILib's
 	// AxisCamera class has a built-in static method for returning
 	// instances of a camera
@@ -172,17 +173,12 @@ void MainRobot::InitializeControllers(void)
 {
 	
 	vector<BaseController *> controllers;
-	vector<Joystick *> joysticks;
 	controllers.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	controllers.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	controllers.push_back(new MinimalistDrive(mRobotDrive));
 	//controllers.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter));
 	
-	joysticks.push_back(mLeftJoystick);
-	joysticks.push_back(mRightJoystick);
-	joysticks.push_back(mTwistJoystick);
-	
-	mControllerCollection.push_back(new ControllerSwitcher(controllers, joysticks));
+	mControllerCollection.push_back(new ControllerSwitcher(controllers));
 
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
@@ -194,7 +190,7 @@ void MainRobot::InitializeControllers(void)
 	
 	//mControllerCollection.push_back(new TimerTest());
 	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
-	//mControllerCollection.push_back(new GyroTest(mGyro));
+	mControllerCollection.push_back(new GyroTest(mGyro));
 	//mControllerCollection.push_back(new TargetFinder());
 	//mControllerCollection.push_back(new ArmController(mArm, mRightJoystick));
 	

@@ -3,6 +3,29 @@
 
 
 /**
+ * @brief Initializes the class.  Currently adds values
+ * for testing.
+ */
+/*
+BaseMovementController::BaseMovementController() :
+	BaseController()
+{
+	mSmartDashboard = SmartDashboard::GetInstance();
+	mFreezeMaxPower = kFreezeMaxPower;
+	mBalanceMaxPower = kBalanceMaxPower;
+}
+
+float BaseMovementController::Balance(float angle) 
+{
+	float slope = mBalanceMaxPower / kMaxAngle;
+	float power = -angle * slope;
+	return power;
+}
+*/
+
+
+
+/**
  * @brief An empty constructor -- currently does nothing.
  */
 BaseJoystickController::BaseJoystickController():
@@ -15,6 +38,7 @@ BaseJoystickController::BaseJoystickController():
 	SmartDashboard::GetInstance()->PutString(mBezierLabelA, ".940");
 	mBezierLabelB = "(BEZIER B) << ";
 	SmartDashboard::GetInstance()->PutString(mBezierLabelB, ".280");
+	mAreValuesSwapped = false;
 }
 
 /**
@@ -29,7 +53,7 @@ BaseJoystickController::BaseJoystickController():
  */
 float BaseJoystickController::GetSpeedFactor(Joystick *joystick)
 {
-	float rawFactor = joystick->GetThrottle();
+	float rawFactor = -joystick->GetThrottle();
 	float normalizedFactor = Tools::Coerce(
 			rawFactor,
 			-1.0,
@@ -168,59 +192,48 @@ float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
 	return shapedValue;
 }
 
+/**
+ * @brief Initializes the object.
+ * 
+ * @param[in] controllers A vector containing pointers
+ * to all the controllers you want to switch between.
+ */
 ControllerSwitcher::ControllerSwitcher(
-		vector<BaseController*> controllers, 
-		vector<Joystick*> joysticks) :
+		vector<BaseController*> controllers) :
 		BaseController()
 {
 	mControllers = controllers;
-	mJoysticks = joysticks;
 		
 	mControllerSize = (int) mControllers.size();
-	mJoystickSize = (int) mJoysticks.size();
 	
 	mLabel = "(CONTROLLER) << ";
 	
 	SmartDashboard::GetInstance()->PutString(mLabel, "0");
 }
 
+/**
+ * @brief The destructor for this object.
+ * 
+ * @details Currently does nothing.
+ */
 ControllerSwitcher::~ControllerSwitcher()
 {
 	// Empty
 }
 
+/**
+ * @brief Runs the switcher.
+ * 
+ * @details Call this function repeatedly inside MainRobot::OperatorControl().
+ * This interfaces with the SmartDashboard to run the controller.
+ */
 void ControllerSwitcher::Run()
 {
-	/*
-	for (int i=0; i<mJoystickSize; i++) {
-		if (mJoysticks.at(i)->GetRawButton(11)) {
-			if (!mIsHeld) {
-				mCurrent = (mCurrent + 1) % mJoystickSize;
-				mIsHeld = true;
-			}
-		} else {
-			mIsHeld = false;
-		}
-		
-	}
-	*/
-	
 	int current = (int) Tools::StringToFloat(SmartDashboard::GetInstance()->GetString(mLabel));
 	
 	mControllers.at(current)->Run();
 }
 
-/*
-class JoystickControllerSwitcher : public BaseController
-{
-protected:
-	vector <BaseJoystickController*> *mControllers;
-	vector <Joystick*> *mJoysticks;
-	
-public:
-	JoystickControllerSwitcher(vector<BaseJoystickController*> *, vector<Joystick*> *);
-	void Run();
-};*/
 
 TestMotor::TestMotor(Joystick *joystick, SpeedController *speedController, const char* name)
 {
@@ -283,6 +296,22 @@ void TankJoysticks::Run(void)
 {
 	float left = mLeftJoystick->GetY();
 	float right = mRightJoystick->GetY();
+	
+	if (mLeftJoystick->GetRawButton(6) or mRightJoystick->GetRawButton(6)) {
+		mAreValuesSwapped = false;
+	} else if (mLeftJoystick->GetRawButton(7) or mRightJoystick->GetRawButton(7)) {
+		mAreValuesSwapped = true;
+	}
+	
+	if (mAreValuesSwapped) {
+		float temp = left;
+		left = -right;
+		right = -temp;
+		SmartDashboard::GetInstance()->Log("reversed", "(TANK DRIVE) Driving orientation: ");
+	} else {
+		SmartDashboard::GetInstance()->Log("normal", "(TANK DRIVE) Driving orientation: ");
+	}
+	
 		
 	float shapedLeft = Shaper(mLeftJoystick, left);
 	float shapedRight = Shaper(mLeftJoystick, right);
@@ -303,15 +332,15 @@ void TankJoysticks::Run(void)
 	}
 	
 	// Braking
-	float breakSpeed = mRightJoystick->GetThrottle();
+	float breakSpeed = -mRightJoystick->GetThrottle();
 	SmartDashboard::GetInstance()->Log(breakSpeed, "(TANK DRIVE) Raw breaking power");
 	if (mLeftJoystick->GetTrigger() or mRightJoystick->GetTrigger()) {
-		shapedLeft = breakSpeed * speedFactor;
-		shapedRight = breakSpeed * speedFactor;
+		shapedLeft = breakSpeed;
+		shapedRight = breakSpeed;
 	}
 	
-	SmartDashboard::GetInstance()->Log(shapedLeft, "(TANK DRIVE) Left speed ");
-	SmartDashboard::GetInstance()->Log(shapedRight, "(TANK DRIVE) Right speed ");
+	SmartDashboard::GetInstance()->Log(-shapedLeft, "(TANK DRIVE) Left speed ");
+	SmartDashboard::GetInstance()->Log(-shapedRight, "(TANK DRIVE) Right speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(TANK DRIVE) Speed factor ");
 	
 	mRobotDrive->TankDrive(shapedLeft, shapedRight);
@@ -359,15 +388,8 @@ void SingleJoystick::Run()
 	shapedRotate *= speedFactor;
 	shapedSpeed *= speedFactor;
 	
-	float breakSpeed = mJoystick->GetTwist();
-	SmartDashboard::GetInstance()->Log(breakSpeed, "(ARCADE DRIVE) Raw breaking power");
-	if (mJoystick->GetTrigger()) {
-		shapedRotate = 0.0;
-		shapedSpeed = breakSpeed * speedFactor;
-	}
-	
-	SmartDashboard::GetInstance()->Log(shapedRotate, "(ARCADE DRIVE) Rotate ");
-	SmartDashboard::GetInstance()->Log(shapedSpeed, "(ARCADE DRIVE) Speed ");
+	SmartDashboard::GetInstance()->Log(-shapedRotate, "(ARCADE DRIVE) Rotate ");
+	SmartDashboard::GetInstance()->Log(-shapedSpeed, "(ARCADE DRIVE) Speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(ARCADE DRIVE) Speed factor ");
 		
 	mRobotDrive->ArcadeDrive(shapedSpeed,shapedRotate);
@@ -379,7 +401,7 @@ void SingleJoystick::Run()
 
 float SingleJoystick::GetSpeedDecreaseFactor(void)
 {
-	float rawFactor = mJoystick->GetTwist();
+	float rawFactor = -mJoystick->GetTwist();
 	float normalizedFactor = Tools::Coerce(
 			rawFactor,
 			-1.0,

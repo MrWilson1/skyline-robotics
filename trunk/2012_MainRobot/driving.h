@@ -32,6 +32,34 @@
 
 
 /**
+ * @brief A baseclass for any controller that controls
+ * robot movement.
+ */
+/*
+class BaseMovementController : public BaseController
+{
+protected:
+	//float AddShaping(float);
+	//void Freeze(float);
+	float Balance(float);
+	RobotDrive *mRobotDrive;
+	static const float kMaxAngle = 16.0;
+	static const float kFreezeMaxPower = 0.5;
+	static const float kBalanceMaxPower = 0.6;
+	float mFreezeMaxPower;
+	float mBalanceMaxPower;
+	
+	SmartDashboard *mSmartDashboard;
+	
+public:
+	BaseMovementController();
+	virtual ~BaseMovementController() = 0;
+	virtual void Run() = 0;
+};
+*/
+
+
+/**
  * @brief A baseclass for any controller that uses 
  * a joystick.
  * 
@@ -53,23 +81,28 @@ protected:
 	const char *mLabel;
 	const char *mBezierLabelA;
 	const char *mBezierLabelB;
+	bool mAreValuesSwapped;
 	
 public:
 	BaseJoystickController();
 	void Run() = 0;
 };
 
+
+/**
+ * @brief A container class to hold a series of
+ * controllers to allow a user to switch between
+ * them via the smart dashboard.
+ */
 class ControllerSwitcher : public BaseController
 {
 protected:
 	vector <BaseController*> mControllers;
-	vector <Joystick*> mJoysticks;
 	int mControllerSize;
-	int mJoystickSize;
 	const char *mLabel;
 	
 public:
-	ControllerSwitcher(vector<BaseController*>, vector<Joystick*>);
+	ControllerSwitcher(vector<BaseController*>);
 	virtual ~ControllerSwitcher();
 	void Run();
 };
