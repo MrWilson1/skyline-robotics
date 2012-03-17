@@ -25,7 +25,7 @@ public:
 
 protected:
 	static void TaskWrapper (void *);
-	static void LogStatus (MotorLimitWatchdog * watchdog);
+	//static void LogStatus (MotorLimitWatchdog * watchdog);
 
 	void Run();
 

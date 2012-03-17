@@ -66,7 +66,7 @@ void GuardedArm::GoUp()
 		mSpeedController->Set(0);
 	} else {
 		mSpeedController->Set(kMotorSpeed * kMotorDirection);
-	}
+	}	
 }
 
 /**
@@ -124,9 +124,11 @@ void SimpleArm::Stop()
  * @param[in] arm Pointer to the arm.
  * @param[in] joystick Pointer to the joystick.
  */
-ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick) {
+ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick, DigitalInput *topLimit, DigitalInput *bottomLimit) {
 	mArm = arm;
 	mJoystick = joystick;
+	mTopLimit = topLimit;
+	mBottomLimit = bottomLimit;
 }
 
 /**
@@ -148,4 +150,10 @@ void ArmController::Run() {
 	} else {
 		mArm->Stop();
 	}
+	
+	bool armAtTop = mTopLimit->Get();
+	bool armAtBottom = mBottomLimit->Get();
+	
+	SmartDashboard::GetInstance()->Log(armAtTop, "(ARM) Arm at top ");
+	SmartDashboard::GetInstance()->Log(armAtBottom, "(ARM) Arm at bottom ");
 }

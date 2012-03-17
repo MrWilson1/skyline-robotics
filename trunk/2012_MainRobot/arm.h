@@ -79,8 +79,10 @@ class ArmController : public BaseController
 protected:
 	BaseArmComponent *mArm;
 	Joystick *mJoystick;
+	DigitalInput *mTopLimit;
+	DigitalInput *mBottomLimit;
 public:
-	ArmController (BaseArmComponent *, Joystick *);
+	ArmController (BaseArmComponent *, Joystick *, DigitalInput *, DigitalInput *);
 	void Run(void);
 };
 

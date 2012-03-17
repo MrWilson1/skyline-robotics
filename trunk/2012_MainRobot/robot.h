@@ -88,6 +88,8 @@ protected:
 	SpeedController *mTestMotor2;
 	//DigitalInput *mTestDigitalInput;
 	DigitalInput *mElevatorBottomLimitSwitch;
+	DigitalInput *mTopLimit;
+	DigitalInput *mBottomLimit;
 	//DigitalInput *mElevatorTopLimitSwitch;
 	
 	Servo *mCameraServo;

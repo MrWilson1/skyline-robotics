@@ -25,7 +25,7 @@ MotorLimitWatchdog::MotorLimitWatchdog(
 
 	initFieldNames();
 
-	mStatusLogger = new Notifier((TimerEventHandler)MotorLimitWatchdog::LogStatus, this);
+	//mStatusLogger = new Notifier((TimerEventHandler)MotorLimitWatchdog::LogStatus, this);
 	mStatusLogger->StartPeriodic(1.0);
 
 	Task::Start((UINT32)this);
@@ -70,12 +70,12 @@ void MotorLimitWatchdog::TaskWrapper(void* ThisObject)
  * @param[in] obj Pointer to MotorLimitWatchdog instance.
  */
 
-void MotorLimitWatchdog::LogStatus (MotorLimitWatchdog * obj)
+/*void MotorLimitWatchdog::LogStatus (MotorLimitWatchdog * obj)
 {
 	SmartDashboard::Log((bool)(obj->mTopLimit->Get()), obj->pTopLimitField);
 	SmartDashboard::Log((bool)(obj->mBottomLimit->Get()), obj->pBottomLimitField);
 	SmartDashboard::Log(obj->mMotor->Get(), obj->pMotorSpeedField);
-}
+}*/
 
 /*
 void MotorLimitWatchdog::LogStatus (MotorLimitWatchdog * obj)

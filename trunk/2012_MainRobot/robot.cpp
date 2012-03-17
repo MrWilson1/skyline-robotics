@@ -74,12 +74,12 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm8);
 	mElevatorSpeedController = new Jaguar(
 			Ports::Module1,
-			Ports::Pwm9);
+			Ports::Pwm9);*/
 	mArmSpeedController = new Victor(
 			Ports::Module1,
 			Ports::Pwm10);
 	
-	mTestMotor = new Victor(
+	/*mTestMotor = new Victor(
 			Ports::Module1,
 			Ports::Pwm5);
 	
@@ -105,6 +105,11 @@ void MainRobot::InitializeHardware(void)
 			//Ports::DigitalIo2);
 	//mTestDigitalInput = new DigitalInput(
 				//Ports::DigitalIo9);
+	
+	mTopLimit = new DigitalInput(
+			Ports::DigitalIo3);
+	mBottomLimit = new DigitalInput(
+			Ports::DigitalIo4);
 	
 	//mCameraServo = new Servo(
 			//Ports::Pwm7);
@@ -159,9 +164,10 @@ void MainRobot::InitializeComponents(void)
 			mBottomRightShooter,
 			mRangeFinder);
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
-	//mTargetFinder = new TargetFinder();
-	mArm = new SimpleArm(mArmSpeedController);
-	mCameraAdjuster = new CameraAdjuster(mCameraServo);*/
+	//mTargetFinder = new TargetFinder();*/
+	//mArm = new SimpleArm(mArmSpeedController);
+	mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
+	//mCameraAdjuster = new CameraAdjuster(mCameraServo);*/
 }
 
 /**
@@ -196,7 +202,7 @@ void MainRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
 	mControllerCollection.push_back(new GyroTest(mYawGyro));
 	//mControllerCollection.push_back(new TargetFinder());
-	//mControllerCollection.push_back(new ArmController(mArm, mRightJoystick));
+	mControllerCollection.push_back(new ArmController(mArm, mRightJoystick, mTopLimit, mBottomLimit));
 	
 	mControllerCollection.push_back(new TargetSnapshotController(
 			mRobotDrive,
