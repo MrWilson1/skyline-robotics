@@ -87,9 +87,13 @@ void MainRobot::InitializeHardware(void)
 			Ports::Module1,
 			Ports::AnalogChannel1);
 			*/
-	mGyro = new Gyro(
+	mYawGyro = new Gyro(
 			Ports::Module1,
 			Ports::AnalogChannel1);
+	mPitchGyro = new Gyro(
+			Ports::Module1,
+			Ports::AnalogChannel3);
+	
 	// The camera is technically a hardware component, but WPILib's
 	// AxisCamera class has a built-in static method for returning
 	// instances of a camera
@@ -190,11 +194,16 @@ void MainRobot::InitializeControllers(void)
 	
 	//mControllerCollection.push_back(new TimerTest());
 	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
-	mControllerCollection.push_back(new GyroTest(mGyro));
+	mControllerCollection.push_back(new GyroTest(mYawGyro));
 	//mControllerCollection.push_back(new TargetFinder());
 	//mControllerCollection.push_back(new ArmController(mArm, mRightJoystick));
 	
-	//mControllerCollection.push_back(new TargetSnapshotController(mTargetFinder, mLeftJoystick, GetWatchdog()));
+	mControllerCollection.push_back(new TargetSnapshotController(
+			mRobotDrive,
+			mTargetFinder, 
+			mLeftJoystick, 
+			GetWatchdog(),
+			mYawGyro));
 	//mControllerCollection.push_back(new TestThreadController(mTestThreadListener));
 	return;
 }
@@ -210,7 +219,8 @@ MainRobot::~MainRobot(void)
 	delete mRobotDrive;
 	delete mElevatorSpeedController;
 	delete mUltrasoundSensor;
-	delete mGyro;
+	delete mYawGyro;
+	delete mPitchGyro;
 	
 	delete mLeftJoystick;
 	delete mRightJoystick;

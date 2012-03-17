@@ -307,151 +307,100 @@ AxisCamera & TargetFinder::GetCamera()
 
 
 
-TargetSnapshotController::TargetSnapshotController(TargetFinder *targetFinder, Joystick *joystick, Watchdog &watchdog) :
+TargetSnapshotController::TargetSnapshotController(
+		RobotDrive *robotDrive,
+		TargetFinder *targetFinder, 
+		Joystick *joystick, 
+		Watchdog &watchdog,
+		Gyro *gyro) :
 		BaseController(),
 		mWatchdog(watchdog)
 {
+	mRobotDrive = robotDrive;
 	mTargetFinder = targetFinder;
 	mJoystick = joystick;
+	mGyro = gyro;
 }
 
 void TargetSnapshotController::Run()
 {
-	if (mJoystick->GetRawButton(3)) {
+	if (mJoystick->GetRawButton(2)) {
 		mWatchdog.SetEnabled(false);
 		vector<TargetUtils::Target> targets = mTargetFinder->GetTargets();
-		mWatchdog.SetEnabled(true);
+		
 		SmartDashboard::GetInstance()->Log("Yes", "Snapshot");
 		
 		if (((int)targets.size()) != 0) {
-			TargetUtils::Target t = targets.at(0);
+			TargetUtils::Target t = FindHighestTarget(targets);
+			PrintDiagnostics(t);
 			
-			SmartDashboard::GetInstance()->Log(t.Width, "t.Width");
-			SmartDashboard::GetInstance()->Log(t.Height, "t.Height");
-			SmartDashboard::GetInstance()->Log(t.Rotation, "t.Rotation");
-	
-			SmartDashboard::GetInstance()->Log(t.Score, "t.Score");
-	
-			SmartDashboard::GetInstance()->Log(t.TopLeft.X, "t.TopLeft.x");
-			SmartDashboard::GetInstance()->Log(t.TopLeft.Y, "t.TopLeft.y");
-			SmartDashboard::GetInstance()->Log(t.TopRight.X, "t.TopRight.x");
-			SmartDashboard::GetInstance()->Log(t.TopRight.Y, "t.TopRight.y");
-			SmartDashboard::GetInstance()->Log(t.BottomLeft.X, "t.BottomLeft.x");
-			SmartDashboard::GetInstance()->Log(t.BottomLeft.Y, "t.BottomLeft.y");
-			SmartDashboard::GetInstance()->Log(t.BottomRight.X, "t.BottomRight.x");
-			SmartDashboard::GetInstance()->Log(t.BottomRight.Y, "t.BottomRight.y");
-	
-			SmartDashboard::GetInstance()->Log(t.Middle.X, "t.Middle.x");
-			SmartDashboard::GetInstance()->Log(t.Middle.Y, "t.Middle.y");
-			SmartDashboard::GetInstance()->Log(t.DistanceFromCamera, "t.DistanceFromCamera");
-			SmartDashboard::GetInstance()->Log(t.XAngleFromCamera, "t.XAngleFromCamera");
-			SmartDashboard::GetInstance()->Log(t.YAngleFromCamera, "t.YAngleFromCamera");
+			float start = mGyro->GetAngle();
+			float finish = start + t.XAngleFromCamera;
+			float delta = finish - start;
+			float adjustment = kTurnPower;
+			if (delta < 0) {
+				adjustment = -adjustment;
+			}
+			float current = start;
+			while (Compare(current, finish)) {
+				mRobotDrive->TankDrive(adjustment, -adjustment);
+				current = mGyro->GetAngle();
+			}
 		}
 	} else {
 		SmartDashboard::GetInstance()->Log("No", "Snapshot");
 	}
+	mWatchdog.SetEnabled(true);
 }
 
-/**
- * @brief Creates an instance of this class.
- * 
- * @param[in] servo A pointer to the servo the camera is
- * mounted on.
- */
-CameraAdjuster::CameraAdjuster(Servo *servo) :
-		BaseComponent()
+TargetUtils::Target TargetSnapshotController::FindHighestTarget(std::vector<TargetUtils::Target> targetsList)
 {
-	mServo = servo;
-}
-
-/**
- * @brief Adjusts the camera so it looks straight on at
- * the targets.
- */
-void CameraAdjuster::LookAtTargets() 
-{
-	mServo->Set(kTargets);
-}
-
-/**
- * @brief Adjusts the camera so it looks down where the
- * robot sucks in the balls.
- */
-void CameraAdjuster::LookAtFloor() 
-{
-	mServo->Set(kFloor);
-}
-
-/**
- * @brief Adjusts the camera so it looks as high as
- * possible.
- */
-void CameraAdjuster::LookVeryHigh()
-{
-	mServo->Set(kTop);
-}
-
-/**
- * @brief Adjusts the camera so it looks as low
- * as possible.
- */
-void CameraAdjuster::LookVeryLow()
-{
-	mServo->Set(kLowest);
-}
-
-/**
- * @brief Adjusts the camera by the provided
- * amount.
- * 
- * @param[in] amount A number from 0.0 to 1.0, where
- * 0.0 is the lowest possible.
- */
-void CameraAdjuster::Adjust(float amount)
-{
-	mServo->Set(amount);
-}
-
-float CameraAdjuster::GetValue() {
-	return mServo->Get();
-}
-
-
-
-CameraAdjusterController::CameraAdjusterController(
-		CameraAdjuster *cameraAdjuster,
-		Joystick *joystick) :
-		BaseController()
-{
-	mCameraAdjuster = cameraAdjuster;
-	mJoystick = joystick;
-}
-
-void CameraAdjusterController::Run()
-{
-	bool moveUp = mJoystick->GetRawButton(kButtonLookUp);
-	bool moveDown = mJoystick->GetRawButton(kButtonLookDown);
-	if (moveUp and moveDown) {
-		return;	// Do nothing in case of conflict.
-	} else if (moveUp) {
-		mCameraAdjuster->LookAtTargets();
-	} else if (moveDown) {
-		mCameraAdjuster->LookAtFloor();
+	float topHeight = 0.0;
+	TargetUtils::Target topTarget = targetsList.at(0);
+	int size = (int) targetsList.size();
+	
+	for (int i=0; i < size; i++) {
+		double height = targetsList.at(i).Height;
+		if (height > topHeight) {
+			topHeight = height;
+			topTarget = targetsList.at(i);
+		}
 	}
-	SmartDashboard::GetInstance()->Log(mCameraAdjuster->GetValue(), "(CAMERA SERVO)");
+	return topTarget;
 }
 
-
-ServoTestController::ServoTestController(Servo *servo, Joystick *joystick):
-                BaseController()
+void TargetSnapshotController::PrintDiagnostics(TargetUtils::Target t) 
 {
-        mServo = servo;
-        mJoystick = joystick;
+	SmartDashboard::GetInstance()->Log(t.Width, "t.Width");
+	SmartDashboard::GetInstance()->Log(t.Height, "t.Height");
+	SmartDashboard::GetInstance()->Log(t.Rotation, "t.Rotation");
+
+	SmartDashboard::GetInstance()->Log(t.Score, "t.Score");
+
+	SmartDashboard::GetInstance()->Log(t.TopLeft.X, "t.TopLeft.x");
+	SmartDashboard::GetInstance()->Log(t.TopLeft.Y, "t.TopLeft.y");
+	SmartDashboard::GetInstance()->Log(t.TopRight.X, "t.TopRight.x");
+	SmartDashboard::GetInstance()->Log(t.TopRight.Y, "t.TopRight.y");
+	SmartDashboard::GetInstance()->Log(t.BottomLeft.X, "t.BottomLeft.x");
+	SmartDashboard::GetInstance()->Log(t.BottomLeft.Y, "t.BottomLeft.y");
+	SmartDashboard::GetInstance()->Log(t.BottomRight.X, "t.BottomRight.x");
+	SmartDashboard::GetInstance()->Log(t.BottomRight.Y, "t.BottomRight.y");
+
+	SmartDashboard::GetInstance()->Log(t.Middle.X, "t.Middle.x");
+	SmartDashboard::GetInstance()->Log(t.Middle.Y, "t.Middle.y");
+	SmartDashboard::GetInstance()->Log(t.DistanceFromCamera, "t.DistanceFromCamera");
+	SmartDashboard::GetInstance()->Log(t.XAngleFromCamera, "t.XAngleFromCamera");
+	SmartDashboard::GetInstance()->Log(t.YAngleFromCamera, "t.YAngleFromCamera");
 }
 
-void ServoTestController::Run(void)
+bool TargetSnapshotController::Compare(float number, float target)
 {
-        mServo->Set((mJoystick->GetThrottle() + 1.0) * 0.5);
-        SmartDashboard::GetInstance()->Log(mServo->Get(), "(SERVO TESTER)");
-        return;
+	float lowLimit = target - kTolerance;
+	float highLimit = target + kTolerance;
+	if (lowLimit <= number and number <= highLimit) {
+		return true;
+	} else {
+		return false;
+	}
 }
+

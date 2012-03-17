@@ -69,7 +69,8 @@ protected:
 	// Hardware
 	RobotDrive *mRobotDrive;
 	AnalogChannel *mUltrasoundSensor;	// For ultrasound
-	Gyro *mGyro;
+	Gyro *mYawGyro;
+	Gyro *mPitchGyro;
 	
 	SpeedController *mLeftFrontDrive;
 	SpeedController *mLeftBackDrive;
@@ -105,9 +106,8 @@ protected:
 	//TestThreadListener *mTestThreadListener;
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
-	//TargetFinder *mTargetFinder;
+	TargetFinder *mTargetFinder;
 	BaseArmComponent *mArm;
-	CameraAdjuster *mCameraAdjuster;
 	
 	// Controller -- see controller.h
 	vector<BaseController*> mControllerCollection;
