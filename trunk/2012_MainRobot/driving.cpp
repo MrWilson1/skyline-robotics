@@ -2,26 +2,7 @@
 #include "algorithm"
 
 
-/**
- * @brief Initializes the class.  Currently adds values
- * for testing.
- */
-/*
-BaseMovementController::BaseMovementController() :
-	BaseController()
-{
-	mSmartDashboard = SmartDashboard::GetInstance();
-	mFreezeMaxPower = kFreezeMaxPower;
-	mBalanceMaxPower = kBalanceMaxPower;
-}
 
-float BaseMovementController::Balance(float angle) 
-{
-	float slope = mBalanceMaxPower / kMaxAngle;
-	float power = -angle * slope;
-	return power;
-}
-*/
 
 
 
@@ -196,6 +177,31 @@ void BaseJoystickController::Stop(RobotDrive *robotDrive){
 	robotDrive->Drive(0.0, 0.0);
 }
 
+
+IBrake::IBrake(RobotDrive *robotDrive, Gyro *gyro)
+{
+	mRobotDrive = robotDrive;
+	mGyro = gyro;
+}
+
+
+float IBrake::Balance() 
+{
+	float slope = kBalanceMaxPower / kMaxAngle;
+	float power = -mGyro->GetAngle() * slope;
+	return power;
+}
+
+float IBrake::Freeze()
+{
+	float slope = kFreezeMaxPower / kMaxAngle;
+	float power = -mGyro->GetAngle() * slope;
+	return power;
+}
+
+
+
+
 /**
  * @brief Initializes the object.
  * 
@@ -279,8 +285,13 @@ void MinimalistDrive::Run()
  * @param[in] rightJoystick A pointer to the right joystick 
  * (controls the right side of the robot)
  */
-TankJoysticks::TankJoysticks(RobotDrive *robotDrive, Joystick *leftJoystick, Joystick *rightJoystick):
-		BaseJoystickController()
+TankJoysticks::TankJoysticks(
+			RobotDrive *robotDrive,
+			Joystick *leftJoystick, 
+			Joystick *rightJoystick,
+			Gyro *gyro):
+		BaseJoystickController(),
+		IBrake(robotDrive, gyro)
 {
 	mRobotDrive = robotDrive;
 	mLeftJoystick = leftJoystick;
@@ -339,8 +350,8 @@ void TankJoysticks::Run(void)
 	float breakSpeed = -mRightJoystick->GetThrottle();
 	SmartDashboard::GetInstance()->Log(breakSpeed, "(TANK DRIVE) Raw breaking power");
 	if (mLeftJoystick->GetTrigger() or mRightJoystick->GetTrigger()) {
-		shapedLeft = breakSpeed;
-		shapedRight = breakSpeed;
+		shapedLeft = Freeze();
+		shapedRight = Freeze();
 	}
 	
 	SmartDashboard::GetInstance()->Log(-shapedLeft, "(TANK DRIVE) Left speed ");

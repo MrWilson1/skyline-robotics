@@ -28,32 +28,6 @@
 #include "shooter.h"
 #include "arm.h"
 
-/**
- * @brief A baseclass for any controller that controls
- * robot movement.
- */
-/*
-class BaseMovementController : public BaseController
-{
-protected:
-	//float AddShaping(float);
-	//void Freeze(float);
-	float Balance(float);
-	RobotDrive *mRobotDrive;
-	static const float kMaxAngle = 16.0;
-	static const float kFreezeMaxPower = 0.5;
-	static const float kBalanceMaxPower = 0.6;
-	float mFreezeMaxPower;
-	float mBalanceMaxPower;
-	
-	SmartDashboard *mSmartDashboard;
-	
-public:
-	BaseMovementController();
-	virtual ~BaseMovementController() = 0;
-	virtual void Run() = 0;
-};
-*/
 
 /**
  * @brief A baseclass for any controller that uses 
@@ -78,12 +52,33 @@ protected:
 	const char *mBezierLabelA;
 	const char *mBezierLabelB;
 	bool mAreValuesSwapped;
-	
+
 public:
 	BaseJoystickController();
 	void Stop(RobotDrive *);
 	void Run() = 0;
 };
+
+
+
+class IBrake
+{
+protected:
+	static const float kMaxAngle = 16.0;
+	static const float kFreezeMaxPower = 0.5;
+	static const float kBalanceMaxPower = 0.6;
+	float mFreezeMaxPower;
+	float mBalanceMaxPower;
+	
+	RobotDrive *mRobotDrive;
+	Gyro *mGyro;
+	
+public:
+	IBrake(RobotDrive *, Gyro *);
+	float Freeze();
+	float Balance();
+};
+
 
 
 /**
@@ -148,7 +143,7 @@ public:
  * @details
  * Todo: document what every button on the Joystick does.
  */
-class TankJoysticks : public BaseJoystickController
+class TankJoysticks : public BaseJoystickController, public IBrake
 {
 protected:
 	Joystick *mLeftJoystick;
@@ -159,7 +154,7 @@ protected:
 	static const float kSpeedFactorMax = 1.0;
 	
 public:
-	TankJoysticks(RobotDrive *, Joystick *, Joystick *);
+	TankJoysticks(RobotDrive *, Joystick *, Joystick *, Gyro *);
 	void Run(void);
 };
 

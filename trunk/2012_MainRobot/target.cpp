@@ -334,7 +334,11 @@ void TargetSnapshotController::Run()
 			TargetUtils::Target t = FindHighestTarget(targets);
 			PrintDiagnostics(t);
 			
-			float start = mGyro->GetAngle();
+			// When the robot turns clockwise, the gyro (which is upside-down on the robot, btw)
+			// decreases the angle it returns.
+			// The target returns a positive angle when the robot is pointing to the right of
+			// the target.
+			float start = -mGyro->GetAngle();
 			float finish = start + t.XAngleFromCamera;
 			float delta = finish - start;
 			float adjustment = kTurnPower;
@@ -342,9 +346,16 @@ void TargetSnapshotController::Run()
 				adjustment = -adjustment;
 			}
 			float current = start;
-			while (Compare(current, finish)) {
+			
+			SmartDashboard *s = SmartDashboard::GetInstance();
+			s->Log(start, "c start");
+			s->Log(finish, "c finish");
+			s->Log(delta, "c delta");
+			s->Log(adjustment, "c adjustment");
+			while (!Compare(current, finish)) {
 				mRobotDrive->TankDrive(adjustment, -adjustment);
 				current = mGyro->GetAngle();
+				s->Log(current, "c current");
 			}
 		}
 	} else {
