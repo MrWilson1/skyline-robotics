@@ -81,12 +81,12 @@ void MainRobot::InitializeHardware(void)
 	
 	/*mTestMotor = new Victor(
 			Ports::Module1,
-			Ports::Pwm5);
+			Ports::Pwm5);*/
 	
 	mUltrasoundSensor = new AnalogChannel(
 			Ports::Module1,
 			Ports::AnalogChannel1);
-			*/
+			
 	mYawGyro = new Gyro(
 			Ports::Module1,
 			Ports::AnalogChannel1);
@@ -186,7 +186,7 @@ void MainRobot::InitializeControllers(void)
 	controllers.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	controllers.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	controllers.push_back(new MinimalistDrive(mRobotDrive));
-	//controllers.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter));
+	controllers.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter, mArm));
 	
 	mControllerCollection.push_back(new ControllerSwitcher(controllers));
 

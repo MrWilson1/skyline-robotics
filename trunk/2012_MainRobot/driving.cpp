@@ -192,6 +192,10 @@ float BaseJoystickController::Shaper(Joystick *joystick, float rawValue) {
 	return shapedValue;
 }
 
+void BaseJoystickController::Stop(RobotDrive *robotDrive){
+	robotDrive->Drive(0.0, 0.0);
+}
+
 /**
  * @brief Initializes the object.
  * 
@@ -346,8 +350,6 @@ void TankJoysticks::Run(void)
 	mRobotDrive->TankDrive(shapedLeft, shapedRight);
 }
 
-
-
 /**
  * @brief A method of controlling the robot by using only
  * one joystick.
@@ -409,6 +411,24 @@ float SingleJoystick::GetSpeedDecreaseFactor(void)
 			kSpeedFactorMin,
 			kSpeedFactorMax);
 	return normalizedFactor;
+}
+
+SafetyMode::SafetyMode(RobotDrive *robotdrive, TankJoysticks *tankJoysticks, Joystick *safetyJoystick)
+{
+	mRobotDrive = robotdrive;
+	mTankJoysticks = tankJoysticks;
+	mSafetyJoystick = safetyJoystick;
+}
+
+void SafetyMode::Run()
+{
+	bool isSafe = mSafetyJoystick->GetTrigger() && mSafetyJoystick->GetRawButton(3);
+	
+	if (isSafe) {
+		mTankJoysticks->Run();
+	} else {
+		Stop(mRobotDrive);
+	}
 }
 
 /**
@@ -597,12 +617,13 @@ bool KinectController::IsPlayerShooting(void)
  * @param[in] shooter Pointer to Shooter object.
  */
 KinectAngleController::KinectAngleController(RobotDrive *robotDrive, KinectStick *leftKinectStick, 
-		KinectStick *rightKinectStick, Kinect *kinect, Shooter *shooter) :
+		KinectStick *rightKinectStick, Kinect *kinect, Shooter *shooter, BaseArmComponent *arm) :
 		BaseKinectController(robotDrive, kinect)
 {
 	mLeftKinectStick = leftKinectStick;
 	mRightKinectStick = rightKinectStick;
 	mShooter = shooter;
+	mArm = arm;
 }
 
 /**
@@ -653,6 +674,35 @@ bool KinectAngleController::IsAutomaticallyShooting(void)
 	}
 }
 
+bool KinectAngleController::IsLoweringArm(void)
+{
+	float headOrigin = mKinect->GetSkeleton().GetHead().x;
+	float headMoving = mKinect->GetSkeleton().GetShoulderLeft().x;
+	
+	float headDelta = headMoving - headOrigin;
+	
+	if (fabs(headDelta) < kArmThreshold) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool KinectAngleController::IsRaisingArm(void)
+{
+	float headOrigin = mKinect->GetSkeleton().GetHead().x;
+	float headMoving = mKinect->GetSkeleton().GetShoulderRight().x;
+	
+	float headDelta = headMoving - headOrigin;
+	
+	SmartDashboard::GetInstance()->Log(headDelta, "(KINECT) Head delta ");
+	
+	if (fabs(headDelta) < kArmThreshold) {
+		return true;
+	} else {
+		return false;
+	}
+}
 /**
  * @brief This method is called automatically during MyRobot:AutonomousControl.
  * 
@@ -703,5 +753,19 @@ void KinectAngleController::Run(void)
 		mShooter->SetSpeedAutomatically();
 	} else if (isAutomaticallyShooting && isManuallyShooting) {
 		mShooter->SetTestSpeed(0.0);
+	}
+	
+	bool isRaisingArm = IsRaisingArm();
+	bool isLoweringArm = IsLoweringArm();
+	
+	SmartDashboard::GetInstance()->Log(isRaisingArm, "(KINECT) Player is raising arm ");
+	SmartDashboard::GetInstance()->Log(isLoweringArm, "(KINECT) Player is lowering arm ");
+	
+	if (isRaisingArm) {
+		mArm->GoUp();
+	} else if (isLoweringArm) {
+		mArm->GoDown();
+	} else {
+		mArm->Stop();
 	}
 }

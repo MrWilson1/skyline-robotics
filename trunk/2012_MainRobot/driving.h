@@ -26,10 +26,7 @@
 // Our code
 #include "components.h"
 #include "shooter.h"
-
-
-
-
+#include "arm.h"
 
 /**
  * @brief A baseclass for any controller that controls
@@ -58,7 +55,6 @@ public:
 };
 */
 
-
 /**
  * @brief A baseclass for any controller that uses 
  * a joystick.
@@ -85,6 +81,7 @@ protected:
 	
 public:
 	BaseJoystickController();
+	void Stop(RobotDrive *);
 	void Run() = 0;
 };
 
@@ -186,6 +183,18 @@ public:
 	void Run(void);
 };
 
+class SafetyMode : public BaseJoystickController
+{
+protected:
+	RobotDrive *mRobotDrive;
+	TankJoysticks *mTankJoysticks;
+	Joystick *mSafetyJoystick;
+
+public:
+	SafetyMode(RobotDrive *, TankJoysticks *, Joystick *);
+	void Run();
+};
+
 /**
  * @brief A base class for any controller using a Kinect.
  */
@@ -239,20 +248,24 @@ protected:
 class KinectAngleController : public BaseKinectController
 {
 public:
-	KinectAngleController(RobotDrive *, KinectStick *, KinectStick *, Kinect *, Shooter *);
+	KinectAngleController(RobotDrive *, KinectStick *, KinectStick *, Kinect *, Shooter *, BaseArmComponent *);
 	void Run();
 	
 protected:
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
 	Shooter *mShooter;
+	BaseArmComponent *mArm;
 	
 	static const float kPushThreshold = 0.3;
 	static const float kSpeedDecreaseFactor = 0.4;
+	static const float kArmThreshold = 0.3; // todo find actual value for threshold that works.
 	// bool isAutoShooting();
 	//bool IsPlayerReady();
 	bool IsManuallyShooting();
 	bool IsAutomaticallyShooting();
+	bool IsRaisingArm();
+	bool IsLoweringArm();
 	
 };
 

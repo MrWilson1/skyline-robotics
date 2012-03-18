@@ -84,21 +84,21 @@ protected:
 	SpeedController *mBottomRightShooter;
 	SpeedController *mArmSpeedController;
 	
-	SpeedController *mTestMotor;
-	SpeedController *mTestMotor2;
+	//SpeedController *mTestMotor;
+	//SpeedController *mTestMotor2;
 	//DigitalInput *mTestDigitalInput;
-	DigitalInput *mElevatorBottomLimitSwitch;
+	//DigitalInput *mElevatorBottomLimitSwitch;
 	DigitalInput *mTopLimit;
 	DigitalInput *mBottomLimit;
 	//DigitalInput *mElevatorTopLimitSwitch;
 	
-	Servo *mCameraServo;
+	//Servo *mCameraServo;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
 	Joystick *mRightJoystick;
 	Joystick *mTwistJoystick;
-	Joystick *mTestJoystick;
+	//Joystick *mTestJoystick;
 	Kinect *mKinect;
 	
 	// Components
