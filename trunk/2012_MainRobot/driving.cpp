@@ -177,10 +177,10 @@ void BaseJoystickController::Stop(RobotDrive *robotDrive){
 	robotDrive->Drive(0.0, 0.0);
 }
 
-
-IBrake::IBrake(RobotDrive *robotDrive, Gyro *gyro)
+//*
+IBrake::IBrake(Gyro *gyro, Watchdog &watchdog):
+		mWatchdog(watchdog)
 {
-	mRobotDrive = robotDrive;
 	mGyro = gyro;
 }
 
@@ -199,6 +199,21 @@ float IBrake::Freeze()
 	return power;
 }
 
+void IBrake::Routine(RobotDrive *robotDrive)
+{
+	mGyro->Reset();
+	float crawl = -0.50;
+	while (mGyro->GetAngle() < 15.0) {
+		robotDrive->TankDrive(-0.8, -0.8);
+		mWatchdog.Feed();
+	}
+	while (mGyro->GetAngle() >= 15.0) {
+		robotDrive->TankDrive(crawl, crawl);
+		mWatchdog.Feed();
+	}
+	robotDrive->TankDrive(0.0, 0.0);
+}
+//*/
 
 
 
@@ -289,9 +304,10 @@ TankJoysticks::TankJoysticks(
 			RobotDrive *robotDrive,
 			Joystick *leftJoystick, 
 			Joystick *rightJoystick,
-			Gyro *gyro):
+			Gyro *gyro,
+			Watchdog &watchdog):
 		BaseJoystickController(),
-		IBrake(robotDrive, gyro)
+		IBrake(gyro, watchdog)
 {
 	mRobotDrive = robotDrive;
 	mLeftJoystick = leftJoystick;
@@ -346,14 +362,51 @@ void TankJoysticks::Run(void)
 		SmartDashboard::GetInstance()->Log("No", "(TANK DRIVE) Driving locked?");
 	}
 	
+	if (mLeftJoystick->GetRawButton(9) or mRightJoystick->GetRawButton(9)) {
+		mGyro->Reset();
+	}
+	
+	// Balancing
+	/*
+	if (mLeftJoystick->GetRawButton(10) or mRightJoystick->GetRawButton(10)) {
+		shapedLeft = Balance();
+		shapedRight = Balance();
+		SmartDashboard::GetInstance()->Log("yes", "(TANK DRIVE) Balancing?");
+	} else {
+		SmartDashboard::GetInstance()->Log("no", "(TANK DRIVE) Balancing?");
+	}
+	//*/
+	/*
+	if (mLeftJoystick->GetRawButton(11) or mRightJoystick->GetRawButton(11)) {
+		mGyro->Reset();
+		for (int i=0; i < 50; i++) {
+			mRobotDrive->TankDrive(-0.8, -0.8);
+			mWatchdog.Feed();
+			if (!mLeftJoystick->GetRawButton(11) or !mRightJoystick->GetRawButton(11)) {
+				break;
+			}
+		}
+		while (mGyro->GetAngle() >= 15.0) {
+			mRobotDrive->TankDrive(kBalanceMaxPower, kBalanceMaxPower);
+			mWatchdog.Feed();
+			if (!mLeftJoystick->GetRawButton(11) or !mRightJoystick->GetRawButton(11)) {
+				break;
+			}
+		}
+		mRobotDrive->TankDrive(0.0, 0.0);
+	}
+	//*/
 	// Braking
-	float breakSpeed = -mRightJoystick->GetThrottle();
-	SmartDashboard::GetInstance()->Log(breakSpeed, "(TANK DRIVE) Raw breaking power");
+	/*
+	
 	if (mLeftJoystick->GetTrigger() or mRightJoystick->GetTrigger()) {
 		shapedLeft = Freeze();
 		shapedRight = Freeze();
+		SmartDashboard::GetInstance()->Log("yes", "(TANK DRIVE) Braking?");
+	} else {
+		SmartDashboard::GetInstance()->Log("no", "(TANK DRIVE) Braking?");
 	}
-	
+	//*/
 	SmartDashboard::GetInstance()->Log(-shapedLeft, "(TANK DRIVE) Left speed ");
 	SmartDashboard::GetInstance()->Log(-shapedRight, "(TANK DRIVE) Right speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(TANK DRIVE) Speed factor ");

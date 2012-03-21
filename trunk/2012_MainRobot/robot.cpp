@@ -75,20 +75,18 @@ void MainRobot::InitializeHardware(void)
 	mElevatorSpeedController = new Jaguar(
 			Ports::Module1,
 			Ports::Pwm9);*/
-	mArmSpeedController = new Victor(
-			Ports::Module1,
-			Ports::Pwm10);
+	//mArmSpeedController = new Victor(
+	//		Ports::Module1,
+	//		Ports::Pwm10);
 	
-	mUltrasoundSensor = new AnalogChannel(
-			Ports::Module1,
-			Ports::AnalogChannel1);
-			
-	mYawGyro = new Gyro(
-			Ports::Module1,
-			Ports::AnalogChannel1);
-	mPitchGyro = new Gyro(
-			Ports::Module1,
-			Ports::AnalogChannel7);
+	//mUltrasoundSensor = new AnalogChannel(
+	//		Ports::Module1,
+	//		Ports::AnalogChannel1);
+	
+	//mYawGyro = new Gyro(
+	//		Ports::Module1,
+	//		Ports::AnalogChannel1);
+	mPitchGyro = new Gyro(1,1);
 	
 	// The camera is technically a hardware component, but WPILib's
 	// AxisCamera class has a built-in static method for returning
@@ -103,14 +101,11 @@ void MainRobot::InitializeHardware(void)
 	//mTestDigitalInput = new DigitalInput(
 				//Ports::DigitalIo9);
 	
-	mTopLimit = new DigitalInput(
+	/*mTopLimit = new DigitalInput(
 			Ports::DigitalIo3);
 	mBottomLimit = new DigitalInput(
 			Ports::DigitalIo4);
-	
-	//mCameraServo = new Servo(
-			//Ports::Pwm7);
-			
+	*/
 	return;
 }
 
@@ -161,7 +156,7 @@ void MainRobot::InitializeComponents(void)
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
 	//mTargetFinder = new TargetFinder();*/
 	//mArm = new SimpleArm(mArmSpeedController);
-	mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
+	//mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
 	//mCameraAdjuster = new CameraAdjuster(mCameraServo);*/
 }
 
@@ -178,14 +173,19 @@ void MainRobot::InitializeControllers(void)
 {
 	
 	vector<BaseController *> controllers;
-	controllers.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro));
+	controllers.push_back(new TankJoysticks(
+			mRobotDrive, 
+			mLeftJoystick, 
+			mRightJoystick, 
+			mPitchGyro, 
+			GetWatchdog()));
 	controllers.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	controllers.push_back(new MinimalistDrive(mRobotDrive));
-	controllers.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter, mArm));
+	//controllers.push_back(new KinectAngleController(mRobotDrive, mLeftKinectStick, mRightKinectStick, mKinect, mShooter, mArm));
 	
 	mControllerCollection.push_back(new ControllerSwitcher(controllers));
 
-	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
+	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	

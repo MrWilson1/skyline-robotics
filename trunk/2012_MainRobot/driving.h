@@ -65,18 +65,19 @@ class IBrake
 {
 protected:
 	static const float kMaxAngle = 16.0;
-	static const float kFreezeMaxPower = 0.5;
-	static const float kBalanceMaxPower = 0.6;
+	static const float kFreezeMaxPower = 0.4;
+	static const float kBalanceMaxPower = 0.55;
 	float mFreezeMaxPower;
 	float mBalanceMaxPower;
 	
-	RobotDrive *mRobotDrive;
 	Gyro *mGyro;
+	Watchdog &mWatchdog;
 	
 public:
-	IBrake(RobotDrive *, Gyro *);
+	IBrake(Gyro *, Watchdog &);
 	float Freeze();
 	float Balance();
+	void Routine(RobotDrive *robotDrive);
 };
 
 
@@ -154,7 +155,7 @@ protected:
 	static const float kSpeedFactorMax = 1.0;
 	
 public:
-	TankJoysticks(RobotDrive *, Joystick *, Joystick *, Gyro *);
+	TankJoysticks(RobotDrive *, Joystick *, Joystick *, Gyro *, Watchdog &);
 	void Run(void);
 };
 

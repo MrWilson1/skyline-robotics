@@ -92,20 +92,16 @@ protected:
 	DigitalInput *mBottomLimit;
 	//DigitalInput *mElevatorTopLimitSwitch;
 	
-	//Servo *mCameraServo;
-	
 	// Input devices
 	Joystick *mLeftJoystick;
 	Joystick *mRightJoystick;
 	Joystick *mTwistJoystick;
-	//Joystick *mTestJoystick;
 	Kinect *mKinect;
 	
 	// Components
 	RangeFinder *mRangeFinder;
 	Shooter *mShooter;
 	Elevator *mElevator;
-	//TestThreadListener *mTestThreadListener;
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
 	TargetFinder *mTargetFinder;
