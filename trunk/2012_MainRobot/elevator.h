@@ -23,10 +23,11 @@ protected:
 	DigitalInput *mBottomLimitSwitch;
 	//DigitalInput *mTopLimitSwitch;
 	SpeedController *mSpeedController; 	// Controls the belt
-	static const float kDefaultSpeed = 1.0;		// -1.0 to 1.0
+	static const float kDefaultSpeed = -1.0;		// -1.0 to 1.0
 	
 public:
 	Elevator(DigitalInput *, SpeedController *);
+	~Elevator();
 	bool IsBallAtBottom();
 	//bool IsBallAtTop();
 	void Stop();

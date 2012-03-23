@@ -14,6 +14,11 @@ Elevator::Elevator(DigitalInput *bottomLimitSwitch, SpeedController *speedContro
 	mSpeedController = speedController;
 }
 
+Elevator::~Elevator()
+{
+	// None
+}
+
 /*
  * @brief Checks to see if there is a ball
  * in the bottom of the elevator.
@@ -49,7 +54,7 @@ void Elevator::MoveUp(void) {
  */
 void Elevator::MoveDown(void)
 {
-	mSpeedController->Set(kDefaultSpeed * -1);
+	mSpeedController->Set(kDefaultSpeed * -1.0);
 }
 
 
@@ -85,8 +90,8 @@ ElevatorController::ElevatorController(Elevator *elevator, Joystick *joystick)
  * moving the belt (and shoot the ball).
  */
 void ElevatorController::Run(void) {
-	bool moveUp = mJoystick->GetRawButton(11);
-	bool moveDown = mJoystick->GetRawButton(10);
+	bool moveUp = mJoystick->GetRawButton(10);
+	bool moveDown = mJoystick->GetRawButton(12);
 	
 	if (moveUp and moveDown) {
 		mElevator->Stop();

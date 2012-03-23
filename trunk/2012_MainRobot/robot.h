@@ -87,10 +87,11 @@ protected:
 	//SpeedController *mTestMotor;
 	//SpeedController *mTestMotor2;
 	//DigitalInput *mTestDigitalInput;
-	//DigitalInput *mElevatorBottomLimitSwitch;
+	DigitalInput *mElevatorBottomLimitSwitch;
+	DigitalInput *mElevatorTopLimitSwitch;
 	DigitalInput *mTopLimit;
 	DigitalInput *mBottomLimit;
-	//DigitalInput *mElevatorTopLimitSwitch;
+	
 	
 	// Input devices
 	Joystick *mLeftJoystick;

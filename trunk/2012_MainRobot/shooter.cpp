@@ -145,6 +145,14 @@ ShooterController::ShooterController(Shooter *shooter, Joystick *joystick) :
 {
 	mShooter = shooter;
 	mJoystick = joystick;
+	mPresetOne = 0.3;
+	mPresetTwo = 0.5;
+	mPresetThree = 0.7;
+	
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	s->PutString("(SHOOTER) Preset 1 <<", Tools::FloatToString(mPresetOne).c_str());
+	s->PutString("(SHOOTER) Preset 2 <<", Tools::FloatToString(mPresetTwo).c_str());
+	s->PutString("(SHOOTER) Preset 3 <<", Tools::FloatToString(mPresetThree).c_str());
 }
 
 /**
@@ -157,23 +165,55 @@ ShooterController::ShooterController(Shooter *shooter, Joystick *joystick) :
 void ShooterController::Run(void)
 {
 	bool setToManual = mJoystick->GetRawButton(2); // manual	
-	bool setToPreset = mJoystick->GetTrigger(); // preset
-	//float throttle = mJoystick->GetThrottle();
+	bool setToCalculated = mJoystick->GetTrigger(); // precalculated
+	bool setToPreset = IsPressingPreset();
 	
-	 float throttle = mJoystick->GetThrottle();
+	 float throttle = mJoystick->GetTwist();
 	
 	SmartDashboard::GetInstance()->Log(setToManual, "(SHOOTER) Manual ");
-	SmartDashboard::GetInstance()->Log(setToPreset, "(SHOOTER) Preset ");
+	SmartDashboard::GetInstance()->Log(setToCalculated, "(SHOOTER) Calculated ");
+	SmartDashboard::GetInstance()->Log(setToPreset ? "Yes" : "No", "(SHOOTER) Preset ");
 	
 	SmartDashboard::GetInstance()->Log(throttle, "(SHOOTER) Speed Factor ");
 	
-	if ( setToManual ) {
+	UpdatePresets();
+	if (setToPreset) {
+		float out = GetPreset();
+		if (out >= 0) {
+			mShooter->SetSpeedManually(out);
+		}
+	} else if ( setToManual ) {
 		mShooter->SetSpeedManually(throttle);
 	} else if ( setToPreset ) {
 		mShooter->SetSpeedAutomatically();
 	} else {
 		mShooter->SetSpeedManually(0);
 	}
+}
+
+void ShooterController::UpdatePresets(void) 
+{
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	mPresetOne = Tools::StringToFloat(s->GetString("(SHOOTER) Preset 1 <<"));
+	mPresetTwo = Tools::StringToFloat(s->GetString("(SHOOTER) Preset 2 <<"));
+	mPresetThree = Tools::StringToFloat(s->GetString("(SHOOTER) PRESET 3 <<"));
+}
+
+bool ShooterController::IsPressingPreset()
+{
+	return mJoystick->GetRawButton(7) or mJoystick->GetRawButton(9) or mJoystick->GetRawButton(11);
+}
+
+float ShooterController::GetPreset()
+{
+	if (mJoystick->GetRawButton(7)) {
+		return mPresetOne;
+	} else if (mJoystick->GetRawButton(9)) {
+		return mPresetTwo;
+	} else if (mJoystick->GetRawButton(11)) {
+		return mPresetThree;
+	}
+	return -0.1;
 }
 
 /**

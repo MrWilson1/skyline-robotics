@@ -328,9 +328,9 @@ void TankJoysticks::Run(void)
 	float left = mLeftJoystick->GetY();
 	float right = mRightJoystick->GetY();
 	
-	if (mLeftJoystick->GetRawButton(6) or mRightJoystick->GetRawButton(6)) {
+	if (mRightJoystick->GetRawButton(6)) {
 		mAreValuesSwapped = false;
-	} else if (mLeftJoystick->GetRawButton(7) or mRightJoystick->GetRawButton(7)) {
+	} else if (mRightJoystick->GetRawButton(7)) {
 		mAreValuesSwapped = true;
 	}
 	

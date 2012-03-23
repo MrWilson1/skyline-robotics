@@ -28,6 +28,7 @@ public:
 	virtual void GoUp() = 0;
 	virtual void GoDown() = 0;
 	virtual void Stop() = 0;
+	virtual void Set(float) = 0;
 };
 
 /**
@@ -45,6 +46,7 @@ public:
 	void GoUp();
 	void GoDown();
 	void Stop();
+	void Set(float);
 };
 
 /**
@@ -69,7 +71,36 @@ public:
 	void GoUp(void);
 	void GoDown(void);
 	void Stop(void);
+	void Set(float);
 };
+
+
+
+
+class SingleGuardedArm : public BaseArmComponent
+{
+public:
+	static const float kUpMotorSpeed = 3.0;
+	static const float kDownMotorSpeed = -1.0;
+protected:
+	DigitalInput *mLimit;
+	SingleMotorLimitWatchdog *mSingleMotorWatchdog;
+public:
+	SingleGuardedArm (SpeedController *, DigitalInput *);
+	~SingleGuardedArm ();
+	
+	void GoUp();
+	void GoDown();
+	void Stop();
+	void Set(float);
+};
+
+
+
+
+
+
+
 
 /**
  * @brief Interacts with joystick to control the arm.
@@ -79,10 +110,8 @@ class ArmController : public BaseController
 protected:
 	BaseArmComponent *mArm;
 	Joystick *mJoystick;
-	DigitalInput *mTopLimit;
-	DigitalInput *mBottomLimit;
 public:
-	ArmController (BaseArmComponent *, Joystick *, DigitalInput *, DigitalInput *);
+	ArmController (BaseArmComponent *, Joystick *);
 	void Run(void);
 };
 

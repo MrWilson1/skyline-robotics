@@ -92,6 +92,81 @@ void GuardedArm::Stop() {
 	mSpeedController->Set(0);
 }
 
+void GuardedArm::Set(float value) {
+	mSpeedController->Set(value);	// Thread should theoretically prevent arm from passing too far
+}
+
+
+
+
+
+SingleGuardedArm::SingleGuardedArm (
+		SpeedController *speedController,
+		DigitalInput *limit) :
+		BaseArmComponent(speedController)
+{
+	mLimit = limit;
+	
+	mSingleMotorWatchdog = new SingleMotorLimitWatchdog(
+			"SingleGuardedArm",
+			mSpeedController,
+			mLimit);
+}
+
+/**
+ * @brief Deconstructor for the arm class.
+ * 
+ * @details
+ * Used to kill the motor watchdog.
+ */
+SingleGuardedArm::~SingleGuardedArm ()
+{
+	if (mSingleMotorWatchdog) {
+		mSingleMotorWatchdog->Stop();
+		delete mSingleMotorWatchdog;
+	}
+}
+
+/**
+ * @brief Makes the arm go up. 
+ * 
+ * @details
+ * If the top limit switch is pressed, then the arm stops going up.
+ * In other words, when the arm is at maximum height, it stops automatically.
+ */
+void SingleGuardedArm::GoUp()
+{
+	mSpeedController->Set(kUpMotorSpeed);	
+}
+
+/**
+ * @brief Makes the arm go down.
+ * 
+ * @details
+ * If the bottom limit switch is pressed, then the arms stop going down.
+ * In other words, when the arm is at minimum height, it stops automatically.
+ */
+void SingleGuardedArm::GoDown()
+{
+	if (mLimit->Get()) {
+		mSpeedController->Set(0);
+	} else {
+		mSpeedController->Set(kDownMotorSpeed);
+	}
+}
+
+/**
+ * @brief Makes the arm stop.
+ */
+void SingleGuardedArm::Stop() {
+	mSpeedController->Set(0);
+}
+
+void SingleGuardedArm::Set(float value) {
+	mSpeedController->Set(value);
+}
+
+
 
 
 
@@ -116,6 +191,11 @@ void SimpleArm::Stop()
 	mSpeedController->Set(0);
 }
 
+void SimpleArm::Set(float value) 
+{
+	mSpeedController->Set(0);
+}
+
 
 
 /**
@@ -124,25 +204,18 @@ void SimpleArm::Stop()
  * @param[in] arm Pointer to the arm.
  * @param[in] joystick Pointer to the joystick.
  */
-ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick, DigitalInput *topLimit, DigitalInput *bottomLimit) {
+ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick) {
 	mArm = arm;
 	mJoystick = joystick;
-	mTopLimit = topLimit;
-	mBottomLimit = bottomLimit;
 }
 
 /**
  * @brief Provides a thin layer to control the arm using a 
  * joystick.  
- * 
- * @details
- * While button 4 is pushed, the arm goes up. 
- * While button 5 is pushed, the arm goes down.
- * While neither button is pushed, the arm stops.
  */
 void ArmController::Run() {
-	bool armUp = mJoystick->GetRawButton(6);
-	bool armDown = mJoystick->GetRawButton(7);
+	bool armUp = mJoystick->GetRawButton(7);
+	bool armDown = mJoystick->GetRawButton(6);
 	if ( armUp ) {
 		mArm->GoUp();
 	} else if ( armDown ) {
@@ -150,10 +223,5 @@ void ArmController::Run() {
 	} else {
 		mArm->Stop();
 	}
-	
-	bool armAtTop = mTopLimit->Get();
-	bool armAtBottom = mBottomLimit->Get();
-	
-	SmartDashboard::GetInstance()->Log(armAtTop, "(ARM) Arm at top ");
-	SmartDashboard::GetInstance()->Log(armAtBottom, "(ARM) Arm at bottom ");
+	mArm->Set(mJoystick->GetY());
 }

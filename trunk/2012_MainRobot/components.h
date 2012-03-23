@@ -41,6 +41,7 @@
 // Standard libraries
 #include <assert.h>
 #include <string>
+#include <sstream>
 
 /**
  * @brief A base class meant to be inherited from any
@@ -261,6 +262,7 @@ namespace Tools
 	float Max(int, float);
 	float StringToFloat(std::string);
 	float StringToFloat(const char *);
+	std::string FloatToString(float);
 }
 
 #endif

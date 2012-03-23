@@ -59,7 +59,7 @@ void MainRobot::InitializeHardware(void)
 			mRightFrontDrive,
 			mRightBackDrive);
 	
-	/*
+	
 	mTopLeftShooter = new Jaguar(
 			Ports::Module1,
 			Ports::Pwm5);
@@ -74,38 +74,38 @@ void MainRobot::InitializeHardware(void)
 			Ports::Pwm8);
 	mElevatorSpeedController = new Jaguar(
 			Ports::Module1,
-			Ports::Pwm9);*/
-	//mArmSpeedController = new Victor(
-	//		Ports::Module1,
-	//		Ports::Pwm10);
-	
-	//mUltrasoundSensor = new AnalogChannel(
-	//		Ports::Module1,
-	//		Ports::AnalogChannel1);
-	
+			Ports::Pwm9);
+	mArmSpeedController = new Victor(
+			Ports::Module1,
+			Ports::Pwm10);
+	//*
+	mUltrasoundSensor = new AnalogChannel(
+			Ports::Module1,
+			Ports::AnalogChannel1);
+	//*/
 	//mYawGyro = new Gyro(
 	//		Ports::Module1,
 	//		Ports::AnalogChannel1);
-	mPitchGyro = new Gyro(1,1);
+	mPitchGyro = new Gyro(1,2);
 	
 	// The camera is technically a hardware component, but WPILib's
 	// AxisCamera class has a built-in static method for returning
 	// instances of a camera
 	
-	//mElevatorBottomLimitSwitch = new DigitalInput(
-			//Ports::Module1,
-			//Ports::DigitalIo1);
+	mElevatorBottomLimitSwitch = new DigitalInput(
+			Ports::Module1,
+			Ports::DigitalIo1);
 	//mElevatorTopLimitSwitch = new DigitalInput(
 			//Ports::DigitalIo2);
 
 	//mTestDigitalInput = new DigitalInput(
 				//Ports::DigitalIo9);
 	
-	/*mTopLimit = new DigitalInput(
+	mTopLimit = new DigitalInput(
 			Ports::DigitalIo3);
 	mBottomLimit = new DigitalInput(
 			Ports::DigitalIo4);
-	*/
+	
 	return;
 }
 
@@ -146,18 +146,22 @@ void MainRobot::InitializeInputDevices(void)
  */
 void MainRobot::InitializeComponents(void)
 {
-	/*mRangeFinder = new RangeFinder(mUltrasoundSensor);
+	//*
+	mRangeFinder = new RangeFinder(mUltrasoundSensor);
 	mShooter = new Shooter(
 			mTopLeftShooter,
 			mTopRightShooter,
 			mBottomLeftShooter,
 			mBottomRightShooter,
 			mRangeFinder);
+	
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
 	//mTargetFinder = new TargetFinder();*/
-	//mArm = new SimpleArm(mArmSpeedController);
+	mArm = new SimpleArm(mArmSpeedController);
+	//mArm = new SingleGuardedArm(mArmSpeedController, mBottomLimit);
 	//mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
 	//mCameraAdjuster = new CameraAdjuster(mCameraServo);*/
+	//*/
 }
 
 /**
@@ -189,12 +193,12 @@ void MainRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	
-	//mControllerCollection.push_back(new ShooterController(mShooter, mRightJoystick));
-	//mControllerCollection.push_back(new ElevatorController(mElevator, mRightJoystick));
-	//mControllerCollection.push_back(new ArmController(mArm, mRightJoystick));
+	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
+	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
+	mControllerCollection.push_back(new ArmController(mArm, mLeftJoystick));
 	
 	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
-	mControllerCollection.push_back(new GyroTest(mPitchGyro));
+	//mControllerCollection.push_back(new GyroTest(mPitchGyro));
 	//mControllerCollection.push_back(new TargetFinder());
 
 	/* 
@@ -253,7 +257,10 @@ MainRobot::~MainRobot(void)
 void MainRobot::Autonomous(void)
 {
 	GetWatchdog().SetEnabled(true);
+	float shootSpeed = 0.7;
 	while (IsAutonomous()) {
+		mShooter->SetSpeedManually(shootSpeed);
+		mElevator->MoveUp();
 		GetWatchdog().Feed();
 		Wait(kMotorWait);
 	}

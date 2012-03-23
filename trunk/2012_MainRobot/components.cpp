@@ -114,3 +114,10 @@ float Tools::StringToFloat(const char *input)
 	return output;
 	
 }
+
+std::string Tools::FloatToString(float input) 
+{
+	std::stringstream ss (std::stringstream::in | std::stringstream::out);
+	ss << input;
+	return ss.str();
+}

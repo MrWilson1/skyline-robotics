@@ -59,9 +59,16 @@ class ShooterController : public BaseController
 protected:
 	Shooter *mShooter;
 	Joystick *mJoystick;
+	float mPresetOne;
+	float mPresetTwo;
+	float mPresetThree;
+	void UpdatePresets();
+	bool IsPressingPreset();
+	float GetPreset();
+	
 public:
 	ShooterController(Shooter *, Joystick *);
-	void Run(void);
+	void Run();
 };
 
 /**

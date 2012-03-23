@@ -139,3 +139,91 @@ void MotorLimitWatchdog::Run()
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SingleMotorLimitWatchdog::SingleMotorLimitWatchdog(
+		const char * watchdogName,
+		SpeedController * motor,
+		DigitalInput * limit):
+    Task("SingleMotorLimitWatchDog", (FUNCPTR)SingleMotorLimitWatchdog::TaskWrapper)
+{
+	mName = watchdogName;
+	mMotor = motor;
+	mLimit = limit;
+
+	initFieldNames();
+
+	//mStatusLogger = new Notifier((TimerEventHandler)MotorLimitWatchdog::LogStatus, this);
+	mStatusLogger->StartPeriodic(1.0);
+
+	Task::Start((UINT32)this);
+}
+
+SingleMotorLimitWatchdog::~SingleMotorLimitWatchdog()
+{
+	if (mStatusLogger)
+	{
+		mStatusLogger->Stop();
+		delete mStatusLogger;
+	}
+        
+}
+
+/**
+ * @brief Static wrapper function to callback non-static member function.
+ */
+
+void SingleMotorLimitWatchdog::TaskWrapper(void* ThisObject)
+{
+	// explicit cast pointer to Class pointer
+	SingleMotorLimitWatchdog * myself = (SingleMotorLimitWatchdog*) ThisObject;
+
+	// call member function
+	myself->Run();
+}
+
+// todo Figure out what this does and document it.
+
+void SingleMotorLimitWatchdog::Run()
+{
+	bool bLimitSwitchHit = mLimit->Get();
+
+	// So long as the task is still active, keep looping
+	while(this->Verify())
+	{
+		// While one of the limit switches are pressed hang out here until
+		//  one of the limit switches is released or the task ends
+		while (bLimitSwitchHit && this->Verify())
+		{
+			bLimitSwitchHit = mLimit->Get();
+		}
+
+		// While neither of the limit switches is pressed hang out here until
+		//  one of the limit switches is pressed or the task ends
+		while (!bLimitSwitchHit && this->Verify())
+		{
+			if (mLimit->Get())
+				{
+					if (mMotor->Get() < 0.0) {
+						mMotor->Set(0);
+						bLimitSwitchHit = true;
+					}
+				}
+		}
+	}
+}
