@@ -44,11 +44,10 @@ protected:
 public:
     Shooter(SpeedController*, SpeedController*, SpeedController*, SpeedController*, RangeFinder*);
     void SetSpeedManually(float);
-    void SetSpeedAutomatically();
+    float SetSpeedAutomatically();
     void SetTestSpeed(float);
     float CalculateSpeed(float);
 	float CalculateDistance();
-	void Run();
 };
 
 /**

@@ -161,11 +161,11 @@ void SingleGuardedArm::GoDown()
 void SingleGuardedArm::Stop() {
 	mSpeedController->Set(0);
 }
-
+//*
 void SingleGuardedArm::Set(float value) {
 	mSpeedController->Set(value);
 }
-
+//*/
 
 
 
@@ -193,7 +193,7 @@ void SimpleArm::Stop()
 
 void SimpleArm::Set(float value) 
 {
-	mSpeedController->Set(0);
+	mSpeedController->Set(value);
 }
 
 
@@ -207,6 +207,8 @@ void SimpleArm::Set(float value)
 ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick) {
 	mArm = arm;
 	mJoystick = joystick;
+	mRawPower = 0.0;
+	SmartDashboard::GetInstance()->PutString("(ARM) Raw power <<", Tools::FloatToString(mRawPower));
 }
 
 /**
@@ -214,8 +216,8 @@ ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick) {
  * joystick.  
  */
 void ArmController::Run() {
-	bool armUp = mJoystick->GetRawButton(7);
-	bool armDown = mJoystick->GetRawButton(6);
+	bool armUp = mJoystick->GetRawButton(3);
+	bool armDown = mJoystick->GetRawButton(4);
 	if ( armUp ) {
 		mArm->GoUp();
 	} else if ( armDown ) {
@@ -224,4 +226,7 @@ void ArmController::Run() {
 		mArm->Stop();
 	}
 	mArm->Set(mJoystick->GetY());
+	if (mJoystick->GetRawButton(5) and mJoystick->GetRawButton(6)) {
+		mArm->Set(Tools::StringToFloat(SmartDashboard::GetInstance()->GetString("(ARM) Raw power <<")));
+	}
 }

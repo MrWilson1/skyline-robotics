@@ -91,7 +91,7 @@ void Shooter::SetTestSpeed(float speed)
  * @todo
  * Investigate if this needs to be moved into another class.
  */
-void Shooter::SetSpeedAutomatically()
+float Shooter::SetSpeedAutomatically()
 {
 	float distance = Shooter::CalculateDistance();
 	float speed = Shooter::CalculateSpeed(distance);
@@ -101,6 +101,7 @@ void Shooter::SetSpeedAutomatically()
 	SmartDashboard::GetInstance()->Log(coercedSpeed, "(SHOOTER) Auto speed ");
 	
 	Shooter::SetSpeedManually(coercedSpeed);
+	return coercedSpeed;
 }
 
 /**
@@ -145,14 +146,18 @@ ShooterController::ShooterController(Shooter *shooter, Joystick *joystick) :
 {
 	mShooter = shooter;
 	mJoystick = joystick;
-	mPresetOne = 0.3;
-	mPresetTwo = 0.5;
-	mPresetThree = 0.7;
+	mPresetOne = 0.24;
+	mPresetTwo = 0.39;
+	mPresetThree = 0.5;
 	
 	SmartDashboard *s = SmartDashboard::GetInstance();
 	s->PutString("(SHOOTER) Preset 1 <<", Tools::FloatToString(mPresetOne).c_str());
 	s->PutString("(SHOOTER) Preset 2 <<", Tools::FloatToString(mPresetTwo).c_str());
 	s->PutString("(SHOOTER) Preset 3 <<", Tools::FloatToString(mPresetThree).c_str());
+	
+	s->Log(0, "(SHOOTER) Manual ");
+	s->Log(0, "(SHOOTER) Calculated ");
+	s->Log(0, "(SHOOTER) Preset ");
 }
 
 /**
@@ -164,28 +169,24 @@ ShooterController::ShooterController(Shooter *shooter, Joystick *joystick) :
  */
 void ShooterController::Run(void)
 {
-	bool setToManual = mJoystick->GetRawButton(2); // manual	
-	bool setToCalculated = mJoystick->GetTrigger(); // precalculated
-	bool setToPreset = IsPressingPreset();
+	SmartDashboard *s = SmartDashboard::GetInstance();
 	
-	 float throttle = mJoystick->GetTwist();
-	
-	SmartDashboard::GetInstance()->Log(setToManual, "(SHOOTER) Manual ");
-	SmartDashboard::GetInstance()->Log(setToCalculated, "(SHOOTER) Calculated ");
-	SmartDashboard::GetInstance()->Log(setToPreset ? "Yes" : "No", "(SHOOTER) Preset ");
-	
-	SmartDashboard::GetInstance()->Log(throttle, "(SHOOTER) Speed Factor ");
+	float throttle = mJoystick->GetTwist();
+	s->Log(throttle, "(SHOOTER) Speed Factor ");
 	
 	UpdatePresets();
-	if (setToPreset) {
+	if (IsPressingPreset()) {
 		float out = GetPreset();
 		if (out >= 0) {
 			mShooter->SetSpeedManually(out);
+			s->Log(out, "(SHOOTER) Preset ");
 		}
-	} else if ( setToManual ) {
+	} else if (mJoystick->GetRawButton(2)) {
 		mShooter->SetSpeedManually(throttle);
-	} else if ( setToPreset ) {
-		mShooter->SetSpeedAutomatically();
+		s->Log(throttle, "(SHOOTER) Manual ");
+	} else if (mJoystick->GetTrigger()) {
+		float calculatedSpeed = mShooter->SetSpeedAutomatically();
+		s->Log(calculatedSpeed, "(SHOOTER) Calculated ");
 	} else {
 		mShooter->SetSpeedManually(0);
 	}
@@ -196,7 +197,7 @@ void ShooterController::UpdatePresets(void)
 	SmartDashboard *s = SmartDashboard::GetInstance();
 	mPresetOne = Tools::StringToFloat(s->GetString("(SHOOTER) Preset 1 <<"));
 	mPresetTwo = Tools::StringToFloat(s->GetString("(SHOOTER) Preset 2 <<"));
-	mPresetThree = Tools::StringToFloat(s->GetString("(SHOOTER) PRESET 3 <<"));
+	mPresetThree = Tools::StringToFloat(s->GetString("(SHOOTER) Preset 3 <<"));
 }
 
 bool ShooterController::IsPressingPreset()
@@ -206,11 +207,11 @@ bool ShooterController::IsPressingPreset()
 
 float ShooterController::GetPreset()
 {
-	if (mJoystick->GetRawButton(7)) {
+	if (mJoystick->GetRawButton(11)) {
 		return mPresetOne;
 	} else if (mJoystick->GetRawButton(9)) {
 		return mPresetTwo;
-	} else if (mJoystick->GetRawButton(11)) {
+	} else if (mJoystick->GetRawButton(7)) {
 		return mPresetThree;
 	}
 	return -0.1;

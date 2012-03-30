@@ -25,6 +25,7 @@ void MainRobot::RobotInit(void)
 	//		Task::kDefaultPriority);
 	
 	GetWatchdog().SetExpiration(kWatchdogExpiration);
+	SmartDashboard::GetInstance()->PutString("Autonomous? <<", "0.0");
 	return;
 }
 
@@ -59,7 +60,6 @@ void MainRobot::InitializeHardware(void)
 			mRightFrontDrive,
 			mRightBackDrive);
 	
-	
 	mTopLeftShooter = new Jaguar(
 			Ports::Module1,
 			Ports::Pwm5);
@@ -75,7 +75,7 @@ void MainRobot::InitializeHardware(void)
 	mElevatorSpeedController = new Jaguar(
 			Ports::Module1,
 			Ports::Pwm9);
-	mArmSpeedController = new Victor(
+	mArmSpeedController = new Jaguar(
 			Ports::Module1,
 			Ports::Pwm10);
 	//*
@@ -195,7 +195,7 @@ void MainRobot::InitializeControllers(void)
 	
 	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
 	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
-	mControllerCollection.push_back(new ArmController(mArm, mLeftJoystick));
+	//mControllerCollection.push_back(new ArmController(mArm, mTwistJoystick));
 	
 	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
 	//mControllerCollection.push_back(new GyroTest(mPitchGyro));
@@ -257,10 +257,15 @@ MainRobot::~MainRobot(void)
 void MainRobot::Autonomous(void)
 {
 	GetWatchdog().SetEnabled(true);
-	float shootSpeed = 0.7;
+	//float shootSpeed = 0.39;
+	//for(int i=0; i<300; i++) {
+	//	mShooter->SetSpeedManually(shootSpeed);
+	//	GetWatchdog().Feed();
+	//	Wait(kMotorWait);
+	//}
 	while (IsAutonomous()) {
-		mShooter->SetSpeedManually(shootSpeed);
-		mElevator->MoveUp();
+	//	mShooter->SetSpeedManually(shootSpeed);
+	//	mElevator->MoveUp();
 		GetWatchdog().Feed();
 		Wait(kMotorWait);
 	}

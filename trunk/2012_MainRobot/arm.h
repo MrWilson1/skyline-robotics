@@ -110,6 +110,7 @@ class ArmController : public BaseController
 protected:
 	BaseArmComponent *mArm;
 	Joystick *mJoystick;
+	float mRawPower;
 public:
 	ArmController (BaseArmComponent *, Joystick *);
 	void Run(void);

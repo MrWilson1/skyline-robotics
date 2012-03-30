@@ -47,12 +47,19 @@ protected:
 	float PiecewiseLinear (float);
 	float BezierInput(float, float, float);
 	float GetSpeedFactor(Joystick *);
-	float Shaper(Joystick *, float);
+	float Shaper(float, Joystick *);
 	const char *mLabel;
 	const char *mBezierLabelA;
 	const char *mBezierLabelB;
 	bool mAreValuesSwapped;
 
+	struct DriveSpeed
+	{
+		DriveSpeed();
+		DriveSpeed(float, float);
+		float Left;
+		float Right;
+	};
 public:
 	BaseJoystickController();
 	void Stop(RobotDrive *);
@@ -153,6 +160,13 @@ protected:
 	
 	static const float kSpeedFactorMin = 0.3;
 	static const float kSpeedFactorMax = 1.0;
+	
+	DriveSpeed TryDirectionReverse(DriveSpeed, Joystick *);
+	DriveSpeed AddShaping(DriveSpeed, Joystick *);
+	DriveSpeed AddSpeedFactor(DriveSpeed, Joystick *);
+	DriveSpeed TryStraightening(DriveSpeed, Joystick *);
+	DriveSpeed AddTruncation(DriveSpeed);
+	float Truncate(float);
 	
 public:
 	TankJoysticks(RobotDrive *, Joystick *, Joystick *, Gyro *, Watchdog &);
