@@ -44,6 +44,7 @@ protected:
 public:
     Shooter(SpeedController*, SpeedController*, SpeedController*, SpeedController*, RangeFinder*);
     void SetSpeedManually(float);
+    void SetSpeedManually(float, float);
     float SetSpeedAutomatically();
     void SetTestSpeed(float);
     float CalculateSpeed(float);
@@ -71,6 +72,29 @@ public:
 };
 
 /**
+ * @brief Allows you to adjust and test the precise speeds of the
+ * shooter via SmartDashboard.
+ * 
+ * @details
+ * This lets you precisely calibrate the speed of the motors via the 
+ * SmartDashboard, then shot by using a joystick.
+ */
+class CalibratedShooterController : public BaseController
+{
+protected:
+	Shooter *mShooter;
+	Joystick *mJoystick;
+	float mTopSpeed;
+	float mBottomSpeed;
+	
+	void UpdatePresets();
+	
+public:
+	CalibratedShooterController(Shooter *, Joystick *);
+	void Run();
+};
+
+/**
  * @brief Class for testing the shooter.
  */
 class ShooterControllerTest : public BaseController
@@ -80,7 +104,7 @@ protected:
 	Joystick *mJoystick;
 public:
 	ShooterControllerTest(Shooter *, Joystick *);
-	void Run(void);
+	void Run();
 };
 
 
@@ -112,7 +136,5 @@ public:
 	ShooterAdjuster(Shooter *, Gyro *, TargetFinder *, Watchdog &);
 	
 };
-
-
 
 #endif

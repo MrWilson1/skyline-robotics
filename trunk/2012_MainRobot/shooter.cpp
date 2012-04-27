@@ -65,6 +65,24 @@ void Shooter::SetSpeedManually(float speed)
 }
 
 /**
+ * @brief Lets you calibrate exactly how much the top and bottom
+ * wheels spin.
+ * 
+ * @details
+ * The inputs should be the the range -1.0 to 1.0
+ * 
+ * @param[in] topSpeed The speed of the top pair of motors
+ * @param[out] bottomSpeed The speed of the bottom pair of motors
+ */
+void Shooter::SetSpeedManually(float topSpeed, float bottomSpeed)
+{
+	mTopLeftSpeedController->Set(topSpeed);
+	mTopRightSpeedController->Set(topSpeed * -1);
+	mBottomLeftSpeedController->Set(bottomSpeed * -1);
+	mBottomRightSpeedController->Set(bottomSpeed);
+}
+
+/**
  * @brief Makes the wheels spin at a raw speed given as the parameter.
  * 
  * @param[in] speed The speed of the motor (from -1.0 to 1.0).
@@ -216,6 +234,56 @@ float ShooterController::GetPreset()
 	}
 	return -0.1;
 }
+
+/**
+ * @brief Constructor for CalibratedShooter.
+ * 
+ * @param[in] shooter Pointer to the shooter
+ * @param[in] joystick Pointer to a joystick
+ */
+CalibratedShooterController::CalibratedShooterController(Shooter *shooter, Joystick *joystick) :
+		BaseController()
+{
+	mShooter = shooter;
+	mJoystick = joystick;
+	
+	mTopSpeed = 0.5;
+	mBottomSpeed = 0.5;
+	
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	
+	s->PutString("(SHOOTER) Top Speed <<", Tools::FloatToString(mTopSpeed).c_str());
+	s->PutString("(SHOOTER) Bottom Speed <<", Tools::FloatToString(mBottomSpeed).c_str());
+}
+
+/**
+ * @brief Updates the speeds of the top and bottom speeds based on the 
+ * values found in the SmartDashboard.
+ */
+void CalibratedShooterController::UpdatePresets()
+{
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	
+	mTopSpeed = Tools::StringToFloat(s->GetString("(SHOOTER) Top Speed <<"));
+	mBottomSpeed = Tools::StringToFloat(s->GetString("(SHOOTER) Bottom Speed <<"));
+}
+
+/**
+ * @brief Runs the code to actually power the shooter.
+ * 
+ * @details Use the trigger to run the shooter.
+ */
+void CalibratedShooterController::Run()
+{
+	UpdatePresets();
+	
+	if (mJoystick->GetTrigger()) {
+		mShooter->SetSpeedManually(mTopSpeed, mBottomSpeed);
+	}
+}
+
+
+
 
 /**
  * @brief Constructor for ShooterControllerTest class.

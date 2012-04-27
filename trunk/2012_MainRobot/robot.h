@@ -36,6 +36,7 @@
 #include "target.h"
 #include "elevator.h"
 #include "timertest.h"
+#include "trackSilver.h"
 
 /**
  * @brief This class bundles together everything to ultimately
@@ -76,6 +77,8 @@ protected:
 	SpeedController *mLeftBackDrive;
 	SpeedController *mRightFrontDrive;
 	SpeedController *mRightBackDrive;	
+	
+	SpeedController *mTestMotor;
 	
 	SpeedController *mElevatorSpeedController;
 	SpeedController *mTopLeftShooter;

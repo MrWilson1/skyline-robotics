@@ -53,6 +53,14 @@ protected:
 	const char *mBezierLabelB;
 	bool mAreValuesSwapped;
 
+	/**
+	 * @brief A datastructure holding the speeds of the 
+	 * left and right wheels.
+	 * 
+	 * @details
+	 * This struct was constructed mostly for organizational
+	 * processes, to facilitate passing around code.
+	 */
 	struct DriveSpeed
 	{
 		DriveSpeed();
@@ -60,6 +68,14 @@ protected:
 		float Left;
 		float Right;
 	};
+	
+	DriveSpeed TryDirectionReverse(DriveSpeed, Joystick *);
+	DriveSpeed AddShaping(DriveSpeed, Joystick *);
+	DriveSpeed AddSpeedFactor(DriveSpeed, Joystick *);
+	DriveSpeed AddSpeedFactor(DriveSpeed, float);
+	DriveSpeed TryStraightening(DriveSpeed, Joystick *);
+	DriveSpeed AddTruncation(DriveSpeed);
+	float Truncate(float);
 public:
 	BaseJoystickController();
 	void Stop(RobotDrive *);
@@ -67,7 +83,16 @@ public:
 };
 
 
-
+/**
+ * @brief
+ * An experimental interface meant to help implement
+ * braking.
+ * 
+ * @warning
+ * Although this interface (in theory) adds braking,
+ * the code for this requires both polishing and calibration.
+ * Avoid using this without extensive real-life testing.
+ */
 class IBrake
 {
 protected:
@@ -147,9 +172,6 @@ public:
 
 /**
  * @brief Takes two joysticks and drives the robot, tank-style.
- * 
- * @details
- * Todo: document what every button on the Joystick does.
  */
 class TankJoysticks : public BaseJoystickController, public IBrake
 {
@@ -161,13 +183,6 @@ protected:
 	static const float kSpeedFactorMin = 0.3;
 	static const float kSpeedFactorMax = 1.0;
 	
-	DriveSpeed TryDirectionReverse(DriveSpeed, Joystick *);
-	DriveSpeed AddShaping(DriveSpeed, Joystick *);
-	DriveSpeed AddSpeedFactor(DriveSpeed, Joystick *);
-	DriveSpeed TryStraightening(DriveSpeed, Joystick *);
-	DriveSpeed AddTruncation(DriveSpeed);
-	float Truncate(float);
-	
 public:
 	TankJoysticks(RobotDrive *, Joystick *, Joystick *, Gyro *, Watchdog &);
 	void Run(void);
@@ -177,9 +192,9 @@ public:
  * @brief Takes a single joystick and drives the robot,
  * arcade style.
  * 
- * @details
- * Todo: document what every button on the Joystick
- * does.
+ * @warning
+ * Use TankJoysticks() -- this class is slowly starting to
+ * become depreciated.
  */
 class SingleJoystick : public BaseJoystickController
 {
@@ -193,15 +208,21 @@ public:
 	void Run(void);
 };
 
+/**
+ * @brief A mode of controlling the robot (tank drive)
+ * but specifically calibrated to be safer and for
+ * demonstration purposes.
+ */
 class SafetyMode : public BaseJoystickController
 {
 protected:
 	RobotDrive *mRobotDrive;
-	TankJoysticks *mTankJoysticks;
+	Joystick *mLeftJoystick;
+	Joystick *mRightJoystick;
 	Joystick *mSafetyJoystick;
 
 public:
-	SafetyMode(RobotDrive *, TankJoysticks *, Joystick *);
+	SafetyMode(RobotDrive *, Joystick *, Joystick *, Joystick *);
 	void Run();
 };
 
