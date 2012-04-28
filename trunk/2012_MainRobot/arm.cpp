@@ -1,7 +1,5 @@
 #include "arm.h"
 
-
-
 /**
  * @brief Creates an instance of this class.
  */
@@ -11,13 +9,16 @@ BaseArmComponent::BaseArmComponent(SpeedController *speedController) :
 	mSpeedController = speedController;
 }
 
+/*
+ * @brief Deconstructor for this class.
+ */
 BaseArmComponent::~BaseArmComponent()
 {
 	//Empty
 }
 
 /**
- * @brief Constructor for Arm class.
+ * @brief Constructor for GuardedArm (two limit switches) class.
  * 
  * @param[in] armMotor A pointer to the motor that controls the arm.
  * @param[in] topLimit A pointer to the top limit switch.
@@ -40,7 +41,7 @@ GuardedArm::GuardedArm (
 }
 
 /**
- * @brief Deconstructor for the arm class.
+ * @brief Deconstructor for this class.
  * 
  * @details
  * Used to kill the motor watchdog.
@@ -92,14 +93,19 @@ void GuardedArm::Stop() {
 	mSpeedController->Set(0);
 }
 
+/*
+ * @brief Sets the arm speed controller to a value.
+ */
 void GuardedArm::Set(float value) {
 	mSpeedController->Set(value);	// Thread should theoretically prevent arm from passing too far
 }
 
-
-
-
-
+/*
+ * @brief Constructor for SingleGuardedArm (one limit switch) class.
+ * 
+ * @param[in] speedController Pointer to arm speed controller.
+ * @param[in] limit Pointer to limit switch.
+ */
 SingleGuardedArm::SingleGuardedArm (
 		SpeedController *speedController,
 		DigitalInput *limit) :
@@ -161,42 +167,54 @@ void SingleGuardedArm::GoDown()
 void SingleGuardedArm::Stop() {
 	mSpeedController->Set(0);
 }
-//*
+
+/*
+ * @brief Sets the arm speed controller to a value.
+ */
 void SingleGuardedArm::Set(float value) {
 	mSpeedController->Set(value);
 }
-//*/
 
-
-
-
+/*
+ * @brief Constructor for SimpleArm (no limit switches) class.
+ */
 SimpleArm::SimpleArm(SpeedController *speedController) :
 		BaseArmComponent(speedController)
 {
 	//Empty
 }
 
+/*
+ * @brief Makes the arm go up.
+ */
 void SimpleArm::GoUp()
 {
 	mSpeedController->Set(kMotorSpeed * kMotorDirection);
 }
 
+/*
+ * @brief Makes the arm go down.
+ */
 void SimpleArm::GoDown()
 {
 	mSpeedController->Set(kMotorSpeed * kMotorDirection * -1);
 }
 
+/*
+ * @brief Makes the arm stop, i.e. sets arm speed controller to 0.
+ */
 void SimpleArm::Stop()
 {
 	mSpeedController->Set(0);
 }
 
+/*
+ * @brief Sets the arm speed controller to a value.
+ */
 void SimpleArm::Set(float value) 
 {
 	mSpeedController->Set(value);
 }
-
-
 
 /**
  * @brief Creates an instance of this class.

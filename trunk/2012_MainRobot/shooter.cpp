@@ -210,6 +210,10 @@ void ShooterController::Run(void)
 	}
 }
 
+/*
+ * @brief Updates preset speeds for shooter buttons 
+ * by taking user-entered input from SmartDashboard.
+ */
 void ShooterController::UpdatePresets(void) 
 {
 	SmartDashboard *s = SmartDashboard::GetInstance();
@@ -218,11 +222,18 @@ void ShooterController::UpdatePresets(void)
 	mPresetThree = Tools::StringToFloat(s->GetString("(SHOOTER) Preset 3 <<"));
 }
 
+/*
+ * @brief Finds out whether the user is pressing a preset button.
+ */
 bool ShooterController::IsPressingPreset()
 {
 	return mJoystick->GetRawButton(7) or mJoystick->GetRawButton(9) or mJoystick->GetRawButton(11);
 }
 
+/*
+ * @brief Finds out what button the user is pressing, 
+ * and hence the preset value to which to set the shooter speed.
+ */
 float ShooterController::GetPreset()
 {
 	if (mJoystick->GetRawButton(11)) {
@@ -281,9 +292,6 @@ void CalibratedShooterController::Run()
 		mShooter->SetSpeedManually(mTopSpeed, mBottomSpeed);
 	}
 }
-
-
-
 
 /**
  * @brief Constructor for ShooterControllerTest class.

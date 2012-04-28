@@ -50,7 +50,7 @@ public:
 };
 
 /**
- * @brief Provides code to control the arm.
+ * @brief Provides code to control the arm with two limit switches.
  * 
  * @details
  * The arm is used to lower the bridge.
@@ -74,9 +74,9 @@ public:
 	void Set(float);
 };
 
-
-
-
+/*
+ * @brief Provides code to control the arm with one limit switch.
+ */
 class SingleGuardedArm : public BaseArmComponent
 {
 public:
@@ -94,13 +94,6 @@ public:
 	void Stop();
 	void Set(float);
 };
-
-
-
-
-
-
-
 
 /**
  * @brief Interacts with joystick to control the arm.

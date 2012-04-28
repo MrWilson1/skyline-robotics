@@ -14,6 +14,9 @@ Elevator::Elevator(DigitalInput *bottomLimitSwitch, SpeedController *speedContro
 	mSpeedController = speedController;
 }
 
+/*
+ * @brief Deconstructor for this class.
+ */
 Elevator::~Elevator()
 {
 	// None
