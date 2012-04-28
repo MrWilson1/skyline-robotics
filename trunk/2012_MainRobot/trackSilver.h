@@ -25,6 +25,7 @@ struct Target{
 
 class ImageTarget {
 public:
+	ImageTarget();
 	virtual Target ProcessImage(HSLImage *image);
 };
 

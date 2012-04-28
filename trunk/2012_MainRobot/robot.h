@@ -35,8 +35,8 @@
 #include "shooter.h"
 #include "target.h"
 #include "elevator.h"
-#include "timertest.h"
 #include "trackSilver.h"
+#include "testing.h"
 
 /**
  * @brief This class bundles together everything to ultimately
@@ -72,6 +72,7 @@ protected:
 	AnalogChannel *mUltrasoundSensor;	// For ultrasound
 	Gyro *mYawGyro;
 	Gyro *mPitchGyro;
+	Servo *mServo;
 	
 	SpeedController *mLeftFrontDrive;
 	SpeedController *mLeftBackDrive;

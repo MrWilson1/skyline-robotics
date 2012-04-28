@@ -3,6 +3,15 @@
 
 
 
+ImageTarget::ImageTarget()
+{
+	// Empty
+}
+
+Target ImageTarget::ProcessImage(HSLImage *image) {
+	Target t = Target();
+	return t;
+}
 
 SilverImageTarget::SilverImageTarget() :
 	ImageTarget(),
