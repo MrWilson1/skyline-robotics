@@ -54,15 +54,19 @@ void MainRobot::InitializeHardware(void)
 			Ports::Module1,
 			Ports::Pwm4);
 	
-	mTestMotor = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm5);
+	//mTestMotor = new Jaguar(
+	//		Ports::Module1,
+	//		Ports::Pwm5);
 	
 	mRobotDrive = new RobotDrive(
 			mLeftFrontDrive,
 			mLeftBackDrive,
 			mRightFrontDrive,
 			mRightBackDrive);
+	mRobotDrive->SetInvertedMotor(mRobotDrive->kFrontLeftMotor, true);
+	mRobotDrive->SetInvertedMotor(mRobotDrive->kRearLeftMotor, true);
+	mRobotDrive->SetInvertedMotor(mRobotDrive->kFrontRightMotor, true);
+	mRobotDrive->SetInvertedMotor(mRobotDrive->kRearRightMotor, true);
 	
 	mTopLeftShooter = new Jaguar(
 			Ports::Module1,
@@ -97,11 +101,14 @@ void MainRobot::InitializeHardware(void)
 			Ports::DigitalIo1);
 	
 	mTopLimit = new DigitalInput(
+			Ports::Module1,
 			Ports::DigitalIo3);
 	mBottomLimit = new DigitalInput(
-			Ports::DigitalIo4);
+			Ports::Module1,
+			Ports::DigitalIo2);
 	
-	mServo = new Servo(8);
+	//mServo = new Servo(
+	//		Ports::DigitalIo10);
 	return;
 }
 
@@ -153,8 +160,8 @@ void MainRobot::InitializeComponents(void)
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
 	//mTargetFinder = new TargetFinder();*/
 	//mArm = new SimpleArm(mArmSpeedController);
-	//mArm = new SingleGuardedArm(mArmSpeedController, mBottomLimit);
-	//mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
+	//mArm = new SingleGuardedArm(mArmSpeedController, mElevatorBottomLimitSwitch);
+	mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
 	//mCameraAdjuster = new CameraAdjuster(mCameraServo);*/
 	//*/
 }
@@ -196,23 +203,23 @@ void MainRobot::InitializeControllers(void)
 			mShooter, 
 			mArm));
 	
-	//mControllerCollection.push_back(new ControllerSwitcher(controllers));
+	mControllerCollection.push_back(new ControllerSwitcher(controllers));
 
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
-	mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
+	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	
 	//mControllerCollection.push_back(new CalibratedShooterController(mShooter, mTwistJoystick));
-	//mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
-	//mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
+	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
+	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
 	
 	//mControllerCollection.push_back(new TestMotor(mTwistJoystick, mTestMotor, "Test Motor"));
-	//mControllerCollection.push_back(new ArmController(mArm, mTwistJoystick));
+	mControllerCollection.push_back(new ArmController(mArm, mLeftJoystick));
 	
 	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
 	//mControllerCollection.push_back(new GyroTest(mPitchGyro));
 	//mControllerCollection.push_back(new TargetFinder());
-	mControllerCollection.push_back(new ServoController(mServo, mTwistJoystick));
+	//mControllerCollection.push_back(new ServoController(mServo, mTwistJoystick));
 	
 	/* 
 	mControllerCollection.push_back(new TargetSnapshotController(

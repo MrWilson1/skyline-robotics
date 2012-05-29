@@ -33,11 +33,12 @@ GuardedArm::GuardedArm (
 	mTopLimit = topLimit;
 	mBottomLimit = bottomLimit;
 	
-	mMotorWatchdog = new MotorLimitWatchdog(
+	/*mMotorWatchdog = new MotorLimitWatchdog(
 			"Arm",
 			mSpeedController,
 			mTopLimit,
 			mBottomLimit);
+			*/
 }
 
 /**
@@ -48,10 +49,12 @@ GuardedArm::GuardedArm (
  */
 GuardedArm::~GuardedArm ()
 {
+	/*
 	if (mMotorWatchdog) {
 		mMotorWatchdog->Stop();
 		delete mMotorWatchdog;
 	}
+	*/
 }
 
 /**
@@ -93,11 +96,24 @@ void GuardedArm::Stop() {
 	mSpeedController->Set(0);
 }
 
-/*
+/**
  * @brief Sets the arm speed controller to a value.
  */
 void GuardedArm::Set(float value) {
 	mSpeedController->Set(value);	// Thread should theoretically prevent arm from passing too far
+}
+
+/**
+ * @brief Safely sets the arm speed controller to a value.
+ */
+void GuardedArm::SafeSet(float value) {
+	if (value < 0 && !mBottomLimit->Get()) {
+		mSpeedController->Set(value);
+	} else if (value > 0 && !mTopLimit->Get()) {
+		mSpeedController->Set(value);
+	} else {
+		mSpeedController->Set(0);
+	}
 }
 
 /*
@@ -113,10 +129,10 @@ SingleGuardedArm::SingleGuardedArm (
 {
 	mLimit = limit;
 	
-	mSingleMotorWatchdog = new SingleMotorLimitWatchdog(
+	/*mSingleMotorWatchdog = new SingleMotorLimitWatchdog(
 			"SingleGuardedArm",
 			mSpeedController,
-			mLimit);
+			mLimit);*/
 }
 
 /**
@@ -126,11 +142,11 @@ SingleGuardedArm::SingleGuardedArm (
  * Used to kill the motor watchdog.
  */
 SingleGuardedArm::~SingleGuardedArm ()
-{
+{/*
 	if (mSingleMotorWatchdog) {
 		mSingleMotorWatchdog->Stop();
 		delete mSingleMotorWatchdog;
-	}
+	}*/
 }
 
 /**
@@ -175,6 +191,18 @@ void SingleGuardedArm::Set(float value) {
 	mSpeedController->Set(value);
 }
 
+/**
+ * @brief Safely sets the arm speed controller to a value.
+ */
+void SingleGuardedArm::SafeSet(float value)
+{
+	if (mSpeedController < 0 && mLimit->Get()) {
+		mSpeedController->Set(0);
+	} else {
+		mSpeedController->Set(value);
+	}
+}
+
 /*
  * @brief Constructor for SimpleArm (no limit switches) class.
  */
@@ -217,6 +245,13 @@ void SimpleArm::Set(float value)
 }
 
 /**
+ * @brief Sets the arm speed controller to a value (identical to SimpleArm::Set)
+ */
+void SimpleArm::SafeSet(float value) {
+	Set(value);
+}
+
+/**
  * @brief Creates an instance of this class.
  * 
  * @param[in] arm Pointer to the arm.
@@ -234,17 +269,18 @@ ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick) {
  * joystick.  
  */
 void ArmController::Run() {
-	bool armUp = mJoystick->GetRawButton(3);
-	bool armDown = mJoystick->GetRawButton(4);
+	bool armUp = mJoystick->GetRawButton(7);
+	bool armDown = mJoystick->GetRawButton(6);
 	if ( armUp ) {
 		mArm->GoUp();
 	} else if ( armDown ) {
 		mArm->GoDown();
 	} else {
-		mArm->Stop();
-	}
-	mArm->Set(mJoystick->GetY());
-	if (mJoystick->GetRawButton(5) and mJoystick->GetRawButton(6)) {
-		mArm->Set(Tools::StringToFloat(SmartDashboard::GetInstance()->GetString("(ARM) Raw power <<")));
+		if (mJoystick->GetRawButton(10) and mJoystick->GetRawButton(11)) {
+			float speed = Tools::StringToFloat(SmartDashboard::GetInstance()->GetString("(ARM) Raw power <<"));
+			mArm->SafeSet(speed);
+		} else {
+			mArm->Set(0);
+		}
 	}
 }

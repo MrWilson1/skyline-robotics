@@ -29,6 +29,7 @@ public:
 	virtual void GoDown() = 0;
 	virtual void Stop() = 0;
 	virtual void Set(float) = 0;
+	virtual void SafeSet(float) = 0;
 };
 
 /**
@@ -47,6 +48,7 @@ public:
 	void GoDown();
 	void Stop();
 	void Set(float);
+	void SafeSet(float);
 };
 
 /**
@@ -72,6 +74,7 @@ public:
 	void GoDown(void);
 	void Stop(void);
 	void Set(float);
+	void SafeSet(float);
 };
 
 /*
@@ -80,11 +83,11 @@ public:
 class SingleGuardedArm : public BaseArmComponent
 {
 public:
-	static const float kUpMotorSpeed = 3.0;
-	static const float kDownMotorSpeed = -1.0;
+	static const float kUpMotorSpeed = 1;
+	static const float kDownMotorSpeed = -1;
 protected:
 	DigitalInput *mLimit;
-	SingleMotorLimitWatchdog *mSingleMotorWatchdog;
+	//SingleMotorLimitWatchdog *mSingleMotorWatchdog;
 public:
 	SingleGuardedArm (SpeedController *, DigitalInput *);
 	~SingleGuardedArm ();
@@ -93,6 +96,7 @@ public:
 	void GoDown();
 	void Stop();
 	void Set(float);
+	void SafeSet(float);
 };
 
 /**

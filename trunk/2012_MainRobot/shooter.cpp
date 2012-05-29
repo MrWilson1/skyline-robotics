@@ -189,7 +189,13 @@ void ShooterController::Run(void)
 {
 	SmartDashboard *s = SmartDashboard::GetInstance();
 	
-	float throttle = mJoystick->GetTwist();
+	float raw_throttle = -mJoystick->GetTwist();
+	float throttle = Tools::Coerce(
+			raw_throttle,
+			-1.0,
+			1.0,
+			0.0,
+			1.0);
 	s->Log(throttle, "(SHOOTER) Speed Factor ");
 	
 	UpdatePresets();
@@ -290,6 +296,8 @@ void CalibratedShooterController::Run()
 	
 	if (mJoystick->GetTrigger()) {
 		mShooter->SetSpeedManually(mTopSpeed, mBottomSpeed);
+	} else {
+		mShooter->SetSpeedManually(0);
 	}
 }
 
