@@ -36,6 +36,7 @@
 #include "target.h"
 #include "elevator.h"
 #include "trackSilver.h"
+#include "pneumatic.h"
 #include "testing.h"
 
 /**
@@ -111,6 +112,8 @@ protected:
 	KinectStick *mRightKinectStick;
 	TargetFinder *mTargetFinder;
 	BaseArmComponent *mArm;
+	
+	Pneumatic *mPneumatic;
 	
 	// Controller -- see controller.h
 	vector<BaseController*> mControllerCollection;

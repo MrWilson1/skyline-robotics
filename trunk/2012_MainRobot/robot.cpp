@@ -162,6 +162,7 @@ void MainRobot::InitializeComponents(void)
 	//mArm = new SimpleArm(mArmSpeedController);
 	//mArm = new SingleGuardedArm(mArmSpeedController, mElevatorBottomLimitSwitch);
 	mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
+	mPneumatic = new Pneumatic();
 	//mCameraAdjuster = new CameraAdjuster(mCameraServo);*/
 	//*/
 }
@@ -215,6 +216,7 @@ void MainRobot::InitializeControllers(void)
 	
 	//mControllerCollection.push_back(new TestMotor(mTwistJoystick, mTestMotor, "Test Motor"));
 	mControllerCollection.push_back(new ArmController(mArm, mLeftJoystick));
+	mControllerCollection.push_back(new PneumaticController(mPneumatic, mTwistJoystick));
 	
 	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
 	//mControllerCollection.push_back(new GyroTest(mPitchGyro));
