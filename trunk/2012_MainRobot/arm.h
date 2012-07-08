@@ -11,11 +11,20 @@
 #include "motorLimitWatchdog.h"
 #include "components.h"
 
+class BaseArmComponent : public BaseComponent
+{
+public:
+	BaseArmComponent();
+	virtual ~BaseArmComponent();
+	virtual void GoUp() = 0;
+	virtual void GoDown() = 0;
+	virtual void Stop() = 0;
+};
 
 /**
  * @brief A base class to lower the arm using limit switches.
  */
-class BaseArmComponent : public BaseComponent
+class BaseMotorArmComponent : public BaseArmComponent
 {
 protected:
 	static const float kMotorSpeed = 0.3;
@@ -23,8 +32,8 @@ protected:
 	SpeedController *mSpeedController;
 	
 public:
-	BaseArmComponent(SpeedController *);
-	virtual ~BaseArmComponent();
+	BaseMotorArmComponent(SpeedController *);
+	virtual ~BaseMotorArmComponent();
 	virtual void GoUp() = 0;
 	virtual void GoDown() = 0;
 	virtual void Stop() = 0;
@@ -40,7 +49,7 @@ public:
  * @todo Depreciate this class
  * @warning Misuse of this class could result in a damaged robot.
  */
-class SimpleArm : public BaseArmComponent
+class SimpleArm : public BaseMotorArmComponent
 {
 public:
 	SimpleArm(SpeedController *);
@@ -57,7 +66,7 @@ public:
  * @details
  * The arm is used to lower the bridge.
  */
-class GuardedArm : public BaseArmComponent
+class GuardedArm : public BaseMotorArmComponent
 {
 public:
 	static const float kMotorDirection = 1.0;
@@ -80,7 +89,7 @@ public:
 /*
  * @brief Provides code to control the arm with one limit switch.
  */
-class SingleGuardedArm : public BaseArmComponent
+class SingleGuardedArm : public BaseMotorArmComponent
 {
 public:
 	static const float kUpMotorSpeed = 1;
@@ -100,16 +109,45 @@ public:
 };
 
 /**
- * @brief Interacts with joystick to control the arm.
+ * @breif Creates a pneumatics-based arm controller.
  */
+class PneumaticArm : public BaseArmComponent
+{
+private:
+	Compressor* mCompressor;
+	Solenoid* mSolenoid;
+	
+public:
+	PneumaticArm(Compressor *, Solenoid *);
+	~PneumaticArm();
+	
+	void GoUp();
+	void GoDown();
+	void Stop();
+};
+
 class ArmController : public BaseController
 {
 protected:
 	BaseArmComponent *mArm;
 	Joystick *mJoystick;
+	
+public:
+	ArmController(BaseArmComponent *, Joystick *);
+	void Run(void);
+};
+
+/**
+ * @brief Interacts with joystick to control a motor-based arm.
+ */
+class MotorArmController : public BaseController
+{
+protected:
+	BaseMotorArmComponent *mArm;
+	Joystick *mJoystick;
 	float mRawPower;
 public:
-	ArmController (BaseArmComponent *, Joystick *);
+	MotorArmController(BaseMotorArmComponent *, Joystick *);
 	void Run(void);
 };
 

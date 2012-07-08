@@ -82,6 +82,20 @@ public:
 	void Run() = 0;
 };
 
+class ArcadeJoystick : public BaseJoystickController
+{
+protected:
+	RobotDrive *mRobotDrive;
+	Joystick *mJoystick;
+
+	DriveSpeed GetLeftAndRight(float, float);
+	
+public:
+	ArcadeJoystick(RobotDrive*, Joystick*);
+	void Run();
+	
+};
+
 
 /**
  * @brief
@@ -173,7 +187,7 @@ public:
 /**
  * @brief Takes two joysticks and drives the robot, tank-style.
  */
-class TankJoysticks : public BaseJoystickController, public IBrake
+class TankJoysticks : public BaseJoystickController
 {
 protected:
 	Joystick *mLeftJoystick;
@@ -184,7 +198,7 @@ protected:
 	static const float kSpeedFactorMax = 1.0;
 	
 public:
-	TankJoysticks(RobotDrive *, Joystick *, Joystick *, Gyro *, Watchdog &);
+	TankJoysticks(RobotDrive *, Joystick *, Joystick *);
 	void Run(void);
 };
 

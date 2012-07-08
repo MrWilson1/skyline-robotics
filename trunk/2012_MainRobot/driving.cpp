@@ -449,11 +449,8 @@ void MinimalistDrive::Run()
 TankJoysticks::TankJoysticks(
 			RobotDrive *robotDrive,
 			Joystick *leftJoystick, 
-			Joystick *rightJoystick,
-			Gyro *gyro,
-			Watchdog &watchdog):
-		BaseJoystickController(),
-		IBrake(gyro, watchdog)
+			Joystick *rightJoystick):
+		BaseJoystickController()
 {
 	mRobotDrive = robotDrive;
 	mLeftJoystick = leftJoystick;
@@ -472,6 +469,7 @@ TankJoysticks::TankJoysticks(
 void TankJoysticks::Run(void)
 {
 	DriveSpeed driveSpeed(mLeftJoystick->GetY(), mRightJoystick->GetY());
+	
 	driveSpeed = TryDirectionReverse(driveSpeed, mRightJoystick);
 	driveSpeed = AddShaping(driveSpeed, mLeftJoystick);
 	driveSpeed = AddSpeedFactor(driveSpeed, mLeftJoystick);
@@ -483,53 +481,72 @@ void TankJoysticks::Run(void)
 	SmartDashboard::GetInstance()->Log(driveSpeed.Right, "(TANK DRIVE) Right speed ");
 	
 	mRobotDrive->TankDrive(driveSpeed.Left, driveSpeed.Right);
+}
+
+ArcadeJoystick::ArcadeJoystick(RobotDrive *robotDrive, Joystick *joystick) :
+		BaseJoystickController()
+{
+	mRobotDrive = robotDrive;
+	mJoystick = joystick;
+}
+
+/**
+ * Deliberately not using 'RobotDrive::ArcadeDrive' so we can get the ultimate left and right values.
+ */
+void ArcadeJoystick::Run()
+{
+	float magnitude = mJoystick->GetY();
+	float rotation = mJoystick->GetX();
 	
-	/*
-	if (mLeftJoystick->GetRawButton(9) or mRightJoystick->GetRawButton(9)) {
-		mGyro->Reset();
-	}
-	//*/
-	// Balancing
-	/*
-	if (mLeftJoystick->GetRawButton(10) or mRightJoystick->GetRawButton(10)) {
-		shapedLeft = Balance();
-		shapedRight = Balance();
-		SmartDashboard::GetInstance()->Log("yes", "(TANK DRIVE) Balancing?");
-	} else {
-		SmartDashboard::GetInstance()->Log("no", "(TANK DRIVE) Balancing?");
-	}
-	//*/
-	/*
-	if (mLeftJoystick->GetRawButton(11) or mRightJoystick->GetRawButton(11)) {
-		mGyro->Reset();
-		for (int i=0; i < 50; i++) {
-			mRobotDrive->TankDrive(-0.8, -0.8);
-			mWatchdog.Feed();
-			if (!mLeftJoystick->GetRawButton(11) or !mRightJoystick->GetRawButton(11)) {
-				break;
-			}
-		}
-		while (mGyro->GetAngle() >= 15.0) {
-			mRobotDrive->TankDrive(kBalanceMaxPower, kBalanceMaxPower);
-			mWatchdog.Feed();
-			if (!mLeftJoystick->GetRawButton(11) or !mRightJoystick->GetRawButton(11)) {
-				break;
-			}
-		}
-		mRobotDrive->TankDrive(0.0, 0.0);
-	}
-	//*/
-	// Braking
-	/*
+	DriveSpeed driveSpeed = GetLeftAndRight(magnitude, rotation);
+		
+	driveSpeed = TryDirectionReverse(driveSpeed, mJoystick);
+	driveSpeed = AddShaping(driveSpeed, mJoystick);
+	driveSpeed = AddSpeedFactor(driveSpeed, mJoystick);
+	driveSpeed = TryStraightening(driveSpeed, mJoystick);
+	driveSpeed = AddTruncation(driveSpeed);
 	
-	if (mLeftJoystick->GetTrigger() or mRightJoystick->GetTrigger()) {
-		shapedLeft = Freeze();
-		shapedRight = Freeze();
-		SmartDashboard::GetInstance()->Log("yes", "(TANK DRIVE) Braking?");
-	} else {
-		SmartDashboard::GetInstance()->Log("no", "(TANK DRIVE) Braking?");
+	SmartDashboard::GetInstance()->Log(driveSpeed.Left, "(ARCADE DRIVE) Left speed ");
+	SmartDashboard::GetInstance()->Log(driveSpeed.Right, "(ARCADE DRIVE) Right speed ");
+	
+	mRobotDrive->TankDrive(driveSpeed.Left, driveSpeed.Right);
+}
+
+/**
+ * This is copied directly from FIRST's source code for ArcadeDrive.
+ */
+BaseJoystickController::DriveSpeed ArcadeJoystick::GetLeftAndRight(float moveValue, float rotateValue)
+{
+	float leftMotorOutput;
+	float rightMotorOutput;
+	
+	if (moveValue > 0.0)
+	{
+		if (rotateValue > 0.0)
+		{
+			leftMotorOutput = moveValue - rotateValue;
+			rightMotorOutput = max(moveValue, rotateValue);
+		}
+		else
+		{
+			leftMotorOutput = max(moveValue, -rotateValue);
+			rightMotorOutput = moveValue + rotateValue;
+		}
 	}
-	//*/
+	else
+	{
+		if (rotateValue > 0.0)
+		{
+			leftMotorOutput = - max(-moveValue, rotateValue);
+			rightMotorOutput = moveValue + rotateValue;
+		}
+		else
+		{
+			leftMotorOutput = moveValue - rotateValue;
+			rightMotorOutput = - max(-moveValue, -rotateValue);
+		}
+	}
+	return DriveSpeed(leftMotorOutput, rightMotorOutput);
 }
 	
 

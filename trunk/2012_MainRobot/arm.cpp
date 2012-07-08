@@ -3,8 +3,8 @@
 /**
  * @brief Creates an instance of this class.
  */
-BaseArmComponent::BaseArmComponent(SpeedController *speedController) :
-		BaseComponent()
+BaseMotorArmComponent::BaseMotorArmComponent(SpeedController *speedController) :
+		BaseArmComponent()
 {
 	mSpeedController = speedController;
 }
@@ -12,7 +12,7 @@ BaseArmComponent::BaseArmComponent(SpeedController *speedController) :
 /*
  * @brief Deconstructor for this class.
  */
-BaseArmComponent::~BaseArmComponent()
+BaseMotorArmComponent::~BaseMotorArmComponent()
 {
 	//Empty
 }
@@ -28,7 +28,7 @@ GuardedArm::GuardedArm (
 		SpeedController *speedController,
 		DigitalInput *topLimit,
 		DigitalInput *bottomLimit) :
-		BaseArmComponent(speedController)
+		BaseMotorArmComponent(speedController)
 {
 	mTopLimit = topLimit;
 	mBottomLimit = bottomLimit;
@@ -125,7 +125,7 @@ void GuardedArm::SafeSet(float value) {
 SingleGuardedArm::SingleGuardedArm (
 		SpeedController *speedController,
 		DigitalInput *limit) :
-		BaseArmComponent(speedController)
+		BaseMotorArmComponent(speedController)
 {
 	mLimit = limit;
 	
@@ -207,7 +207,7 @@ void SingleGuardedArm::SafeSet(float value)
  * @brief Constructor for SimpleArm (no limit switches) class.
  */
 SimpleArm::SimpleArm(SpeedController *speedController) :
-		BaseArmComponent(speedController)
+		BaseMotorArmComponent(speedController)
 {
 	//Empty
 }
@@ -252,12 +252,87 @@ void SimpleArm::SafeSet(float value) {
 }
 
 /**
+ * @brief Creates an instance of the PneumaticArm and starts the compressor.
+ */
+PneumaticArm::PneumaticArm(Compressor *compressor, Solenoid *solenoid) :
+		BaseArmComponent()
+{
+	mCompressor = compressor;
+	mSolenoid = solenoid;
+	
+	// Upon starting, the compressor will automatically start and stop itself
+	// based on the pressure of the tank.
+	mCompressor->Start();
+	mSolenoid->Set(false);
+}
+
+/**
+ * @brief Destructor.
+ */
+PneumaticArm::~PneumaticArm()
+{
+	// Nothing
+}
+
+/**
+ * @brief Moves the arm upwards.
+ */
+void PneumaticArm::GoUp()
+{
+	mSolenoid->Set(false);
+}
+
+/**
+ * @brief Moves the arm downwards.
+ */
+void PneumaticArm::GoDown()
+{
+	mSolenoid->Set(true);
+}
+
+/**
+ * @brief Does nothing; not implemented.
+ */
+void PneumaticArm::Stop()
+{
+	// Nothing
+}
+
+
+/**
  * @brief Creates an instance of this class.
  * 
  * @param[in] arm Pointer to the arm.
  * @param[in] joystick Pointer to the joystick.
  */
-ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick) {
+ArmController::ArmController(BaseArmComponent *arm, Joystick *joystick)
+{
+	mArm = arm;
+	mJoystick = joystick;
+}
+
+/**
+ * @brief Provides a thin layer to control the arm using a 
+ * joystick.  
+ */
+void ArmController::Run() {
+	bool armUp = mJoystick->GetRawButton(7);
+	bool armDown = mJoystick->GetRawButton(6);
+	if ( armUp ) {
+		mArm->GoUp();
+	} else if ( armDown ) {
+		mArm->GoDown();
+	}
+}
+
+
+/**
+ * @brief Creates an instance of this class.
+ * 
+ * @param[in] arm Pointer to the arm.
+ * @param[in] joystick Pointer to the joystick.
+ */
+MotorArmController::MotorArmController (BaseMotorArmComponent *arm, Joystick *joystick) {
 	mArm = arm;
 	mJoystick = joystick;
 	mRawPower = 0.0;
@@ -268,7 +343,7 @@ ArmController::ArmController (BaseArmComponent *arm, Joystick *joystick) {
  * @brief Provides a thin layer to control the arm using a 
  * joystick.  
  */
-void ArmController::Run() {
+void MotorArmController::Run() {
 	bool armUp = mJoystick->GetRawButton(7);
 	bool armDown = mJoystick->GetRawButton(6);
 	if ( armUp ) {

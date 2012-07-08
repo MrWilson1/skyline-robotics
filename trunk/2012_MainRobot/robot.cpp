@@ -42,17 +42,17 @@ void MainRobot::RobotInit(void)
 void MainRobot::InitializeHardware(void)
 {
 	mLeftFrontDrive = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm1);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm1);
 	mLeftBackDrive = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm2);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm2);
 	mRightFrontDrive = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm3);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm3);
 	mRightBackDrive = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm4);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm4);
 	
 	//mTestMotor = new Jaguar(
 	//		Ports::Module1,
@@ -69,46 +69,52 @@ void MainRobot::InitializeHardware(void)
 	mRobotDrive->SetInvertedMotor(mRobotDrive->kRearRightMotor, true);
 	
 	mTopLeftShooter = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm5);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm5);
 	mTopRightShooter = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm6);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm6);
 	mBottomLeftShooter = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm7);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm7);
 	mBottomRightShooter = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm8);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm8);
 	mElevatorSpeedController = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm9);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm9);
 	mArmSpeedController = new Jaguar(
-			Ports::Module1,
-			Ports::Pwm10);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm10);
 	mUltrasoundSensor = new AnalogChannel(
-			Ports::Module1,
-			Ports::AnalogChannel1);
+			Ports::Crio::Module1,
+			Ports::Crio::AnalogChannel1);
 	
-	mPitchGyro = new Gyro(1,2);
+	mPitchGyro = new Gyro(
+			Ports::Crio::Module1,
+			Ports::Crio::AnalogChannel2);
 	
 	// The camera is technically a hardware component, but WPILib's
 	// AxisCamera class has a built-in static method for returning
 	// instances of a camera
 	
 	mElevatorBottomLimitSwitch = new DigitalInput(
-			Ports::Module1,
-			Ports::DigitalIo1);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio1);
 	
 	mTopLimit = new DigitalInput(
-			Ports::Module1,
-			Ports::DigitalIo3);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio3);
 	mBottomLimit = new DigitalInput(
-			Ports::Module1,
-			Ports::DigitalIo2);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio2);
 	
-	//mServo = new Servo(
-	//		Ports::DigitalIo10);
+	mCompressor = new Compressor(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio4,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Relay1);
+	
 	return;
 }
 
@@ -162,7 +168,7 @@ void MainRobot::InitializeComponents(void)
 	//mArm = new SimpleArm(mArmSpeedController);
 	//mArm = new SingleGuardedArm(mArmSpeedController, mElevatorBottomLimitSwitch);
 	mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
-	mPneumatic = new Pneumatic();
+	mPneumaticArm = new PneumaticArm(mCompressor, mSolenoid);
 	//mCameraAdjuster = new CameraAdjuster(mCameraServo);*/
 	//*/
 }
@@ -183,9 +189,7 @@ void MainRobot::InitializeControllers(void)
 	controllers.push_back(new TankJoysticks(
 			mRobotDrive, 
 			mLeftJoystick, 
-			mRightJoystick, 
-			mPitchGyro, 
-			GetWatchdog()));
+			mRightJoystick));
 	controllers.push_back(new SafetyMode(
 			mRobotDrive,
 			mLeftJoystick,
@@ -204,19 +208,20 @@ void MainRobot::InitializeControllers(void)
 			mShooter, 
 			mArm));
 	
-	mControllerCollection.push_back(new ControllerSwitcher(controllers));
+	//mControllerCollection.push_back(new ControllerSwitcher(controllers));
 
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
+	mControllerCollection.push_back(new ArcadeJoystick(mRobotDrive, mLeftJoystick));
 	
 	//mControllerCollection.push_back(new CalibratedShooterController(mShooter, mTwistJoystick));
-	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
-	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
+	//mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
+	//mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
 	
 	//mControllerCollection.push_back(new TestMotor(mTwistJoystick, mTestMotor, "Test Motor"));
-	mControllerCollection.push_back(new ArmController(mArm, mLeftJoystick));
-	mControllerCollection.push_back(new PneumaticController(mPneumatic, mTwistJoystick));
+	//mControllerCollection.push_back(new MotorArmController(mArm, mLeftJoystick));
+	mControllerCollection.push_back(new ArmController(mPneumaticArm, mLeftJoystick));
 	
 	//mControllerCollection.push_back(new RangeFinderTest(mRangeFinder));
 	//mControllerCollection.push_back(new GyroTest(mPitchGyro));

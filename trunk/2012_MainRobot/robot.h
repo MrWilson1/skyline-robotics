@@ -36,7 +36,6 @@
 #include "target.h"
 #include "elevator.h"
 #include "trackSilver.h"
-#include "pneumatic.h"
 #include "testing.h"
 
 /**
@@ -97,6 +96,8 @@ protected:
 	DigitalInput *mTopLimit;
 	DigitalInput *mBottomLimit;
 	
+	Compressor *mCompressor;
+	Solenoid *mSolenoid;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
@@ -113,7 +114,7 @@ protected:
 	TargetFinder *mTargetFinder;
 	BaseArmComponent *mArm;
 	
-	Pneumatic *mPneumatic;
+	PneumaticArm *mPneumaticArm;
 	
 	// Controller -- see controller.h
 	vector<BaseController*> mControllerCollection;
