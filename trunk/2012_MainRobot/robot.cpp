@@ -19,11 +19,6 @@ void MainRobot::RobotInit(void)
 	InitializeComponents();
 	InitializeControllers();
 	
-	//mTargetTask = Task(
-	//		"TargetFinder",
-	//		mTargetFinder->Run,
-	//		Task::kDefaultPriority);
-	
 	GetWatchdog().SetExpiration(kWatchdogExpiration);
 	SmartDashboard::GetInstance()->PutString("Autonomous? <<", "0.0");
 	return;
@@ -53,10 +48,6 @@ void MainRobot::InitializeHardware(void)
 	mRightBackDrive = new Jaguar(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm4);
-	
-	//mTestMotor = new Jaguar(
-	//		Ports::Module1,
-	//		Ports::Pwm5);
 	
 	mRobotDrive = new RobotDrive(
 			mLeftFrontDrive,
@@ -110,11 +101,16 @@ void MainRobot::InitializeHardware(void)
 			Ports::DigitalSidecar::Gpio2);
 	
 	mCompressor = new Compressor(
+			Ports::Crio::Module2,
+			Ports::DigitalSidecar::Gpio1,
+			Ports::Crio::Module2,
+			Ports::DigitalSidecar::Relay8);
+	mSolenoid1 = new Solenoid(
 			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio4,
+			Ports::Crio::SolenoidBreakout1);
+	mSolenoid2 = new Solenoid(
 			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Relay1);
-	
+			Ports::Crio::SolenoidBreakout2);
 	return;
 }
 
@@ -164,11 +160,10 @@ void MainRobot::InitializeComponents(void)
 			mRangeFinder);
 	
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
-	//mTargetFinder = new TargetFinder();*/
 	//mArm = new SimpleArm(mArmSpeedController);
 	//mArm = new SingleGuardedArm(mArmSpeedController, mElevatorBottomLimitSwitch);
 	mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
-	mPneumaticArm = new PneumaticArm(mCompressor, mSolenoid);
+	mPneumaticArm = new PneumaticArm(mCompressor, mSolenoid1, mSolenoid2);
 	//mCameraAdjuster = new CameraAdjuster(mCameraServo);*/
 	//*/
 }

@@ -97,7 +97,8 @@ protected:
 	DigitalInput *mBottomLimit;
 	
 	Compressor *mCompressor;
-	Solenoid *mSolenoid;
+	Solenoid *mSolenoid1;
+	Solenoid *mSolenoid2;
 	
 	// Input devices
 	Joystick *mLeftJoystick;

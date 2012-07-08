@@ -254,16 +254,18 @@ void SimpleArm::SafeSet(float value) {
 /**
  * @brief Creates an instance of the PneumaticArm and starts the compressor.
  */
-PneumaticArm::PneumaticArm(Compressor *compressor, Solenoid *solenoid) :
+PneumaticArm::PneumaticArm(Compressor *compressor, Solenoid *solenoid1, Solenoid *solenoid2) :
 		BaseArmComponent()
 {
 	mCompressor = compressor;
-	mSolenoid = solenoid;
+	mSolenoid1 = solenoid1;
+	mSolenoid2 = solenoid2;
 	
 	// Upon starting, the compressor will automatically start and stop itself
 	// based on the pressure of the tank.
 	mCompressor->Start();
-	mSolenoid->Set(false);
+	mSolenoid1->Set(false);
+	mSolenoid2->Set(true);
 }
 
 /**
@@ -279,7 +281,8 @@ PneumaticArm::~PneumaticArm()
  */
 void PneumaticArm::GoUp()
 {
-	mSolenoid->Set(false);
+	mSolenoid1->Set(false);
+	mSolenoid2->Set(true);
 }
 
 /**
@@ -287,7 +290,8 @@ void PneumaticArm::GoUp()
  */
 void PneumaticArm::GoDown()
 {
-	mSolenoid->Set(true);
+	mSolenoid1->Set(true);
+	mSolenoid2->Set(false);
 }
 
 /**

@@ -115,10 +115,11 @@ class PneumaticArm : public BaseArmComponent
 {
 private:
 	Compressor* mCompressor;
-	Solenoid* mSolenoid;
+	Solenoid* mSolenoid1;
+	Solenoid* mSolenoid2;
 	
 public:
-	PneumaticArm(Compressor *, Solenoid *);
+	PneumaticArm(Compressor *, Solenoid *, Solenoid *);
 	~PneumaticArm();
 	
 	void GoUp();
