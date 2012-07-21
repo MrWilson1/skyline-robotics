@@ -1,10 +1,11 @@
 /**
- * @file MainRobot.h
+ * @file robot.h
  * 
- * @brief The definitions for the main (competition) robot
+ * @brief The main entry point of the robot.
  * 
- * @details To simplify deployment, each robot should be 
- * encapsulated in a single class.
+ * @details FIRST has provided a macro that takes the name of 
+ * this class and runs it once deployed on the cRIO (see
+ * the bottom of this file).
  * 
  * This class is obliged to provide two public methods --
  * MainRobot::Autonomous() and MainRobot::OperatorControl.
@@ -32,7 +33,6 @@
 #include "driving.h"
 #include "components.h"
 #include "shooter.h"
-#include "target.h"
 #include "elevator.h"
 
 /**
@@ -66,19 +66,20 @@ private:
 protected:
 	// Hardware
 	RobotDrive *mRobotDrive;
+	AnalogChannel *mUltrasoundSensor;	// For ultrasound
 	
 	SpeedController *mLeftFrontDrive;
 	SpeedController *mLeftBackDrive;
 	SpeedController *mRightFrontDrive;
 	SpeedController *mRightBackDrive;	
 	
-	SpeedController *mElevatorSpeedController;
 	SpeedController *mTopLeftShooter;
 	SpeedController *mTopRightShooter;
 	SpeedController *mBottomLeftShooter;
 	SpeedController *mBottomRightShooter;
 	SpeedController *mArmSpeedController;
 	
+	SpeedController *mElevatorSpeedController;
 	DigitalInput *mElevatorBottomLimitSwitch;
 	DigitalInput *mElevatorTopLimitSwitch;
 	DigitalInput *mTopLimit;
@@ -91,16 +92,17 @@ protected:
 	Kinect *mKinect;
 	
 	// Components
+	RangeFinder *mRangeFinder;
 	Shooter *mShooter;
 	Elevator *mElevator;
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
 	TargetFinder *mTargetFinder;
-	BaseArmComponent *mArm;
-	
+	BaseMotorArmComponent *mArm;
 	
 	// Controller -- see controller.h
 	vector<BaseController*> mControllerCollection;
+
 public:
 	MainRobot();
 	~MainRobot();

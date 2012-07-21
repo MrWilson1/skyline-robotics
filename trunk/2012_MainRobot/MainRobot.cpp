@@ -1,6 +1,5 @@
 #include "MainRobot.h"
 
-
 MainRobot::MainRobot(void)
 {
 	// Empty
@@ -77,7 +76,11 @@ void MainRobot::InitializeHardware(void)
 	mArmSpeedController = new Jaguar(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm10);
-			
+	mUltrasoundSensor = new AnalogChannel(
+			Ports::Crio::Module1,
+			Ports::Crio::AnalogChannel1);
+	
+	
 	// The camera is technically a hardware component, but WPILib's
 	// AxisCamera class has a built-in static method for returning
 	// instances of a camera
@@ -132,6 +135,7 @@ void MainRobot::InitializeInputDevices(void)
  */
 void MainRobot::InitializeComponents(void)
 {
+	mRangeFinder = new RangeFinder(mUltrasoundSensor);
 	mShooter = new Shooter(
 			mTopLeftShooter,
 			mTopRightShooter,
@@ -156,7 +160,6 @@ void MainRobot::InitializeComponents(void)
  */
 void MainRobot::InitializeControllers(void)
 {
-	
 	vector<BaseController *> controllers;
 	controllers.push_back(new TankJoysticks(
 			mRobotDrive, 
@@ -179,32 +182,29 @@ void MainRobot::InitializeControllers(void)
 			mKinect, 
 			mShooter, 
 			mArm));
-	
 	mControllerCollection.push_back(new ControllerSwitcher(controllers));
-
+	
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
-	//mControllerCollection.push_back(new ArcadeJoystick(mRobotDrive, mLeftJoystick));
 	
 	//mControllerCollection.push_back(new CalibratedShooterController(mShooter, mTwistJoystick));
 	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
 	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
-	
-	//mControllerCollection.push_back(new TestMotor(mTwistJoystick, mTestMotor, "Test Motor"));
 	mControllerCollection.push_back(new MotorArmController(mArm, mLeftJoystick));
-	//mControllerCollection.push_back(new ArmController(mPneumaticArm, mLeftJoystick));
 	
 	return;
 }
 
 /**
- * @brief Empty -- all resources should be persistent throughout the program,
- * and should be deleted once the robot is turned off.
+ * @brief Destroys all hardware, input devices, and software
+ * created for the entire robot.
+ * 
+ * @warning This is frequently out-of-date.  
  */
 MainRobot::~MainRobot(void)
 {
-    // Empty
+	
 }
 
 
@@ -267,4 +267,5 @@ void MainRobot::OperatorControl(void)
 	}
 	return;
 }
+
 
