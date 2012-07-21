@@ -34,9 +34,6 @@ protected:
 public:
 	BaseMotorArmComponent(SpeedController *);
 	virtual ~BaseMotorArmComponent();
-	virtual void GoUp() = 0;
-	virtual void GoDown() = 0;
-	virtual void Stop() = 0;
 	virtual void Set(float) = 0;
 	virtual void SafeSet(float) = 0;
 };

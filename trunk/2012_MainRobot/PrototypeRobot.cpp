@@ -27,6 +27,12 @@ void PrototypeRobot::RobotInit(void)
 /**
  * @brief Initializes any code provided by WPILib meant to
  * interface directly with specific hardware components.
+ * 
+ * @details Currently initializes the 
+ *   - Robot drive
+ *   - Jaguars for the shooter
+ *   - Ultrasound sensor
+ *   - Gyro 
  */
 void PrototypeRobot::InitializeHardware(void)
 {
@@ -48,10 +54,6 @@ void PrototypeRobot::InitializeHardware(void)
 			mLeftBackDrive,
 			mRightFrontDrive,
 			mRightBackDrive);
-	
-	mArmSpeedController = new Jaguar(
-			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Pwm10);
 	
 	mCompressor = new Compressor(
 			Ports::Crio::Module2,
@@ -103,10 +105,7 @@ void PrototypeRobot::InitializeInputDevices(void)
  * as a parent class.
  */
 void PrototypeRobot::InitializeComponents(void)
-{	
-	//mArm = new SimpleArm(mArmSpeedController);
-	//mArm = new SingleGuardedArm(mArmSpeedController, mElevatorBottomLimitSwitch);
-	mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);
+{
 	mPneumaticArm = new PneumaticArm(mCompressor, mSolenoid1, mSolenoid2);
 }
 
@@ -144,28 +143,30 @@ void PrototypeRobot::InitializeControllers(void)
 			mKinect, 
 			mShooter, 
 			mArm));
+	mControllerCollection.push_back(new ControllerSwitcher(controllers));
+	*/
+	 
+	mControllerCollection.push_back(new ArcadeJoystick(mRobotDrive, mLeftJoystick));
 	
-	//mControllerCollection.push_back(new ControllerSwitcher(controllers));
-    */
-    
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
-	mControllerCollection.push_back(new ArcadeJoystick(mRobotDrive, mLeftJoystick));
 	
-	//mControllerCollection.push_back(new MotorArmController(mArm, mLeftJoystick));
 	mControllerCollection.push_back(new ArmController(mPneumaticArm, mLeftJoystick));
+	
 	
 	return;
 }
 
 /**
- * @brief Empty (all resources should be retained while the robot is active,
- * and will automatically be deleted when the robot is turned off).
+ * @brief Destroys all hardware, input devices, and software
+ * created for the entire robot.
+ * 
+ * @warning This is frequently out-of-date.  
  */
 PrototypeRobot::~PrototypeRobot(void)
 {
-
+	// Empty
 }
 
 
@@ -186,7 +187,6 @@ PrototypeRobot::~PrototypeRobot(void)
 void PrototypeRobot::Autonomous(void)
 {
 	GetWatchdog().SetEnabled(true);
-
 	while (IsAutonomous()) {
 		GetWatchdog().Feed();
 		Wait(kMotorWait);
@@ -221,5 +221,6 @@ void PrototypeRobot::OperatorControl(void)
 	}
 	return;
 }
+
 
 

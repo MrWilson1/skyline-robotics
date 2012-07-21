@@ -1,22 +1,25 @@
 /**
- * @file PrototypeRobot.h
+ * @file robot.h
  * 
- * @brief Definitions for the prototype robot.
+ * @brief The main entry point of the robot.
  * 
- * @details To simplify deployment, each robot should be 
- * encapsulated in a single class.
+ * @details FIRST has provided a macro that takes the name of 
+ * this class and runs it once deployed on the cRIO (see
+ * the bottom of this file).
  * 
  * This class is obliged to provide two public methods --
- * PrototypeRobot::Autonomous() and PrototypeRobot::OperatorControl.
+ * MainRobot::Autonomous() and MainRobot::OperatorControl.
  * 
  * This class is also responsible for instantiating 
  * every possible class that will be used in this program.
  * The instantiated objects are then passed as pointers to
  * any classes that need them.
+ * 
+ * @author Michael Lee
  */
 
 #ifndef PROTOTYPEROBOT_H_
-#define PROROTYPEROBOT_H_
+#define PROTOTYPEROBOT_H_
 
 // System libraries
 #include <vector>
@@ -26,7 +29,6 @@
 
 // Program modules
 #include "arm.h"
-#include "sensors.h"
 #include "driving.h"
 #include "components.h"
 
@@ -65,8 +67,8 @@ protected:
 	SpeedController *mLeftFrontDrive;
 	SpeedController *mLeftBackDrive;
 	SpeedController *mRightFrontDrive;
-	SpeedController *mRightBackDrive;
-	
+	SpeedController *mRightBackDrive;	
+
 	Compressor *mCompressor;
 	Solenoid *mSolenoid1;
 	Solenoid *mSolenoid2;
@@ -80,8 +82,7 @@ protected:
 	// Components
 	KinectStick *mLeftKinectStick;
 	KinectStick *mRightKinectStick;
-	TargetFinder *mTargetFinder;
-	BaseArmComponent *mArm;
+	BaseMotorArmComponent *mArm;
 	
 	PneumaticArm *mPneumaticArm;
 	

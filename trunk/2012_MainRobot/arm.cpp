@@ -3,6 +3,19 @@
 /**
  * @brief Creates an instance of this class.
  */
+BaseArmComponent::BaseArmComponent()
+{
+	// Empty
+}
+
+BaseArmComponent::~BaseArmComponent()
+{
+	// Empty
+}
+
+/**
+ * @brief Creates an instance of this class.
+ */
 BaseMotorArmComponent::BaseMotorArmComponent(SpeedController *speedController) :
 		BaseArmComponent()
 {
