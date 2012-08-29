@@ -27,6 +27,7 @@
 #include "components.h"
 #include "shooter.h"
 #include "arm.h"
+#include "xbox.h"
 
 
 /**
@@ -312,6 +313,16 @@ protected:
 	bool IsRaisingArm();
 	bool IsLoweringArm();
 	
+};
+
+class XboxTankDrive : public BaseController
+{
+protected:
+	RobotDrive *mRobotDrive;
+	XboxController *mXboxController;
+public:
+	XboxTankDrive(RobotDrive *, XboxController *);
+	void Run();	
 };
 
 #endif
