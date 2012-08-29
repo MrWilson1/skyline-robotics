@@ -105,8 +105,25 @@ public:
 	void SafeSet(float);
 };
 
+class PneumaticTestArm: public BaseArmComponent
+{
+private:
+	Compressor* mCompressor;
+	Relay* mSpike;
+	Solenoid* mSolenoid1;
+	Solenoid* mSolenoid2;
+	
+public:
+	PneumaticTestArm(Compressor *, Relay *, Solenoid *, Solenoid*);
+	~PneumaticTestArm();
+	
+	void GoUp();
+	void GoDown();
+	void Stop();
+};
+
 /**
- * @breif Creates a pneumatics-based arm controller.
+ * @brief Creates a pneumatics-based arm controller.
  */
 class PneumaticArm : public BaseArmComponent
 {

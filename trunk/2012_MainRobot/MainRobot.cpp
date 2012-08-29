@@ -115,6 +115,8 @@ void MainRobot::InitializeInputDevices(void)
 	
 	mTwistJoystick = new Joystick(
 			Ports::Usb3);
+	mXboxController = new XboxController(
+			Ports::Usb4);
 	
 	mKinect = Kinect::GetInstance();
 	mLeftKinectStick = new KinectStick::KinectStick(1);
@@ -193,6 +195,7 @@ void MainRobot::InitializeControllers(void)
 	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
 	mControllerCollection.push_back(new MotorArmController(mArm, mLeftJoystick));
 	
+	mControllerCollection.push_back(new XboxTest(mXboxController));
 	return;
 }
 

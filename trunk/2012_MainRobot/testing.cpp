@@ -1,23 +1,31 @@
 #include "testing.h"
 
-ServoController::ServoController(Servo *servo, Joystick *joystick) :
+/**
+ * @brief Initializes the class, and prepares the 
+ * SmartDashboard.
+ */
+ServoController::ServoController(Servo *servo) :
 	BaseController()
 {
 	mServo = servo;
-	mJoystick = joystick;
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	s->PutString("(SERVO) Value <<", "0.0");
 }
 
+/**
+ * @brief Runs the core code.  Grabs values from the 
+ * SmartDashboard to change the servo values.  
+ */
 void ServoController::Run()
 {
-	if (mJoystick->GetTrigger()) {
-		float amount = Tools::Coerce(
-				mJoystick->GetY(),
-				-1.0,
-				1.0,
-				0.0,
-				1.0);
-		SmartDashboard::GetInstance()->Log(amount, "(SERVO) amount:");
-		mServo->Set(amount);
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	float value = Tools::StringToFloat(s->GetString("(SERVO) Value <<"));
+	if (value > 1.0) {
+		value = 1.0;
+	} else if (value < -1.0) {
+		value = -1.0;
 	}
-	SmartDashboard::GetInstance()->Log(mServo->Get(), "(SERVO) get:");
+	SmartDashboard::GetInstance()->Log(value, "(SERVO) amount fed:");
+	mServo->Set(value);
+	SmartDashboard::GetInstance()->Log(mServo->Get(), "(SERVO) amount reported:");
 }

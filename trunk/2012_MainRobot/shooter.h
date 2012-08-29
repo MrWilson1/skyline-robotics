@@ -1,7 +1,14 @@
 /**
  * @file shooter.h
  * 
- * Operates device that shoots basketballs by spinning wheels.
+ * @brief Operates device that shoots basketballs
+ * 
+ * @warning The structure of this class is somewhat 
+ * convoluted and intertwined.  The way the code is 
+ * arranged here is not optimal, and should not be
+ * emulated.  However, we're not fixing or restructuring
+ * it because it works, and it would require too much 
+ * testing to fix it.
  */
 
 #ifndef SHOOTER_H_
@@ -18,11 +25,13 @@
 #include "components.h"
 #include "target.h"
 
+
 /**
  * @brief Controls the shooter.
  * 
- * @todo Investigate if the functionality of this
- * class needs to be split up.
+ * @warning This class, structurally speaking, is too complex.
+ * In addition, anything related to automatically shooting is 
+ * either untested or buggy.
  */
 class Shooter : public BaseComponent
 {
@@ -52,6 +61,29 @@ public:
 };
 
 /**
+ * @brief Allows you to adjust and test the precise speeds of the
+ * shooter via SmartDashboard.
+ * 
+ * @details
+ * This lets you precisely calibrate the speed of the motors via the 
+ * SmartDashboard, then shoot it by using a joystick.
+ */
+class CalibratedShooterController : public BaseController
+{
+protected:
+	Shooter *mShooter;
+	Joystick *mJoystick;
+	float mTopSpeed;
+	float mBottomSpeed;
+	
+	void UpdatePresets();
+	
+public:
+	CalibratedShooterController(Shooter *, Joystick *);
+	void Run();
+};
+
+/**
  * @brief Controls the shooter using a joystick.
  */
 class ShooterController : public BaseController
@@ -71,41 +103,7 @@ public:
 	void Run();
 };
 
-/**
- * @brief Allows you to adjust and test the precise speeds of the
- * shooter via SmartDashboard.
- * 
- * @details
- * This lets you precisely calibrate the speed of the motors via the 
- * SmartDashboard, then shot by using a joystick.
- */
-class CalibratedShooterController : public BaseController
-{
-protected:
-	Shooter *mShooter;
-	Joystick *mJoystick;
-	float mTopSpeed;
-	float mBottomSpeed;
-	
-	void UpdatePresets();
-	
-public:
-	CalibratedShooterController(Shooter *, Joystick *);
-	void Run();
-};
 
-/**
- * @brief Class for testing the shooter.
- */
-class ShooterControllerTest : public BaseController
-{
-protected:
-	Shooter *mShooter;
-	Joystick *mJoystick;
-public:
-	ShooterControllerTest(Shooter *, Joystick *);
-	void Run();
-};
 
 
 /**

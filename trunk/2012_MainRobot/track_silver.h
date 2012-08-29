@@ -1,3 +1,12 @@
+/**
+ * @file trackSilver.h
+ * 
+ * @brief Experimental code to track a target using the camera.
+ * 
+ * @warning This code is experimental, and should be regarded as
+ * potentially buggy or broken.
+ */
+
 #ifndef _TRACKSILVER_H
 #define _TRACKSILVER_H
 
@@ -17,9 +26,8 @@
 #include "target.h"
 
 
-
 struct Target{
-	// Empty, meant to be a baseclass
+	// Empty
 };
 
 

@@ -56,9 +56,9 @@ void PrototypeRobot::InitializeHardware(void)
 			mRightBackDrive);
 	
 	mCompressor = new Compressor(
-			Ports::Crio::Module2,
-			Ports::DigitalSidecar::Gpio1,
-			Ports::Crio::Module2,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio14,
+			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Relay8);
 	mSolenoid1 = new Solenoid(
 			Ports::Crio::Module1,
@@ -66,6 +66,11 @@ void PrototypeRobot::InitializeHardware(void)
 	mSolenoid2 = new Solenoid(
 			Ports::Crio::Module1,
 			Ports::Crio::SolenoidBreakout2);
+	
+	mServo = new Servo(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm6
+	);
 	return;
 }
 
@@ -153,7 +158,7 @@ void PrototypeRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	
 	mControllerCollection.push_back(new ArmController(mPneumaticArm, mLeftJoystick));
-	
+	mControllerCollection.push_back(new ServoController(mServo));
 	
 	return;
 }

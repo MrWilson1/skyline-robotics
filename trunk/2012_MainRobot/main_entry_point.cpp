@@ -1,7 +1,15 @@
+/**
+ * @file main_entry_point.cpp
+ * 
+ * @brief The main entry point of the program.
+ * 
+ * @summary We can select at compile-time the robot class we want to run.
+ */
+
 #include "MainRobot.h"
 #include "PrototypeRobot.h"
 
-#define PROTOTYPE
+//#define PROTOTYPE
 
 #ifndef PROTOTYPE
 START_ROBOT_CLASS(MainRobot);

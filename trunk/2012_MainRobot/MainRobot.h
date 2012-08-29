@@ -34,6 +34,7 @@
 #include "components.h"
 #include "shooter.h"
 #include "elevator.h"
+#include "xbox.h"
 
 /**
  * @brief This class bundles together everything to ultimately
@@ -90,6 +91,7 @@ protected:
 	Joystick *mRightJoystick;
 	Joystick *mTwistJoystick;
 	Kinect *mKinect;
+	XboxController *mXboxController;
 	
 	// Components
 	RangeFinder *mRangeFinder;

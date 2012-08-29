@@ -30,6 +30,7 @@
 // Program modules
 #include "arm.h"
 #include "driving.h"
+#include "testing.h"
 #include "components.h"
 
 /**
@@ -72,6 +73,8 @@ protected:
 	Compressor *mCompressor;
 	Solenoid *mSolenoid1;
 	Solenoid *mSolenoid2;
+	
+	Servo *mServo;
 	
 	// Input devices
 	Joystick *mLeftJoystick;

@@ -153,6 +153,9 @@ float Shooter::CalculateSpeed(float distance) {
 	return speed;
 }
 
+
+
+
 /**
  * @brief Constructor for ShooterController class.
  * 
@@ -299,68 +302,4 @@ void CalibratedShooterController::Run()
 	} else {
 		mShooter->SetSpeedManually(0);
 	}
-}
-
-/**
- * @brief Constructor for ShooterControllerTest class.
- * 
- * @param[in] shooter Pointer to shooter.
- * @param[in] joystick Pointer to joystick.
- */
-ShooterControllerTest::ShooterControllerTest(Shooter *shooter, Joystick *joystick) :
-		BaseController()
-{
-	mShooter = shooter;
-	mJoystick = joystick;
-}
-
-/**
- * @brief Contains code to test the shooter.
- * 
- * @details
- * Button 3 sets the speed of the shooter to 0.0.
- * Button 4 sets the speed of the shooter to -1.0.
- * Button 5 sets the speed of the sohoter to 1.0.
- * Button 6 increases the speed by 0.01.
- * Button 7 decreases the speed by 0.01.
- * Button 10 increases the speed by 0.1.
- * Button 11 decreases the speed by 0.1.
- */
-void ShooterControllerTest::Run(void)
-{
-	bool upSmall = mJoystick->GetRawButton(11);
-	bool downSmall = mJoystick->GetRawButton(10);
-	bool upBig = mJoystick->GetRawButton(6);
-	bool downBig = mJoystick->GetRawButton(7);
-	bool setLow = mJoystick->GetRawButton(4);
-	bool setMiddle = mJoystick->GetRawButton(3);
-	bool setHigh = mJoystick->GetRawButton(5);
-	
-	float shooterSpeed = 0.0;
-	
-	if ( upSmall ) {
-		shooterSpeed += .01;
-	} else if ( downSmall ) {
-		shooterSpeed -= .01;
-	} else if ( upBig ) {
-		shooterSpeed += .1;
-	} else if ( downBig ) {
-		shooterSpeed -= .1;
-	} else if ( setLow ) {
-		shooterSpeed = -1.0;
-	} else if ( setMiddle ) {
-		shooterSpeed = 0.0;
-	} else if ( setHigh ) {
-		shooterSpeed = 1.0;
-	}
-	
-	if ( shooterSpeed > 1.0 ) {
-		shooterSpeed = 1.0;
-	} else if ( shooterSpeed < -1.0 ) {
-		shooterSpeed = -1.0;
-	}
-	
-	SmartDashboard::GetInstance()->Log(shooterSpeed, "(SHOOTER) Test speed ");
-	
-	mShooter->SetTestSpeed(shooterSpeed);
 }

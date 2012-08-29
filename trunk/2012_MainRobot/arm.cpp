@@ -264,6 +264,56 @@ void SimpleArm::SafeSet(float value) {
 	Set(value);
 }
 
+
+/////////////////////////
+
+PneumaticTestArm::PneumaticTestArm(Compressor *compressor, Relay *spike, Solenoid *solenoid1, Solenoid *solenoid2):
+		BaseArmComponent()
+{
+	mCompressor = compressor;
+	mSpike = spike;
+	mSolenoid1 = solenoid1;
+	mSolenoid2 = solenoid2;	
+
+	mCompressor->SetRelayValue(Relay::kOn);
+	mSolenoid1->Set(false);
+	mSolenoid2->Set(true);
+}
+
+PneumaticTestArm::~PneumaticTestArm()
+{
+	// Nothing
+}
+
+/**
+ * @brief Moves the arm upwards.
+ */
+void PneumaticTestArm::GoUp()
+{
+	mSolenoid1->Set(false);
+	mSolenoid2->Set(true);
+}
+
+/**
+ * @brief Moves the arm downwards.
+ */
+void PneumaticTestArm::GoDown()
+{
+	mSolenoid1->Set(true);
+	mSolenoid2->Set(false);
+}
+
+/**
+ * @brief Does nothing; not implemented.
+ */
+void PneumaticTestArm::Stop()
+{
+	// Nothing
+}
+
+
+/////////////////////////
+
 /**
  * @brief Creates an instance of the PneumaticArm and starts the compressor.
  */
