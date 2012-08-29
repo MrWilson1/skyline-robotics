@@ -1,5 +1,4 @@
 #include "driving.h"
-#include "algorithm.h"
 
 
 /**
@@ -988,11 +987,14 @@ void KinectAngleController::Run(void)
 }
 
 XboxTankDrive::XboxTankDrive(RobotDrive *robotDrive, XboxController *xboxController) :
-	BaseController() {
+	BaseController() 
+{
 	mRobotDrive = robotDrive;
 	mXboxController = xboxController;
 }
 
 void XboxTankDrive::Run() {
-	mRobotDrive->TankDrive(mXboxController->GetAxis(mXboxController->LeftY), mXboxController->GetAxis(mXboxController->RightY));
+	float leftSpeed = mXboxController->GetAxis(mXboxController->LeftY);
+	float rightSpeed = mXboxController->GetAxis(mXboxController->RightY);
+	mRobotDrive->TankDrive(leftSpeed, rightSpeed);
 }

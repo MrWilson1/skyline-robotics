@@ -19,6 +19,7 @@
 // System libraries
 #include <utility.h>
 #include <math.h>
+#include <algorithm>
 
 // 3rd-party libraries
 #include "WPILib.h"

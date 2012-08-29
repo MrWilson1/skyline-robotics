@@ -24,6 +24,8 @@
 #include "sensors.h"
 #include "components.h"
 #include "target.h"
+#include "xbox.h"
+#include "elevator.h"
 
 
 /**
@@ -103,6 +105,23 @@ public:
 	void Run();
 };
 
+class ShooterXboxController : public BaseController
+{
+protected:
+	Shooter *mShooter;
+	XboxController *mXbox;
+	Elevator *mElevator;
+	float mPresetOne;
+	float mPresetTwo;
+	float mPresetThree;
+	void UpdatePresets();
+	bool IsPressingPreset();
+	float GetPreset();
+	
+public:
+	ShooterXboxController(Shooter *, Elevator *, XboxController *);
+	void Run();
+};
 
 
 

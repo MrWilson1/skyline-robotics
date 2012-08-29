@@ -189,11 +189,18 @@ void MainRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
+	//mControllerCollection.push_back(new XboxTankDrive(mRobotDrive, mXboxController));
+	//TODO: enable the above after testing.
 	
 	//mControllerCollection.push_back(new CalibratedShooterController(mShooter, mTwistJoystick));
-	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
-	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
+	//mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
+	//mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
+	//mControllerCollection.push_back(new ShooterXboxController(mShooter, mElevator, mXboxController));
+	//TODO: enable the above after testing.
+	
 	mControllerCollection.push_back(new MotorArmController(mArm, mLeftJoystick));
+	
+	
 	
 	mControllerCollection.push_back(new XboxTest(mXboxController));
 	return;

@@ -255,6 +255,92 @@ float ShooterController::GetPreset()
 	return -0.1;
 }
 
+
+////////////////////
+
+ShooterXboxController::ShooterXboxController(Shooter *shooter, Elevator *elevator, XboxController *xboxController) :
+		BaseController()
+{
+	mShooter = shooter;
+	mElevator = elevator;
+	mXbox = xboxController;
+	
+	mPresetOne = 0.24;
+	mPresetTwo = 0.39;
+	mPresetThree = 0.5;
+	
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	s->PutString("(XBOX SHOOTER) Preset 1 <<", Tools::FloatToString(mPresetOne).c_str());
+	s->PutString("(XBOX SHOOTER) Preset 2 <<", Tools::FloatToString(mPresetTwo).c_str());
+	s->PutString("(XBOX SHOOTER) Preset 3 <<", Tools::FloatToString(mPresetThree).c_str());
+	
+	s->Log(0, "(XBOX SHOOTER) Preset ");
+}
+
+void ShooterXboxController::Run(void)
+{
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	
+	UpdatePresets();
+	if (IsPressingPreset()) {
+		float out = GetPreset();
+		if (out >= 0) {
+			mElevator->MoveUp();
+			mShooter->SetSpeedManually(out);
+			s->Log(out, "(XBOX SHOOTER) Preset ");
+		}
+	} else if (mXbox->GetButton(mXbox->B)) {
+		mElevator->MoveDown();
+		mShooter->SetSpeedManually(0);
+	} else {
+		mShooter->SetSpeedManually(0);
+	}
+}
+
+void ShooterXboxController::UpdatePresets(void) 
+{
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	mPresetOne = Tools::StringToFloat(s->GetString("(XBOX SHOOTER) Preset 1 <<"));
+	mPresetTwo = Tools::StringToFloat(s->GetString("(XBOX SHOOTER) Preset 2 <<"));
+	mPresetThree = Tools::StringToFloat(s->GetString("(XBOX SHOOTER) Preset 3 <<"));
+}
+
+bool ShooterXboxController::IsPressingPreset()
+{
+	return mXbox->GetButton(mXbox->A) or mXbox->GetButton(mXbox->X) or mXbox->GetButton(mXbox->Y);
+}
+
+float ShooterXboxController::GetPreset()
+{
+	if (mXbox->GetButton(mXbox->A)) {
+		return mPresetOne;
+	} else if (mXbox->GetButton(mXbox->X)) {
+		return mPresetTwo;
+	} else if (mXbox->GetButton(mXbox->Y)) {
+		return mPresetThree;
+	}
+	return -0.1;
+}
+
+
+
+
+
+///////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * @brief Constructor for CalibratedShooter.
  * 
