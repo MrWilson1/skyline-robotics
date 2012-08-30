@@ -8,32 +8,36 @@ class XboxController : public Joystick
 {
 public:
 	enum Axis {
-		LeftX,
-		LeftY,
-		Bumper,
-		RightY,
-		RightX
+		LeftX = 1,
+		LeftY = 2,
+		Bumper = 3,
+		RightX = 4,
+		RightY = 5
 	};
-	
+	enum Dpad {
+		XDir = 6,
+		YDir = 7
+	};
 	enum Button {
-		A,
-		X,
-		B,
-		Y,
-		LeftBumper,
-		RightBumper,
-		Back,
-		Start,
-		LeftClick,
-		RightClick
+		A = 1,
+		B = 2,
+		X = 3,
+		Y = 4,
+		LeftBumper = 5,
+		RightBumper = 6,
+		Back = 7,
+		Start = 8,
+		LeftClick = 9,
+		RightClick = 10
 	};
 	
-	static const UINT32 numAxisTypes = 5;
+	static const UINT32 numAxisTypes = 7;
 	static const UINT32 numButtonTypes = 10;
 	
 	XboxController(UINT32);
 	
 	float GetAxis(Axis);
+	int GetDpad(Dpad);
 	bool GetButton(Button);
 };
 

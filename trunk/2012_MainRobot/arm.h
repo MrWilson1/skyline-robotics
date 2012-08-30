@@ -8,7 +8,6 @@
 #define ARM_H_
 
 #include "WPILib.h"
-#include "motorLimitWatchdog.h"
 #include "components.h"
 
 class BaseArmComponent : public BaseComponent
@@ -71,7 +70,7 @@ public:
 protected:
 	DigitalInput *mTopLimit;
 	DigitalInput *mBottomLimit;
-	MotorLimitWatchdog *mMotorWatchdog;
+	
 public:
 	GuardedArm (SpeedController *, DigitalInput *, DigitalInput *);
 	~GuardedArm ();

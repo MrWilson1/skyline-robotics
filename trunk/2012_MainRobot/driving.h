@@ -115,8 +115,6 @@ protected:
 	static const float kMaxAngle = 16.0;
 	static const float kFreezeMaxPower = 0.4;
 	static const float kBalanceMaxPower = 0.55;
-	float mFreezeMaxPower;
-	float mBalanceMaxPower;
 	
 	Gyro *mGyro;
 	Watchdog &mWatchdog;
@@ -316,13 +314,13 @@ protected:
 	
 };
 
-class XboxTankDrive : public BaseController
+class XboxDrive : public BaseController
 {
 protected:
 	RobotDrive *mRobotDrive;
 	XboxController *mXboxController;
 public:
-	XboxTankDrive(RobotDrive *, XboxController *);
+	XboxDrive(RobotDrive *, XboxController *);
 	void Run();	
 };
 

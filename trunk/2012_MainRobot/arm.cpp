@@ -45,13 +45,6 @@ GuardedArm::GuardedArm (
 {
 	mTopLimit = topLimit;
 	mBottomLimit = bottomLimit;
-	
-	/*mMotorWatchdog = new MotorLimitWatchdog(
-			"Arm",
-			mSpeedController,
-			mTopLimit,
-			mBottomLimit);
-			*/
 }
 
 /**

@@ -293,6 +293,7 @@ void ShooterXboxController::Run(void)
 		mElevator->MoveDown();
 		mShooter->SetSpeedManually(0);
 	} else {
+		mElevator->Stop();
 		mShooter->SetSpeedManually(0);
 	}
 }

@@ -3,7 +3,10 @@
 
 PrototypeRobot::PrototypeRobot(void)
 {
-	// Empty
+	InitializeHardware();
+	InitializeInputDevices();
+	InitializeComponents();
+	InitializeControllers();
 }
 
 /**
@@ -14,11 +17,6 @@ PrototypeRobot::PrototypeRobot(void)
  */
 void PrototypeRobot::RobotInit(void)
 {
-	InitializeHardware();
-	InitializeInputDevices();
-	InitializeComponents();
-	InitializeControllers();
-	
 	GetWatchdog().SetExpiration(kWatchdogExpiration);
 	SmartDashboard::GetInstance()->PutString("Autonomous? <<", "0.0");
 	return;

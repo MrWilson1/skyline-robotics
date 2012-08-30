@@ -750,11 +750,6 @@ void KinectController::Run(void)
 	
 	bool isShooting = IsPlayerShooting();
 	SmartDashboard::GetInstance()->Log(isShooting, "(KINECT) Player is shooting ");
-	if (isShooting) {
-		// Empty
-	} else {
-		// Empty
-	}
 }
 
 /**
@@ -986,15 +981,16 @@ void KinectAngleController::Run(void)
 	}
 }
 
-XboxTankDrive::XboxTankDrive(RobotDrive *robotDrive, XboxController *xboxController) :
+XboxDrive::XboxDrive(RobotDrive *robotDrive, XboxController *xboxController) :
 	BaseController() 
 {
 	mRobotDrive = robotDrive;
 	mXboxController = xboxController;
 }
 
-void XboxTankDrive::Run() {
-	float leftSpeed = mXboxController->GetAxis(mXboxController->LeftY);
-	float rightSpeed = mXboxController->GetAxis(mXboxController->RightY);
-	mRobotDrive->TankDrive(leftSpeed, rightSpeed);
+void XboxDrive::Run() {
+	float movement = mXboxController->GetAxis(mXboxController->LeftY);
+	float rotation = mXboxController->GetAxis(mXboxController->RightX);
+
+	mRobotDrive->ArcadeDrive(movement, rotation, true);
 }

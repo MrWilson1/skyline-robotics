@@ -330,7 +330,7 @@ void TargetSnapshotController::Run()
 		
 		SmartDashboard::GetInstance()->Log("Yes", "Snapshot");
 		
-		if (((int)targets.size()) != 0) {
+		if (!targets.empty()) {
 			TargetUtils::Target t = FindHighestTarget(targets);
 			PrintDiagnostics(t);
 			

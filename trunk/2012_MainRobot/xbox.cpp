@@ -11,6 +11,11 @@ float XboxController::GetAxis(Axis axisName)
 	return GetRawAxis(axisName);
 }
 
+int XboxController::GetDpad(Dpad dpad)
+{
+	return (int) GetRawAxis(dpad);
+}
+
 bool XboxController::GetButton(Button buttonName)
 {
 	return GetRawButton(buttonName);
@@ -29,8 +34,11 @@ void XboxTest::Run()
 	s->Log(mXboxController->GetAxis(mXboxController->LeftX), "Left stick X");
 	s->Log(mXboxController->GetAxis(mXboxController->LeftY), "Left stick Y");
 	s->Log(mXboxController->GetAxis(mXboxController->Bumper), "Bumper");
-	s->Log(mXboxController->GetAxis(mXboxController->RightY), "RightY");
 	s->Log(mXboxController->GetAxis(mXboxController->RightX), "RightX");
+	s->Log(mXboxController->GetAxis(mXboxController->RightY), "RightY");
+	
+	s->Log(mXboxController->GetDpad(mXboxController->XDir), "X Dpad");
+	s->Log(mXboxController->GetDpad(mXboxController->YDir), "Y Dpad");
 	
 	s->Log(mXboxController->GetButton(mXboxController->A), "Button A");
 	s->Log(mXboxController->GetButton(mXboxController->X), "Button X");

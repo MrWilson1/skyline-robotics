@@ -103,14 +103,14 @@ float Tools::Max(int a, float b)
 float Tools::StringToFloat(std::string input)
 {
 	float output;
-	sscanf(input.c_str(), "%f", &output);
+	sscanf(input.c_str(), "%20f", &output);
 	return output;
 }
 
 float Tools::StringToFloat(const char *input)
 {
 	float output;
-	sscanf(input, "%f", &output);
+	sscanf(input, "%20f", &output);
 	return output;
 	
 }
