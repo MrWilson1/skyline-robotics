@@ -25,10 +25,10 @@
 #include "WPILib.h"
 
 // Our code
-#include "components.h"
+#include "../Definitions/components.h"
 #include "shooter.h"
 #include "arm.h"
-#include "xbox.h"
+#include "../Client/xbox.h"
 
 
 /**

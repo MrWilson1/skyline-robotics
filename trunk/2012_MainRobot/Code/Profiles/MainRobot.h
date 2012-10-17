@@ -28,13 +28,13 @@
 #include "WPILib.h"
 
 // Program modules
-#include "arm.h"
-#include "sensors.h"
-#include "driving.h"
-#include "components.h"
-#include "shooter.h"
-#include "elevator.h"
-#include "xbox.h"
+#include "../Subsystems/arm.h"
+#include "../sensors.h"
+#include "../Subsystems/driving.h"
+#include "../Definitions/components.h"
+#include "../Subsystems/shooter.h"
+#include "../Subsystems/elevator.h"
+#include "../Client/xbox.h"
 
 /**
  * @brief This class bundles together everything to ultimately

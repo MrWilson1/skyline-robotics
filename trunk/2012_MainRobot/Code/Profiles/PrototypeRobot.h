@@ -28,10 +28,10 @@
 #include "WPILib.h"
 
 // Program modules
-#include "arm.h"
-#include "driving.h"
-#include "testing.h"
-#include "components.h"
+#include "../Subsystems/arm.h"
+#include "../Subsystems/driving.h"
+#include "../testing.h"
+#include "../Definitions/components.h"
 
 /**
  * @brief This class bundles together everything to ultimately

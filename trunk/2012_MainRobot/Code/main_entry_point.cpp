@@ -6,8 +6,8 @@
  * @summary We can select at compile-time the robot class we want to run.
  */
 
-#include "MainRobot.h"
-#include "PrototypeRobot.h"
+#include "Profiles/MainRobot.h"
+#include "Profiles/PrototypeRobot.h"
 
 //#define PROTOTYPE
 

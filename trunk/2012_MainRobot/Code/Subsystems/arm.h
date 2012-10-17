@@ -8,7 +8,7 @@
 #define ARM_H_
 
 #include "WPILib.h"
-#include "components.h"
+#include "../Definitions/components.h"
 
 class BaseArmComponent : public BaseComponent
 {

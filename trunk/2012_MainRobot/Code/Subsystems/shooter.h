@@ -21,10 +21,10 @@
 #include "WPILib.h"
 
 // Our code
-#include "sensors.h"
-#include "components.h"
-#include "target.h"
-#include "xbox.h"
+#include "../sensors.h"
+#include "../Definitions/components.h"
+#include "../Tracking/target.h"
+#include "../Client/xbox.h"
 #include "elevator.h"
 
 

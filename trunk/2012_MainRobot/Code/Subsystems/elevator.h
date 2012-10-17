@@ -12,7 +12,7 @@
 #include "WPILib.h"
 
 // Our code
-#include "components.h"
+#include "../Definitions/components.h"
 
 /**
  * @brief Transfers the ball from the floor to the top of the elevator.

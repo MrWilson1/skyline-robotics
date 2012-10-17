@@ -12,7 +12,7 @@
 #include "WPILib.h"
 
 // Program modules
-#include "components.h"
+#include "Definitions/components.h"
 
 /**
  * @brief Uses the rangefinder to find the distance from the 

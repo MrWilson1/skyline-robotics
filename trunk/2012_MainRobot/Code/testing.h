@@ -11,7 +11,7 @@
 #define _TESTING_H
 
 #include "WPILib.h"
-#include "components.h"
+#include "Definitions/components.h"
 
 /**
  * @brief A experimental class used to control a servo.

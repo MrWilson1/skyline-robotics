@@ -2,7 +2,7 @@
 #define _XBOX_CONTROLLER_H
 
 #include "WPILib.h"
-#include "components.h"
+#include "../Definitions/components.h"
 
 class XboxController : public Joystick
 {

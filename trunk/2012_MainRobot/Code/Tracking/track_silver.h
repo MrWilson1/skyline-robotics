@@ -22,7 +22,7 @@
 #include "Vision/MonoImage.h"
 
 // Program modules
-#include "components.h"
+#include "../Definitions/components.h"
 #include "target.h"
 
 
