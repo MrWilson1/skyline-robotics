@@ -9,6 +9,7 @@
 
 #include "WPILib.h"
 #include "../Definitions/components.h"
+#include "../tools.h"
 
 class BaseArmComponent : public BaseComponent
 {

@@ -7,13 +7,6 @@
 BaseJoystickController::BaseJoystickController():
 		BaseController()
 {
-	mLabel = "(SHAPING FUNCTION) << ";
-	SmartDashboard::GetInstance()->PutString(mLabel, "0");
-	
-	mBezierLabelA = "(BEZIER A) << ";
-	SmartDashboard::GetInstance()->PutString(mBezierLabelA, ".940");
-	mBezierLabelB = "(BEZIER B) << ";
-	SmartDashboard::GetInstance()->PutString(mBezierLabelB, ".280");
 	mAreValuesSwapped = false;
 }
 
@@ -39,145 +32,7 @@ float BaseJoystickController::GetSpeedFactor(Joystick *joystick)
 	return normalizedFactor;
 }
 
-/**
- * @brief Squares the input of any number to allow more
- * sensitive driving when the joystick is pushed less.
- * 
- * @param[in] number The number to square.  Should be
- * between -1.0 and 1.0
- * 
- * @returns The squared number (between -1.0 and 1.0, 
- * depending on the original number)
- */
-float BaseJoystickController::SquareInput(float number)
-{
-	return (number < 0) ? (-number * number) : (number * number);
-}
 
-/**
- * @brief Shapes speed curve, joystick position v.s. speed,
- * into double-exponential (seat-shaped) function.
- * 
- * @param[in] number The number to shape.  Should be
- * between -1.0 and 1.0
- * 
- * @returns Number shaped by double-exponential function.
- */
-float BaseJoystickController::DoubleExponInput(float x) 
-{
-	// todo check if we actually want to use this function
-	float a = kDoubleExponA;
-	float epsilon = 0.00001;
-	float min_param_a = 0.0 + epsilon;
-	float max_param_a = 1.0 - epsilon;
-	a = min(max_param_a, max(min_param_a, a)); 
-	
-	float y = 0.0;
-	
-	if (x<=0.5 && x > 0 ){
-		y = (pow(2.0*x, 1-a))/2.0;
-	} else if ( x > -0.5 && x < 0 ) {
-		y = -((pow(2.0*-x, 1-a))/2.0);
-	} else if ( x < -0.5 )
-		y = -(1.0 - (pow(2.0*(1.0+x), 1-a))/2.0);
-	else {
-		y = 1.0 - (pow(2.0*(1.0-x), 1-a))/2.0;
-	}
-	return y;
-}
-
-/**
- * @brief Shapes speed curve, joystick position vs speed,
- * into an experimental piecewise linear function.
- * 
- * @param[in] x The input joystick-position, which should
- * be between -1.0 and 1.0.  Will be mapped to the corresponding
- * speed.
- */
-float BaseJoystickController::PiecewiseLinear(float x)
-{
-	float y = 0.0;
-	
-	if ( x >= 0 && x <= 0.32 ) {
-		y = 0.375*x;
-	} else if ( x > 0.32 && x <= 0.6 ) {
-		y = 0.679*x - 0.097;
-	} else if ( x > 0.6 && x <= 0.86 ) {
-		y = 1.269*x - .45;
-	} else if ( x > 0.86 && x <= 1.0) {
-		y = 2.571*x - 1.57;
-	} else if ( x >= -0.32 && x < 0 ) {
-		y = -(0.375*-x);
-	} else if ( x >= -0.6 && x < -0.32 ) {
-		y = -(0.679*-x - 0.097);
-	} else if ( x >= -0.86 && x < -0.6 ) {
-		y = -(1.269*-x - .45);
-	} else if ( x >= -1.0 && x < -0.86 ) {
-		y = -(2.571*-x - 1.57);
-	}
-	return y;
-}
-
-/**
- * @brief A customizable method of shaping a bezier curve.
- */
-float BaseJoystickController::BezierInput(float x, float a, float b)
-{	
-	float epsilon = 0.00001;
-	a = Tools::Max(0, Tools::Min(1, a)); 
-	b = Tools::Max(0, Tools::Min(1, b)); 
-	if (a == 0.5){
-		a += epsilon;
-	}
-	  
-	// solve t from x (an inverse operation)
-	float om2a = 1 - 2*a;
-	float t = (sqrt(a*a + om2a*x) - a)/om2a;
-	float y = (1-2*b)*(t*t) + (2*b)*t;
-	return y;
-}
-
-/**
- * @brief Takes raw values of joystick position for speed
- * and shapes them depending on what buttons the driver presses.
- * 
- * @param[in] joystick A pointer to the joystick from which
- * to get the buttons.
- * rawValue The raw joystick position.
- * 
- * @returns The shaped value.
- * 
- * todo This does two different things: change mShape then 
- * shape the rawValue using mShape.  Split those two different
- * tasks into two separate functions.
- */
-float BaseJoystickController::Shaper(float rawValue, Joystick *joystick) {
-	int shape = (int) Tools::StringToFloat(SmartDashboard::GetInstance()->GetString(mLabel));
-	float bezierA = (float) Tools::StringToFloat(SmartDashboard::GetInstance()->GetString(mBezierLabelA));
-	float bezierB = (float) Tools::StringToFloat(SmartDashboard::GetInstance()->GetString(mBezierLabelB));
-	
-	float shapedValue = 0.0;
-	
-	// This does (nearly) the same thing as the previous
-	// series of if-else statements.
-	switch (shape) {
-		case 0:
-			shapedValue = SquareInput(rawValue);
-			break;
-		case 1:
-			shapedValue = PiecewiseLinear(rawValue);
-			break;
-		case 2:
-			shapedValue = DoubleExponInput(rawValue);
-			break;
-		case 3:
-			shapedValue = BezierInput(rawValue, bezierA, bezierB);
-		default:
-			shapedValue = 0.0;
-	}
-	
-	return shapedValue;
-}
 
 /**
  * @brief Stops the robot.
@@ -185,168 +40,6 @@ float BaseJoystickController::Shaper(float rawValue, Joystick *joystick) {
 void BaseJoystickController::Stop(RobotDrive *robotDrive)
 {
 	robotDrive->Drive(0.0, 0.0);
-}
-
-/**
- * @brief The constructor. 
- */
-BaseJoystickController::DriveSpeed::DriveSpeed()
-{
-	Left = 0.0;
-	Right = 0.0;
-}
-
-/**
- * @brief The constructor.
- * 
- * @param[in] left The speed of the left side of the robot.
- * @param[in] right The speed of the right side of the robot.
- */
-BaseJoystickController::DriveSpeed::DriveSpeed(float left, float right)
-{
-	Left = left;
-	Right = right;
-}
-
-
-BaseJoystickController::DriveSpeed BaseJoystickController::TryDirectionReverse(DriveSpeed driveSpeed, Joystick *joystick)
-{
-
-	if (joystick->GetRawButton(6)) {
-		mAreValuesSwapped = false;
-	} else if (joystick->GetRawButton(7)) {
-		mAreValuesSwapped = true;
-	}
-	
-	if (mAreValuesSwapped) {
-		float temp = driveSpeed.Left;
-		driveSpeed.Left = -driveSpeed.Right;
-		driveSpeed.Right = -temp;
-		SmartDashboard::GetInstance()->Log("reversed", "(TANK DRIVE) Driving orientation: ");
-	} else {
-		SmartDashboard::GetInstance()->Log("normal", "(TANK DRIVE) Driving orientation: ");
-	}
-	return driveSpeed;
-}
-
-BaseJoystickController::DriveSpeed BaseJoystickController::AddShaping(DriveSpeed driveSpeed, Joystick *joystick)
-{
-	driveSpeed.Left = Shaper(driveSpeed.Left, joystick);
-	driveSpeed.Right = Shaper(driveSpeed.Right, joystick);
-	return driveSpeed;
-}
-
-BaseJoystickController::DriveSpeed BaseJoystickController::AddSpeedFactor(DriveSpeed driveSpeed, Joystick *joystick) 
-{
-	float speedFactor = GetSpeedFactor(joystick);	
-	driveSpeed.Left *= speedFactor;
-	driveSpeed.Right *= speedFactor;
-	SmartDashboard::GetInstance()->Log(speedFactor, "(DRIVE) Speed factor ");
-	return driveSpeed;
-}
-
-BaseJoystickController::DriveSpeed BaseJoystickController::AddSpeedFactor(DriveSpeed driveSpeed, float speedFactor)
-{
-	driveSpeed.Left *= speedFactor;
-	driveSpeed.Right *= speedFactor;
-	SmartDashboard::GetInstance()->Log(speedFactor, "(DRIVE) Speed factor ");
-	return driveSpeed;
-}
-
-BaseJoystickController::DriveSpeed BaseJoystickController::TryStraightening(DriveSpeed driveSpeed, Joystick *joystick)
-{
-	if (joystick->GetRawButton(3)) {
-		float average = (driveSpeed.Left + driveSpeed.Right) / 2;
-		driveSpeed.Left = average;
-		driveSpeed.Right = average;
-	}
-	return driveSpeed;
-}
-
-BaseJoystickController::DriveSpeed BaseJoystickController::AddTruncation(DriveSpeed driveSpeed)
-{
-	driveSpeed.Left = Truncate(driveSpeed.Left);
-	driveSpeed.Right = Truncate(driveSpeed.Right);
-	return driveSpeed;
-}
-
-float BaseJoystickController::Truncate(float value)
-{
-	float deadzone = 0.05;
-	float desiredMin = 0.3;
-	
-	if (std::fabs(value) > deadzone) {
-		float negativeFactor = (value < 0) ? -1.0 : 1.0;
-		value = Tools::Coerce(
-				std::fabs(value),
-				deadzone,	// Actual min value
-				1.0,		// Actual max value
-				desiredMin,	// Desired min value
-				1.0);		// Desire max value
-		value *= negativeFactor;
-	}
-	return value;
-}
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @brief The constructor.
- */
-IBrake::IBrake(Gyro *gyro, Watchdog &watchdog):
-		mWatchdog(watchdog)
-{
-	mGyro = gyro;
-}
-
-/**
- * @brief Attempts to balance the robot on the 
- * bridge based on readings from the gyro.
- */
-float IBrake::Balance() 
-{
-	float slope = kBalanceMaxPower / kMaxAngle;
-	float power = -mGyro->GetAngle() * slope;
-	return power;
-}
-
-/**
- * @brief Attempts to freeze the robot in place on
- * the bridge based on readings from the gyro.
- */
-float IBrake::Freeze()
-{
-	float slope = kFreezeMaxPower / kMaxAngle;
-	float power = -mGyro->GetAngle() * slope;
-	return power;
-}
-
-/**
- * @brief Launches a routine that attempts to take
- * the robot from the bottom of the bridge and
- * automatically balance it.  Doesn't work.
- */
-void IBrake::Routine(RobotDrive *robotDrive)
-{
-	mGyro->Reset();
-	float crawl = -0.50;
-	while (mGyro->GetAngle() < 15.0) {
-		robotDrive->TankDrive(-0.8, -0.8);
-		mWatchdog.Feed();
-	}
-	while (mGyro->GetAngle() >= 15.0) {
-		robotDrive->TankDrive(crawl, crawl);
-		mWatchdog.Feed();
-	}
-	robotDrive->TankDrive(0.0, 0.0);
 }
 
 
@@ -468,13 +161,28 @@ TankJoysticks::TankJoysticks(
 void TankJoysticks::Run(void)
 {
 	DriveSpeed driveSpeed(mLeftJoystick->GetY(), mRightJoystick->GetY());
+	driveSpeed = Filter::SquareInput(driveSpeed);
 	
-	driveSpeed = TryDirectionReverse(driveSpeed, mRightJoystick);
-	driveSpeed = AddShaping(driveSpeed, mLeftJoystick);
-	driveSpeed = AddSpeedFactor(driveSpeed, mLeftJoystick);
-	driveSpeed = TryStraightening(driveSpeed, mLeftJoystick);	// Check both joysticks if the appropriate button is being pressed.
-	driveSpeed = TryStraightening(driveSpeed ,mRightJoystick);	// Running this function multiple times won't do anything bad.
-	driveSpeed = AddTruncation(driveSpeed);
+	if (mRightJoystick->GetRawButton(6)) {
+		mAreValuesSwapped = false;
+	} else if (mRightJoystick->GetRawButton(7)) {
+		mAreValuesSwapped = true;
+	}
+	
+	if (mAreValuesSwapped) {
+		driveSpeed = Filter::ReverseDirection(driveSpeed);
+		SmartDashboard::GetInstance()->Log("reversed", "(TANK DRIVE) Driving orientation: ");
+	} else {
+		SmartDashboard::GetInstance()->Log("normal", "(TANK DRIVE) Driving orientation: ");
+	}
+	
+	driveSpeed = Filter::AddSpeedFactor(driveSpeed, GetSpeedFactor(mLeftJoystick));
+	
+	if (mLeftJoystick->GetRawButton(3) or mRightJoystick->GetRawButton(3)) {
+		driveSpeed = Filter::Straighten(driveSpeed);	// Check both joysticks if the appropriate button is being pressed.
+	}
+	
+	driveSpeed = Filter::AddTruncation(driveSpeed);
 	
 	SmartDashboard::GetInstance()->Log(driveSpeed.Left, "(TANK DRIVE) Left speed ");
 	SmartDashboard::GetInstance()->Log(driveSpeed.Right, "(TANK DRIVE) Right speed ");
@@ -498,13 +206,25 @@ void ArcadeJoystick::Run()
 	float rotation = mJoystick->GetX();
 	
 	DriveSpeed driveSpeed = GetLeftAndRight(magnitude, rotation);
-		
-	driveSpeed = TryDirectionReverse(driveSpeed, mJoystick);
-	driveSpeed = AddShaping(driveSpeed, mJoystick);
-	driveSpeed = AddSpeedFactor(driveSpeed, mJoystick);
-	driveSpeed = TryStraightening(driveSpeed, mJoystick);
-	driveSpeed = AddTruncation(driveSpeed);
+	driveSpeed = Filter::SquareInput(driveSpeed);
 	
+	if (mJoystick->GetRawButton(6)) {
+		mAreValuesSwapped = false;
+	} else if (mJoystick->GetRawButton(7)) {
+		mAreValuesSwapped = true;
+	}
+	
+	if (mAreValuesSwapped) {
+		driveSpeed = Filter::ReverseDirection(driveSpeed);
+		SmartDashboard::GetInstance()->Log("reversed", "(ARCADE DRIVE) Driving orientation: ");
+	} else {
+		SmartDashboard::GetInstance()->Log("normal", "(ARCADE DRIVE) Driving orientation: ");
+	}
+	
+	driveSpeed = Filter::AddSpeedFactor(driveSpeed, GetSpeedFactor(mJoystick));
+	
+	driveSpeed = Filter::AddTruncation(driveSpeed);
+		
 	SmartDashboard::GetInstance()->Log(driveSpeed.Left, "(ARCADE DRIVE) Left speed ");
 	SmartDashboard::GetInstance()->Log(driveSpeed.Right, "(ARCADE DRIVE) Right speed ");
 	
@@ -514,7 +234,7 @@ void ArcadeJoystick::Run()
 /**
  * This is copied directly from FIRST's source code for ArcadeDrive.
  */
-BaseJoystickController::DriveSpeed ArcadeJoystick::GetLeftAndRight(float moveValue, float rotateValue)
+DriveSpeed ArcadeJoystick::GetLeftAndRight(float moveValue, float rotateValue)
 {
 	float leftMotorOutput;
 	float rightMotorOutput;
@@ -582,19 +302,16 @@ void SingleJoystick::Run()
 	float rotate = -mJoystick->GetZ();
 	float speed = mJoystick->GetY();
 	
-	float shapedRotate = Shaper(rotate, mJoystick);
-	float shapedSpeed = Shaper(speed, mJoystick);
-	
 	float speedFactor = GetSpeedDecreaseFactor();	
 	
-	shapedRotate *= speedFactor;
-	shapedSpeed *= speedFactor;
+	rotate *= speedFactor;
+	speed *= speedFactor;
 	
-	SmartDashboard::GetInstance()->Log(-shapedRotate, "(ARCADE DRIVE) Rotate ");
-	SmartDashboard::GetInstance()->Log(-shapedSpeed, "(ARCADE DRIVE) Speed ");
+	SmartDashboard::GetInstance()->Log(-rotate, "(ARCADE DRIVE) Rotate ");
+	SmartDashboard::GetInstance()->Log(-speed, "(ARCADE DRIVE) Speed ");
 	SmartDashboard::GetInstance()->Log(speedFactor, "(ARCADE DRIVE) Speed factor ");
 		
-	mRobotDrive->ArcadeDrive(shapedSpeed,shapedRotate);
+	mRobotDrive->ArcadeDrive(speed, rotate);
 }
 
 /**
@@ -629,19 +346,35 @@ void SafetyMode::Run()
 		driveSpeed.Left = mLeftJoystick->GetY();
 		driveSpeed.Right = mRightJoystick->GetY();
 	}
-		
-	driveSpeed = TryDirectionReverse(driveSpeed, mRightJoystick);
-	driveSpeed = AddShaping(driveSpeed, mLeftJoystick);
 	
+	
+	if (mRightJoystick->GetRawButton(6)) {
+		mAreValuesSwapped = false;
+	} else if (mRightJoystick->GetRawButton(7)) {
+		mAreValuesSwapped = true;
+	}
+	
+	if (mAreValuesSwapped) {
+		driveSpeed = Filter::ReverseDirection(driveSpeed);
+		SmartDashboard::GetInstance()->Log("reversed", "(TANK DRIVE) Driving orientation: ");
+	} else {
+		SmartDashboard::GetInstance()->Log("normal", "(TANK DRIVE) Driving orientation: ");
+	}
+	
+	driveSpeed = Filter::SquareInput(driveSpeed);
+	driveSpeed = Filter::AddSpeedFactor(driveSpeed, GetSpeedFactor(mLeftJoystick));
+	
+	if (mLeftJoystick->GetRawButton(3) or mRightJoystick->GetRawButton(3)) {
+		driveSpeed = Filter::Straighten(driveSpeed);	// Check both joysticks if the appropriate button is being pressed.
+	}
+
 	float speedFactor = Tools::StringToFloat(SmartDashboard::GetInstance()->GetString("(SAFETY) Speed << "));
-	driveSpeed = AddSpeedFactor(driveSpeed, speedFactor);
+	driveSpeed = Filter::AddSpeedFactor(driveSpeed, speedFactor);
 	
-	driveSpeed = TryStraightening(driveSpeed, mLeftJoystick);	// Check both joysticks if the appropriate button is being pressed.
-	driveSpeed = TryStraightening(driveSpeed ,mRightJoystick);	// Running this function multiple times won't do anything bad.
-	driveSpeed = AddTruncation(driveSpeed);
+	driveSpeed = Filter::AddTruncation(driveSpeed);
 	
-	SmartDashboard::GetInstance()->Log(driveSpeed.Left, "(TANK DRIVE) Left speed ");
-	SmartDashboard::GetInstance()->Log(driveSpeed.Right, "(TANK DRIVE) Right speed ");
+	SmartDashboard::GetInstance()->Log(driveSpeed.Left, "(SAFETY DRIVE) Left speed ");
+	SmartDashboard::GetInstance()->Log(driveSpeed.Right, "(SAFETY DRIVE) Right speed ");
 	
 	mRobotDrive->TankDrive(driveSpeed.Left, driveSpeed.Right);
 }
@@ -952,18 +685,19 @@ void KinectAngleController::Run(void)
 	}
 	
 	bool isManuallyShooting = IsManuallyShooting();
-	bool isAutomaticallyShooting = IsAutomaticallyShooting();
+	//bool isAutomaticallyShooting = IsAutomaticallyShooting();
+	bool isAutomaticallyShooting = false;
 	
 	SmartDashboard::GetInstance()->Log(isManuallyShooting, "(KINECT) Player is shooting manually ");
-	SmartDashboard::GetInstance()->Log(isAutomaticallyShooting, "(KINECT) Player is shooting automatically ");
-	SmartDashboard::GetInstance()->Log((isManuallyShooting && isAutomaticallyShooting), "(KINECT) Player is being stupid ");
+	//SmartDashboard::GetInstance()->Log(isAutomaticallyShooting, "(KINECT) Player is shooting automatically ");
+	//SmartDashboard::GetInstance()->Log((isManuallyShooting && isAutomaticallyShooting), "(KINECT) Player is being stupid ");
 	
 	if (isManuallyShooting && !isAutomaticallyShooting) {
-		mShooter->SetTestSpeed(1.0);
-	} else if (isAutomaticallyShooting && !isManuallyShooting) {
-		mShooter->SetSpeedAutomatically();
+		mShooter->SetSpeed(1.0);
+	//} else if (isAutomaticallyShooting && !isManuallyShooting) {
+	//	mShooter->SetSpeedAutomatically();
 	} else if (isAutomaticallyShooting && isManuallyShooting) {
-		mShooter->SetTestSpeed(0.0);
+		mShooter->SetSpeed(0.0);
 	}
 	
 	bool isRaisingArm = IsRaisingArm();

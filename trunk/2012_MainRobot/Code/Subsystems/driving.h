@@ -16,11 +16,6 @@
 #ifndef DRIVING_H_
 #define DRIVING_H_
 
-// System libraries
-#include <utility.h>
-#include <math.h>
-#include <algorithm>
-
 // 3rd-party libraries
 #include "WPILib.h"
 
@@ -29,6 +24,9 @@
 #include "shooter.h"
 #include "arm.h"
 #include "../Client/xbox.h"
+#include "filters.h"
+
+
 
 
 /**
@@ -43,16 +41,8 @@ class BaseJoystickController : public BaseController
 protected:
 	static const float kSpeedFactorMin = 0.3;
 	static const float kSpeedFactorMax = 1.0;
-	static const float kDoubleExponA = 0.607;
-	float SquareInput(float);
-	float DoubleExponInput(float);
-	float PiecewiseLinear (float);
-	float BezierInput(float, float, float);
+	
 	float GetSpeedFactor(Joystick *);
-	float Shaper(float, Joystick *);
-	const char *mLabel;
-	const char *mBezierLabelA;
-	const char *mBezierLabelB;
 	bool mAreValuesSwapped;
 
 	/**
@@ -63,20 +53,7 @@ protected:
 	 * This struct was constructed mostly for organizational
 	 * processes, to facilitate passing around code.
 	 */
-	struct DriveSpeed
-	{
-		DriveSpeed();
-		DriveSpeed(float, float);
-		float Left;
-		float Right;
-	};
 	
-	DriveSpeed TryDirectionReverse(DriveSpeed, Joystick *);
-	DriveSpeed AddShaping(DriveSpeed, Joystick *);
-	DriveSpeed AddSpeedFactor(DriveSpeed, Joystick *);
-	DriveSpeed AddSpeedFactor(DriveSpeed, float);
-	DriveSpeed TryStraightening(DriveSpeed, Joystick *);
-	DriveSpeed AddTruncation(DriveSpeed);
 	float Truncate(float);
 public:
 	BaseJoystickController();
@@ -97,35 +74,6 @@ public:
 	void Run();
 	
 };
-
-
-/**
- * @brief
- * An experimental interface meant to help implement
- * braking.
- * 
- * @warning
- * Although this interface (in theory) adds braking,
- * the code for this requires both polishing and calibration.
- * Avoid using this without extensive real-life testing.
- */
-class IBrake
-{
-protected:
-	static const float kMaxAngle = 16.0;
-	static const float kFreezeMaxPower = 0.4;
-	static const float kBalanceMaxPower = 0.55;
-	
-	Gyro *mGyro;
-	Watchdog &mWatchdog;
-	
-public:
-	IBrake(Gyro *, Watchdog &);
-	float Freeze();
-	float Balance();
-	void Routine(RobotDrive *robotDrive);
-};
-
 
 
 /**

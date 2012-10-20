@@ -12,6 +12,7 @@
 
 #include "WPILib.h"
 #include "Definitions/components.h"
+#include "tools.h"
 
 /**
  * @brief A experimental class used to control a servo.

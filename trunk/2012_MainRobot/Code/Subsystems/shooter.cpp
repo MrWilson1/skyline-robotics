@@ -13,32 +13,13 @@ Shooter::Shooter(
 		SpeedController *topLeftSpeedController, 
 		SpeedController *topRightSpeedController,
 		SpeedController *bottomLeftSpeedController,
-		SpeedController *bottomRightSpeedController, 
-		RangeFinder *rangeFinder) : 
+		SpeedController *bottomRightSpeedController) : 
 		BaseComponent()
 {
 	mTopLeftSpeedController = topLeftSpeedController;
 	mTopRightSpeedController = topRightSpeedController;
 	mBottomLeftSpeedController = bottomLeftSpeedController;
 	mBottomRightSpeedController = bottomRightSpeedController;
-	mRangeFinder = rangeFinder;
-}
-
-/**
- * @brief Calculates the distance from the wall in inches.
- * 
- * @details
- * Uses both the rangefinder and camera to calculate distance
- * 
- * @todo Add code for the camera.
- * 
- * @todo Investigate if the logic in the method needs to be
- * moved elsewhere.
- */
-float Shooter::CalculateDistance()
-{
-	float distance = mRangeFinder->FromWallInches();
-	return distance;
 }
 
 /**
@@ -54,7 +35,7 @@ float Shooter::CalculateDistance()
  * 
  * @param[in] speed The speed of the motor (from -1.0 to 1.0).
  */
-void Shooter::SetSpeedManually(float speed)
+void Shooter::SetSpeed(float speed)
 {
 	float slowSpeed = speed * kReductionFactor;
 	
@@ -74,7 +55,7 @@ void Shooter::SetSpeedManually(float speed)
  * @param[in] topSpeed The speed of the top pair of motors
  * @param[out] bottomSpeed The speed of the bottom pair of motors
  */
-void Shooter::SetSpeedManually(float topSpeed, float bottomSpeed)
+void Shooter::SetSpeed(float topSpeed, float bottomSpeed)
 {
 	mTopLeftSpeedController->Set(topSpeed);
 	mTopRightSpeedController->Set(topSpeed * -1);
@@ -82,17 +63,24 @@ void Shooter::SetSpeedManually(float topSpeed, float bottomSpeed)
 	mBottomRightSpeedController->Set(bottomSpeed);
 }
 
-/**
- * @brief Makes the wheels spin at a raw speed given as the parameter.
- * 
- * @param[in] speed The speed of the motor (from -1.0 to 1.0).
- */
-void Shooter::SetTestSpeed(float speed)
+
+
+AutomaticShooterController::AutomaticShooterController(Shooter *shooter, Joystick *joystick, RangeFinder *rangeFinder) :
+		BaseController()
 {
-	mTopLeftSpeedController->Set(speed);
-	mTopRightSpeedController->Set(-1 * speed);
-	mBottomLeftSpeedController->Set(-1 * speed);
-	mBottomRightSpeedController->Set(speed);
+	mShooter = shooter;
+	mJoystick = joystick;
+	mRangeFinder = rangeFinder;
+}
+
+
+void AutomaticShooterController::Run()
+{
+	if (mJoystick->GetTrigger()) {
+		float calculatedSpeed = SetSpeedAutomatically();
+		mShooter->SetSpeed(calculatedSpeed);
+		SmartDashboard::GetInstance()->Log(calculatedSpeed, "(SHOOTER) Calculated ");
+	}
 }
 
 /**
@@ -109,16 +97,15 @@ void Shooter::SetTestSpeed(float speed)
  * @todo
  * Investigate if this needs to be moved into another class.
  */
-float Shooter::SetSpeedAutomatically()
+float AutomaticShooterController::SetSpeedAutomatically()
 {
-	float distance = Shooter::CalculateDistance();
-	float speed = Shooter::CalculateSpeed(distance);
+	float distance = CalculateDistance();
+	float speed = CalculateSpeed(distance);
 	
 	float coercedSpeed = Tools::Coerce(speed, kMinSpeed, kMaxSpeed, 0, 1);
 	
 	SmartDashboard::GetInstance()->Log(coercedSpeed, "(SHOOTER) Auto speed ");
 	
-	Shooter::SetSpeedManually(coercedSpeed);
 	return coercedSpeed;
 }
 
@@ -136,7 +123,7 @@ float Shooter::SetSpeedAutomatically()
  * @returns Returns the speed the speedControllers need to
  * turn to fire the ball and hit the hoop (from -1.0 to 1.0).
  */
-float Shooter::CalculateSpeed(float distance) {
+float AutomaticShooterController::CalculateSpeed(float distance) {
 	float pi = 4 * atan(1);
 	float height = kBasketHeight - kShooterHeight;
 	float angle = ( kShooterAngle * 2 * pi ) / ( 360 ); // converts from degrees to radians
@@ -153,8 +140,22 @@ float Shooter::CalculateSpeed(float distance) {
 	return speed;
 }
 
-
-
+/**
+ * @brief Calculates the distance from the wall in inches.
+ * 
+ * @details
+ * Uses both the rangefinder and camera to calculate distance
+ * 
+ * @todo Add code for the camera.
+ * 
+ * @todo Investigate if the logic in the method needs to be
+ * moved elsewhere.
+ */
+float AutomaticShooterController::CalculateDistance()
+{
+	float distance = mRangeFinder->FromWallInches();
+	return distance;
+}
 
 /**
  * @brief Constructor for ShooterController class.
@@ -205,17 +206,14 @@ void ShooterController::Run(void)
 	if (IsPressingPreset()) {
 		float out = GetPreset();
 		if (out >= 0) {
-			mShooter->SetSpeedManually(out);
+			mShooter->SetSpeed(out);
 			s->Log(out, "(SHOOTER) Preset ");
 		}
 	} else if (mJoystick->GetRawButton(2)) {
-		mShooter->SetSpeedManually(throttle);
+		mShooter->SetSpeed(throttle);
 		s->Log(throttle, "(SHOOTER) Manual ");
-	} else if (mJoystick->GetTrigger()) {
-		float calculatedSpeed = mShooter->SetSpeedAutomatically();
-		s->Log(calculatedSpeed, "(SHOOTER) Calculated ");
 	} else {
-		mShooter->SetSpeedManually(0);
+		mShooter->SetSpeed(0);
 	}
 }
 
@@ -286,15 +284,15 @@ void ShooterXboxController::Run(void)
 		float out = GetPreset();
 		if (out >= 0) {
 			mElevator->MoveUp();
-			mShooter->SetSpeedManually(out);
+			mShooter->SetSpeed(out);
 			s->Log(out, "(XBOX SHOOTER) Preset ");
 		}
 	} else if (mXbox->GetButton(mXbox->B)) {
 		mElevator->MoveDown();
-		mShooter->SetSpeedManually(0);
+		mShooter->SetSpeed(0);
 	} else {
 		mElevator->Stop();
-		mShooter->SetSpeedManually(0);
+		mShooter->SetSpeed(0);
 	}
 }
 
@@ -328,19 +326,6 @@ float ShooterXboxController::GetPreset()
 
 
 ///////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * @brief Constructor for CalibratedShooter.
@@ -385,8 +370,8 @@ void CalibratedShooterController::Run()
 	UpdatePresets();
 	
 	if (mJoystick->GetTrigger()) {
-		mShooter->SetSpeedManually(mTopSpeed, mBottomSpeed);
+		mShooter->SetSpeed(mTopSpeed, mBottomSpeed);
 	} else {
-		mShooter->SetSpeedManually(0);
+		mShooter->SetSpeed(0);
 	}
 }

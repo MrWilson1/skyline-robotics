@@ -32,6 +32,7 @@
 #include "../sensors.h"
 #include "../Subsystems/driving.h"
 #include "../Definitions/components.h"
+#include "../Definitions/ports.h"
 #include "../Subsystems/shooter.h"
 #include "../Subsystems/elevator.h"
 #include "../Client/xbox.h"

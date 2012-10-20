@@ -142,8 +142,7 @@ void MainRobot::InitializeComponents(void)
 			mTopLeftShooter,
 			mTopRightShooter,
 			mBottomLeftShooter,
-			mBottomRightShooter,
-			mRangeFinder);
+			mBottomRightShooter);
 	
 	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
 	//mArm = new SimpleArm(mArmSpeedController);

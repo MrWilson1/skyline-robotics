@@ -26,7 +26,7 @@
 #include "../Tracking/target.h"
 #include "../Client/xbox.h"
 #include "elevator.h"
-
+#include "../tools.h"
 
 /**
  * @brief Controls the shooter.
@@ -42,6 +42,24 @@ protected:
 	SpeedController *mTopRightSpeedController;
 	SpeedController *mBottomLeftSpeedController;
 	SpeedController *mBottomRightSpeedController;
+	
+	static const float kReductionFactor = 0.9;
+
+public:
+    Shooter(SpeedController*, SpeedController*, SpeedController*, SpeedController*);
+    void SetSpeed(float);
+    void SetSpeed(float, float);
+};
+
+
+/**
+ * @brief A shooter controller which attempts to control the shooter based on input and distance.
+ */
+class AutomaticShooterController : public BaseController
+{
+protected:
+	Shooter *mShooter;
+	Joystick *mJoystick;
 	RangeFinder *mRangeFinder;
 	static const float kShooterAngle = 45;
 	static const float kShooterHeight = 50;
@@ -53,11 +71,9 @@ protected:
 	static const float kMaxInitialVelocity = 336;
 
 public:
-    Shooter(SpeedController*, SpeedController*, SpeedController*, SpeedController*, RangeFinder*);
-    void SetSpeedManually(float);
-    void SetSpeedManually(float, float);
+    AutomaticShooterController(Shooter*, Joystick*, RangeFinder*);
+    void Run();
     float SetSpeedAutomatically();
-    void SetTestSpeed(float);
     float CalculateSpeed(float);
 	float CalculateDistance();
 };
