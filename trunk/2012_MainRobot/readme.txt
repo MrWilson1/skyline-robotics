@@ -1,53 +1,38 @@
-
 # Readme
+## Introduction
+This project contains the code needed to operate our robot for the 
+FIRST Robotics Competition (FRC) in 2011-2012 (Rebound Rumble) and 
+was written by team 2976 (the Spartabots).
 
-## Table of Contents
-    - Metadata
-    - About the game
-        - Overview
-        - Hybrid
-        - Teleoperated
-        - Balancing
-    - About the robot
-    - About the code
-    - Additional Notes
+## Code
+The code for this project can be found within the `/Code` directory.
 
- 
-## Metadata
-This is the code needed to operate the robot for the FIRST Robotics
-Competition (FRC).  Specifically, it's made for the 2011-2012 
-competition -- Robot Rumble.
+The code is written in C++ and was developed and compiled using a
+variant of WindRiver (which is actually a variant of Eclipse) specifically
+tailored towards FRC teams. To obtain a copy of WindRiver, please
+contact the current programming team lead.
 
-The code was written by Team 2976 (Skyline Spartabots)
+We use [Subversion][1] for source control. There are plugins available
+for Eclipse that let you use SVN from directly inside WindRiver. 
 
+## Documentation
+The detailed documentation -- including both a higher-level overview
+and specific information about various classes and methods -- can be
+found inside the `/Documentation` directory and was created using
+Doxygen.
 
-## About the Game
+The documentation assumes that you are familiar with the details of
+the 2011-2012 game. If not, we recommend you watch the following
+[youtube video][2] which provides a complete overview of the game.
 
-## Overview
-The goal of the game is to play basketball -- the robot will
-collect balls from the one side of the field, move to the other
-side, and score.  There are four baskets where you can try 
-scoring -- one low, two medium, and one high.
+The documentation should be in the form of a series of HTML files and
+can be viewed inside your web-browser.
 
-In the middle of the field is a small metal barrier.  Robots can 
-either attempt to cross over the metal barrier, or traverse
-bridges that across the barrier.  The bridges can pivot above the 
-metal barrier and must be pushed down in order to cross it.
+Instructions for modifying the Doxygen output from within WindRiver can
+be [found online][3].
 
-The game comprises of 3 phases: hybrid, teloperated, and balancing.
+## Footnotes
 
-### Hybrid
-Robots will be working autonomously.  A single robot on each side
-can be operated by a human via a Kinect.  Robots are able to
-score during this phase.
-
-### Teleoperated
-Robots will be human-controlled (from the driving station) to 
-attempt to score.
-
-## Balancing
-Robots will attempt to balance on the bridges across the metal
-barrier.
-
-
-
+[1]: http://subversion.apache.org/
+[2]: http://www.youtube.com/watch?v=nOXsdhZZSdM
+[3]: http://mcuoneclipse.wordpress.com/2012/06/25/5-best-eclipse-plugins-1-eclox-with-doxygen-graphviz-and-mscgen/

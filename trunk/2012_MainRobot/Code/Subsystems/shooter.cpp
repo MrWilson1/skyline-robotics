@@ -7,7 +7,6 @@
  * @param[in] topRightSpeedController Pointer to the top right speed controller.
  * @param[in] bottomLeftSpeedController Pointer to the bottom left speed controller.
  * @param[in] bottomRightSpeedController Pointer to the bottom right speed controller.
- * @param[in] rangeFinder Pointer to a RangeFinder instance.
  */
 Shooter::Shooter(
 		SpeedController *topLeftSpeedController, 

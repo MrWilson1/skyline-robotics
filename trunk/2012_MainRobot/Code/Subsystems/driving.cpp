@@ -161,7 +161,12 @@ TankJoysticks::TankJoysticks(
 void TankJoysticks::Run(void)
 {
 	DriveSpeed driveSpeed(mLeftJoystick->GetY(), mRightJoystick->GetY());
+	
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	
 	driveSpeed = Filter::SquareInput(driveSpeed);
+	
+	s->Log(driveSpeed.Left, "SquareInputLeft");
 	
 	if (mRightJoystick->GetRawButton(6)) {
 		mAreValuesSwapped = false;
@@ -178,10 +183,12 @@ void TankJoysticks::Run(void)
 	
 	driveSpeed = Filter::AddSpeedFactor(driveSpeed, GetSpeedFactor(mLeftJoystick));
 	
+	s->Log(driveSpeed.Left, "SpeedFactorLeft");
+	
 	if (mLeftJoystick->GetRawButton(3) or mRightJoystick->GetRawButton(3)) {
 		driveSpeed = Filter::Straighten(driveSpeed);	// Check both joysticks if the appropriate button is being pressed.
 	}
-	
+	s->Log(driveSpeed.Left, "StraightenLeft");
 	driveSpeed = Filter::AddTruncation(driveSpeed);
 	
 	SmartDashboard::GetInstance()->Log(driveSpeed.Left, "(TANK DRIVE) Left speed ");

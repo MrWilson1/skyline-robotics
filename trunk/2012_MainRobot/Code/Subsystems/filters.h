@@ -19,15 +19,14 @@ struct DriveSpeed
 
 namespace Filter
 {
-	DriveSpeed SquareInput(DriveSpeed);
-	DriveSpeed ReverseDirection(DriveSpeed);
+	struct DriveSpeed SquareInput(struct DriveSpeed);
+	struct DriveSpeed ReverseDirection(struct DriveSpeed);
 	
-	DriveSpeed AddSpeedFactor(DriveSpeed, float);
-	DriveSpeed Straighten(DriveSpeed);
-	DriveSpeed AddTruncation(DriveSpeed);
+	struct DriveSpeed AddSpeedFactor(struct DriveSpeed, float);
+	struct DriveSpeed Straighten(struct DriveSpeed);
+	struct DriveSpeed AddTruncation(struct DriveSpeed);
 	
 	float truncate(float);
-
 }
 
 #endif

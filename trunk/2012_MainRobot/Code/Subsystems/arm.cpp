@@ -33,7 +33,7 @@ BaseMotorArmComponent::~BaseMotorArmComponent()
 /**
  * @brief Constructor for GuardedArm (two limit switches) class.
  * 
- * @param[in] armMotor A pointer to the motor that controls the arm.
+ * @param[in] speedController A pointer to the motor that controls the arm.
  * @param[in] topLimit A pointer to the top limit switch.
  * @param[in] bottomLimit A pointer to the bottom limit switch.
  */

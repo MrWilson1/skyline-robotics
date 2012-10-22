@@ -1,7 +1,5 @@
 #include "filters.h"
 
-using namespace Filter;
-
 DriveSpeed::DriveSpeed()
 {
 	Left = 0.0;
@@ -22,7 +20,7 @@ DriveSpeed::DriveSpeed(float left, float right)
  * @brief Squares the input of both sides to allow more
  * sensitive driving when the joystick is pushed less.
  */
-DriveSpeed SquareInput(DriveSpeed ds)
+DriveSpeed Filter::SquareInput(struct DriveSpeed ds)
 {
 	DriveSpeed new_ds = DriveSpeed();
 	new_ds.Left = (ds.Left < 0) ? (-ds.Left * ds.Left) : (ds.Left * ds.Left);
@@ -30,7 +28,7 @@ DriveSpeed SquareInput(DriveSpeed ds)
 	return new_ds;
 }
 
-DriveSpeed ReverseDirection(DriveSpeed ds)
+DriveSpeed Filter::ReverseDirection(struct DriveSpeed ds)
 {
 	DriveSpeed new_ds = DriveSpeed();
 	new_ds.Left = -ds.Right;
@@ -38,15 +36,15 @@ DriveSpeed ReverseDirection(DriveSpeed ds)
 	return new_ds;
 }
 
-DriveSpeed AddSpeedFactor(DriveSpeed ds, float speedFactor) 
+DriveSpeed Filter::AddSpeedFactor(struct DriveSpeed ds, float speedFactor) 
 {	
 	DriveSpeed new_ds = DriveSpeed();
-	new_ds.Left *= speedFactor * ds.Left;
-	new_ds.Right *= speedFactor * ds.Right;
+	new_ds.Left = speedFactor * ds.Left;
+	new_ds.Right = speedFactor * ds.Right;
 	return new_ds;
 }
 
-DriveSpeed Straighten(DriveSpeed ds)
+DriveSpeed Filter::Straighten(struct DriveSpeed ds)
 {
 	DriveSpeed new_ds = DriveSpeed();
 	
@@ -57,7 +55,7 @@ DriveSpeed Straighten(DriveSpeed ds)
 	return new_ds;
 }
 
-DriveSpeed AddTruncation(DriveSpeed ds)
+DriveSpeed Filter::AddTruncation(struct DriveSpeed ds)
 {
 	DriveSpeed new_ds = DriveSpeed();
 	
@@ -67,7 +65,7 @@ DriveSpeed AddTruncation(DriveSpeed ds)
 	return new_ds;
 }
 
-float truncate(float value)
+float Filter::truncate(float value)
 {
 	float deadzone = 0.05;
 	

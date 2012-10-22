@@ -115,12 +115,14 @@ void MainRobot::InitializeInputDevices(void)
 	
 	mTwistJoystick = new Joystick(
 			Ports::Usb3);
-	mXboxController = new XboxController(
-			Ports::Usb4);
 	
+	//mXboxController = new XboxController(
+	//		Ports::Usb4);
+	/*
 	mKinect = Kinect::GetInstance();
 	mLeftKinectStick = new KinectStick::KinectStick(1);
 	mRightKinectStick = new KinectStick::KinectStick(2);
+	*/
 }
 
 /**
@@ -183,15 +185,17 @@ void MainRobot::InitializeControllers(void)
 			mKinect, 
 			mShooter, 
 			mArm));
+	controllers.push_back(new XboxDrive(
+			mRobotDrive, 
+			mXboxController));
 	mControllerCollection.push_back(new ControllerSwitcher(controllers));
 	
-	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
+	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	//mControllerCollection.push_back(new XboxDrive(mRobotDrive, mXboxController));
-	//TODO: enable the above after testing.
 	
-	//mControllerCollection.push_back(new CalibratedShooterController(mShooter, mTwistJoystick));
+	mControllerCollection.push_back(new CalibratedShooterController(mShooter, mTwistJoystick));
 	mControllerCollection.push_back(new ShooterController(mShooter, mTwistJoystick));
 	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
 	//mControllerCollection.push_back(new ShooterXboxController(mShooter, mElevator, mXboxController));
@@ -265,7 +269,7 @@ void MainRobot::OperatorControl(void)
 	GetWatchdog().SetEnabled(true);
 	
 	int collectionSize = (int) mControllerCollection.size();
-	
+	SmartDashboard::GetInstance()->Log("Test", "Test");
 	while (IsOperatorControl())
 	{
 		for(int i=0; i<collectionSize; i++) {
