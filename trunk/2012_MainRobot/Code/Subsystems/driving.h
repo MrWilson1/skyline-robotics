@@ -272,4 +272,15 @@ public:
 	void Run();	
 };
 
+class XboxDriveSingle : public BaseController
+{
+protected:
+	RobotDrive *mRobotDrive;
+	XboxController *mXboxController;
+	bool isRight;
+public:
+	XboxDriveSingle(RobotDrive *, XboxController *);
+	void Run();	
+};
+
 #endif

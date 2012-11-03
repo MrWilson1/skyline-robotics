@@ -9,13 +9,29 @@
 #include "Profiles/MainRobot.h"
 #include "Profiles/PrototypeRobot.h"
 
-//#define PROTOTYPE
+#define PROTOTYPE 1
+#define MAINROBOT 2
+/// Do not modify above
 
-#ifndef PROTOTYPE
-START_ROBOT_CLASS(MainRobot);
-#endif
+// Pick which robot you want to run here.
+// Your choices:
+//
+// #define ROBOT MAINROBOT 
+// ...to run the main robot.
+//
+// #define ROBOT PROTOTYPE
+// ...to run the prototype robot.
+//
+// Pick which one you want and replace the line
+// below.
 
-#ifdef PROTOTYPE
-START_ROBOT_CLASS(PrototypeRobot);
+#define ROBOT MAINROBOT
+
+/// Do not modify below
+
+#if ROBOT == MAINROBOT
+	START_ROBOT_CLASS(MainRobot);
+#elif ROBOT == PROTOTYPE
+	START_ROBOT_CLASS(PrototypeRobot);
 #endif
 

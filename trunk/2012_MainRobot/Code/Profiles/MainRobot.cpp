@@ -109,15 +109,15 @@ void MainRobot::InitializeHardware(void)
 void MainRobot::InitializeInputDevices(void)
 {
 	mLeftJoystick = new Joystick(
-			Ports::Usb1);
-	mRightJoystick = new Joystick(
 			Ports::Usb2);
-	
-	mTwistJoystick = new Joystick(
+	mRightJoystick = new Joystick(
 			Ports::Usb3);
 	
-	//mXboxController = new XboxController(
-	//		Ports::Usb4);
+	mTwistJoystick = new Joystick(
+			Ports::Usb4);
+	
+	mXboxController = new XboxController(
+			Ports::Usb1);
 	/*
 	mKinect = Kinect::GetInstance();
 	mLeftKinectStick = new KinectStick::KinectStick(1);
@@ -168,7 +168,7 @@ void MainRobot::InitializeControllers(void)
 			mRobotDrive, 
 			mLeftJoystick, 
 			mRightJoystick));
-	controllers.push_back(new SafetyMode(
+	/*controllers.push_back(new SafetyMode(
 			mRobotDrive,
 			mLeftJoystick,
 			mRightJoystick,
@@ -184,9 +184,12 @@ void MainRobot::InitializeControllers(void)
 			mRightKinectStick, 
 			mKinect, 
 			mShooter, 
-			mArm));
+			mArm));*/
 	controllers.push_back(new XboxDrive(
 			mRobotDrive, 
+			mXboxController));
+	controllers.push_back(new XboxDriveSingle(
+			mRobotDrive,
 			mXboxController));
 	mControllerCollection.push_back(new ControllerSwitcher(controllers));
 	

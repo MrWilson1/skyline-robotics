@@ -733,5 +733,42 @@ void XboxDrive::Run() {
 	float movement = mXboxController->GetAxis(mXboxController->LeftY);
 	float rotation = mXboxController->GetAxis(mXboxController->RightX);
 
+	// TODO: refactor this duplicate code
+	const float rotation_decrease_factor = 0.7;
+	rotation *= rotation_decrease_factor;
+	
+	mRobotDrive->ArcadeDrive(movement, rotation, true);
+}
+
+
+XboxDriveSingle::XboxDriveSingle(RobotDrive *robotDrive, XboxController *xboxController) :
+	BaseController() 
+{
+	mRobotDrive = robotDrive;
+	mXboxController = xboxController;
+	isRight = true;
+}
+
+void XboxDriveSingle::Run() {
+	float movement;
+	float rotation;
+	if (isRight) {
+		movement = mXboxController->GetAxis(mXboxController->RightY);
+		rotation = mXboxController->GetAxis(mXboxController->RightX);
+	} else {
+		movement = mXboxController->GetAxis(mXboxController->LeftY);
+		rotation = mXboxController->GetAxis(mXboxController->LeftX);
+	}
+	
+	if (mXboxController->GetButton(mXboxController->B)) {
+		isRight = true;
+	} else if (mXboxController->GetButton(mXboxController->X)) {
+		isRight = false;
+	}
+	
+	// TODO: refactor this duplicate code
+	const float rotation_decrease_factor = 0.7;
+	rotation *= rotation_decrease_factor;
+	
 	mRobotDrive->ArcadeDrive(movement, rotation, true);
 }
