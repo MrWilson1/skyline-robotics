@@ -204,8 +204,7 @@ void MainRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new ShooterXboxController(mShooter, mElevator, mXboxController));
 	//TODO: enable the above after testing.
 	
-	mControllerCollection.push_back(new MotorArmController(mArm, mLeftJoystick));
-	
+	mControllerCollection.push_back(new ArmController(mArm, mLeftJoystick));
 	
 	
 	//mControllerCollection.push_back(new XboxTest(mXboxController));

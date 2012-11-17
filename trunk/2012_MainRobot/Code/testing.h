@@ -10,6 +10,7 @@
 #ifndef _TESTING_H
 #define _TESTING_H
 
+#include <string>
 #include "WPILib.h"
 #include "Definitions/components.h"
 #include "tools.h"
@@ -21,9 +22,7 @@
  * 
  * @warning This class does not require a Component -- 
  * although this is a controller, it manipulates the 
- * servo directly.  
- * 
- * @attention This class thus far is bug-free.
+ * servo directly.
  */
 class ServoController : public BaseController
 {
@@ -32,6 +31,17 @@ protected:
 	
 public:
 	ServoController(Servo *);
+	void Run();
+};
+
+class EncoderTestController : public BaseController
+{
+protected:
+	Encoder *mEncoder;
+	string mPreviousCommand;
+	
+public:
+	EncoderTestController(Encoder *);
 	void Run();
 };
 

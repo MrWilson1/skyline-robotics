@@ -57,6 +57,7 @@ class BaseController
 {
 public:
 	BaseController();
+	virtual ~BaseController() = 0;
 	virtual void Run() = 0;
 };
 
@@ -79,6 +80,7 @@ class BaseComponent
 {
 public:
 	BaseComponent();
+	virtual ~BaseComponent() = 0;
 };
 
 
