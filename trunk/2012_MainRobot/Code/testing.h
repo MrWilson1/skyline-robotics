@@ -45,4 +45,14 @@ public:
 	void Run();
 };
 
+class VariableValveTestController : public BaseController
+{
+protected:
+	
+	
+public:
+	VariableValveTestController();
+	void Run();
+};
+
 #endif

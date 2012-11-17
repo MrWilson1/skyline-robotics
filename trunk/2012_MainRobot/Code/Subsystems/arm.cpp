@@ -382,6 +382,8 @@ void ArmController::Run() {
 		mArm->GoUp();
 	} else if ( armDown ) {
 		mArm->GoDown();
+	} else {
+		mArm->Stop();
 	}
 }
 

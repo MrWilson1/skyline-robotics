@@ -36,6 +36,7 @@
 #include "../Subsystems/shooter.h"
 #include "../Subsystems/elevator.h"
 #include "../Client/xbox.h"
+#include "../communication.h"
 
 /**
  * @brief This class bundles together everything to ultimately

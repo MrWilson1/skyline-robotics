@@ -38,7 +38,7 @@ EncoderTestController::EncoderTestController(Encoder *encoder) :
 	printf("Testing Encoder");
 	SmartDashboard::GetInstance()->Log("Encoder test initialized", "(ENCODER TEST) status:");
 	SmartDashboard::GetInstance()->PutString("(ENCODER TEST) command <<", "deactivate");
-	mPreviousCommand = "deactivate";
+	//mPreviousCommand = "deactivate";
 }
 
 void EncoderTestController::Run()
