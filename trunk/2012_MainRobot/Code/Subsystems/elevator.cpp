@@ -3,13 +3,11 @@
 /**
  * @brief Creates an instance of this class.
  * 
- * @param[in] bottomLimitSwitch Pointer to the bottom limit switch.
- * @param[in] topLimitSwitch Pointer to the top limit switch.
  * @param[in] speedController Pointer to the elevator speed controller.
  */
-Elevator::Elevator(DigitalInput *bottomLimitSwitch, SpeedController *speedController)
+Elevator::Elevator(SpeedController *speedController)
 {
-	mBottomLimitSwitch = bottomLimitSwitch;
+	//mBottomLimitSwitch = bottomLimitSwitch;
 	//mTopLimitSwitch = topLimitSwitch;
 	mSpeedController = speedController;
 }
@@ -26,9 +24,9 @@ Elevator::~Elevator()
  * @brief Checks to see if there is a ball
  * in the bottom of the elevator.
  */
-bool Elevator::IsBallAtBottom(void) {
+/*bool Elevator::IsBallAtBottom(void) {
 	return (bool) mBottomLimitSwitch->Get();
-}
+}*/
 
 /**
  * @brief Checks to see if there is a ball
@@ -107,5 +105,5 @@ void ElevatorController::Run(void) {
 	}
 	
 	//SmartDashboard::GetInstance()->Log(mElevator->IsBallAtTop(), "(ELEVATOR) Ball at top ");
-    SmartDashboard::GetInstance()->Log(mElevator->IsBallAtBottom(), "(ELEVATOR) Ball at bottom ");
+    //SmartDashboard::GetInstance()->Log(mElevator->IsBallAtBottom(), "(ELEVATOR) Ball at bottom ");
 }

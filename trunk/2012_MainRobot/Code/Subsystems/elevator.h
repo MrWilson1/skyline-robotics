@@ -20,15 +20,13 @@
 class Elevator : public BaseComponent
 {
 protected:
-	DigitalInput *mBottomLimitSwitch;
-	//DigitalInput *mTopLimitSwitch;
 	SpeedController *mSpeedController; 	// Controls the belt
 	static const float kDefaultSpeed = -1.0;		// -1.0 to 1.0
 	
 public:
-	Elevator(DigitalInput *, SpeedController *);
+	Elevator(SpeedController *);
 	~Elevator();
-	bool IsBallAtBottom();
+	//bool IsBallAtBottom();
 	//bool IsBallAtTop();
 	void Stop();
 	void MoveUp();

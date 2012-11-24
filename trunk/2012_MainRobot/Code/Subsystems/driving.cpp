@@ -767,8 +767,8 @@ void XboxDriveSingle::Run() {
 	}
 	
 	// TODO: refactor this duplicate code
-	const float rotation_decrease_factor = 0.7;
-	rotation *= rotation_decrease_factor;
+	//const float rotation_decrease_factor = 0.7;
+	//rotation *= rotation_decrease_factor;
 	
 	mRobotDrive->ArcadeDrive(movement, rotation, true);
 }

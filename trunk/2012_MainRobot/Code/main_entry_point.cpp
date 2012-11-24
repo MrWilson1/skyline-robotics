@@ -25,7 +25,8 @@
 // Pick which one you want and replace the line
 // below.
 
-#define ROBOT MAINROBOT
+//#define ROBOT MAINROBOT
+#define ROBOT PROTOTYPE
 
 /// Do not modify below
 

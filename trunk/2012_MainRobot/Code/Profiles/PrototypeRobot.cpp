@@ -47,6 +47,10 @@ void PrototypeRobot::InitializeHardware(void)
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm4);
 	
+	mElevatorMotor = new Victor(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm5);
+	
 	mRobotDrive = new RobotDrive(
 			mLeftFrontDrive,
 			mLeftBackDrive,
@@ -65,10 +69,11 @@ void PrototypeRobot::InitializeHardware(void)
 			Ports::Crio::Module1,
 			Ports::Crio::SolenoidBreakout2);
 	
-	mServo = new Servo(
+	mEncoder = new Encoder(
 			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Pwm6
-	);
+			Ports::DigitalSidecar::Gpio2,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio4);
 	return;
 }
 
@@ -90,9 +95,9 @@ void PrototypeRobot::InitializeInputDevices(void)
 	mTwistJoystick = new Joystick(
 			Ports::Usb3);
 	
-	mKinect = Kinect::GetInstance();
-	mLeftKinectStick = new KinectStick::KinectStick(1);
-	mRightKinectStick = new KinectStick::KinectStick(2);
+	//mKinect = Kinect::GetInstance();
+	//mLeftKinectStick = new KinectStick::KinectStick(1);
+	//mRightKinectStick = new KinectStick::KinectStick(2);
 }
 
 /**
@@ -110,6 +115,7 @@ void PrototypeRobot::InitializeInputDevices(void)
 void PrototypeRobot::InitializeComponents(void)
 {
 	mPneumaticArm = new PneumaticArm(mCompressor, mSolenoid1, mSolenoid2);
+	mElevator = new Elevator(mElevatorMotor);
 }
 
 /**
@@ -123,41 +129,31 @@ void PrototypeRobot::InitializeComponents(void)
  */
 void PrototypeRobot::InitializeControllers(void)
 {
-	/*
+	
 	vector<BaseController *> controllers;
 	controllers.push_back(new TankJoysticks(
 			mRobotDrive, 
 			mLeftJoystick, 
 			mRightJoystick));
-	controllers.push_back(new SafetyMode(
-			mRobotDrive,
-			mLeftJoystick,
-			mRightJoystick,
-			mTwistJoystick));
 	controllers.push_back(new SingleJoystick(
 			mRobotDrive, 
 			mTwistJoystick));
 	controllers.push_back(new MinimalistDrive(
 			mRobotDrive));
-	controllers.push_back(new KinectAngleController(
-			mRobotDrive, 
-			mLeftKinectStick, 
-			mRightKinectStick, 
-			mKinect, 
-			mShooter, 
-			mArm));
 	mControllerCollection.push_back(new ControllerSwitcher(controllers));
-	*/
+	
 	 
-	mControllerCollection.push_back(new ArcadeJoystick(mRobotDrive, mLeftJoystick));
+	//mControllerCollection.push_back(new ArcadeJoystick(mRobotDrive, mLeftJoystick));
 	
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
 	//mControllerCollection.push_back(new MinimalistDrive(mRobotDrive));
 	
-	mControllerCollection.push_back(new ArmController(mPneumaticArm, mLeftJoystick));
-	mControllerCollection.push_back(new ServoController(mServo));
+	//mControllerCollection.push_back(new ArmController(mPneumaticArm, mLeftJoystick));
+	//mControllerCollection.push_back(new ServoController(mServo));
+	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
 	
+	mControllerCollection.push_back(new EncoderTestController(mEncoder));
 	return;
 }
 

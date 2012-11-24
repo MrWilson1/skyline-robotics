@@ -55,8 +55,8 @@ void MainRobot::InitializeHardware(void)
 			mRightBackDrive);
 	mRobotDrive->SetInvertedMotor(mRobotDrive->kFrontLeftMotor, true);
 	mRobotDrive->SetInvertedMotor(mRobotDrive->kRearLeftMotor, true);
-	mRobotDrive->SetInvertedMotor(mRobotDrive->kFrontRightMotor, true);
-	mRobotDrive->SetInvertedMotor(mRobotDrive->kRearRightMotor, true);
+	//mRobotDrive->SetInvertedMotor(mRobotDrive->kFrontRightMotor, true);
+	//mRobotDrive->SetInvertedMotor(mRobotDrive->kRearRightMotor, true);
 	
 	mTopLeftShooter = new Jaguar(
 			Ports::Crio::Module1,
@@ -146,7 +146,8 @@ void MainRobot::InitializeComponents(void)
 			mBottomLeftShooter,
 			mBottomRightShooter);
 	
-	mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
+	//mElevator = new Elevator(mElevatorBottomLimitSwitch, mElevatorSpeedController);
+	mElevator = new Elevator(mElevatorSpeedController);
 	//mArm = new SimpleArm(mArmSpeedController);
 	//mArm = new SingleGuardedArm(mArmSpeedController, mElevatorBottomLimitSwitch);
 	mArm = new GuardedArm(mArmSpeedController, mTopLimit, mBottomLimit);

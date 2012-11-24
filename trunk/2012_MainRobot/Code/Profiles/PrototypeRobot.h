@@ -30,6 +30,7 @@
 // Program modules
 #include "../Subsystems/arm.h"
 #include "../Subsystems/driving.h"
+#include "../Subsystems/elevator.h"
 #include "../testing.h"
 #include "../Definitions/components.h"
 #include "../Definitions/ports.h"
@@ -69,25 +70,24 @@ protected:
 	SpeedController *mLeftFrontDrive;
 	SpeedController *mLeftBackDrive;
 	SpeedController *mRightFrontDrive;
-	SpeedController *mRightBackDrive;	
+	SpeedController *mRightBackDrive;
+	
+	SpeedController *mElevatorMotor;
 
 	Compressor *mCompressor;
 	Solenoid *mSolenoid1;
 	Solenoid *mSolenoid2;
 	
-	Servo *mServo;
+	Encoder *mEncoder;
 	
 	// Input devices
 	Joystick *mLeftJoystick;
 	Joystick *mRightJoystick;
 	Joystick *mTwistJoystick;
-	Kinect *mKinect;
 	
 	// Components
-	KinectStick *mLeftKinectStick;
-	KinectStick *mRightKinectStick;
 	BaseMotorArmComponent *mArm;
-	
+	Elevator *mElevator;
 	PneumaticArm *mPneumaticArm;
 	
 	// Controller -- see controller.h
