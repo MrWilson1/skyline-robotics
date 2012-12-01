@@ -31,6 +31,7 @@
 #include "../Subsystems/arm.h"
 #include "../Subsystems/driving.h"
 #include "../Subsystems/elevator.h"
+#include "../Subsystems/pid_drive.h"
 #include "../testing.h"
 #include "../Definitions/components.h"
 #include "../Definitions/ports.h"
@@ -65,7 +66,8 @@ private:
 	
 protected:
 	// Hardware
-	RobotDrive *mRobotDrive;
+	//RobotDrive *mRobotDrive;
+	PidDrive *mPidDrive;
 	
 	SpeedController *mLeftFrontDrive;
 	SpeedController *mLeftBackDrive;
@@ -78,7 +80,8 @@ protected:
 	Solenoid *mSolenoid1;
 	Solenoid *mSolenoid2;
 	
-	Encoder *mEncoder;
+	Encoder *mLeftEncoder;
+	Encoder *mRightEncoder;
 	
 	// Input devices
 	Joystick *mLeftJoystick;

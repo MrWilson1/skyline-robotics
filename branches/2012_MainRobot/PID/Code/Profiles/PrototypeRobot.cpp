@@ -50,13 +50,14 @@ void PrototypeRobot::InitializeHardware(void)
 	mElevatorMotor = new Victor(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm5);
-	
+	/*
 	mRobotDrive = new RobotDrive(
 			mLeftFrontDrive,
 			mLeftBackDrive,
 			mRightFrontDrive,
 			mRightBackDrive);
-	
+	*/
+
 	mCompressor = new Compressor(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio14,
@@ -69,11 +70,25 @@ void PrototypeRobot::InitializeHardware(void)
 			Ports::Crio::Module1,
 			Ports::Crio::SolenoidBreakout2);
 	
-	mEncoder = new Encoder(
+	mLeftEncoder = new Encoder(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio2,
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio4);
+	
+	mRightEncoder = new Encoder(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio5,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio6);
+	
+	mPidDrive = new PidDrive(
+				mLeftFrontDrive,
+				mLeftBackDrive,
+				mRightFrontDrive,
+				mRightBackDrive,
+				mLeftEncoder,
+				mRightEncoder);
 	return;
 }
 
@@ -130,7 +145,7 @@ void PrototypeRobot::InitializeComponents(void)
 void PrototypeRobot::InitializeControllers(void)
 {
 	
-	vector<BaseController *> controllers;
+	/*vector<BaseController *> controllers;
 	controllers.push_back(new TankJoysticks(
 			mRobotDrive, 
 			mLeftJoystick, 
@@ -141,8 +156,10 @@ void PrototypeRobot::InitializeControllers(void)
 	controllers.push_back(new MinimalistDrive(
 			mRobotDrive));
 	mControllerCollection.push_back(new ControllerSwitcher(controllers));
+	*/
 	
-	 
+	mControllerCollection.push_back(new PidDriveController(mPidDrive, mLeftJoystick, mRightJoystick));
+	
 	//mControllerCollection.push_back(new ArcadeJoystick(mRobotDrive, mLeftJoystick));
 	
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
@@ -153,7 +170,7 @@ void PrototypeRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new ServoController(mServo));
 	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
 	
-	mControllerCollection.push_back(new EncoderTestController(mEncoder));
+	
 	return;
 }
 
