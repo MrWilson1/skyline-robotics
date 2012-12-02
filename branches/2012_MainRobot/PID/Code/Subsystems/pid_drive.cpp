@@ -47,13 +47,27 @@ PidDrive::PidDrive(SpeedController *leftFrontDrive,
 	
 	// Implementing PIDController:
 	// PIDController(proportional, integral, derivative, PIDSource, PIDOutput)
-	mLeftPid = new SendablePIDController(1.0, 0, 0, mLeftEncoderSource, mLeftTread);
-	mRightPid = new SendablePIDController(1.0, 0, 0, mRightEncoderSource, mRightTread);
+	mLeftPid = new PIDController(1.0, 0, 0, mLeftEncoderSource, mLeftTread);
+	mRightPid = new PIDController(1.0, 0, 0, mRightEncoderSource, mRightTread);
 	
 	mLeftPid->SetOutputRange(-1.0, 1.0);
 	mRightPid->SetOutputRange(-1.0, 1.0);
 	
 	mState = kManual;
+	
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	s->PutString("Left P", "1.0");
+	s->PutString("Left I", "0.0");
+	s->PutString("Left D", "0.0");
+	
+	s->PutString("Right P", "1.0");
+	s->PutString("Right I", "0.0");
+	s->PutString("Right D", "0.0");
+	
+	s->PutString("PID Tune", "disable");
+	s->PutString("PID Enabled", "enable");
+	mLeftPid->Enable();
+	mRightPid->Enable();
 }
 
 PidDrive::~PidDrive()
@@ -84,20 +98,67 @@ PidDrive::State PidDrive::GetState()
 
 void PidDrive::TankDrive(float left, float right)
 {
-	SmartDashboard::GetInstance()->PutData("Left PID:", mLeftPid);
-	SmartDashboard::GetInstance()->PutData("Right PID:", mRightPid);
+	// temporary
+	left = -left;
 	
-	if (mState == kManual) {
-		mLeftPid->SetSetpoint(left);
-		mRightPid->SetSetpoint(right);
-	} else if (mState == kStraight) {
-		float speed = (left + right) / 2;
-		mLeftPid->SetSetpoint(speed);
-		mRightPid->SetSetpoint(speed);
-	} else if (mState == kHalt) {
-		mLeftPid->SetSetpoint(0);
-		mRightPid->SetSetpoint(0);
+	SmartDashboard *s = SmartDashboard::GetInstance();
+	float left_p = Tools::StringToFloat(s->GetString("Left P"));
+	float left_i = Tools::StringToFloat(s->GetString("Left I"));
+	float left_d = Tools::StringToFloat(s->GetString("Left D"));
+	
+	float right_p = Tools::StringToFloat(s->GetString("Right P"));
+	float right_i = Tools::StringToFloat(s->GetString("Right I"));
+	float right_d = Tools::StringToFloat(s->GetString("Right D"));
+	
+	string tune = s->GetString("PID Tune");
+	if (tune != "disable") {
+		mLeftPid->Disable();
+		mRightPid->Disable();
+		mLeftPid->SetPID(left_p, left_i, left_d);
+		mRightPid->SetPID(right_p, right_i, right_d);
+		mLeftPid->Enable();
+		mRightPid->Enable();
+		s->PutString("PID Tune", "disable");
 	}
+
+	string pidState = s->GetString("PID Enabled");
+	if (pidState == "enable") {
+		if (mState == kManual) {
+			s->Log("Manual", "PID Drive state");
+			mLeftPid->SetSetpoint(left);
+			mRightPid->SetSetpoint(right);
+		} else if (mState == kStraight) {
+			s->Log("Straight", "PID Drive state");
+			float speed = (left + right) / 2;
+			mLeftPid->SetSetpoint(speed);
+			mRightPid->SetSetpoint(speed);
+		} else if (mState == kHalt) {
+			s->Log("Halt", "PID Drive state");
+			mLeftPid->SetSetpoint(0);
+			mRightPid->SetSetpoint(0);
+		}
+	} else {
+		if (mState == kManual) {
+			s->Log("Manual no PID", "PID Drive state");
+			mLeftTread->PIDWrite(left);
+			mRightTread->PIDWrite(right);
+		} else if (mState == kStraight) {
+			s->Log("Straight no PID", "PID Drive state");
+			float speed = (left + right) / 2;
+			mLeftTread->PIDWrite(speed);
+			mRightTread->PIDWrite(speed);
+		} else if (mState == kHalt) {
+			s->Log("Halt", "PID Drive state");
+			mLeftTread->PIDWrite(0);
+			mRightTread->PIDWrite(0);
+		}
+	}
+	
+	
+	s->Log(left, "Input left");
+	s->Log(right, "Input right");
+	s->Log(mLeftPid->Get(), "Output left");
+	s->Log(mRightPid->Get(), "Output right");
 }
 
 

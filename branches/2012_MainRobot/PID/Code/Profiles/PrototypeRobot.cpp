@@ -56,7 +56,7 @@ void PrototypeRobot::InitializeHardware(void)
 			mLeftBackDrive,
 			mRightFrontDrive,
 			mRightBackDrive);
-	*/
+	/*/
 
 	mCompressor = new Compressor(
 			Ports::Crio::Module1,
@@ -78,10 +78,10 @@ void PrototypeRobot::InitializeHardware(void)
 	
 	mRightEncoder = new Encoder(
 			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio5,
+			Ports::DigitalSidecar::Gpio9,
 			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio6);
-	
+			Ports::DigitalSidecar::Gpio10);
+	//*
 	mPidDrive = new PidDrive(
 				mLeftFrontDrive,
 				mLeftBackDrive,
@@ -89,6 +89,7 @@ void PrototypeRobot::InitializeHardware(void)
 				mRightBackDrive,
 				mLeftEncoder,
 				mRightEncoder);
+	//			*/
 	return;
 }
 
@@ -145,7 +146,8 @@ void PrototypeRobot::InitializeComponents(void)
 void PrototypeRobot::InitializeControllers(void)
 {
 	
-	/*vector<BaseController *> controllers;
+	/*
+	vector<BaseController *> controllers;
 	controllers.push_back(new TankJoysticks(
 			mRobotDrive, 
 			mLeftJoystick, 
@@ -156,7 +158,7 @@ void PrototypeRobot::InitializeControllers(void)
 	controllers.push_back(new MinimalistDrive(
 			mRobotDrive));
 	mControllerCollection.push_back(new ControllerSwitcher(controllers));
-	*/
+	//*/
 	
 	mControllerCollection.push_back(new PidDriveController(mPidDrive, mLeftJoystick, mRightJoystick));
 	

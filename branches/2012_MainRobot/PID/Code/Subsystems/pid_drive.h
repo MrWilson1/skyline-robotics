@@ -47,8 +47,8 @@ protected:
 	EncoderSource *mRightEncoderSource;
 	Tread *mLeftTread;
 	Tread *mRightTread;
-	SendablePIDController *mLeftPid;
-	SendablePIDController *mRightPid;
+	PIDController *mLeftPid;
+	PIDController *mRightPid;
 	State mState;
 };
 
