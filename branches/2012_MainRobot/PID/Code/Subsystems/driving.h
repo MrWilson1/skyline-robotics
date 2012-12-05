@@ -89,7 +89,7 @@ protected:
 	const char *mLabel;
 	
 public:
-	ControllerSwitcher(vector<BaseController*>);
+	ControllerSwitcher(vector<BaseController*>, const char*);
 	virtual ~ControllerSwitcher();
 	void Run();
 };

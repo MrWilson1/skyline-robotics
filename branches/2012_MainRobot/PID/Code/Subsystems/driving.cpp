@@ -51,14 +51,15 @@ void BaseJoystickController::Stop(RobotDrive *robotDrive)
  * to all the controllers you want to switch between.
  */
 ControllerSwitcher::ControllerSwitcher(
-		vector<BaseController*> controllers) :
+		vector<BaseController*> controllers,
+		const char *label) :
 		BaseController()
 {
 	mControllers = controllers;
 		
 	mControllerSize = (int) mControllers.size();
 	
-	mLabel = "(CONTROLLER) << ";
+	mLabel = label;
 	
 	SmartDashboard::GetInstance()->PutString(mLabel, "0");
 }
@@ -161,6 +162,21 @@ TankJoysticks::TankJoysticks(
 void TankJoysticks::Run(void)
 {
 	DriveSpeed driveSpeed(mLeftJoystick->GetY(), mRightJoystick->GetY());
+	
+	/*
+	float x = mLeftJoystick->GetX();
+	float y = mLeftJoystick->GetY();
+	float left = y - 0.5 * x;
+	float right = y + 0.5 * x;
+	
+	if (left > 1.0) left = 1.0;
+	else if (left < -1.0) left = -1.0;
+	
+	if (right > 1.0) right = 1.0;
+	else if (right < -1.0) right = -1.0;
+	
+	DriveSpeed driveSpeed(left, right);
+	*/
 	
 	SmartDashboard *s = SmartDashboard::GetInstance();
 	

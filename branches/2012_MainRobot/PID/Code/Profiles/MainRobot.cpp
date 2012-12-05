@@ -189,10 +189,7 @@ void MainRobot::InitializeControllers(void)
 	controllers.push_back(new XboxDrive(
 			mRobotDrive, 
 			mXboxController));
-	controllers.push_back(new XboxDriveSingle(
-			mRobotDrive,
-			mXboxController));
-	mControllerCollection.push_back(new ControllerSwitcher(controllers));
+	mControllerCollection.push_back(new ControllerSwitcher(controllers, "(CONTROLLER) << "));
 	
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick));
 	//mControllerCollection.push_back(new SingleJoystick(mRobotDrive, mTwistJoystick));
