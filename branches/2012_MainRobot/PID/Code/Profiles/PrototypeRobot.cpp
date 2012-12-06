@@ -56,7 +56,7 @@ void PrototypeRobot::InitializeHardware(void)
 			mLeftBackDrive,
 			mRightFrontDrive,
 			mRightBackDrive);
-	/*/
+	//*/
 
 	mCompressor = new Compressor(
 			Ports::Crio::Module1,
@@ -72,15 +72,18 @@ void PrototypeRobot::InitializeHardware(void)
 	
 	mLeftEncoder = new Encoder(
 			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio9,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio10);
+	mLeftEncoder->SetDistancePerPulse(1.0 / 1440.0);
+	
+	mRightEncoder = new Encoder(
+			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio2,
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio4);
 	
-	mRightEncoder = new Encoder(
-			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio9,
-			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio10);
+	
 	//*
 	mPidDrive = new PidDrive(
 				mLeftFrontDrive,
@@ -157,7 +160,7 @@ void PrototypeRobot::InitializeControllers(void)
 			mTwistJoystick));
 	controllers.push_back(new MinimalistDrive(
 			mRobotDrive));
-	mControllerCollection.push_back(new ControllerSwitcher(controllers));
+	mControllerCollection.push_back(new ControllerSwitcher(controllers, "CONTROLLER >>"));
 	//*/
 	
 	mControllerCollection.push_back(new PidDriveController(mPidDrive, mLeftJoystick, mRightJoystick));
@@ -171,6 +174,8 @@ void PrototypeRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new ArmController(mPneumaticArm, mLeftJoystick));
 	//mControllerCollection.push_back(new ServoController(mServo));
 	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
+	
+	mControllerCollection.push_back(new EncoderTestController(mLeftEncoder));
 	
 	
 	return;

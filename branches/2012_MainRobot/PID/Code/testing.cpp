@@ -69,4 +69,5 @@ void EncoderTestController::Run()
 	s->Log(mEncoder->GetDirection(), "(ENCODER TEST) GetDirection:");
 	s->Log(mEncoder->GetDistance(), "(ENCODER TEST) GetDistance:");
 	s->Log(mEncoder->GetRate(), "(ENCODER TEST) GetRate:");
+	s->Log(mEncoder->PIDGet(), "(ENCODER TEST) PIDGet:");
 }

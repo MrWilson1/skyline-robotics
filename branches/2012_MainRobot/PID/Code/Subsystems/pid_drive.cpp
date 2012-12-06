@@ -5,6 +5,7 @@ EncoderSource::EncoderSource(Encoder *encoder) :
 {
 	mEncoder = encoder;
 	mEncoder->SetPIDSourceParameter(mEncoder->kRate);
+	mEncoder->Start();
 	// Set pulse distance here?
 }
 
@@ -47,8 +48,8 @@ PidDrive::PidDrive(SpeedController *leftFrontDrive,
 	
 	// Implementing PIDController:
 	// PIDController(proportional, integral, derivative, PIDSource, PIDOutput)
-	mLeftPid = new PIDController(1.0, 0, 0, mLeftEncoderSource, mLeftTread);
-	mRightPid = new PIDController(1.0, 0, 0, mRightEncoderSource, mRightTread);
+	mLeftPid = new PIDController(0, 0, 0, mLeftEncoderSource, mLeftTread);
+	mRightPid = new PIDController(0, 0, 0, mRightEncoderSource, mRightTread);
 	
 	mLeftPid->SetOutputRange(-1.0, 1.0);
 	mRightPid->SetOutputRange(-1.0, 1.0);
@@ -138,6 +139,8 @@ void PidDrive::TankDrive(float left, float right)
 			mRightPid->SetSetpoint(0);
 		}
 	} else {
+		mLeftPid->Disable();
+		mRightPid->Disable();
 		if (mState == kManual) {
 			s->Log("Manual no PID", "PID Drive state");
 			mLeftTread->PIDWrite(left);
@@ -152,6 +155,8 @@ void PidDrive::TankDrive(float left, float right)
 			mLeftTread->PIDWrite(0);
 			mRightTread->PIDWrite(0);
 		}
+		mLeftPid->Enable();
+		mRightPid->Enable();		
 	}
 	
 	
@@ -159,6 +164,8 @@ void PidDrive::TankDrive(float left, float right)
 	s->Log(right, "Input right");
 	s->Log(mLeftPid->Get(), "Output left");
 	s->Log(mRightPid->Get(), "Output right");
+	s->Log(mLeftEncoderSource->mEncoder->GetRate(), "Left Encoder Rate");
+	s->Log(mRightEncoderSource->mEncoder->GetRate(), "Right Encoder Rate");
 }
 
 

@@ -66,7 +66,7 @@ private:
 	
 protected:
 	// Hardware
-	//RobotDrive *mRobotDrive;
+	RobotDrive *mRobotDrive;
 	PidDrive *mPidDrive;
 	
 	SpeedController *mLeftFrontDrive;
