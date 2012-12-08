@@ -84,9 +84,13 @@ protected:
 	Encoder *mRightEncoder;
 	
 	// Input devices
+	/*
 	Joystick *mLeftJoystick;
 	Joystick *mRightJoystick;
 	Joystick *mTwistJoystick;
+	//*/
+	XboxController *mXboxController;
+	
 	
 	// Components
 	BaseMotorArmComponent *mArm;

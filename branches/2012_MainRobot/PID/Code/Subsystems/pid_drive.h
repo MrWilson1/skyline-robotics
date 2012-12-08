@@ -6,6 +6,7 @@
 #include "WPIlib.h"
 #include "../Definitions/components.h"
 #include "../tools.h"
+#include "../Client/xbox.h"
 
 class EncoderSource : public PIDSource {
 public:
@@ -34,6 +35,13 @@ public:
 			 Encoder *leftEncoder,
 			 Encoder *rightEncoder);
 	~PidDrive();
+	
+	void Disable();
+	void Enable();
+	void Tune(double left_p, double left_i, double left_d,
+		 	  double right_p, double right_i, double right_d);
+	void CalibrateEncoders(double distancePerPulse);
+	
 	enum State {
 		kStraight,
 		kManual,
@@ -54,13 +62,14 @@ protected:
 
 class PidDriveController : public BaseController {
 public:
-	PidDriveController(PidDrive *, Joystick *left, Joystick *right);
+	PidDriveController(PidDrive *, XboxController *xboxController);
 	~PidDriveController();
+	void TryTuning();
+	void TrySetState();
 	void Run();
 protected:
 	PidDrive *mPidDrive;
-	Joystick *mLeftStick;
-	Joystick *mRightStick;
+	XboxController *mXboxController;
 	string mPreviousCommand;
 };
 

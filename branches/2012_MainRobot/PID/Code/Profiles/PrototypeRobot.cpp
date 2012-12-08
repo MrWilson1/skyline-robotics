@@ -106,13 +106,17 @@ void PrototypeRobot::InitializeHardware(void)
  */
 void PrototypeRobot::InitializeInputDevices(void)
 {
-	mLeftJoystick = new Joystick(
+	/*mLeftJoystick = new Joystick(
 			Ports::Usb1);
 	mRightJoystick = new Joystick(
 			Ports::Usb2);
 	
 	mTwistJoystick = new Joystick(
 			Ports::Usb3);
+	*/
+	
+	mXboxController = new XboxController(
+			Ports::Usb1);
 	
 	//mKinect = Kinect::GetInstance();
 	//mLeftKinectStick = new KinectStick::KinectStick(1);
@@ -163,7 +167,7 @@ void PrototypeRobot::InitializeControllers(void)
 	mControllerCollection.push_back(new ControllerSwitcher(controllers, "CONTROLLER >>"));
 	//*/
 	
-	mControllerCollection.push_back(new PidDriveController(mPidDrive, mLeftJoystick, mRightJoystick));
+	mControllerCollection.push_back(new PidDriveController(mPidDrive, mXboxController));
 	
 	//mControllerCollection.push_back(new ArcadeJoystick(mRobotDrive, mLeftJoystick));
 	
@@ -173,7 +177,7 @@ void PrototypeRobot::InitializeControllers(void)
 	
 	//mControllerCollection.push_back(new ArmController(mPneumaticArm, mLeftJoystick));
 	//mControllerCollection.push_back(new ServoController(mServo));
-	mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
+	//mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
 	
 	mControllerCollection.push_back(new EncoderTestController(mLeftEncoder));
 	
