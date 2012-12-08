@@ -50,8 +50,8 @@ PidDrive::PidDrive(SpeedController *leftFrontDrive,
 	
 	// Implementing PIDController:
 	// PIDController(proportional, integral, derivative, PIDSource, PIDOutput)
-	mLeftPid = new PIDController(0, 0, 0, mLeftEncoderSource, mLeftTread);
-	mRightPid = new PIDController(0, 0, 0, mRightEncoderSource, mRightTread);
+	mLeftPid = new PIDController(0.4, 0, 0, mLeftEncoderSource, mLeftTread);
+	mRightPid = new PIDController(0.4, 0, 0, mRightEncoderSource, mRightTread);
 	
 	mLeftPid->SetOutputRange(-1.0, 1.0);
 	mRightPid->SetOutputRange(-1.0, 1.0);
@@ -155,11 +155,11 @@ PidDriveController::PidDriveController(PidDrive *pidDrive, XboxController *xboxC
 	mPreviousCommand = "manual";
 	
 	SmartDashboard *s = SmartDashboard::GetInstance();
-	s->PutString("Left P", "4.0");
+	s->PutString("Left P", "0.4");
 	s->PutString("Left I", "0.0");
 	s->PutString("Left D", "0.0");
 	
-	s->PutString("Right P", "4.0");
+	s->PutString("Right P", "0.4");
 	s->PutString("Right I", "0.0");
 	s->PutString("Right D", "0.0");
 	
