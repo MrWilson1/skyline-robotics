@@ -5,7 +5,7 @@
  * 
  * @details FIRST has provided a macro that takes the name of 
  * this class and runs it once deployed on the cRIO (see
- * the bottom of this file).
+ * main_entry_point.cpp).
  * 
  * This class is obliged to provide two public methods --
  * MainRobot::Autonomous() and MainRobot::OperatorControl.
@@ -14,8 +14,6 @@
  * every possible class that will be used in this program.
  * The instantiated objects are then passed as pointers to
  * any classes that need them.
- * 
- * @author Michael Lee
  */
 
 #ifndef MAINROBOT_H_
