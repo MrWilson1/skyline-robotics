@@ -16,8 +16,6 @@ MainRobot::MainRobot(void)
  */
 void MainRobot::RobotInit(void)
 {
-
-	
 	GetWatchdog().SetExpiration(kWatchdogExpiration);
 	SmartDashboard::GetInstance()->PutString("Autonomous? <<", "0.0");
 	return;
