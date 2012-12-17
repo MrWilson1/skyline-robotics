@@ -8,9 +8,11 @@
 
 #include "Profiles/MainRobot.h"
 #include "Profiles/PrototypeRobot.h"
+#include "Profiles/SidewaysRobot.h"
 
 #define PROTOTYPE 1
 #define MAINROBOT 2
+#define SIDEWAYSROBOT 3
 /// Do not modify above
 
 // Pick which robot you want to run here.
@@ -27,6 +29,7 @@
 
 //#define ROBOT MAINROBOT
 #define ROBOT PROTOTYPE
+//#define ROBOT SIDEWAYSROBOT
 
 /// Do not modify below
 
@@ -34,5 +37,7 @@
 	START_ROBOT_CLASS(MainRobot);
 #elif ROBOT == PROTOTYPE
 	START_ROBOT_CLASS(PrototypeRobot);
+#elif ROBOT == SIDEWAYSROBOT
+	START_ROBOT_CLASS(SidewaysRobot);
 #endif
 
