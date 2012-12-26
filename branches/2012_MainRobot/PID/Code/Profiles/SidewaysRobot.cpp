@@ -59,7 +59,19 @@ void SidewaysRobot::InitializeInputDevices(void)
 
 void SidewaysRobot::InitializeComponents(void)
 {
-	
+	// Todo: confirm port assignments, and calibrate encoders.
+	mLeftEncoder = new Encoder(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio6,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio7);
+	mRightEncoder = new Encoder(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio8,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio9);
+	mLeftEncoder->Start();
+	mRightEncoder->Start();
 }
 
 void SidewaysRobot::InitializeControllers(void)
@@ -77,6 +89,7 @@ void SidewaysRobot::InitializeControllers(void)
 			mXboxController));
 	mControllerCollection.push_back(new ControllerSwitcher(controllers, "(CONTROLLER) << "));
 	
+	mControllerCollection.push_back(new SimpleEncoderTest(mLeftEncoder, mRightEncoder));
 	return;
 }
 
