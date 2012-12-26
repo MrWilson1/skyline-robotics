@@ -1,5 +1,24 @@
 #include "sensors.h"
 
+SimpleEncoderTest::SimpleEncoderTest(Encoder *leftEncoder, Encoder *rightEncoder) :
+		BaseController()
+{
+	mLeftEncoder = leftEncoder;
+	mRightEncoder = rightEncoder;
+	mS = SmartDashboard::GetInstance();
+	
+	mS->Log(mLeftEncoder->GetRate(), "Left Encoder:");
+	mS->Log(mRightEncoder->GetRate(), "Right Encoder:");
+}
+
+void SimpleEncoderTest::Run()
+{
+	mS->Log(mLeftEncoder->GetRate(), "Left Encoder:");
+	mS->Log(mRightEncoder->GetRate(), "Right Encoder:");
+}
+
+
+
 /**
  * @brief Creates an instance of the rangefinder class.
  */

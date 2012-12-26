@@ -15,6 +15,26 @@
 #include "Definitions/components.h"
 
 /**
+ * @brief Reports the left and right encoder values
+ * 
+ * @warning
+ * Relies on the encoders being calibrated before being passed in.
+ * The encoders must also be started before being passed in.
+ */
+class SimpleEncoderTest : public BaseController
+{
+protected:
+	Encoder *mLeftEncoder;
+	Encoder *mRightEncoder;
+	SmartDashboard *mS;
+	
+public:
+	SimpleEncoderTest(Encoder*, Encoder*);
+	void Run();
+};
+
+
+/**
  * @brief Uses the rangefinder to find the distance from the 
  * wall.
  * 
