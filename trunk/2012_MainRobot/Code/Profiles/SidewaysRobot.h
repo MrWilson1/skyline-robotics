@@ -29,6 +29,9 @@ protected:
 	SpeedController *mRightFrontDrive;
 	SpeedController *mRightBackDrive;	
 	
+	Encoder *mLeftEncoder;
+	Encoder *mRightEncoder;
+	
 	// Input devices
 	Joystick *mLeftJoystick;
 	Joystick *mRightJoystick;
