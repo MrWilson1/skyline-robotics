@@ -18,7 +18,7 @@ PrototypeRobot::PrototypeRobot(void)
 void PrototypeRobot::RobotInit(void)
 {
 	GetWatchdog().SetExpiration(kWatchdogExpiration);
-	SmartDashboard::GetInstance()->PutString("Autonomous? <<", "0.0");
+	SmartDashboard::GetInstance()->PutString("Autonomous? <<", "5");
 	return;
 }
 
@@ -50,7 +50,7 @@ void PrototypeRobot::InitializeHardware(void)
 	mElevatorMotor = new Victor(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm5);
-	/*
+	//*
 	mRobotDrive = new RobotDrive(
 			mLeftFrontDrive,
 			mLeftBackDrive,
@@ -75,7 +75,6 @@ void PrototypeRobot::InitializeHardware(void)
 			Ports::DigitalSidecar::Gpio9,
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio10);
-	mLeftEncoder->SetDistancePerPulse(1.0 / 1440.0);
 	
 	mRightEncoder = new Encoder(
 			Ports::Crio::Module1,
@@ -84,7 +83,7 @@ void PrototypeRobot::InitializeHardware(void)
 			Ports::DigitalSidecar::Gpio4);
 	
 	
-	//*
+	/*
 	mPidDrive = new PidDrive(
 				mLeftFrontDrive,
 				mLeftBackDrive,
@@ -167,8 +166,8 @@ void PrototypeRobot::InitializeControllers(void)
 	mControllerCollection.push_back(new ControllerSwitcher(controllers, "CONTROLLER >>"));
 	//*/
 	
-	mControllerCollection.push_back(new PidDriveController(mPidDrive, mXboxController));
-	
+	//mControllerCollection.push_back(new PidDriveController(mPidDrive, mXboxController));
+	mControllerCollection.push_back(new XboxDrive(mRobotDrive, mXboxController));
 	//mControllerCollection.push_back(new ArcadeJoystick(mRobotDrive, mLeftJoystick));
 	
 	//mControllerCollection.push_back(new TankJoysticks(mRobotDrive, mLeftJoystick, mRightJoystick, mPitchGyro, GetWatchdog()));
@@ -179,7 +178,7 @@ void PrototypeRobot::InitializeControllers(void)
 	//mControllerCollection.push_back(new ServoController(mServo));
 	//mControllerCollection.push_back(new ElevatorController(mElevator, mTwistJoystick));
 	
-	mControllerCollection.push_back(new EncoderTestController(mLeftEncoder));
+	mControllerCollection.push_back(new EncoderTestController(mRightEncoder));
 	
 	
 	return;

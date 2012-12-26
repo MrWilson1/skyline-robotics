@@ -14,7 +14,7 @@ double EncoderSource::PIDGet()
 	// We could have just used the encoder directly and not create
 	// a custom class, but until we have a clear idea of what to
 	// do, I want to make sure we're as flexible as possible.
-	return mEncoder->PIDGet();
+	return -mEncoder->PIDGet();
 }
 
 Tread::Tread(SpeedController *frontWheel, SpeedController *backWheel) :
@@ -90,6 +90,8 @@ void PidDrive::Tune(double left_p, double left_i, double left_d,
 	Disable();
 	mLeftPid->SetPID(left_p, left_i, left_d);
 	mRightPid->SetPID(right_p, right_i, right_d);
+	mLeftPid->SetContinuous(true);
+	mRightPid->SetContinuous(true);
 	Enable();
 }
 
@@ -111,9 +113,6 @@ PidDrive::State PidDrive::GetState()
 
 void PidDrive::TankDrive(float left, float right)
 {
-	// temporary
-	left = -left;
-
 	SmartDashboard *s = SmartDashboard::GetInstance();
 	
 	if (mState == kManual) {
@@ -139,8 +138,8 @@ void PidDrive::TankDrive(float left, float right)
 	s->Log(right, "Input right");
 	s->Log(mLeftPid->Get(), "Output left");
 	s->Log(mRightPid->Get(), "Output right");
-	s->Log(mLeftEncoderSource->mEncoder->GetRate(), "Left Encoder Rate");
-	s->Log(mRightEncoderSource->mEncoder->GetRate(), "Right Encoder Rate");
+	s->Log(mLeftEncoderSource->PIDGet(), "Left Encoder Rate");
+	s->Log(mRightEncoderSource->PIDGet(), "Right Encoder Rate");
 }
 
 
