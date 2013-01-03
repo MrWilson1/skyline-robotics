@@ -30,11 +30,12 @@ void SidewaysRobot::InitializeHardware(void)
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm4);
 	
-	mRobotDrive = new RobotDrive(
+	/*mRobotDrive = new RobotDrive(
 			mLeftFrontDrive,
 			mLeftBackDrive,
 			mRightFrontDrive,
-			mRightBackDrive);
+			mRightBackDrive);*/
+	//*/
 	//mRobotDrive->SetInvertedMotor(mRobotDrive->kFrontLeftMotor, true);
 	//mRobotDrive->SetInvertedMotor(mRobotDrive->kRearLeftMotor, true);
 	//mRobotDrive->SetInvertedMotor(mRobotDrive->kFrontRightMotor, true);
@@ -52,8 +53,8 @@ void SidewaysRobot::InitializeInputDevices(void)
 	mTwistJoystick = new Joystick(
 			Ports::Usb4);
 	
-	//mXboxController = new XboxController(
-	//		Ports::Usb1);
+	mXboxController = new XboxController(
+			Ports::Usb1);
 	
 }
 
@@ -72,24 +73,35 @@ void SidewaysRobot::InitializeComponents(void)
 			Ports::DigitalSidecar::Gpio9);
 	mLeftEncoder->Start();
 	mRightEncoder->Start();
+	
+
+	mPidDrive = new PidDrive(
+			mLeftFrontDrive,
+			mLeftBackDrive,
+			mRightFrontDrive,
+			mRightBackDrive,
+			mLeftEncoder,
+			mRightEncoder);
 }
 
 void SidewaysRobot::InitializeControllers(void)
 {
-	vector<BaseController *> controllers;
+	/*vector<BaseController *> controllers;
+	controllers.push_back(new XboxDrive(
+			mRobotDrive, 
+			mXboxController));
 	controllers.push_back(new TankJoysticks(
 			mRobotDrive, 
 			mLeftJoystick, 
 			mRightJoystick));
-	controllers.push_back(new XboxDrive(
-			mRobotDrive, 
-			mXboxController));
 	controllers.push_back(new XboxDriveSingle(
 			mRobotDrive,
 			mXboxController));
 	mControllerCollection.push_back(new ControllerSwitcher(controllers, "(CONTROLLER) << "));
+	*/
+	mControllerCollection.push_back(new PidDriveController(mPidDrive, mXboxController));
 	
-	mControllerCollection.push_back(new SimpleEncoderTest(mLeftEncoder, mRightEncoder));
+	//mControllerCollection.push_back(new SimpleEncoderTest(mLeftEncoder, mRightEncoder));
 	return;
 }
 

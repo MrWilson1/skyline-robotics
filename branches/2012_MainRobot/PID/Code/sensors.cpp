@@ -6,15 +6,33 @@ SimpleEncoderTest::SimpleEncoderTest(Encoder *leftEncoder, Encoder *rightEncoder
 	mLeftEncoder = leftEncoder;
 	mRightEncoder = rightEncoder;
 	mS = SmartDashboard::GetInstance();
+
+	float leftE = mLeftEncoder->GetRate();
+	float rightE = mRightEncoder->GetRate();
 	
-	mS->Log(mLeftEncoder->GetRate(), "Left Encoder:");
-	mS->Log(mRightEncoder->GetRate(), "Right Encoder:");
+	mS->Log(leftE, "Left Encoder:");
+	mS->Log(rightE, "Right Encoder:");
+	
+	leftE = leftE * 0.00149; //15 / (360 * 28);
+	rightE = rightE * 0.00149; //15 / (360 * 28);
+	
+	mS->Log(leftE, "Left feet per min");
+	mS->Log(rightE, "Right feet per min");
 }
 
 void SimpleEncoderTest::Run()
 {
-	mS->Log(mLeftEncoder->GetRate(), "Left Encoder:");
-	mS->Log(mRightEncoder->GetRate(), "Right Encoder:");
+	float leftE = mLeftEncoder->GetRate();
+	float rightE = mRightEncoder->GetRate();
+	
+	mS->Log(leftE, "Left Encoder:");
+	mS->Log(rightE, "Right Encoder:");
+	
+	leftE = leftE * 0.00149; //15 / (360 * 28);
+	rightE = rightE * 0.00149; //15 / (360 * 28);
+	
+	mS->Log(leftE, "Left feet per min");
+	mS->Log(rightE, "Right feet per min");
 }
 
 

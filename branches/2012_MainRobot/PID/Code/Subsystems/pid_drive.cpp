@@ -1,12 +1,19 @@
 #include "pid_drive.h"
 
 EncoderSource::EncoderSource(Encoder *encoder) :
-		PIDSource() 
+		PIDSource()
 {
 	mEncoder = encoder;
 	mEncoder->SetPIDSourceParameter(mEncoder->kRate);
 	mEncoder->Start();
 	// Set pulse distance here?
+	
+	mHistory.push_front(0);
+}
+
+EncoderSource::~EncoderSource()
+{
+	// ignore
 }
 
 double EncoderSource::PIDGet() 
@@ -14,7 +21,17 @@ double EncoderSource::PIDGet()
 	// We could have just used the encoder directly and not create
 	// a custom class, but until we have a clear idea of what to
 	// do, I want to make sure we're as flexible as possible.
-	return -mEncoder->PIDGet();
+	double out = -mEncoder->PIDGet();
+	mHistory.push_front(out);
+	if (mHistory.size() > kMaxCount) {
+		mHistory.pop_back();
+	}
+	double average = 0;
+	for (unsigned int i = 0; i < mHistory.size(); i++) 
+	{
+		average += mHistory.at(i);
+	}
+	return average / mHistory.size();
 }
 
 Tread::Tread(SpeedController *frontWheel, SpeedController *backWheel) :
@@ -22,14 +39,23 @@ Tread::Tread(SpeedController *frontWheel, SpeedController *backWheel) :
 {
 	mFrontWheel = frontWheel;
 	mBackWheel = backWheel;
+	mCurrent = 0;
 }
 
 void Tread::PIDWrite(float speed)
 {
-	speed = Tools::Limit(speed, -1.0, 1.0);
-	mFrontWheel->Set(speed);
-	mBackWheel->Set(speed);
+	speed = Tools::Limit(speed, -0.03, 0.03);
+	mCurrent += speed;
+	mCurrent = Tools::Limit(mCurrent, -1.0, 1.0);
+	mFrontWheel->Set(mCurrent);
+	mBackWheel->Set(mCurrent);
 }
+
+double Tread::Report()
+{
+	return mCurrent;
+}
+
 
 //class PidDrive : public BaseComponent {
 //public:
@@ -53,8 +79,8 @@ PidDrive::PidDrive(SpeedController *leftFrontDrive,
 	mLeftPid = new PIDController(0.4, 0, 0, mLeftEncoderSource, mLeftTread);
 	mRightPid = new PIDController(0.4, 0, 0, mRightEncoderSource, mRightTread);
 	
-	mLeftPid->SetOutputRange(-1.0, 1.0);
-	mRightPid->SetOutputRange(-1.0, 1.0);
+	mLeftPid->SetOutputRange(-0.03, 0.03);
+	mRightPid->SetOutputRange(-0.03, 0.03);
 	
 	mState = kManual;
 	
@@ -101,6 +127,12 @@ void PidDrive::CalibrateEncoders(double distancePerPulse)
 	mRightEncoderSource->mEncoder->SetDistancePerPulse(distancePerPulse);
 }
 
+void PidDrive::CalibrateEncoders(double left, double right)
+{
+	mLeftEncoderSource->mEncoder->SetDistancePerPulse(left);
+	mRightEncoderSource->mEncoder->SetDistancePerPulse(right);
+}
+
 void PidDrive::SetState(State state)
 {
 	mState = state;
@@ -115,6 +147,13 @@ void PidDrive::TankDrive(float left, float right)
 {
 	SmartDashboard *s = SmartDashboard::GetInstance();
 	
+	if ((left < 0.2) && (left > -0.2)) {
+		left = 0;
+	}
+	if ((right < 0.2) && (right > -0.2)) {
+		right = 0;
+	}
+	
 	if (mState == kManual) {
 		s->Log("Manual", "Current PID Drive state");
 		mLeftPid->SetSetpoint(left);
@@ -122,6 +161,8 @@ void PidDrive::TankDrive(float left, float right)
 	} else if (mState == kStraight) {
 		s->Log("Straight", "Current PID Drive state");
 		float speed = (left + right) / 2;
+		left = 0.05;
+		right = 0.05;
 		mLeftPid->SetSetpoint(speed);
 		mRightPid->SetSetpoint(speed);
 	} else if (mState == kHalt) {
@@ -138,8 +179,12 @@ void PidDrive::TankDrive(float left, float right)
 	s->Log(right, "Input right");
 	s->Log(mLeftPid->Get(), "Output left");
 	s->Log(mRightPid->Get(), "Output right");
+	
 	s->Log(mLeftEncoderSource->PIDGet(), "Left Encoder Rate");
 	s->Log(mRightEncoderSource->PIDGet(), "Right Encoder Rate");
+	
+	s->Log(mLeftTread->Report(), "Tread left");
+	s->Log(mRightTread->Report(), "Tread right");
 }
 
 
@@ -165,7 +210,8 @@ PidDriveController::PidDriveController(PidDrive *pidDrive, XboxController *xboxC
 	s->PutString("PID Tune", "disable");
 	s->PutString("PID Enabled", "enable");
 	
-	s->PutString("Encoder distance per pulse", "0.0003");
+	s->PutString("Left encoder distance per pulse", "0.00059");
+	s->PutString("Right encoder distance per pulse", "0.00059");
 }
 
 PidDriveController::~PidDriveController()
@@ -199,11 +245,12 @@ void PidDriveController::TryTuning()
 	double right_i = Tools::StringToFloat(s->GetString("Right I"));
 	double right_d = Tools::StringToFloat(s->GetString("Right D"));
 	
-	double distancePerPulse = Tools::StringToFloat(s->GetString("Encoder distance per pulse"));
+	double leftDistancePerPulse = Tools::StringToFloat(s->GetString("Left encoder distance per pulse"));
+	double rightDistancePerPulse = Tools::StringToFloat(s->GetString("Right encoder distance per pulse"));
 	
 	if (mXboxController->GetButton(mXboxController->A)) {
 		mPidDrive->Tune(left_p, left_i, left_d, right_p, right_i, right_d);
-		mPidDrive->CalibrateEncoders(distancePerPulse);
+		mPidDrive->CalibrateEncoders(leftDistancePerPulse, rightDistancePerPulse);
 	}
 }
 

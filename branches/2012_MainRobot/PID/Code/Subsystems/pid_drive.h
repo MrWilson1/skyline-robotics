@@ -2,6 +2,7 @@
 #define PID_DRIVE_H_
 
 #include <string>
+#include <queue>
 
 #include "WPIlib.h"
 #include "../Definitions/components.h"
@@ -11,7 +12,10 @@
 class EncoderSource : public PIDSource {
 public:
 	EncoderSource(Encoder *);
+	virtual ~EncoderSource();
 	double PIDGet();
+	std::deque<double> mHistory;
+	static const unsigned int kMaxCount = 100;
 	Encoder *mEncoder;
 	// The encoder is publically exposed for now to help 
 	// aid in configuration and debugging
@@ -21,6 +25,8 @@ class Tread : public PIDOutput {
 public:
 	Tread(SpeedController *frontWheel, SpeedController *backWheel);
 	void PIDWrite(float);
+	double Report();
+	double mCurrent;
 protected:
 	SpeedController *mFrontWheel;
 	SpeedController *mBackWheel;
@@ -41,6 +47,7 @@ public:
 	void Tune(double left_p, double left_i, double left_d,
 		 	  double right_p, double right_i, double right_d);
 	void CalibrateEncoders(double distancePerPulse);
+	void CalibrateEncoders(double left, double right);
 	
 	enum State {
 		kStraight,

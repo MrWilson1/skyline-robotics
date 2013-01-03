@@ -12,6 +12,7 @@
 #include "../Definitions/components.h"
 #include "../Definitions/ports.h"
 #include "../Client/xbox.h"
+#include "../Subsystems/pid_drive.h"
 
 class SidewaysRobot : public SimpleRobot
 {
@@ -22,7 +23,8 @@ private:
 	
 protected:
 	// Hardware
-	RobotDrive *mRobotDrive;
+	//RobotDrive *mRobotDrive;
+	PidDrive *mPidDrive;
 	
 	SpeedController *mLeftFrontDrive;
 	SpeedController *mLeftBackDrive;
