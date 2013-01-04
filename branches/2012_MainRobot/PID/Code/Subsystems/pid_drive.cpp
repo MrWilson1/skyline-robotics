@@ -26,12 +26,12 @@ double EncoderSource::PIDGet()
 	if (mHistory.size() > kMaxCount) {
 		mHistory.pop_back();
 	}
-	double average = 0;
+	double total = 0;
 	for (unsigned int i = 0; i < mHistory.size(); i++) 
 	{
-		average += mHistory.at(i);
+		total += mHistory.at(i);
 	}
-	return average / mHistory.size();
+	return total / mHistory.size();
 }
 
 Tread::Tread(SpeedController *frontWheel, SpeedController *backWheel) :
