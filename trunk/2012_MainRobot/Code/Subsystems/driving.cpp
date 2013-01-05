@@ -734,8 +734,8 @@ void XboxDrive::Run() {
 	float rotation = mXboxController->GetAxis(mXboxController->RightX);
 
 	// TODO: refactor this duplicate code
-	const float rotation_decrease_factor = 0.7;
-	rotation *= rotation_decrease_factor;
+	//const float rotation_decrease_factor = 0.7;
+	//rotation *= rotation_decrease_factor;
 	
 	mRobotDrive->ArcadeDrive(movement, rotation, true);
 }
@@ -771,4 +771,19 @@ void XboxDriveSingle::Run() {
 	//rotation *= rotation_decrease_factor;
 	
 	mRobotDrive->ArcadeDrive(movement, rotation, true);
+}
+
+XboxTankDrive::XboxTankDrive(RobotDrive *robotDrive, XboxController *xboxController) :
+	BaseController() 
+{
+	mRobotDrive = robotDrive;
+	mXboxController = xboxController;
+}
+
+void XboxTankDrive::Run() {
+	float left = mXboxController->GetAxis(mXboxController->LeftY);
+	float right = mXboxController->GetAxis(mXboxController->RightY);
+
+	
+	mRobotDrive->TankDrive(left, right);
 }

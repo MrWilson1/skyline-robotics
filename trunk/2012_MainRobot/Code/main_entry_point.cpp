@@ -28,8 +28,8 @@
 // below.
 
 //#define ROBOT MAINROBOT
-#define ROBOT PROTOTYPE
-//#define ROBOT SIDEWAYSROBOT
+//#define ROBOT PROTOTYPE
+#define ROBOT SIDEWAYSROBOT
 
 /// Do not modify below
 

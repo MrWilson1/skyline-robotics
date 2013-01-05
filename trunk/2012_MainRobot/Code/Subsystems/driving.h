@@ -283,4 +283,14 @@ public:
 	void Run();	
 };
 
+class XboxTankDrive : public BaseController
+{
+protected:
+	RobotDrive *mRobotDrive;
+	XboxController *mXboxController;
+public:
+	XboxTankDrive(RobotDrive *, XboxController*);
+	void Run();
+};
+
 #endif
