@@ -3,13 +3,15 @@
 
 #include "WPILib.h"
 #include "..\Tools\Units.h"
+#include "..\Input\BaseOI.h"
 
 #include "..\Subsystems\DriveSubsystem.h"
 
 class TankDrive : public Command
 {
 public:
-	TankDrive(float leftValue, float rightValue);
+	TankDrive(BaseDrive *drive, BaseOI *OI);
+	~TankDrive();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
@@ -17,16 +19,15 @@ public:
 	virtual void Interrupted();
 	
 private:
-	BaseDrive m_drive;
-	float m_leftValue;
-	float m_rightValue;
+	BaseDrive *m_drive;
+	BaseOI *m_OI;
 };
 
 class ArcadeDrive : public Command
 {
 public:
-	ArcadeDrive(float moveValue, float rotateValue);
-	virtual ~TankDrive();
+	ArcadeDrive(BaseDrive *drive, BaseOI *OI);
+	virtual ~ArcadeDrive();
 	
 	virtual void Initialize();
 	virtual void Execute();
@@ -35,11 +36,27 @@ public:
 	virtual void Interrupted();
 	
 private:
-	BaseDrive m_drive;
-	float m_moveValue;
-	float m_rotateValue;
+	BaseDrive *m_drive;
+	BaseOI *m_OI;
 };
 
+class Spasm : public Command
+{
+public:
+	Spasm(BaseDrive *drive);
+	virtual ~Spasm();
+	
+	virtual void Initialize();
+	virtual void Execute();
+	virtual bool IsFinished();
+	virtual void End();
+	virtual void Interrupted();
+		
+private:
+	BaseDrive *m_drive;
+};
+
+/*
 class TravelDistance : public Command
 {
 public:
@@ -74,5 +91,5 @@ private:
 	float m_degrees;
 	BaseDrive *m_drive;
 };
-
+*/
 #endif
