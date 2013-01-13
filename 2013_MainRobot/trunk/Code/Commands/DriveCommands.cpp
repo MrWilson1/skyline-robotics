@@ -1,82 +1,93 @@
 #include "DriveCommands.h"
 
-TankDrive::TankDrive(BaseDrive *drive, BaseOI *OI) :
+TankDriveCommand::TankDriveCommand(BaseDrive *drive, BaseOI *OI) :
 		Command("TankDrive")
 {
 	m_drive = drive;
 	m_OI = OI;
+	Requires(m_drive);
 }
 
-TankDrive::~TankDrive()
+TankDriveCommand::~TankDriveCommand()
 {
 	// Empty
 }
 
-void TankDrive::Initialize() 
+void TankDriveCommand::Initialize() 
 {
 	// Empty
 }
 
-void TankDrive::Execute()
+void TankDriveCommand::Execute()
 {
 	TankValues t = m_OI->GetTankValues();
+	SmartDashboard::PutNumber("TankDriveCommand Left", t.Left);
+	SmartDashboard::PutNumber("TankDriveCommand Right", t.Right);
 	m_drive->TankDrive(t.Left, t.Right, true);
 }
 
-bool TankDrive::IsFinished()
+bool TankDriveCommand::IsFinished()
 {
 	return false; // Runs forever until explicitly silenced.
 }
 
-void TankDrive::End() 
+void TankDriveCommand::End() 
 { 
 	// Empty
 }
 
-void TankDrive::Interrupted() 
+void TankDriveCommand::Interrupted() 
 { 
 	// Empty
 }
 
 
-ArcadeDrive::ArcadeDrive(BaseDrive *drive, BaseOI *OI) :
+ArcadeDriveCommand::ArcadeDriveCommand(BaseDrive *drive, BaseOI *OI) :
 		Command("ArcadeDrive")
 {
 	m_drive = drive;
 	m_OI = OI;
+	Requires(m_drive);
 }
 
-void ArcadeDrive::Initialize() 
+ArcadeDriveCommand::~ArcadeDriveCommand()
+{
+	
+}
+
+void ArcadeDriveCommand::Initialize() 
 {
 	// Empty
 }
 
-void ArcadeDrive::Execute()
+void ArcadeDriveCommand::Execute()
 {
 	ArcadeValues a = m_OI->GetArcadeValues();
 	m_drive->ArcadeDrive(a.Move, a.Rotate, true);
 }
 
-bool ArcadeDrive::IsFinished()
+bool ArcadeDriveCommand::IsFinished()
 {
 	return false; // Runs forever until explicitly silenced.
 }
 
-void ArcadeDrive::End() 
+void ArcadeDriveCommand::End() 
 { 
 	// Empty
 }
 
-void ArcadeDrive::Interrupted() 
+void ArcadeDriveCommand::Interrupted() 
 { 
 	// Empty
 }
 
 
 Spasm::Spasm(BaseDrive *drive) :
-		Command("Spasm")
+		Command("Spasm"),
+		counter(0)
 {
 	m_drive = drive;
+	Requires(m_drive);
 }
 
 Spasm::~Spasm()
@@ -90,22 +101,31 @@ void Spasm::Initialize()
 }
 void Spasm::Execute()
 {
+	SmartDashboard::PutString("Spasm", "Spasming");
 	float value = 0.5;
+	counter += 1;
 	m_drive->TankDrive(-value, value);
 }
 
 bool Spasm::IsFinished()
 {
-	return true;
+	if (counter > 100) {
+		counter = 0;
+		return true;
+	} else {
+		return false;
+	}
 }
 
 void Spasm::End()
 {
-	// empty
+	SmartDashboard::PutString("Spasm", "Not Spasming");
 }
 
 void Spasm::Interrupted()
 {
+	SmartDashboard::PutString("Spasm", "Interrupted Spasming");
 	float value = 0.0;
+	counter = 103;
 	m_drive->TankDrive(value, value);
 }

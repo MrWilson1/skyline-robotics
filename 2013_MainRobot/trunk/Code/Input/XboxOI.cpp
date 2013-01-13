@@ -14,10 +14,11 @@ XboxOI::~XboxOI()
 
 void XboxOI::SetupTeleop()
 {
+	SmartDashboard::PutString("XboxOI status", "Setting up teleop");
 	m_spasmButton = new JoystickButton(m_xbox, (int) m_xbox->A);
 	m_spasmButton->WhileHeld(new Spasm(m_drive));
 	
-	m_teleopCommand = new TankDrive(m_drive, this);
+	m_teleopCommand = new TankDriveCommand(m_drive, this);
 	m_teleopCommand->Start();
 }
 

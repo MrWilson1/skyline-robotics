@@ -14,7 +14,7 @@ private:
 	
 	BaseDrive *m_drive; 
 	
-	BaseOI *m_OI;
+	XboxOI *m_OI;
 	
 public:
 	BlandRobotProfile();

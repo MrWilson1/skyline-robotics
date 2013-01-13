@@ -14,10 +14,9 @@ public:
 	XboxOI(XboxController *xbox, BaseDrive *drive);
 	virtual ~XboxOI();
 	
+	void SetupTeleop();
 	TankValues GetTankValues();
 	ArcadeValues GetArcadeValues();
-	
-	void SetupTeleop();
 	
 private:
 	XboxController *m_xbox;

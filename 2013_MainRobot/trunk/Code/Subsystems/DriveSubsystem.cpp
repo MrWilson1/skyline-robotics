@@ -11,6 +11,52 @@ BaseDrive::~BaseDrive()
 	// nothing
 }
 
+void BaseDrive::Drive(float outputMagnitude, float curve)
+{
+	// Empty
+}
+
+void BaseDrive::TankDrive(float leftValue, float rightValue)
+{
+	SmartDashboard::PutString("BaseDrive TankDrive 1", "AIII");
+}
+
+void BaseDrive::TankDrive(float leftValue, float rightValue, bool squaredInputs)
+{
+	SmartDashboard::PutString("BaseDrive TankDrive 2", "AIII");
+}
+
+void BaseDrive::ArcadeDrive(float moveValue, float rotateValue)
+{
+	
+}
+
+void BaseDrive::ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs)
+{
+	
+}
+
+void BaseDrive::TravelDistance(float distanceInInches)
+{
+	
+}
+
+void BaseDrive::Rotate(float degrees)
+{
+	
+}
+
+void BaseDrive::StopMoving()
+{
+	
+}
+
+void BaseDrive::Brake()
+{
+	
+}
+
+
 SimpleDrive::SimpleDrive(RobotDrive *robotDrive) :
 		BaseDrive("SimpleDrive")
 {

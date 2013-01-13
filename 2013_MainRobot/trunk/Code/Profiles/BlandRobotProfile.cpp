@@ -1,6 +1,7 @@
 #include "BlandRobotProfile.h"
 
-BlandRobotProfile::BlandRobotProfile()
+BlandRobotProfile::BlandRobotProfile() :
+		IterativeRobot()
 {
 	m_robotDrive = new RobotDrive(
 		Ports::DigitalSidecar::Pwm1,
@@ -15,6 +16,8 @@ BlandRobotProfile::BlandRobotProfile()
 	m_OI = new XboxOI(
 		m_xbox,
 		m_drive);
+	
+	lw = LiveWindow::GetInstance();
 }
 
 BlandRobotProfile::~BlandRobotProfile()
@@ -39,11 +42,14 @@ void BlandRobotProfile::AutonomousPeriodic()
 
 void BlandRobotProfile::TeleopInit()
 {
-	m_OI->SetupTelop();
+	SmartDashboard::PutString("bland status 1", "initializing Telop");
+	m_OI->SetupTeleop();
+	SmartDashboard::PutString("bland status 2", "done init");
 }
 
 void BlandRobotProfile::TeleopPeriodic()
 {
+	SmartDashboard::PutString("bland status 3", "running teleop");
 	Scheduler::GetInstance()->Run();
 }
 

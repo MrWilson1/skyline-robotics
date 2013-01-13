@@ -15,9 +15,10 @@ std::string BaseOI::GetName()
 {
 	return m_name;
 }
-
+/*
 void BaseOI::SetupTelop()
 {
+	SmartDashboard::PutString("BaseOI", "AIII");
 	// empty
 }
 
@@ -37,4 +38,4 @@ ArcadeValues BaseOI::GetArcadeValues()
 	return a;
 }
 
-
+*/

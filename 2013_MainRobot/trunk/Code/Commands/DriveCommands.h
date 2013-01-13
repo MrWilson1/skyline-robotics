@@ -7,11 +7,11 @@
 
 #include "..\Subsystems\DriveSubsystem.h"
 
-class TankDrive : public Command
+class TankDriveCommand : public Command
 {
 public:
-	TankDrive(BaseDrive *drive, BaseOI *OI);
-	~TankDrive();
+	TankDriveCommand(BaseDrive *drive, BaseOI *OI);
+	~TankDriveCommand();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
@@ -23,11 +23,11 @@ private:
 	BaseOI *m_OI;
 };
 
-class ArcadeDrive : public Command
+class ArcadeDriveCommand : public Command
 {
 public:
-	ArcadeDrive(BaseDrive *drive, BaseOI *OI);
-	virtual ~ArcadeDrive();
+	ArcadeDriveCommand(BaseDrive *drive, BaseOI *OI);
+	virtual ~ArcadeDriveCommand();
 	
 	virtual void Initialize();
 	virtual void Execute();
@@ -54,6 +54,7 @@ public:
 		
 private:
 	BaseDrive *m_drive;
+	int counter;
 };
 
 /*
