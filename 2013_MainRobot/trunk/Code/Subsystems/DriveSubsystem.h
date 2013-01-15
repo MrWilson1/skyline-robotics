@@ -1,42 +1,56 @@
 #ifndef DRIVE_SUBSYSTEM_H
 #define DRIVE_SUBSYSTEM_H
+/**
+ * Implements various subsystems related to the drive.
+ */
 
 #include "WPILib.h"
 #include <string>
 
-class BaseDrive : public Subsystem
-{
+/**
+ * A base drive. All drives must be a subclass of this class.
+ * 
+ * Note that Holonomic and Mechanum wheel drives are currently
+ * not implemented by this interface. 
+ * 
+ * For the definitions of what these virtual methods are meant to
+ * do, please see the WPILib API documentation on the 
+ * RobotDrive class. The methods are identical.
+ */
+class BaseDrive : public Subsystem {
 public:
 	BaseDrive(const char *name);
 	virtual ~BaseDrive();
 	
-	virtual void Drive(float outputMagnitude, float curve);
-	virtual void TankDrive(float leftValue, float rightValue);
-	virtual void TankDrive(float leftValue, float rightValue, bool squaredInputs);
-	virtual void ArcadeDrive(float moveValue, float rotateValue);
-	virtual void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
-	virtual void TravelDistance(float distanceInInches);
-	virtual void Rotate(float degrees); 
-	
-	virtual void StopMoving();
-	virtual void Brake();
+	virtual void Drive(float outputMagnitude, float curve) = 0;
+	virtual void TankDrive(float leftValue, float rightValue) = 0;
+	virtual void TankDrive(float leftValue, float rightValue, bool squaredInputs) = 0;
+	virtual void ArcadeDrive(float moveValue, float rotateValue) = 0;
+	virtual void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs) = 0;
+	virtual void TravelDistance(float distanceInInches) = 0;
+	virtual void Rotate(float degrees) = 0;
+	virtual void StopMoving() = 0;
+	virtual void Brake() = 0;
 };
 
-class SimpleDrive : public BaseDrive
-{
+/**
+ * The absolute simplest drive possible. Contains
+ * no PID loops or other forms of feedback systems.
+ */
+class SimpleDrive : public BaseDrive {
 public:
 	SimpleDrive(RobotDrive *robotDrive);
+	~SimpleDrive();
 	
-	virtual void Drive(float outputMagnitude, float curve);
-	virtual void TankDrive(float leftValue, float rightValue);
-	virtual void TankDrive(float leftValue, float rightValue, bool squaredInputs);
-	virtual void ArcadeDrive(float moveValue, float rotateValue);
-	virtual void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
-	virtual void TravelDistance(float distanceInInches);
-	virtual void Rotate(float degrees);
-	
-	virtual void StopMoving();
-	virtual void Brake();
+	void Drive(float outputMagnitude, float curve);
+	void TankDrive(float leftValue, float rightValue);
+	void TankDrive(float leftValue, float rightValue, bool squaredInputs);
+	void ArcadeDrive(float moveValue, float rotateValue);
+	void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
+	void TravelDistance(float distanceInInches);
+	void Rotate(float degrees);
+	void StopMoving();
+	void Brake();
 	
 private:
 	RobotDrive *m_robotDrive;

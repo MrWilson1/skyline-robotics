@@ -3,6 +3,9 @@
 
 #include "WPILib.h"
 
+/**
+ * A class representing a physical XboxController, analogous to a Joystick.
+ */
 class XboxController : public Joystick
 {
 public:
@@ -26,8 +29,8 @@ public:
 		RightBumper = 6,
 		Back = 7,
 		Start = 8,
-		LeftClick = 9,
-		RightClick = 10
+		LeftStickClick = 9,
+		RightStickClick = 10
 	};
 	
 	static const UINT32 numAxisTypes = 7;
@@ -38,6 +41,26 @@ public:
 	float GetAxis(Axis);
 	int GetDpad(Dpad);
 	bool GetButton(Button);
+	
+	float GetLeftXAxis();
+	float GetLeftYAxis();
+	float GetBumperAxis();
+	float GetRightXAxis();
+	float GetRightYAxis();
+	
+	int GetXDirDpad();
+	int GetYDirDpad();
+	
+	bool GetAButton();
+	bool GetBButton();
+	bool GetXButton();
+	bool GetYButton();
+	bool GetLeftBumperButton();
+	bool GetRightBumperButton();
+	bool GetBackButton();
+	bool GetStartButton();
+	bool GetLeftStickClickButton();
+	bool GetRightStickClickButton();
 };
 
 #endif

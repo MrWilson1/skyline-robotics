@@ -3,54 +3,64 @@
 
 #include "WPILib.h"
 #include "..\Tools\Units.h"
-#include "..\Input\BaseOI.h"
+#include "..\OperatorInterfaces\BaseOI.h"
 
 #include "..\Subsystems\DriveSubsystem.h"
 
-class TankDriveCommand : public Command
-{
+/**
+ * Issues a perpetually running command to drive in tank mode.
+ */
+class TankDriveCommand : public Command {
 public:
 	TankDriveCommand(BaseDrive *drive, BaseOI *OI);
 	~TankDriveCommand();
-	virtual void Initialize();
-	virtual void Execute();
-	virtual bool IsFinished();
-	virtual void End();
-	virtual void Interrupted();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
 	
 private:
 	BaseDrive *m_drive;
 	BaseOI *m_OI;
 };
 
-class ArcadeDriveCommand : public Command
-{
+/**
+ * Issues a perpetually running command to drive in arcade mode.
+ */
+class ArcadeDriveCommand : public Command {
 public:
 	ArcadeDriveCommand(BaseDrive *drive, BaseOI *OI);
-	virtual ~ArcadeDriveCommand();
+	~ArcadeDriveCommand();
 	
-	virtual void Initialize();
-	virtual void Execute();
-	virtual bool IsFinished();
-	virtual void End();
-	virtual void Interrupted();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
 	
 private:
 	BaseDrive *m_drive;
 	BaseOI *m_OI;
 };
 
+/**
+ * An experimental command to make the wheels spin
+ * in opposing directions.
+ * 
+ * This class is meant to test using commands.
+ */
 class Spasm : public Command
 {
 public:
 	Spasm(BaseDrive *drive);
-	virtual ~Spasm();
+	~Spasm();
 	
-	virtual void Initialize();
-	virtual void Execute();
-	virtual bool IsFinished();
-	virtual void End();
-	virtual void Interrupted();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
 		
 private:
 	BaseDrive *m_drive;

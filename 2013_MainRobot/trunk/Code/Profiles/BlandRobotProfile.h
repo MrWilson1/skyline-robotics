@@ -2,30 +2,39 @@
 #define BLAND_ROBOT_PROFILE_H
 
 #include "WPILib.h"
-#include "../Tools/Ports.h"
-#include "../Input/XboxOI.h"
-#include "../Input/Xbox.h"
 
-class BlandRobotProfile : public IterativeRobot {
+#include "../Tools/Ports.h"
+
+#include "BaseRobotProfile.h"
+#include "../OperatorInterfaces/XboxOI.h"
+#include "../OperatorInterfaces/Xbox.h"
+
+/**
+ * A profile for a generic robot that simply drives around.
+ */
+class BlandRobotProfile : public BaseRobotProfile {
 private:
-	LiveWindow *lw;
+	// Basic Hardware Objects
 	RobotDrive *m_robotDrive;
 	XboxController *m_xbox;
 	
+	// Subsystems
 	BaseDrive *m_drive; 
 	
+	// Operator Interfaces
 	XboxOI *m_OI;
 	
 public:
 	BlandRobotProfile();
-	virtual ~BlandRobotProfile();
+	~BlandRobotProfile();
 	
-	virtual void RobotInit();
-	virtual void AutonomousInit();
-	virtual void AutonomousPeriodic();
-	virtual void TeleopInit();
-	virtual void TeleopPeriodic();
-	virtual void TestPeriodic();
+	void CreateBasicHardwareObjects();
+	void CreateSubsystems();
+	void CreateOI();
+	
+	void RobotInit();
+	void AutonomousInit();
+	void TeleopInit();
 };
 
 #endif

@@ -8,7 +8,7 @@ enum Units {
 	Centimeters
 };
 
-float Convert_Units(float value, Units start, Units target);
+float ConvertUnits(float value, Units start, Units target);
 
 
 #endif

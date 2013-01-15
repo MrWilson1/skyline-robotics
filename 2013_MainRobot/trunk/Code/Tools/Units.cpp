@@ -1,7 +1,9 @@
 #include "Units.h"
 
-float Convert_Units(float number, Units start, Units target)
-{
+/**
+ * Converts number in the START unit to the TARGET unit.
+ */
+float ConvertUnits(float number, Units start, Units target) {
 	float intermediateValue = 0;
 	switch (start) {
 	case Inches:
@@ -41,5 +43,4 @@ float Convert_Units(float number, Units start, Units target)
 	};
 	
 	return endValue;
-	
 }

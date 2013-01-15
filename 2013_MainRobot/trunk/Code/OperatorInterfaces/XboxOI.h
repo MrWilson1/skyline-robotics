@@ -8,11 +8,14 @@
 #include "../Commands/DriveCommands.h"
 #include "../Subsystems/DriveSubsystem.h"
 
+/**
+ * A simple operator interface using the Xbox Controllers
+ */
 class XboxOI : public BaseOI
 {
 public:
 	XboxOI(XboxController *xbox, BaseDrive *drive);
-	virtual ~XboxOI();
+	~XboxOI();
 	
 	void SetupTeleop();
 	TankValues GetTankValues();

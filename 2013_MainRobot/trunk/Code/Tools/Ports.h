@@ -1,18 +1,15 @@
 #ifndef PORTS_H
 #define PORTS_H
 
-namespace Ports
-{
+namespace Ports {
 	/**
 	 * @brief Contains enums and such for various port assignments for the robot.
 	 */
-	namespace DigitalSidecar
-	{
+	namespace DigitalSidecar {
 		/**
 		 * @brief Used primarily for motors and servos.
 		 */
-		enum Pwm
-		{
+		enum Pwm {
 			Pwm1 = 1,
 			Pwm2 = 2,
 			Pwm3 = 3,
@@ -28,8 +25,7 @@ namespace Ports
 		/**
 		 * @brief General purpose input/output
 		 */
-		enum Gpio
-		{
+		enum Gpio {
 			Gpio1 = 1,
 			Gpio2 = 2,
 			Gpio3 = 3,
@@ -49,8 +45,7 @@ namespace Ports
 		/**
 		 * @brief For pneumatics
 		 */
-		enum Relay
-		{
+		enum Relay {
 			Relay1 = 1,
 			Relay2 = 2,
 			Relay3 = 3,
@@ -62,24 +57,23 @@ namespace Ports
 		};
 	}
 	
-	/**
-	 * @brief Used mostly for joysticks (or other forms of input)
-	 */
-	enum Usb
-	{
-		Usb1 = 1,
-		Usb2 = 2,
-		Usb3 = 3,
-		Usb4 = 4	// Not sure if we actually have a 4th one
-	};
+	namespace Computer {
+		/**
+		 * @brief Used mostly for joysticks (or other forms of input)
+		 */
+		enum Usb {
+			Usb1 = 1,
+			Usb2 = 2,
+			Usb3 = 3,
+			Usb4 = 4	// Not sure if we actually have a 4th one
+		};
+	}
 	
-	namespace Crio
-	{
+	namespace Crio {
 		/**
 		 * @brief Used mostly for analog sensors
 		 */
-		enum AnalogBreakout
-		{
+		enum AnalogBreakout {
 			AnalogChannel1 = 1,
 			AnalogChannel2 = 2,
 			AnalogChannel3 = 3,
@@ -93,8 +87,7 @@ namespace Ports
 		/**
 		 * @brief Used mostly for pneumatics
 		 */
-		enum SolenoidBreakout
-		{
+		enum SolenoidBreakout {
 			SolenoidBreakout1 = 1,
 			SolenoidBreakout2 = 2,
 			SolenoidBreakout3 = 3,
@@ -126,8 +119,7 @@ namespace Ports
 		 *   - Slot 7: Module 2 {Solenoid Module 9472)
 		 *   - Slot 8: Module   {empty)
 		 */
-		enum Module
-		{
+		enum Module {
 			Module1 = 1,
 			Module2 = 2
 		};
