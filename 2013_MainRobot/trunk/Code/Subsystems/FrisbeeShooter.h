@@ -3,6 +3,8 @@
 
 #include "WPILib.h"
 
+#include "../Misc/Tools.h"
+
 /**
  * Base class for a Frisbee shooter.
  * 
@@ -20,6 +22,29 @@ public:
 	virtual void ShootFrisbee() = 0;
 	virtual void ShootFrisbee(float inchesPerSecond) = 0;
 	virtual void EjectFrisbee() = 0;
+};
+
+class SimpleBeltShooter : public BaseFrisbeeShooter {
+public:
+	enum Direction {
+		Positive = 1,
+		Negative = -1,
+	};
+	
+	SimpleBeltShooter(SpeedController *motor, Direction forwardDirection);
+	~SimpleBeltShooter();
+	
+	void ShootFrisbee();
+	void ShootFrisbee(float inchesPerSecond);
+	void EjectFrisbee();
+	
+	void SetMaxDistance(float inches);
+	float GetMaxDistance();
+
+private:
+	SpeedController *m_motor;
+	Direction m_forwardDirection;
+	float m_maxDistance;
 };
 
 #endif

@@ -1,9 +1,6 @@
-#include "Units.h"
+#include "Tools.h"
 
-/**
- * Converts number in the START unit to the TARGET unit.
- */
-float ConvertUnits(float number, Units start, Units target) {
+float Tools::ConvertUnits(float number, Units start, Units target) {
 	float intermediateValue = 0;
 	switch (start) {
 	case Inches:
@@ -43,4 +40,21 @@ float ConvertUnits(float number, Units start, Units target) {
 	};
 	
 	return endValue;
+}
+
+float Tools::Limit(float value, float lowLimit, float highLimit) {
+	if (value < lowLimit) {
+		value = lowLimit;
+	}
+	if (value > highLimit) {
+		value = highLimit;
+	}
+	return value;
+}
+
+float Tools::Scale(float value, float inputStart, float inputEnd, float outputStart, float outputEnd) {
+	value = Limit(value, inputStart, inputEnd);
+	float percentage = (value - inputStart) / (inputEnd - inputStart);
+	float scaledValue = (outputEnd - outputStart) * percentage;
+	return scaledValue + outputStart;
 }

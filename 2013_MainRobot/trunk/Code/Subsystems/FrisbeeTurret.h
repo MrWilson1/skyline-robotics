@@ -19,6 +19,9 @@ public:
 	virtual void TurnHorizontal(float degrees) = 0;
 	virtual void TurnVertical(float degrees) = 0;
 	virtual void TurnGivenOffset(Offset offset) = 0;
+	virtual Offset ReportCurrentOffset() = 0;
 };
+
+
 
 #endif
