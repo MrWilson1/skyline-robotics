@@ -69,3 +69,23 @@ void SimpleDrive::Brake() {
 	float stopValue = 0.0;
 	m_robotDrive->TankDrive(stopValue, stopValue);
 }
+
+
+
+Tread::Tread(SpeedController *front, SpeedController *back) {
+	m_front = front;
+	m_back = back;
+}
+
+Tread::~Tread() {
+	// empty
+}
+
+void Tread::PIDWrite(float output) {
+	Tools::Limit(output, -1.0, 1.0);
+	m_front->PIDWrite(output);
+	m_back->PIDWrite(output);
+}
+
+
+

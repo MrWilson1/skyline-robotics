@@ -9,6 +9,7 @@
 #include "WPILib.h"
 
 #include "BaseSubsystem.h"
+#include "../Misc/Tools.h"
 
 /**
  * A base drive. All drives must be a subclass of this class.
@@ -57,6 +58,48 @@ public:
 	
 private:
 	RobotDrive *m_robotDrive;
+};
+
+class Tread : public PIDOutput {
+public:
+	Tread(SpeedController *front, SpeedController *back);
+	virtual ~Tread();
+	
+	void PIDWrite(float output);
+	
+private:
+	SpeedController *m_front;
+	SpeedController *m_back;
+};
+
+class PidSimpleDrive : public BaseDrive {
+public:
+	PidSimpleDrive(
+			SpeedController *leftFront, 
+			SpeedController *leftBack, 
+			SpeedController *rightFront,
+			SpeedController *rightBack,
+			Encoder *leftEncoder,
+			Encoder *rightEncoder);
+	~PidSimpleDrive();
+	
+	void Drive(float outputMagnitude, float curve);
+	void TankDrive(float leftValue, float rightValue);
+	void TankDrive(float leftValue, float rightValue, bool squaredInputs);
+	void ArcadeDrive(float moveValue, float rotateValue);
+	void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
+	void TravelDistance(float distanceInInches);
+	void Rotate(float degrees);
+	void StopMoving();
+	void Brake();
+	
+private:
+	SpeedController *m_leftFront; 
+	SpeedController *m_leftBack;
+	SpeedController *m_rightFront;
+	SpeedController *m_rightBack;
+	Encoder *m_leftEncoder;
+	Encoder *m_rightEncoder;
 };
 
 #endif
