@@ -25,15 +25,21 @@ public:
 
 class SimpleFrisbeeTurret : public BaseFrisbeeTurret {
 public:
-	SimpleFrisbeeTurret(SpeedController *HorizontleMotor, Speedcontroller *LateralMotor, Direction forwardDirection )
+	SimpleFrisbeeTurret(SpeedController *HorizontalMotor, SpeedController *LateralMotor);
 	~SimpleFrisbeeTurret();
 	
 	void TurnHorizontal(float degrees);
 	void TurnVertical(float degrees);
 };
 
-
-
+/**
+ * A class which controllers the shooter turret using
+ * a PID loop. 
+ * 
+ * Assumes that the encoders will return 360 pulses
+ * given a full rotation. The encoders must be 
+ * calibrated before being passed into this class.
+ */
 class PidFrisbeeTurret : public BaseFrisbeeTurret {
 public:
 	PidFrisbeeTurret(
@@ -54,6 +60,9 @@ private:
 	SpeedController *m_verticalMotor;
 	Encoder *m_verticalEncoder;
 	Encoder *m_horizontalEncoder;
+	
+	PIDController *m_horizontalPid;
+	PIDController *m_verticalPid;
 };
 
 

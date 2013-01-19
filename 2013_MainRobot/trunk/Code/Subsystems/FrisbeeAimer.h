@@ -21,6 +21,7 @@ enum TargetType {
  * the left, the value returned would be {-5, 3}
  */
 struct Offset {
+	Offset(float x, float y);
 	float XOffset;
 	float YOffset;
 };

@@ -9,3 +9,9 @@ BaseFrisbeeAimer::BaseFrisbeeAimer(const char *name) :
 BaseFrisbeeAimer::~BaseFrisbeeAimer() {
 	// Empty
 }
+
+Offset::Offset(float x, float y) :
+		XOffset(x), 
+		YOffset(y) {
+	// Empty
+}
