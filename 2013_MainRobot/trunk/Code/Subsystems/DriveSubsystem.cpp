@@ -1,7 +1,7 @@
 #include "DriveSubsystem.h"
 
 BaseDrive::BaseDrive(const char *name) :
-	Subsystem(name) {
+	BaseSubsystem(name) {
 	// empty
 }
 

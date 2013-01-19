@@ -3,6 +3,8 @@
 
 #include "WPILib.h"
 
+#include "BaseSubsystem.h"
+
 /**
  * The 4 different types of targets the robot can aim for
  */
@@ -37,7 +39,7 @@ struct Target {
  * 
  * Note: this interface may change substantially over time.
  */
-class BaseFrisbeeAimer : public Subsystem {
+class BaseFrisbeeAimer : public BaseSubsystem {
 public:
 	BaseFrisbeeAimer(const char *name);
 	virtual ~BaseFrisbeeAimer();

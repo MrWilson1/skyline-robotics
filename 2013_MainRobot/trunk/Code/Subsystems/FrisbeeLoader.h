@@ -3,12 +3,14 @@
 
 #include "WPILib.h"
 
+#include "BaseSubsystem.h"
+
 /**
  * A base class to load frisbees into the shooter.
  * 
  * Note: this interface may change substantially over time.
  */
-class BaseFrisbeeLoader : public Subsystem {
+class BaseFrisbeeLoader : public BaseSubsystem {
 	BaseFrisbeeLoader(const char *name);
 	virtual ~BaseFrisbeeLoader();
 	

@@ -20,6 +20,7 @@ public:
 	void SetupTeleop();
 	TankValues GetTankValues();
 	ArcadeValues GetArcadeValues();
+	float GetAxis(int axis);
 	
 private:
 	XboxController *m_xbox;

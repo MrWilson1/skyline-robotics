@@ -3,6 +3,7 @@
 
 #include "WPILib.h"
 
+#include "BaseSubsystem.h"
 #include "../Misc/Tools.h"
 
 /**
@@ -14,7 +15,7 @@
  * 
  * Note: this interface may change substantially over time.
  */
-class BaseFrisbeeShooter : public Subsystem {
+class BaseFrisbeeShooter : public BaseSubsystem {
 public:
 	BaseFrisbeeShooter(const char *name);
 	virtual ~BaseFrisbeeShooter();

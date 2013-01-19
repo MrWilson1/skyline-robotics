@@ -4,17 +4,18 @@
  * compile to.
  */
 
-#include "Profiles/BlandRobotProfile.h"
-
-#define BLAND 0
-#define SOMEOTHERROBOT 1
-
 // Modify these lines below:
 
 #define MAINROBOT BLAND
 // #define MAINROBOT SOMEOTHERROBOT
 
-// Don't modify anymore.
+
+// DO NOT MODIFY BELOW
+
+#include "Profiles/BlandRobotProfile.h"
+
+#define BLAND 1
+#define SOMEOTHERROBOT 2
 
 #if MAINROBOT == BLAND
 	START_ROBOT_CLASS(BlandRobotProfile);

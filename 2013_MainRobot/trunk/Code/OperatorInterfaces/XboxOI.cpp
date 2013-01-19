@@ -21,8 +21,8 @@ void XboxOI::SetupTeleop() {
 }
 
 TankValues XboxOI::GetTankValues() {
-	float left = m_xbox->GetAxis(m_xbox->LeftY);
-	float right = m_xbox->GetAxis(m_xbox->RightY);
+	float left = GetAxis(m_xbox->LeftY);
+	float right = GetAxis(m_xbox->RightY);
 	TankValues t;
 	t.Left = left;
 	t.Right = right;
@@ -30,11 +30,17 @@ TankValues XboxOI::GetTankValues() {
 }
 
 ArcadeValues XboxOI::GetArcadeValues() {
-	float move = m_xbox->GetAxis(m_xbox->LeftY);
-	float rotate = m_xbox->GetAxis(m_xbox->RightX);
+	float move = GetAxis(m_xbox->LeftY);
+	float rotate = GetAxis(m_xbox->RightX);
 	ArcadeValues a;
 	a.Move = move;
 	a.Rotate = rotate;
 	return a;
+}
+
+float XboxOI::GetAxis(int axis) {
+	float value = m_xbox->GetRawAxis(axis);
+	// Apply filters to value here if necessary
+	return value;
 }
 

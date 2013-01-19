@@ -4,8 +4,11 @@
  * Implements various subsystems related to the drive.
  */
 
-#include "WPILib.h"
 #include <string>
+
+#include "WPILib.h"
+
+#include "BaseSubsystem.h"
 
 /**
  * A base drive. All drives must be a subclass of this class.
@@ -17,7 +20,7 @@
  * do, please see the WPILib API documentation on the 
  * RobotDrive class. The methods are identical.
  */
-class BaseDrive : public Subsystem {
+class BaseDrive : public BaseSubsystem {
 public:
 	BaseDrive(const char *name);
 	virtual ~BaseDrive();

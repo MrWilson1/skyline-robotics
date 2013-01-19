@@ -2,7 +2,7 @@
 
 
 BaseFrisbeeAimer::BaseFrisbeeAimer(const char *name) :
-		Subsystem(name) {
+		BaseSubsystem(name) {
 	// Empty
 }
 

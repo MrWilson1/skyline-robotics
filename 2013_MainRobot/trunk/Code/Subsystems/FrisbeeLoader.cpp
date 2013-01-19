@@ -1,7 +1,7 @@
 #include "FrisbeeLoader.h"
 
 BaseFrisbeeLoader::BaseFrisbeeLoader(const char *name) :
-		Subsystem(name) {
+		BaseSubsystem(name) {
 	// Empty
 }
 

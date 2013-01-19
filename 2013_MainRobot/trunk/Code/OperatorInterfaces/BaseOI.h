@@ -36,6 +36,7 @@ public:
 	virtual void SetupTeleop() = 0;
 	virtual TankValues GetTankValues() = 0;
 	virtual ArcadeValues GetArcadeValues() = 0;
+	virtual float GetAxis(int axis) = 0;
 	
 protected:
 	const std::string m_name;	

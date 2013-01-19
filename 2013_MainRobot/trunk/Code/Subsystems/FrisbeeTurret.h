@@ -3,6 +3,7 @@
 
 #include "WPILib.h"
 
+#include "BaseSubsystem.h"
 #include "FrisbeeAimer.h"
 
 /**
@@ -11,7 +12,7 @@
  * 
  * Note: this interface may change substantially over time.
  */
-class BaseFrisbeeTurret : public Subsystem {
+class BaseFrisbeeTurret : public BaseSubsystem {
 public:
 	BaseFrisbeeTurret(const char *name);
 	virtual ~BaseFrisbeeTurret();

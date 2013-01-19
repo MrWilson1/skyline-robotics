@@ -1,7 +1,7 @@
 #include "FrisbeeShooter.h"
 
 BaseFrisbeeShooter::BaseFrisbeeShooter(const char *name) :
-		Subsystem(name) {
+		BaseSubsystem(name) {
 	// Empty
 }
 
@@ -11,11 +11,14 @@ BaseFrisbeeShooter::~BaseFrisbeeShooter() {
 
 
 
+
 SimpleBeltShooter::SimpleBeltShooter(SpeedController *motor, Direction forwardDirection) :
 		BaseFrisbeeShooter("SimpleBeltShooter"),
 		m_forwardDirection(forwardDirection),
 		m_maxDistance(120) {
 	m_motor = motor;
+	
+	AddActuatorToLiveWindow("Belt motor", m_motor);
 }
 
 SimpleBeltShooter::~SimpleBeltShooter() {
