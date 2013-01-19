@@ -11,6 +11,7 @@
  * Note: this interface may change substantially over time.
  */
 class BaseFrisbeeLoader : public BaseSubsystem {
+public:
 	BaseFrisbeeLoader(const char *name);
 	virtual ~BaseFrisbeeLoader();
 	
@@ -23,12 +24,14 @@ class BaseFrisbeeLoader : public BaseSubsystem {
 	// Prepare a Frisbee so it's almost ready to shoot
 	virtual void PrepareFrisbee() = 0;
 	
-	virtual void IsFrisbeePrepared() = 0;
+	virtual bool IsFrisbeePrepared() = 0;
 	
 	// Takes the final step and loads a Frisbee into the
 	// shooter
 	virtual void LoadFrisbee() = 0;
 	
 };
+
+
 
 #endif
