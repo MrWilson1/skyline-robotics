@@ -53,7 +53,7 @@ void AimTurretCommand::Execute() {
 }
 
 bool AimTurretCommand::IsFinished() {
-	
+	return true;
 }
 
 void AimTurretCommand::End() {

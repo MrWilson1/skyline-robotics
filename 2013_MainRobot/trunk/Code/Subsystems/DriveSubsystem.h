@@ -60,6 +60,33 @@ private:
 	RobotDrive *m_robotDrive;
 };
 
+
+
+/**
+ * Returns running average of size `maxSize`
+ * when calling PIDGet(). The type (rate or distance) must
+ * be specified beforehand by configuring the encoder.
+ * 
+ * I could have inherited from Encoder, but I wanted to
+ * keep it simple. The various config stuff of the 
+ * Encoder are exposed through GetEncoder().
+ */
+class SmoothEncoder : public PIDSource {
+public:
+	SmoothEncoder(Encoder *encoder, unsigned int maxSize);
+	virtual ~SmoothEncoder();
+	
+	double PIDGet();
+	Encoder *GetEncoder();
+	void SetMaxSize(unsigned int maxSize);
+	
+private:
+	Encoder *m_encoder;
+	std::deque<double> m_history;
+	unsigned int m_maxSize;
+	
+};
+
 class Tread : public PIDOutput {
 public:
 	Tread(SpeedController *front, SpeedController *back);
@@ -71,6 +98,8 @@ private:
 	SpeedController *m_front;
 	SpeedController *m_back;
 };
+
+
 
 class PidSimpleDrive : public BaseDrive {
 public:
@@ -100,6 +129,13 @@ private:
 	SpeedController *m_rightBack;
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
+	
+	SmoothEncoder *m_smoothLeftEncoder;
+	SmoothEncoder *m_smoothRightEncoder;
+	Tread *m_leftTread;
+	Tread *m_rightTread;
+	PIDController *m_leftPid;
+	PIDController *m_rightPid;
 };
 
 #endif

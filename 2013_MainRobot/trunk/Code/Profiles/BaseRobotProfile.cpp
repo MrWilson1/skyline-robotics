@@ -37,3 +37,7 @@ void BaseRobotProfile::TeleopPeriodic() {
 void BaseRobotProfile::TestPeriodic() {
 	m_liveWindow->Run();
 }
+
+std::string BaseRobotProfile::GetName() {
+	return m_name;
+}

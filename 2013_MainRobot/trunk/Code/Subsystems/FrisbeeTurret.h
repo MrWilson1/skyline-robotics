@@ -22,7 +22,7 @@ public:
 	virtual void TurnGivenOffset(Offset offset) = 0;
 	virtual Offset ReportCurrentOffset() = 0;
 };
-
+/*
 class SimpleFrisbeeTurret : public BaseFrisbeeTurret {
 public:
 	SimpleFrisbeeTurret(SpeedController *HorizontalMotor, SpeedController *LateralMotor);
@@ -31,7 +31,7 @@ public:
 	void TurnHorizontal(float degrees);
 	void TurnVertical(float degrees);
 };
-
+*/
 /**
  * A class which controllers the shooter turret using
  * a PID loop. 
@@ -40,7 +40,7 @@ public:
  * given a full rotation. The encoders must be 
  * calibrated before being passed into this class.
  */
-class PidFrisbeeTurret : public BaseFrisbeeTurret {
+/*class PidFrisbeeTurret : public BaseFrisbeeTurret {
 public:
 	PidFrisbeeTurret(
 			SpeedController *horizontalMotor, 
@@ -64,6 +64,6 @@ private:
 	PIDController *m_horizontalPid;
 	PIDController *m_verticalPid;
 };
-
+*/
 
 #endif

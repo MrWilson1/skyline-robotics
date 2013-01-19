@@ -35,6 +35,10 @@ void SimpleBeltShooter::ShootFrisbee(float distanceInInches) {
 	m_motor->Set(motorPercentage * m_forwardDirection);
 }
 
+void SimpleBeltShooter::EjectFrisbee() {
+	m_motor->Set(0.2);
+}
+
 void SimpleBeltShooter::SetMaxDistance(float inches) {
 	m_maxDistance = inches;
 }

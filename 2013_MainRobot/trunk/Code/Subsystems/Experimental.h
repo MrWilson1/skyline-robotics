@@ -3,7 +3,7 @@
 
 #include "WPILib.h"
 #include "BaseSubsystem.h"
-
+/*
 class TestMotor : public BaseSubsystem {
 public:
 	TestMotor(SpeedController *motor);
@@ -14,6 +14,18 @@ public:
 	
 public:
 	SpeedController *m_motor;
+};*/
+
+class TestEncoder : public BaseSubsystem {
+public:
+	TestEncoder(Encoder *encoder, const char *name);
+	~TestEncoder();
+	
+	void SetDistancePerPulse(double input);
+	void Run();
+	
+private:
+	Encoder *m_encoder;
 };
 
 
