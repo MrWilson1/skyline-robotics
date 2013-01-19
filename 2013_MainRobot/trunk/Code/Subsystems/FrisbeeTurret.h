@@ -24,5 +24,26 @@ public:
 };
 
 
+class PidFrisbeeTurret : public BaseFrisbeeTurret {
+public:
+	PidFrisbeeTurret(
+			SpeedController *horizontalMotor, 
+			SpeedController *verticalMotor,
+			Encoder *horizontalEncoder,
+			Encoder *verticalEncoder);
+	~PidFrisbeeTurret();
+	
+	void TurnHorizontal(float degrees);
+	void TurnVertical(float degrees);
+	void TurnGivenOffset(Offset offset);
+	Offset ReportCurrentOffset();
+	
+private:
+	Offset m_offset;
+	SpeedController *m_horizontalMotor;
+	SpeedController *m_verticalMotor;
+	Encoder *m_verticalEncoder;
+	Encoder *m_horizontalEncoder;
+};
 
 #endif
