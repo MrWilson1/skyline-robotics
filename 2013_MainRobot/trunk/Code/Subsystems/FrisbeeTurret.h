@@ -23,6 +23,16 @@ public:
 	virtual Offset ReportCurrentOffset() = 0;
 };
 
+class SimpleFrisbeeTurret : public BaseFrisbeeTurret {
+public:
+	SimpleFrisbeeTurret(SpeedController *HorizontleMotor, Speedcontroller *LateralMotor, Direction forwardDirection )
+	~SimpleFrisbeeTurret();
+	
+	void TurnHorizontal(float degrees);
+	void TurnVertical(float degrees);
+};
+
+
 
 class PidFrisbeeTurret : public BaseFrisbeeTurret {
 public:
@@ -45,5 +55,6 @@ private:
 	Encoder *m_verticalEncoder;
 	Encoder *m_horizontalEncoder;
 };
+
 
 #endif
