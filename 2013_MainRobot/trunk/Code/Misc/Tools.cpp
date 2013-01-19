@@ -13,7 +13,7 @@ float Tools::ConvertUnits(float number, Units start, Units target) {
 		intermediateValue = number * 39.3701;
 		break;
 	case Centimeters:
-		intermediateValue = number * 0.39301;
+		intermediateValue = number * 0.393701;
 		break;
 	default:
 		// *shrug*
@@ -26,7 +26,7 @@ float Tools::ConvertUnits(float number, Units start, Units target) {
 		endValue = intermediateValue;
 		break;
 	case Feet:
-		endValue = intermediateValue * 12;
+		endValue = intermediateValue / 12;
 		break;
 	case Meters:
 		endValue = intermediateValue * 0.0254;
