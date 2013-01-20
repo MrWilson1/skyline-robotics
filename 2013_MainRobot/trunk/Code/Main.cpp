@@ -6,8 +6,8 @@
 
 // Modify these lines below:
 
-//#define MAINROBOT BLAND
-#define MAINROBOT TERMINATOR
+#define MAINROBOT BLAND
+//#define MAINROBOT TERMINATOR
 
 
 // DO NOT MODIFY BELOW
