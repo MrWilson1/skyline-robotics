@@ -22,16 +22,29 @@ public:
 	virtual void TurnGivenOffset(Offset offset) = 0;
 	virtual Offset ReportCurrentOffset() = 0;
 };
-/*
+
 class SimpleFrisbeeTurret : public BaseFrisbeeTurret {
 public:
-	SimpleFrisbeeTurret(SpeedController *HorizontalMotor, SpeedController *LateralMotor);
+	enum Direction {
+			Positive = 1,
+			Negative = -1,
+		};
+		
+	SimpleFrisbeeTurret(SpeedController *horizontalMotor, SpeedController *lateralMotor, 
+						Direction leftRightDirection, Direction upDownDirection );
 	~SimpleFrisbeeTurret();
 	
 	void TurnHorizontal(float degrees);
 	void TurnVertical(float degrees);
+
+private: 
+	SpeedController *m_horizontleMotor; 
+	SpeedController *m_lateralMotor;
+	Direction m_leftRightDirection;
+	Direction m_upDownDirection;
+	
 };
-*/
+
 /**
  * A class which controllers the shooter turret using
  * a PID loop. 
