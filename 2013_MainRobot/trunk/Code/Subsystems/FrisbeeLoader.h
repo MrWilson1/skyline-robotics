@@ -8,7 +8,19 @@
 /**
  * A base class to load frisbees into the shooter.
  * 
- * Note: this interface may change substantially over time.
+ * Methods
+ * - GetNumberOfFrisbeesLoaded()
+ * 		Does the obvious
+ * - UnloadFrisbees()
+ * 		Sort of gently spits the Frisbees out (doesn't shoot)
+ * 		in case we accidentally loaded a frisbee
+ * - PrepareFrisbee()
+ * 		Moves a frisbee in position so it's almost ready to shoot
+ * - IsFrisbeePrepared()
+ * 		Returns true if the loader is ready to inject a frisbee
+ * 		into the shooter
+ * - LoadFrisbee()
+ * 		Loads a frisbee into the shooter
  */
 class BaseFrisbeeLoader : public BaseSubsystem {
 public:
@@ -16,18 +28,9 @@ public:
 	virtual ~BaseFrisbeeLoader();
 	
 	virtual int GetNumberOfFrisbeesLoaded() = 0;
-	
-	// If possible, rejects a Frisbee and spits it out
-	// without shooting
 	virtual void UnloadFrisbee() = 0;
-	
-	// Prepare a Frisbee so it's almost ready to shoot
 	virtual void PrepareFrisbee() = 0;
-	
 	virtual bool IsFrisbeePrepared() = 0;
-	
-	// Takes the final step and loads a Frisbee into the
-	// shooter
 	virtual void LoadFrisbee() = 0;
 	
 };
