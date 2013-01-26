@@ -89,10 +89,10 @@ double SmoothEncoder::PIDGet() {
 		m_history.pop_back();
 	}
 	double sum = 0;
-	for (unsigned int i=0; i < m_maxSize; i++) {
+	for (unsigned int i=0; i < m_history.size(); i++) {
 		sum += m_history.at(i);
 	}
-	double average = sum / m_maxSize;
+	double average = sum / m_history.size();
 	return average;
 }
 
@@ -102,6 +102,9 @@ Encoder * SmoothEncoder::GetEncoder() {
 
 void SmoothEncoder::SetMaxSize(unsigned int maxSize) {
 	m_maxSize = maxSize;
+	while (m_history.size() > m_maxSize) {
+		m_history.pop_back();
+	}
 }
 
 
