@@ -3,10 +3,10 @@
 
 #include "WPILib.h"
 #include "BaseSubsystem.h"
-/*
+
 class TestMotor : public BaseSubsystem {
 public:
-	TestMotor(SpeedController *motor);
+	TestMotor(SpeedController *motor, const char *name);
 	~TestMotor();
 	
 	void SetSpeed(float speed);
@@ -14,7 +14,7 @@ public:
 	
 public:
 	SpeedController *m_motor;
-};*/
+};
 
 class TestEncoder : public BaseSubsystem {
 public:

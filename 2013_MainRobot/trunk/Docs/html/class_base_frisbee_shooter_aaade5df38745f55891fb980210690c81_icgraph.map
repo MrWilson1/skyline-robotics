@@ -1,0 +1,4 @@
+<map id="BaseFrisbeeShooter::ShootFrisbee" name="BaseFrisbeeShooter::ShootFrisbee">
+<area shape="rect" id="node3" href="$class_fire_frisbee_max_speed_command.html#a27b141d49621abfaf1520c228d0b039f" title="FireFrisbeeMaxSpeedCommand\l::Execute" alt="" coords="195,5,403,46"/>
+<area shape="rect" id="node5" href="$class_fire_frisbee_set_speed_command.html#a98a0d6727e19ee808b3523e799b3c8ac" title="FireFrisbeeSetSpeedCommand\l::Execute" alt="" coords="197,70,400,111"/>
+</map>

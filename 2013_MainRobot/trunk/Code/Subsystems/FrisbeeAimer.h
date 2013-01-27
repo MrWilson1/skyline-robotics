@@ -2,6 +2,7 @@
 #define FRISBEE_AIMER_H
 
 #include "WPILib.h"
+#include "WPILib/networktables2/type/NumberArray.h"
 
 #include "BaseSubsystem.h"
 
@@ -66,6 +67,14 @@ public:
 	
 	// Gets the combined target info
 	virtual Target GetTargetData() = 0;
+};
+
+class TestAimer : public BaseSubsystem {
+public:
+	TestAimer(const char *name);
+	~TestAimer();
+	
+	void Run();
 };
 
 #endif

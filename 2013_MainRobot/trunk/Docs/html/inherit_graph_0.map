@@ -1,0 +1,12 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node3" href="$class_aim_turret_command.html" title="AimTurretCommand" alt="" coords="171,5,309,32"/>
+<area shape="rect" id="node5" href="$class_arcade_drive_command.html" title="ArcadeDriveCommand" alt="" coords="165,56,315,83"/>
+<area shape="rect" id="node7" href="$class_eject_frisbee_command.html" title="EjectFrisbeeCommand" alt="" coords="163,107,317,133"/>
+<area shape="rect" id="node9" href="$class_fire_frisbee_max_speed_command.html" title="FireFrisbeeMaxSpeedCommand" alt="" coords="136,157,344,184"/>
+<area shape="rect" id="node11" href="$class_fire_frisbee_set_speed_command.html" title="FireFrisbeeSetSpeedCommand" alt="" coords="139,208,341,235"/>
+<area shape="rect" id="node13" href="$class_load_frisbee_command.html" title="LoadFrisbeeCommand" alt="" coords="164,259,316,285"/>
+<area shape="rect" id="node15" href="$class_spasm.html" title="Spasm" alt="" coords="209,309,271,336"/>
+<area shape="rect" id="node17" href="$class_tank_drive_command.html" title="TankDriveCommand" alt="" coords="171,360,309,387"/>
+<area shape="rect" id="node19" href="$class_test_encoder_command.html" title="TestEncoderCommand" alt="" coords="163,411,317,437"/>
+<area shape="rect" id="node21" href="$class_test_motor_command.html" title="TestMotorCommand" alt="" coords="171,461,309,488"/>
+</map>

@@ -1,5 +1,24 @@
 #include "Experimental.h"
 
+
+TestMotor::TestMotor(SpeedController *motor, const char *name) :
+		BaseSubsystem(name) {
+	m_motor = motor;
+	AddActuatorToLiveWindow("Motor", m_motor);
+}
+
+TestMotor::~TestMotor() {
+	// Empty
+}
+
+void TestMotor::SetSpeed(float speed) {
+	m_motor->Set(speed);
+}
+
+void TestMotor::MaxSpeed() {
+	m_motor->Set(1.0);
+}
+
 TestEncoder::TestEncoder(Encoder *encoder, const char *name) :
 		BaseSubsystem(name) {
 	m_encoder = encoder;

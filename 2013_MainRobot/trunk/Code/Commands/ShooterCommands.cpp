@@ -1,7 +1,8 @@
 #include "ShooterCommands.h"
 
 LoadFrisbeeCommand::LoadFrisbeeCommand(BaseFrisbeeLoader *loader) :
-		Command("LoadFrisbee") {
+		Command("LoadFrisbee"),
+		m_isFinished(false) {
 	m_loader = loader;
 	Requires(m_loader);
 }
@@ -16,14 +17,16 @@ void LoadFrisbeeCommand::Initialize() {
 
 void LoadFrisbeeCommand::Execute() {
 	SmartDashboard::PutNumber("Frisbees loaded", m_loader->GetNumberOfFrisbeesLoaded());
-	m_loader->PrepareFrisbee();
 	if (m_loader->IsFrisbeePrepared()) {
 		m_loader->LoadFrisbee();
+		m_isFinished = true;
+	} else {
+		m_loader->PrepareFrisbee();
 	}
 }
 
 bool LoadFrisbeeCommand::IsFinished() {
-	return true;
+	return m_isFinished;
 }
 
 void LoadFrisbeeCommand::End() {

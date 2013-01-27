@@ -1,0 +1,7 @@
+<map id="XboxController::GetAxis" name="XboxController::GetAxis">
+<area shape="rect" id="node3" href="$class_xbox_controller.html#a90e074585af3b344a9ff22664f4d544f" title="XboxController::GetLeftXAxis" alt="" coords="222,5,410,32"/>
+<area shape="rect" id="node5" href="$class_xbox_controller.html#a68cf32b73b5f85ad2fbe7de5f241678a" title="XboxController::GetLeftYAxis" alt="" coords="221,56,411,83"/>
+<area shape="rect" id="node7" href="$class_xbox_controller.html#a93a2fceebb366f005240e0c7ae8edcee" title="XboxController::GetBumperAxis" alt="" coords="213,107,419,133"/>
+<area shape="rect" id="node9" href="$class_xbox_controller.html#a4cafe43cef43a2c2a70014f934ffb6c3" title="XboxController::GetRight\lXAxis" alt="" coords="234,158,398,199"/>
+<area shape="rect" id="node11" href="$class_xbox_controller.html#aaf030cc79bb57c4fb646df1994acdcaa" title="XboxController::GetRight\lYAxis" alt="" coords="234,223,398,265"/>
+</map>

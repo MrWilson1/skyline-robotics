@@ -32,21 +32,25 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 			m_rightBackMotor);
 	
 	m_leftEncoder = new Encoder(
-					Ports::Crio::Module1,
-					Ports::DigitalSidecar::Gpio6,
-					Ports::Crio::Module1,
-					Ports::DigitalSidecar::Gpio7);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio6,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio7);
 	m_rightEncoder = new Encoder(
-					Ports::Crio::Module1,
-					Ports::DigitalSidecar::Gpio8,
-					Ports::Crio::Module1,
-					Ports::DigitalSidecar::Gpio9);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio8,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio9);
 	
 	m_leftEncoder->SetDistancePerPulse(1.0f / 4000.0f);
 	m_rightEncoder->SetDistancePerPulse(1.0f / 4500.0f);
 
 	m_leftEncoder->Start();
 	m_rightEncoder->Start();
+	
+	m_testSpeedController = new Talon(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm5);
 	
 	m_xbox = new XboxController(
 			Ports::Computer::Usb1);
@@ -63,6 +67,8 @@ void TerminatorRobotProfile::CreateSubsystems() {
 			m_rightEncoder);*/
 	m_leftTestEncoder = new TestEncoder(m_leftEncoder, "Left Encoder Test");
 	m_rightTestEncoder = new TestEncoder(m_rightEncoder, "Right Encoder Test");
+	
+	m_testMotor = new TestMotor(m_testSpeedController, "TestMotor");
 }
 
 void TerminatorRobotProfile::CreateOI() {
@@ -70,7 +76,8 @@ void TerminatorRobotProfile::CreateOI() {
 		m_xbox,
 		m_drive,
 		m_leftTestEncoder,
-		m_rightTestEncoder);
+		m_rightTestEncoder,
+		m_testMotor);
 }
 
 void TerminatorRobotProfile::RobotInit() {

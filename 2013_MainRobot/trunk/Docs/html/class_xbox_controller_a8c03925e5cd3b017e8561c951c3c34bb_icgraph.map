@@ -1,0 +1,4 @@
+<map id="XboxController::GetDpad" name="XboxController::GetDpad">
+<area shape="rect" id="node3" href="$class_xbox_controller.html#a3f876d9386de9794baeea809a6a98a0b" title="XboxController::GetXDirDpad" alt="" coords="220,5,407,32"/>
+<area shape="rect" id="node5" href="$class_xbox_controller.html#a37523af763442cf6bbe00478be159945" title="XboxController::GetYDirDpad" alt="" coords="219,56,408,83"/>
+</map>

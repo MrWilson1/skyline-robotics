@@ -8,13 +8,17 @@
 #include "..\Subsystems\DriveSubsystem.h"
 
 /**
- * Issues a perpetually running command to drive in tank mode.
+ * \brief Issues a perpetually running command to drive in tank mode.
  */
 class TankDriveCommand : public Command {
 public:
 	TankDriveCommand(BaseDrive *drive, BaseOI *OI);
 	~TankDriveCommand();
 	void Initialize();
+	/**
+	 * Grabs the appropriate tank values from the OI and 
+	 * displays them on the SmartDashboard.
+	 */
 	void Execute();
 	bool IsFinished();
 	void End();

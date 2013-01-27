@@ -5,6 +5,8 @@ BlandRobotProfile::BlandRobotProfile() :
 	CreateBasicHardwareObjects();
 	CreateSubsystems();
 	CreateOI();
+	
+	m_aimer = new TestAimer("TestAimer");
 }
 
 BlandRobotProfile::~BlandRobotProfile() {
@@ -43,4 +45,9 @@ void BlandRobotProfile::TeleopInit() {
 	SmartDashboard::PutString("bland status 1", "initializing Telop");
 	m_OI->SetupTeleop();
 	SmartDashboard::PutString("bland status 2", "done init");
+}
+
+void BlandRobotProfile::TeleopPeriodic() {
+	Scheduler::GetInstance()->Run();
+	m_aimer->Run();
 }

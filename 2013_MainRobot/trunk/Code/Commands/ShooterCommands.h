@@ -22,6 +22,7 @@ public:
 	
 private:
 	BaseFrisbeeLoader *m_loader;
+	bool m_isFinished;
 };
 
 class AimTurretCommand : Command {

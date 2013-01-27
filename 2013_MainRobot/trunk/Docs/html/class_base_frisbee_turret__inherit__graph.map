@@ -1,0 +1,4 @@
+<map id="BaseFrisbeeTurret" name="BaseFrisbeeTurret">
+<area shape="rect" id="node7" href="$class_simple_frisbee_turret.html" title="SimpleFrisbeeTurret" alt="" coords="5,229,144,256"/>
+<area shape="rect" id="node2" href="$class_base_subsystem.html" title="BaseSubsystem" alt="" coords="15,80,133,107"/>
+</map>

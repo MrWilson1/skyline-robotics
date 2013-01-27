@@ -1,0 +1,5 @@
+<map id="BaseSubsystem::AddActuatorToLiveWindow" name="BaseSubsystem::AddActuatorToLiveWindow">
+<area shape="rect" id="node3" href="$class_pid_simple_drive.html#a1522be3c25a2e8e2dc12660e8f6c7153" title="PidSimpleDrive::PidSimple\lDrive" alt="" coords="253,5,429,46"/>
+<area shape="rect" id="node5" href="$class_test_motor.html#a61e5ae996ac8d4286053b2f956d1d4b7" title="TestMotor::TestMotor" alt="" coords="268,71,415,97"/>
+<area shape="rect" id="node7" href="$class_simple_belt_shooter.html#a1e2b8956f022b8608f85ea83a4715292" title="SimpleBeltShooter::\lSimpleBeltShooter" alt="" coords="272,122,411,163"/>
+</map>

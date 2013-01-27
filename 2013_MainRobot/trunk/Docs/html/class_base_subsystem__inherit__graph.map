@@ -1,0 +1,15 @@
+<map id="BaseSubsystem" name="BaseSubsystem">
+<area shape="rect" id="node5" href="$class_base_drive.html" title="BaseDrive" alt="" coords="340,31,420,57"/>
+<area shape="rect" id="node11" href="$class_base_frisbee_aimer.html" title="BaseFrisbeeAimer" alt="" coords="315,81,445,108"/>
+<area shape="rect" id="node13" href="$class_base_frisbee_loader.html" title="BaseFrisbeeLoader" alt="" coords="313,132,447,159"/>
+<area shape="rect" id="node15" href="$class_base_frisbee_pickup.html" title="BaseFrisbeePickup" alt="" coords="313,183,447,209"/>
+<area shape="rect" id="node17" href="$class_base_frisbee_raiser.html" title="BaseFrisbeeRaiser" alt="" coords="314,233,446,260"/>
+<area shape="rect" id="node19" href="$class_base_frisbee_shooter.html" title="BaseFrisbeeShooter" alt="" coords="310,284,450,311"/>
+<area shape="rect" id="node23" href="$class_base_frisbee_turret.html" title="BaseFrisbeeTurret" alt="" coords="316,335,444,361"/>
+<area shape="rect" id="node27" href="$class_test_encoder.html" title="TestEncoder" alt="" coords="333,385,427,412"/>
+<area shape="rect" id="node29" href="$class_test_motor.html" title="TestMotor" alt="" coords="340,436,420,463"/>
+<area shape="rect" id="node7" href="$class_pid_simple_drive.html" title="PidSimpleDrive" alt="" coords="513,5,623,32"/>
+<area shape="rect" id="node9" href="$class_simple_drive.html" title="SimpleDrive" alt="" coords="523,56,613,83"/>
+<area shape="rect" id="node21" href="$class_simple_belt_shooter.html" title="SimpleBeltShooter" alt="" coords="503,284,633,311"/>
+<area shape="rect" id="node25" href="$class_simple_frisbee_turret.html" title="SimpleFrisbeeTurret" alt="" coords="499,335,637,361"/>
+</map>

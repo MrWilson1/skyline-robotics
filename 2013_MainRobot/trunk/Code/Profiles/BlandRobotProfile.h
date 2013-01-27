@@ -9,6 +9,8 @@
 #include "../OperatorInterfaces/XboxOI.h"
 #include "../OperatorInterfaces/Xbox.h"
 
+#include "../Subsystems/FrisbeeAimer.h"
+
 /**
  * A profile for a generic robot that simply drives around.
  */
@@ -20,6 +22,7 @@ private:
 	
 	// Subsystems
 	BaseDrive *m_drive; 
+	TestAimer *m_aimer;
 	
 	// Operator Interfaces
 	XboxOI *m_OI;
@@ -35,6 +38,7 @@ public:
 	void RobotInit();
 	void AutonomousInit();
 	void TeleopInit();
+	void TeleopPeriodic();
 };
 
 #endif

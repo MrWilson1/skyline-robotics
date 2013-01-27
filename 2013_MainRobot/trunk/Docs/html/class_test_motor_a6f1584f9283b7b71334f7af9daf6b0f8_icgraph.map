@@ -1,0 +1,6 @@
+<map id="TestMotor::SetSpeed" name="TestMotor::SetSpeed">
+<area shape="rect" id="node3" href="$class_test_motor_command.html#af2fe08c0c7d0e8e43f650765fefaefa3" title="TestMotorCommand::Initialize" alt="" coords="207,5,401,32"/>
+<area shape="rect" id="node5" href="$class_test_motor_command.html#ad4fde71225e88f2097b2404ce521e3f1" title="TestMotorCommand::Execute" alt="" coords="207,56,401,83"/>
+<area shape="rect" id="node7" href="$class_test_motor_command.html#a9662cb600751a1bf39dd3cbabca7d0b1" title="TestMotorCommand::End" alt="" coords="219,107,389,133"/>
+<area shape="rect" id="node9" href="$class_test_motor_command.html#a59d79b4c9d0219d7b37ee6c8ebce7c9a" title="TestMotorCommand::Interrupted" alt="" coords="200,157,408,184"/>
+</map>
