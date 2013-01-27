@@ -3,6 +3,7 @@
 
 #include "WPILib.h"
 #include "BaseSubsystem.h"
+#include "../Misc/Tools.h"
 
 /**
  * A class to lower and raise the shooter so that it's easier to hit 
@@ -38,6 +39,25 @@ public:
 	virtual void Raise(float magnitude) = 0;
 	virtual void Lower(float magnitude) = 0;
 	virtual void Stop() = 0;
+};
+
+class GuardedFrisbeeRaiser : public BaseFrisbeeRaiser {
+public:
+	GuardedFrisbeeRaiser(SpeedController *raiserMotor, DigitalInput *topLimitSwitch, DigitalInput *bottomLimitSwitch, double motorSpeed);
+	~GuardedFrisbeeRaiser();
+	
+	bool IsAtTop();
+	bool IsAtBottom();
+	void Raise();
+	void Lower();
+	void Raise(float magnitude);
+	void Lower(float magnitude);
+	void Stop();
+private:
+	double m_motorSpeed; // may change later when we test it
+	SpeedController *m_raiserMotor;
+	DigitalInput *m_topLimitSwitch;
+	DigitalInput *m_bottomLimitSwitch;
 };
 
 #endif
