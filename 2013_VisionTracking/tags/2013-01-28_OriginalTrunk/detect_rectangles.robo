@@ -1,0 +1,245 @@
+<head><version>2.48.21</version></head>
+<Axis_Internet_Camera>
+  <auto_exposure>FALSE</auto_exposure>
+  <auto_back_light>TRUE</auto_back_light>
+  <exposure_value>51</exposure_value>
+  <auto_white_balance>TRUE</auto_white_balance>
+  <compression_index>3</compression_index>
+  <refresh_index>3</refresh_index>
+  <sharpness_value>50</sharpness_value>
+  <ip_address>10.29.76.11</ip_address>
+  <password>FRC</password>
+  <username>FRC</username>
+  <port>80</port>
+  <contrast_value>50</contrast_value>
+  <is_active>TRUE</is_active>
+  <resolution>2</resolution>
+</Axis_Internet_Camera>
+<Radial_Distortion>
+  <scale>1000.0</scale>
+  <coeff_c>0.004</coeff_c>
+  <coeff_d>2e-005</coeff_d>
+  <center_x>0.5</center_x>
+  <crop_image>FALSE</crop_image>
+  <coeff_b>-0.75</coeff_b>
+  <center_y>0.5</center_y>
+  <coeff_e>0</coeff_e>
+  <coeff_a>-1000.0</coeff_a>
+</Radial_Distortion>
+<Adaptive_Threshold>
+  <mean_offset>-23</mean_offset>
+  <filter_size>28</filter_size>
+  <min_threshold>150</min_threshold>
+  <channel_type>1</channel_type>
+  <max_threshold>255</max_threshold>
+</Adaptive_Threshold>
+<Blob_Filter>
+  <filters>
+    <tab:5/>
+    <tab:2/>
+    <tab:4/>
+    <tab>
+      <filter:2>
+        <create_array>0</create_array>
+        <count_threshold>5</count_threshold>
+        <weight_threshold>0.03</weight_threshold>
+        <invert_count>0</invert_count>
+        <filter_id>66</filter_id>
+        <invert_threshold>0</invert_threshold>
+      </filter:2>
+      <filter>
+        <create_array>0</create_array>
+        <count_threshold>0</count_threshold>
+        <weight_threshold>0</weight_threshold>
+        <invert_count>0</invert_count>
+        <filter_id>8</filter_id>
+        <invert_threshold>0</invert_threshold>
+        <minimum_size>300</minimum_size>
+      </filter>
+    </tab>
+    <tab:6/>
+    <tab:3/>
+  </filters>
+  <sort_array_on_y>FALSE</sort_array_on_y>
+  <largest_is_background>FALSE</largest_is_background>
+  <sort_array_on_x>FALSE</sort_array_on_x>
+  <show_weights>FALSE</show_weights>
+  <create_blob_array_variable>FALSE</create_blob_array_variable>
+</Blob_Filter>
+<Close>
+  <restrict_dilation>FALSE</restrict_dilation>
+  <erode_count>4</erode_count>
+  <dilate_count>4</dilate_count>
+  <close_borders>FALSE</close_borders>
+  <kernal_shape>4</kernal_shape>
+  <symmetrical>TRUE</symmetrical>
+</Close>
+<Blob_Replace>
+  <thickness>3</thickness>
+  <color_index>6</color_index>
+  <fill_shape>FALSE</fill_shape>
+  <order_array_on_x>TRUE</order_array_on_x>
+  <order_array_on_y>FALSE</order_array_on_y>
+</Blob_Replace>
+<VBScript_Program disabled>
+  <tab_size_index>1</tab_size_index>
+  <script>list = GetArrayVariable("BOUNDING_COORDINATES")
+if isArray(list) then
+  if ubound(list) &gt; 0 then
+
+    targetPixelHeight = 0
+    targetSamples = 0
+
+    ' calibrated for an Axis camera
+    imageHeight = GetVariable("IMAGE_HEIGHT")
+    cameraFieldOfView = 39.25
+    ' specify the known height of the target (12 inches)
+    targetHeight = 20.0
+
+    ' grab list of coordinates from blob_replace
+    ' note the array is sorted by previous module in a specific order
+    righty = list(1)
+    rightyy = list(7)
+    lefty = list(3)
+    leftyy = list(5)
+
+		SetVariable "p1x", list(0)
+		SetVariable "p1y", list(1)
+		SetVariable "p2x", list(2)
+		SetVariable "p2y", list(3)
+		SetVariable "p3x", list(4)
+		SetVariable "p3y", list(5)
+		SetVariable "p4x", list(6)
+		SetVariable "p4y", list(7)
+		
+
+    ' based on these two side lines get the center line height
+    ' the center line is used since we want to aim to the center
+    ' of the target. This also removes any perspective distortion
+    ' where the right or left size may be a couple inches closer
+    ' or further away from the camera
+    targetPixelHeight = ((lefty - leftyy) + (righty - rightyy)) / 2
+
+    ' we can use a known distance to determine FOV if we don't know it
+    measuredDistance = 6.0*12.0
+    write "Calculated FOV " &amp; _
+      (((atan((((targetHeight*imageHeight)/targetPixelHeight)/2) _
+      /measuredDistance)*2.0)*180.0)/3.14159) &amp; vbCRLF
+
+    ' determine distance in inches
+    totalDistance = (((targetHeight*imageHeight)/targetPixelHeight)/2)/ _
+      tan(((cameraFieldOfView*3.14159)/180.0)/2.0)
+
+    SetVariable "Distance", CInt((totalDistance*100)/12)/100
+
+  end if
+end if</script>
+  <source_mode>gui</source_mode>
+</VBScript_Program>
+<Python_Program>
+  <tab_size_index>1</tab_size_index>
+  <script>import rr
+</script>
+  <filename>calculate_distances.py</filename>
+  <source_mode>file</source_mode>
+</Python_Program>
+<Display_Point>
+  <shape_color>red</shape_color>
+  <display_as_annotation>FALSE</display_as_annotation>
+  <thickness>1</thickness>
+  <shape_size>2</shape_size>
+  <y_coord>100</y_coord>
+  <y_variable>large_center_y</y_variable>
+  <x_variable>large_center_x</x_variable>
+  <clear_image>FALSE</clear_image>
+  <shape_index>4</shape_index>
+  <x_coord>100</x_coord>
+</Display_Point>
+<Display_Point>
+  <shape_color>green</shape_color>
+  <display_as_annotation>FALSE</display_as_annotation>
+  <thickness>1</thickness>
+  <shape_size>2</shape_size>
+  <y_coord>100</y_coord>
+  <y_variable>tiny_center_y</y_variable>
+  <x_variable>tiny_center_x</x_variable>
+  <clear_image>FALSE</clear_image>
+  <shape_index>4</shape_index>
+  <x_coord>100</x_coord>
+</Display_Point>
+<Display_Variables>
+  <display_as_annotation>FALSE</display_as_annotation>
+  <display_value_only>FALSE</display_value_only>
+  <font_color>red</font_color>
+  <dim_background>TRUE</dim_background>
+  <border_color>red</border_color>
+  <font_size>Normal (10pt)</font_size>
+  <northwest>large_distance
+tiny_distance
+</northwest>
+</Display_Variables>
+<Math>
+  <image_1_channel>2</image_1_channel>
+  <image2>Current</image2>
+  <function>5</function>
+  <divisor>1</divisor>
+  <image1>Source</image1>
+  <all_channels>TRUE</all_channels>
+  <bias>0</bias>
+</Math>
+<Set_Variable>
+  <set_2_array>TRUE</set_2_array>
+  <variable_4>/VisionTable/low</variable_4>
+  <set_4_array>TRUE</set_4_array>
+  <set_1_array>TRUE</set_1_array>
+  <value_1>[high]</value_1>
+  <set_2_once>FALSE</set_2_once>
+  <set_3_once>FALSE</set_3_once>
+  <set_4_once>FALSE</set_4_once>
+  <variable_1>/VisionTable/high</variable_1>
+  <value_2>[medium1]</value_2>
+  <variable_2>/VisionTable/medium1</variable_2>
+  <set_1_once>FALSE</set_1_once>
+  <set_3_array>TRUE</set_3_array>
+  <value_3>[medium2]</value_3>
+  <variable_3>/VisionTable/medium2</variable_3>
+  <value_4>[low]</value_4>
+</Set_Variable>
+<NetworkTables>
+  <port>1735</port>
+  <variable_type_index>2</variable_type_index>
+  <variables_to_send>/VisionTable/high
+/VisionTable/low
+/VisionTable/medium1
+/VisionTable/medium2</variables_to_send>
+  <filter_type_index>0</filter_type_index>
+  <hostname>10.29.76.2</hostname>
+</NetworkTables>
+<Set_Variable>
+  <set_2_array>TRUE</set_2_array>
+  <variable_4>/SmartDashboard/low</variable_4>
+  <set_4_array>TRUE</set_4_array>
+  <set_1_array>TRUE</set_1_array>
+  <value_1>[high]</value_1>
+  <set_2_once>FALSE</set_2_once>
+  <set_3_once>FALSE</set_3_once>
+  <set_4_once>FALSE</set_4_once>
+  <variable_1>/SmartDashboard/high</variable_1>
+  <value_2>[medium1]</value_2>
+  <variable_2>/SmartDashboard/medium1</variable_2>
+  <set_1_once>FALSE</set_1_once>
+  <set_3_array>TRUE</set_3_array>
+  <value_3>[medium2]</value_3>
+  <variable_3>/SmartDashboard/medium2</variable_3>
+  <value_4>[low]</value_4>
+</Set_Variable>
+<NetworkTables>
+  <port>1735</port>
+  <variable_type_index>2</variable_type_index>
+  <variables_to_send>/SmartDashboard/high
+/SmartDashboard/low
+/SmartDashboard/medium1
+/SmartDashboard/medium2</variables_to_send>
+  <filter_type_index>0</filter_type_index>
+  <hostname>10.29.76.2</hostname>
+</NetworkTables>
