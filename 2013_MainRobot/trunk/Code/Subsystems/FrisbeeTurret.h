@@ -19,8 +19,8 @@ public:
 	
 	virtual void TurnHorizontal(float degrees) = 0;
 	virtual void TurnVertical(float degrees) = 0;
-	virtual void TurnGivenOffset(Offset offset) = 0;
-	virtual Offset ReportCurrentOffset() = 0;
+	virtual void TurnGivenOffset(Tracking::Offset offset) = 0;
+	virtual Tracking::Offset ReportCurrentOffset() = 0;
 };
 
 class SimpleFrisbeeTurret : public BaseFrisbeeTurret {

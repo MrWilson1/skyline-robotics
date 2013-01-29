@@ -1,6 +1,8 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+#include <math.h>
+
 namespace Tools {
 	enum Units {
 		Inches,
@@ -26,6 +28,11 @@ namespace Tools {
 	 * [outputStart, outputEnd]
 	 */
 	float Scale(float value, float inputStart, float inputEnd, float outputStart, float outputEnd);
+	
+	/**
+	 * Finds the magnitude of two coordinate pairs
+	 */
+	float FindMagnitude(float a, float b);
 }
 
 #endif

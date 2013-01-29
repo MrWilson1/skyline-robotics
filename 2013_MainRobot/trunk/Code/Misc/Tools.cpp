@@ -58,3 +58,7 @@ float Tools::Scale(float value, float inputStart, float inputEnd, float outputSt
 	float scaledValue = (outputEnd - outputStart) * percentage;
 	return scaledValue + outputStart;
 }
+
+float Tools::FindMagnitude(float a, float b) {
+	return sqrt(a * a + b * b);
+}
