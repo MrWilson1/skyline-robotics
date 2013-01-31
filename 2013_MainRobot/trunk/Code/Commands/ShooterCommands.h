@@ -10,7 +10,7 @@
 #include "..\Subsystems\FrisbeeShooter.h"
 #include "..\Subsystems\FrisbeeTurret.h"
 
-class LoadFrisbeeCommand : Command {
+class LoadFrisbeeCommand : public Command {
 public:
 	LoadFrisbeeCommand(BaseFrisbeeLoader *loader);
 	~LoadFrisbeeCommand();
@@ -25,7 +25,7 @@ private:
 	bool m_isFinished;
 };
 
-class AimTurretCommand : Command {
+class AimTurretCommand : public Command {
 public:
 	AimTurretCommand(BaseFrisbeeAimer *aimer);
 	~AimTurretCommand();
@@ -39,7 +39,7 @@ private:
 	BaseFrisbeeAimer *m_aimer;
 };
 
-class FireFrisbeeCommand : Command {
+class FireFrisbeeCommand : public Command {
 public:
 	FireFrisbeeCommand(BaseFrisbeeShooter *shooter);
 	FireFrisbeeCommand(BaseFrisbeeShooter *shooter, double distanceInInches);
@@ -56,7 +56,7 @@ private:
 };
 
 
-class EjectFrisbeeCommand : Command {
+class EjectFrisbeeCommand : public Command {
 public:
 	EjectFrisbeeCommand(BaseFrisbeeShooter *shooter);
 	~EjectFrisbeeCommand();
@@ -68,6 +68,12 @@ public:
 		
 private:
 	BaseFrisbeeShooter *m_shooter;
+};
+
+class LoadAndFire : public CommandGroup {
+public:
+	LoadAndFire(BaseFrisbeeLoader *loader, BaseFrisbeeAimer *aimer, BaseFrisbeeShooter *shooter);
+	~LoadAndFire();
 };
 
 #endif
