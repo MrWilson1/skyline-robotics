@@ -67,64 +67,64 @@ void AimTurretCommand::Interrupted() {
 	// empty
 }
 
-FireFrisbeeMaxSpeedCommand::FireFrisbeeMaxSpeedCommand(BaseFrisbeeShooter *shooter) :
+FireFrisbeeAutoDistanceCommand::FireFrisbeeAutoDistanceCommand(BaseFrisbeeShooter *shooter) :
 		Command("FireFrisbee") {
 	m_shooter = shooter;
 	Requires(m_shooter);
 }
 
-FireFrisbeeMaxSpeedCommand::~FireFrisbeeMaxSpeedCommand() {
+FireFrisbeeAutoDistanceCommand::~FireFrisbeeAutoDistanceCommand() {
 	// empty
 }
 
-void FireFrisbeeMaxSpeedCommand::Initialize() {
+void FireFrisbeeAutoDistanceCommand::Initialize() {
 	// empty
 }
 
-void FireFrisbeeMaxSpeedCommand::Execute() {
+void FireFrisbeeAutoDistanceCommand::Execute() {
 	m_shooter->ShootFrisbee();
 }
 
-bool FireFrisbeeMaxSpeedCommand::IsFinished() {
+bool FireFrisbeeAutoDistanceCommand::IsFinished() {
 	return true;
 }
 
-void FireFrisbeeMaxSpeedCommand::End() {
+void FireFrisbeeAutoDistanceCommand::End() {
 	// empty
 }
 
-void FireFrisbeeMaxSpeedCommand::Interrupted() {
+void FireFrisbeeAutoDistanceCommand::Interrupted() {
 	// empty
 }
 
-FireFrisbeeSetSpeedCommand::FireFrisbeeSetSpeedCommand(BaseFrisbeeShooter *shooter, float setSpeed) :
+FireFrisbeeManualDistanceCommand::FireFrisbeeManualDistanceCommand(BaseFrisbeeShooter *shooter, float setDistanceInInches) :
 		Command("FireFrisbee") {
 	m_shooter = shooter;
-	speed = setSpeed;
+	distanceInInches = setDistanceInInches;
 	Requires(m_shooter);
 }
 
-FireFrisbeeSetSpeedCommand::~FireFrisbeeSetSpeedCommand() {
+FireFrisbeeManualDistanceCommand::~FireFrisbeeManualDistanceCommand() {
 	// empty
 }
 
-void FireFrisbeeSetSpeedCommand::Initialize() {
+void FireFrisbeeManualDistanceCommand::Initialize() {
 	// empty
 }
 
-void FireFrisbeeSetSpeedCommand::Execute() {
-	m_shooter->ShootFrisbee(speed);
+void FireFrisbeeManualDistanceCommand::Execute() {
+	m_shooter->ShootFrisbee(distanceInInches);
 }
 
-bool FireFrisbeeSetSpeedCommand::IsFinished() {
+bool FireFrisbeeManualDistanceCommand::IsFinished() {
 	return true;
 }
 
-void FireFrisbeeSetSpeedCommand::End() {
+void FireFrisbeeManualDistanceCommand::End() {
 	// empty
 }
 
-void FireFrisbeeSetSpeedCommand::Interrupted() {
+void FireFrisbeeManualDistanceCommand::Interrupted() {
 	// empty
 }
 

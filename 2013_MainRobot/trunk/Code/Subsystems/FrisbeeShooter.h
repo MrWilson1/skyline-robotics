@@ -36,7 +36,7 @@ public:
 	~SimpleBeltShooter();
 	
 	void ShootFrisbee();
-	void ShootFrisbee(float inchesPerSecond);
+	void ShootFrisbee(float distanceInInches);
 	void EjectFrisbee();
 	
 	void SetMaxDistance(float inches);
