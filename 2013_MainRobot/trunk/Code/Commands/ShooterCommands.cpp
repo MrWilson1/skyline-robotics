@@ -67,69 +67,46 @@ void AimTurretCommand::Interrupted() {
 	// empty
 }
 
-FireFrisbeeAutoDistanceCommand::FireFrisbeeAutoDistanceCommand(BaseFrisbeeShooter *shooter) :
-		Command("FireFrisbee") {
+FireFrisbeeCommand::FireFrisbeeCommand(BaseFrisbeeShooter *shooter) :
+		Command("FireFrisbee"),
+		m_distanceInInches(1.0) {
 	m_shooter = shooter;
 	Requires(m_shooter);
 }
 
-FireFrisbeeAutoDistanceCommand::~FireFrisbeeAutoDistanceCommand() {
-	// empty
-}
-
-void FireFrisbeeAutoDistanceCommand::Initialize() {
-	// empty
-}
-
-void FireFrisbeeAutoDistanceCommand::Execute() {
-	m_shooter->ShootFrisbee();
-}
-
-bool FireFrisbeeAutoDistanceCommand::IsFinished() {
-	return true;
-}
-
-void FireFrisbeeAutoDistanceCommand::End() {
-	// empty
-}
-
-void FireFrisbeeAutoDistanceCommand::Interrupted() {
-	// empty
-}
-
-FireFrisbeeManualDistanceCommand::FireFrisbeeManualDistanceCommand(BaseFrisbeeShooter *shooter, float setDistanceInInches) :
+FireFrisbeeCommand::FireFrisbeeCommand(BaseFrisbeeShooter *shooter, double distanceInInches) :
 		Command("FireFrisbee") {
 	m_shooter = shooter;
-	distanceInInches = setDistanceInInches;
+	m_distanceInInches = distanceInInches;
 	Requires(m_shooter);
 }
 
-FireFrisbeeManualDistanceCommand::~FireFrisbeeManualDistanceCommand() {
+FireFrisbeeCommand::~FireFrisbeeCommand() {
 	// empty
 }
 
-void FireFrisbeeManualDistanceCommand::Initialize() {
+void FireFrisbeeCommand::Initialize() {
 	// empty
 }
 
-void FireFrisbeeManualDistanceCommand::Execute() {
-	m_shooter->ShootFrisbee(distanceInInches);
+void FireFrisbeeCommand::Execute() {
+	m_shooter->ShootFrisbee(m_distanceInInches);
 }
 
-bool FireFrisbeeManualDistanceCommand::IsFinished() {
+bool FireFrisbeeCommand::IsFinished() {
 	return true;
 }
 
-void FireFrisbeeManualDistanceCommand::End() {
+void FireFrisbeeCommand::End() {
 	// empty
 }
 
-void FireFrisbeeManualDistanceCommand::Interrupted() {
+void FireFrisbeeCommand::Interrupted() {
 	// empty
 }
 
 EjectFrisbeeCommand::EjectFrisbeeCommand(BaseFrisbeeShooter *shooter) :
-		Command("FireFrisbee") {
+		Command("EjectFrisbee") {
 	m_shooter = shooter;
 	Requires(m_shooter);
 }

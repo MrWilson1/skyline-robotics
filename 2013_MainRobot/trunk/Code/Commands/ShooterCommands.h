@@ -39,10 +39,11 @@ private:
 	BaseFrisbeeAimer *m_aimer;
 };
 
-class FireFrisbeeAutoDistanceCommand : Command {
+class FireFrisbeeCommand : Command {
 public:
-	FireFrisbeeAutoDistanceCommand(BaseFrisbeeShooter *shooter);
-	~FireFrisbeeAutoDistanceCommand();
+	FireFrisbeeCommand(BaseFrisbeeShooter *shooter);
+	FireFrisbeeCommand(BaseFrisbeeShooter *shooter, double distanceInInches);
+	~FireFrisbeeCommand();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -51,21 +52,7 @@ public:
 		
 private:
 	BaseFrisbeeShooter *m_shooter;
-};
-
-class FireFrisbeeManualDistanceCommand : Command {
-public:
-	FireFrisbeeManualDistanceCommand(BaseFrisbeeShooter *shooter, float setDistance);
-	~FireFrisbeeManualDistanceCommand();
-	void Initialize();
-	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
-		
-private:
-	BaseFrisbeeShooter *m_shooter;
-	float distanceInInches;
+	double m_distanceInInches;
 };
 
 
