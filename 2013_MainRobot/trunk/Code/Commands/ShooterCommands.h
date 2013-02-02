@@ -70,10 +70,10 @@ private:
 	BaseFrisbeeShooter *m_shooter;
 };
 
-class LoadAndFire : public CommandGroup {
+class LoadAndFireCommand : public CommandGroup {
 public:
-	LoadAndFire(BaseFrisbeeLoader *loader, BaseFrisbeeAimer *aimer, BaseFrisbeeShooter *shooter);
-	~LoadAndFire();
+	LoadAndFireCommand(BaseFrisbeeLoader *loader, BaseFrisbeeAimer *aimer, BaseFrisbeeShooter *shooter);
+	~LoadAndFireCommand();
 };
 
 #endif

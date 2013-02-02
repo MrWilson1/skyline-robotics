@@ -135,13 +135,13 @@ void EjectFrisbeeCommand::Interrupted() {
 	// empty
 }
 
-LoadAndFire::LoadAndFire(BaseFrisbeeLoader *loader, BaseFrisbeeAimer *aimer, BaseFrisbeeShooter *shooter) :
+LoadAndFireCommand::LoadAndFireCommand(BaseFrisbeeLoader *loader, BaseFrisbeeAimer *aimer, BaseFrisbeeShooter *shooter) :
 	CommandGroup("LoadAndFire") {
 	AddSequential(new LoadFrisbeeCommand(loader));
 	AddSequential(new AimTurretCommand(aimer));
 	AddSequential(new FireFrisbeeCommand(shooter));
 }
 
-LoadAndFire::~LoadAndFire() {
+LoadAndFireCommand::~LoadAndFireCommand() {
 	// empty
 }

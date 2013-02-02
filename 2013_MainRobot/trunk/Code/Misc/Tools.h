@@ -33,6 +33,12 @@ namespace Tools {
 	 * Finds the magnitude of two coordinate pairs
 	 */
 	float FindMagnitude(float a, float b);
+	
+	/**
+	 * Squares the number, but makes the output negative if the original was
+	 * negative
+	 */
+	float SquareMagnitude(float value);
 }
 
 #endif

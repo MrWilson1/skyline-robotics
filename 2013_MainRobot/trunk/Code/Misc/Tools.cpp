@@ -62,3 +62,12 @@ float Tools::Scale(float value, float inputStart, float inputEnd, float outputSt
 float Tools::FindMagnitude(float a, float b) {
 	return sqrt(a * a + b * b);
 }
+
+float Tools::SquareMagnitude(float value) {
+	float squared = value * value;
+	if (value >= 0.0) {
+		return squared;
+	} else {
+		return -squared;
+	}
+}
