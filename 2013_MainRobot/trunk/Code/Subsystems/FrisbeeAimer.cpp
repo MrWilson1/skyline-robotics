@@ -78,74 +78,39 @@ Tracking::Target VisionTablesFrisbeeAimer::GetLowTarget() {
 	return GetTarget("low");
 }
 
-/**
- * This is stupidly implemented. I'll probably revamp it later.
- */
 Tracking::Target VisionTablesFrisbeeAimer::GetClosestTargetByDistance() {
-	Tracking::TargetMap targets = GetAllTargets();
-	typedef Tracking::TargetMap::iterator TargetIter;
-	Tracking::Target bestTarget;
-	float bestDistance = -1;
-	for (TargetIter targetIter = targets.begin(); targetIter != targets.end(); targetIter++) {
-		Tracking::Target currentTarget = targetIter->second;
-		if (currentTarget.DistanceInInches == 0) {
-			// If the target is an invalid one, skip it
-			continue;
-		}
-		if (bestDistance < 0) {
-			// If there currently is no best previous target, then by default,
-			// make this target the best one.
-			bestDistance = currentTarget.DistanceInInches;
-			bestTarget = currentTarget;
-			continue;
-		}
-		if (currentTarget.DistanceInInches < bestDistance) {
-			// If this is better then the previous target, replace it.
-			bestDistance = currentTarget.DistanceInInches;
-			bestTarget = currentTarget;
-			continue;
-		}
-	}
-	return bestTarget;
+	return GetTarget("best_distance");
 }
 
-/**
- * This is stupidly implemented. I'll probably revamp it later.
- */
 Tracking::Target VisionTablesFrisbeeAimer::GetClosestTargetByOffset() {
-	Tracking::TargetMap targets = GetAllTargets();
-	typedef Tracking::TargetMap::iterator TargetIter;
-	Tracking::Target bestTarget;
-	float bestOffsetMagnitude = -1;
-	
-	for (TargetIter targetIter = targets.begin(); targetIter != targets.end(); targetIter++) {
-		Tracking::Target currentTarget = targetIter->second;
-		float offsetMagnitude = Tracking::FindTargetMagnitude(currentTarget);
-		
-		if (offsetMagnitude == 0) {
-			// If the target is an invalid one, skip it
-			continue;
-		}
-		if (bestOffsetMagnitude < 0) {
-			// If there currently is no best previous target, then by default,
-			// make this target the best one.
-			bestOffsetMagnitude = offsetMagnitude;
-			bestTarget = currentTarget;
-			continue;
-		}
-		if (offsetMagnitude < bestOffsetMagnitude) {
-			// If this is better then the previous target, replace it.
-			bestOffsetMagnitude = offsetMagnitude;
-			bestTarget = currentTarget;
-			continue;
-		}
-	}
-	return bestTarget;
+	return GetTarget("best_offset");
 }
 	
 Tracking::Target VisionTablesFrisbeeAimer::GetTarget(std::string key) {
 	Tracking::Target target;
-	target.Type = Tracking::MediumLeft;
+	std::string rectType = m_visionTable->GetString(key + "_rect_type");
+	
+	// A bit ugly, but whatever.
+	if (rectType == "none") {
+		target.Type = Tracking::None;
+	} else if (rectType == "unknown"){
+		target.Type = Tracking::Unknown;
+	} else if (rectType == "test") {
+		target.Type = Tracking::Test;
+	} else if (rectType == "Low") {
+		target.Type = Tracking::Low;
+	} else if (rectType == "medium_left") {
+		target.Type = Tracking::MediumLeft;
+	} else if (rectType == "medium_right") {
+		target.Type = Tracking::MediumRight;
+	} else if (rectType == "high") {
+		target.Type = Tracking::High;
+	} else if (rectType == "pyramid") {
+		target.Type = Tracking::Pyramid;
+	} else {
+		target.Type = Tracking::Unknown;
+	}
+	
 	target.ShooterOffset.XOffset = m_visionTable->GetNumber(key + "_offset_x");
 	target.ShooterOffset.YOffset = m_visionTable->GetNumber(key + "_offset_y");
 	target.DistanceInInches = m_visionTable->GetNumber(key + "_distance");
@@ -165,18 +130,10 @@ TestAimer::~TestAimer() {
 
 void TestAimer::Run() {
 	NetworkTable *table = NetworkTable::GetTable("VisionTable");
-	NumberArray high_array;
-	NumberArray medium1_array;
-	NumberArray medium2_array;
-	NumberArray low_array;
 	
-	table->RetrieveValue("high", high_array);
-	table->RetrieveValue("medium1", medium1_array);
-	table->RetrieveValue("medium2", medium2_array);
-	table->RetrieveValue("low", low_array);
+	float high = table->GetNumber("high_distance");
+	float test = table->GetNumber("test_distance");
 	
-	SmartDashboard::PutNumber("high distance", high_array.get(2));
-	SmartDashboard::PutNumber("medium1 distance", medium1_array.get(2));
-	SmartDashboard::PutNumber("medium2 distance", medium2_array.get(2));
-	SmartDashboard::PutNumber("low distance", low_array.get(2));
+	SmartDashboard::PutNumber("high distance", high/12);
+	SmartDashboard::PutNumber("test distance", test/12);
 }

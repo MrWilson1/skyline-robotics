@@ -15,7 +15,9 @@ namespace Tracking {
 	 * The 5 different types of targets the robot can aim for.
 	 */
 	enum TargetType {
+		None,
 		Unknown,
+		Test,
 		Low,
 		MediumLeft,
 		MediumRight,
@@ -90,7 +92,10 @@ public:
 	
 	/**
 	 * Gets the target info for the target which is 
-	 * physically the closest to the robot
+	 * physically the closest to the robot. Avoid using this,
+	 * since the distance is frequently inaccurate for targets
+	 * the robot is not pointing straight at/is tilted at
+	 * too extreme of an angle.
 	 */
 	virtual Tracking::Target GetClosestTargetByDistance() = 0;
 	
