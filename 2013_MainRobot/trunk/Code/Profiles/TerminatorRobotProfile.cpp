@@ -5,6 +5,7 @@ TerminatorRobotProfile::TerminatorRobotProfile() :
 	CreateBasicHardwareObjects();
 	CreateSubsystems();
 	CreateOI();
+	
 }
 
 TerminatorRobotProfile::~TerminatorRobotProfile() {
@@ -30,6 +31,7 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 			m_leftBackMotor,
 			m_rightFrontMotor,
 			m_rightBackMotor);
+	m_robotDrive->SetExpiration(3.0);
 	
 	m_leftEncoder = new Encoder(
 			Ports::Crio::Module1,
@@ -48,27 +50,14 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 	m_leftEncoder->Start();
 	m_rightEncoder->Start();
 	
-	m_testSpeedController = new Talon(
-			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Pwm5);
-	
 	m_xbox = new XboxController(
 			Ports::Computer::Usb1);
 }
 
 void TerminatorRobotProfile::CreateSubsystems() {
 	m_drive = new SimpleDrive(m_robotDrive);
-	/*m_drive = new PidSimpleDrive(
-			m_leftFrontMotor,
-			m_leftBackMotor,
-			m_rightFrontMotor,
-			m_rightBackMotor,
-			m_leftEncoder,
-			m_rightEncoder);*/
 	m_leftTestEncoder = new TestEncoder(m_leftEncoder, "Left Encoder Test");
 	m_rightTestEncoder = new TestEncoder(m_rightEncoder, "Right Encoder Test");
-	
-	m_testMotor = new TestMotor(m_testSpeedController, "TestMotor");
 }
 
 void TerminatorRobotProfile::CreateOI() {
@@ -76,12 +65,12 @@ void TerminatorRobotProfile::CreateOI() {
 		m_xbox,
 		m_drive,
 		m_leftTestEncoder,
-		m_rightTestEncoder,
-		m_testMotor);
+		m_rightTestEncoder);		
 }
 
 void TerminatorRobotProfile::RobotInit() {
-	// empty
+	//SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
+	GetWatchdog().SetExpiration(3.0);
 }
 
 void TerminatorRobotProfile::AutonomousInit() {

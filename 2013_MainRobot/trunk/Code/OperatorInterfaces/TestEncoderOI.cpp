@@ -1,23 +1,19 @@
 #include "TestEncoderOI.h"
 
 TestEncoderOI::TestEncoderOI(XboxController *xbox, BaseDrive *drive,
-		TestEncoder *leftEncoderTest, TestEncoder *rightEncoderTest,
-		TestMotor *testMotor) :
+		TestEncoder *leftEncoderTest, TestEncoder *rightEncoderTest) :
 		BaseOI("TestEncoderOI") {
 	m_xbox = xbox;
 	m_drive = drive;
 	m_leftEncoderTest = leftEncoderTest;
 	m_rightEncoderTest = rightEncoderTest;
-	m_testMotor = testMotor;
 	
 	m_teleopCommand = new TankDriveCommand(m_drive, this);
-	m_testLeftEncoderCommand = new TestEncoderCommand(m_leftEncoderTest);
-	m_testRightEncoderCommand = new TestEncoderCommand(m_rightEncoderTest);
-	m_testMotorCommand1 = new TestMotorCommand(testMotor, 0.5);
-	m_testMotorCommand2 = new TestMotorCommand(testMotor, -0.5);
 	
-	m_command1Button = new JoystickButton(m_xbox, m_xbox->A);
-	m_command2Button = new JoystickButton(m_xbox, m_xbox->B);
+	m_testLeftEncoderCommand = new TestEncoderCommand(m_leftEncoderTest, "left Encoder");
+	m_testRightEncoderCommand = new TestEncoderCommand(m_rightEncoderTest, "right Encoder");
+	
+	m_driveStraightButton = new JoystickButton(m_xbox, m_xbox->X);
 }
 
 TestEncoderOI::~TestEncoderOI() {
@@ -26,13 +22,30 @@ TestEncoderOI::~TestEncoderOI() {
 
 void TestEncoderOI::SetupTeleop() {
 	SmartDashboard::PutString("TestOI status", "Setting up teleop");
-	m_teleopCommand->Start();
-	m_testLeftEncoderCommand->Start();
-	m_testRightEncoderCommand->Start();
+	m_drive->SetDefaultCommand(m_teleopCommand);
+	m_leftEncoderTest->SetDefaultCommand(m_testLeftEncoderCommand);
+	m_rightEncoderTest->SetDefaultCommand(m_testRightEncoderCommand);
+	m_driveStraightButton->WhileHeld(new TravelStraightManualCommand(m_drive, this, Left));
 	
-	m_command1Button->WhenPressed(m_testMotorCommand1);
-	m_command2Button->WhenPressed(m_testMotorCommand2);
+
+	std::string key = m_leftEncoderTest->GetName() + std::string(" ") + std::string("SetDistancePerPulse");
+	SmartDashboard::PutNumber(key, m_leftEncoderTest->GetDistancePerPulse());
+
+	key = m_rightEncoderTest->GetName() + std::string(" ") + std::string("SetDistancePerPulse");
+	SmartDashboard::PutNumber(key, m_rightEncoderTest->GetDistancePerPulse());
 	
+	
+	SmartDashboard::PutData("left Encoder Start", new StartTestEncoderCommand(m_leftEncoderTest, "left Encoder Start"));
+	SmartDashboard::PutData("right Encoder Start", new StartTestEncoderCommand(m_rightEncoderTest, "right Encoder Start"));
+	
+	SmartDashboard::PutData("left Encoder Stop", new StopTestEncoderCommand(m_leftEncoderTest, "left Encoder Stop"));
+	SmartDashboard::PutData("right Encoder Stop", new StopTestEncoderCommand(m_rightEncoderTest, "right Encoder Stop"));
+	
+	SmartDashboard::PutData("left Encoder Reset", new ResetTestEncoderCommand(m_leftEncoderTest, "left Encoder Reset"));
+	SmartDashboard::PutData("right Encoder Reset", new ResetTestEncoderCommand(m_rightEncoderTest, "right Encoder Reset"));
+
+	SmartDashboard::PutData("left Encoder Update", new UpdateTestEncoderCommand(m_leftEncoderTest, "left Encoder Update"));
+	SmartDashboard::PutData("right Encoder Update", new UpdateTestEncoderCommand(m_rightEncoderTest, "right Encoder Update"));
 }
 
 TankValues TestEncoderOI::GetTankValues() {

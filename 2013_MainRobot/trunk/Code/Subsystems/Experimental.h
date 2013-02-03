@@ -21,11 +21,25 @@ public:
 	TestEncoder(Encoder *encoder, const char *name);
 	~TestEncoder();
 	
+	void ReportAll();
+	
+	void Start();
+	void Stop();
+	void Reset();
+	void SetMaxPeriod(double maxPeriod);
+	void SetMinRate(double minRate);
 	void SetDistancePerPulse(double input);
-	void Run();
+	void SetReverseDirection(bool reverseDirection);
+	void SetPIDSourceParameter(Encoder::PIDSourceParameter pidSource);
+	
+	double GetDistancePerPulse();
 	
 private:
+	void Log(const char *key, int value);
+	void Log(const char *key, double value);
+	void LogBool(const char *key, bool value);
 	Encoder *m_encoder;
+	double m_distancePerPulse;
 };
 
 

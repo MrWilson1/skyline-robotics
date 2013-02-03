@@ -54,8 +54,7 @@ private:
  * 
  * This class is meant to test using commands.
  */
-class Spasm : public Command
-{
+class Spasm : public Command {
 public:
 	Spasm(BaseDrive *drive);
 	~Spasm();
@@ -69,6 +68,29 @@ public:
 private:
 	BaseDrive *m_drive;
 	int counter;
+};
+
+enum PreferredAxis {
+	Left,
+	Right,
+	Average
+};
+
+class TravelStraightManualCommand : public Command {
+public:
+	TravelStraightManualCommand(BaseDrive *drive, BaseOI *OI, PreferredAxis preferedAxis);
+	~TravelStraightManualCommand();
+	
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+	
+private:
+	BaseDrive *m_drive;
+	BaseOI *m_oi;
+	PreferredAxis m_preferredAxis;
 };
 
 /*

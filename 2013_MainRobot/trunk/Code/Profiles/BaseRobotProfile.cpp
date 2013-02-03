@@ -10,10 +10,6 @@ BaseRobotProfile::~BaseRobotProfile() {
 	// empty
 }
 
-/*std::string BaseRobotProfile::GetName() {
-	return m_name;
-}*/
-
 /**
  * Runs all activated commands during Autonomous, 
  * and automatically removes finished ones.

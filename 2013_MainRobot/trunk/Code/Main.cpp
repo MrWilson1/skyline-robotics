@@ -6,8 +6,8 @@
 
 // Modify these lines below:
 
-#define ROBOT BLAND
-//#define ROBOT TERMINATOR
+//#define ROBOT BLAND
+#define ROBOT TERMINATOR
 //#define ROBOT MAINROBOT2013
 
 

@@ -14,8 +14,7 @@ class TestEncoderOI : public BaseOI
 {
 public:
 	TestEncoderOI(XboxController *xbox, BaseDrive *drive, 
-			TestEncoder *leftEncoderTest, TestEncoder *rightEncoderTest,
-			TestMotor *testMotor);
+			TestEncoder *leftEncoderTest, TestEncoder *rightEncoderTest);
 	~TestEncoderOI();
 	
 	void SetupTeleop();
@@ -26,18 +25,14 @@ public:
 private:
 	XboxController *m_xbox;
 	BaseDrive *m_drive;
+	TestEncoder *m_leftEncoderTest;
+	TestEncoder *m_rightEncoderTest;
 	
 	Command *m_teleopCommand;
 	Command *m_testLeftEncoderCommand;
 	Command *m_testRightEncoderCommand;
-	Command *m_testMotorCommand1;
-	Command *m_testMotorCommand2;
-	TestEncoder *m_leftEncoderTest;
-	TestEncoder *m_rightEncoderTest;
-	TestMotor *m_testMotor;
 	
-	JoystickButton *m_command1Button;
-	JoystickButton *m_command2Button;
+	JoystickButton *m_driveStraightButton;
 };
 
 #endif

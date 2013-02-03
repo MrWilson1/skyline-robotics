@@ -7,6 +7,7 @@
 
 #include "BaseRobotProfile.h"
 #include "../OperatorInterfaces/TestEncoderOI.h"
+#include "../OperatorInterfaces/XboxOI.h"
 #include "../OperatorInterfaces/Xbox.h"
 #include "../Subsystems/Experimental.h"
 
@@ -24,16 +25,14 @@ private:
 	XboxController *m_xbox;
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
-	SpeedController *m_testSpeedController;
 	
 	// Subsystems
 	BaseDrive *m_drive; 
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
-	TestMotor *m_testMotor;
 	
 	// Operator Interfaces
-	BaseOI *m_OI;
+	TestEncoderOI *m_OI;
 	
 public:
 	TerminatorRobotProfile();

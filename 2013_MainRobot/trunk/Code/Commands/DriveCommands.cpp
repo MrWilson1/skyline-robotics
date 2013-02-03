@@ -70,6 +70,51 @@ void ArcadeDriveCommand::Interrupted()
 }
 
 
+TravelStraightManualCommand::TravelStraightManualCommand(BaseDrive *drive, BaseOI *oi, PreferredAxis preferredAxis) :
+		Command("TravelStraightManualCommand"),
+		m_preferredAxis(preferredAxis) {
+	m_drive = drive;
+	m_oi = oi;
+	Requires(m_drive);
+}
+
+TravelStraightManualCommand::~TravelStraightManualCommand() {
+	// empty
+}
+
+void TravelStraightManualCommand::Initialize() {
+	// empty
+}
+
+void TravelStraightManualCommand::Execute() {
+	TankValues t = m_oi->GetTankValues();
+	float magnitude;
+	switch(m_preferredAxis) {
+	case Left:
+		magnitude = t.Left;
+		break;
+	case Right:
+		magnitude = t.Right;
+		break;
+	case Average:
+		magnitude = (t.Left + t.Right) / 2;
+	}
+	m_drive->TankDrive(magnitude, magnitude);
+}
+
+bool TravelStraightManualCommand::IsFinished() {
+	return false;
+}
+
+void TravelStraightManualCommand::End() {
+	// empty
+}
+
+void TravelStraightManualCommand::Interrupted() {
+	// empty
+}
+
+
 Spasm::Spasm(BaseDrive *drive) :
 		Command("Spasm"),
 		counter(0) {
