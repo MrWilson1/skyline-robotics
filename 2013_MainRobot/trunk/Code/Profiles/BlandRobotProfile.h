@@ -21,8 +21,7 @@ private:
 	XboxController *m_xbox;
 	
 	// Subsystems
-	BaseDrive *m_drive; 
-	TestAimer *m_aimer;
+	BaseDrive *m_drive;
 	
 	// Operator Interfaces
 	XboxOI *m_OI;
@@ -38,7 +37,6 @@ public:
 	void RobotInit();
 	void AutonomousInit();
 	void TeleopInit();
-	void TeleopPeriodic();
 };
 
 #endif

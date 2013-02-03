@@ -48,14 +48,12 @@ void SimpleDrive::Rotate(float degrees) {
 	// do nothing
 }
 
+void SimpleDrive::Disable() {
+	Brake();
+}
 
-
-/**
- * Simply tells the wheels to stop spinning.
- */
-void SimpleDrive::StopMoving() {
-	float stopValue = 0.0;
-	m_robotDrive->TankDrive(stopValue, stopValue);
+void SimpleDrive::Enable() {
+	// empty
 }
 
 /**
@@ -146,13 +144,6 @@ PidSimpleDrive::PidSimpleDrive (
 	m_leftEncoder->Start();
 	m_rightEncoder->Start();
 	
-	/*AddActuatorToLiveWindow("Left front motor", m_leftFront);
-	AddActuatorToLiveWindow("Left back motor", m_leftBack);
-	AddActuatorToLiveWindow("Right front motor", m_rightFront);
-	AddActuatorToLiveWindow("Right back motor", m_rightBack);
-	AddSensorToLiveWindow("Left encoder", m_leftEncoder);
-	AddSensorToLiveWindow("Right encoder", m_rightEncoder);*/
-	
 	m_smoothLeftEncoder = new SmoothEncoder(m_leftEncoder, 5);
 	m_smoothRightEncoder = new SmoothEncoder(m_rightEncoder, 5);
 	
@@ -184,15 +175,20 @@ void PidSimpleDrive::Drive(float outputMagnitude, float curve) {
 }
 
 void PidSimpleDrive::TankDrive(float leftValue, float rightValue) {
-	
+	TankDrive(leftValue, rightValue, false);
 }
 
 void PidSimpleDrive::TankDrive(float leftValue, float rightValue, bool squaredInputs) {
-	
+	if (squaredInputs) {
+		leftValue = Tools::SquareMagnitude(leftValue);
+		rightValue = Tools::SquareMagnitude(rightValue);
+	}
+	m_leftPid->SetSetpoint(leftValue);
+	m_rightPid->SetSetpoint(rightValue);
 }
 
 void PidSimpleDrive::ArcadeDrive(float moveValue, float rotateValue) {
-	
+	ArcadeDrive(moveValue, rotateValue, false);
 }
 
 void PidSimpleDrive::ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs) {
@@ -200,18 +196,25 @@ void PidSimpleDrive::ArcadeDrive(float moveValue, float rotateValue, bool square
 }
 
 void PidSimpleDrive::TravelDistance(float distanceInInches) {
-
+	
 }
 
 void PidSimpleDrive::Rotate(float degrees) {
 	
 }
 
-void PidSimpleDrive::StopMoving() {
-	
+void PidSimpleDrive::Disable() {
+	TankDrive(0.0, 0.0);
+	m_leftPid->Disable();
+	m_rightPid->Disable();
+}
+
+void PidSimpleDrive::Enable() {
+	m_leftPid->Enable();
+	m_rightPid->Enable();
 }
 
 void PidSimpleDrive::Brake() {
-	
+	TankDrive(0.0, 0.0);
 }
 	

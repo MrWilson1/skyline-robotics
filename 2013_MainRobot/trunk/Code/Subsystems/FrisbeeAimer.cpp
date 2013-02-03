@@ -41,7 +41,12 @@ float Tracking::FindTargetMagnitude(Target target) {
 	float y = target.ShooterOffset.YOffset;
 	return Tools::FindMagnitude(x, y);
 }
-		
+
+VisionTablesFrisbeeAimer::VisionTablesFrisbeeAimer() :
+		BaseFrisbeeAimer("VisionTablesFrisbeeAimer"),
+		m_tableName("VisionTable") {
+	m_visionTable = NetworkTable::GetTable(m_tableName);
+}
 
 VisionTablesFrisbeeAimer::VisionTablesFrisbeeAimer(std::string tableName) :
 		BaseFrisbeeAimer("VisionTablesFrisbeeAimer"),

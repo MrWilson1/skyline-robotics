@@ -9,14 +9,14 @@ BaseFrisbeeTurret::~BaseFrisbeeTurret() {
 	// Empty
 }
 
-/*
+
 
 PidFrisbeeTurret::PidFrisbeeTurret(
 			SpeedController *horizontalMotor, 
 			SpeedController *verticalMotor,
 			Encoder *horizontalEncoder,
 			Encoder *verticalEncoder) :
-			BaseFrisbeeTurret("Pid Frisbee Turret"),
+			BaseFrisbeeTurret("PidFrisbeeTurret"),
 			m_offset(0.0f, 0.0f) {
 	m_horizontalMotor = horizontalMotor;
 	m_verticalMotor = verticalMotor;
@@ -39,11 +39,15 @@ PidFrisbeeTurret::PidFrisbeeTurret(
 	m_horizontalPid->Enable();
 	m_verticalPid->Enable();
 	
-	AddActuatorToLiveWindow<PIDController>("Horizontal PID", m_horizontalPid);
-	AddActuatorToLiveWindow<PIDController>("Vertical PID", m_verticalPid);
+	AddActuatorToLiveWindow("Horizontal PID", m_horizontalPid);
+	AddActuatorToLiveWindow("Vertical PID", m_verticalPid);
 	
-	AddSensorToLiveWindow<Encoder>("Horizontal Encoder", m_horizontalEncoder);
-	AddSensorToLiveWindow<Encoder>("Vertical Encoder", m_verticalEncoder);
+	AddSensorToLiveWindow("Horizontal Encoder", m_horizontalEncoder);
+	AddSensorToLiveWindow("Vertical Encoder", m_verticalEncoder);
+}
+
+PidFrisbeeTurret::~PidFrisbeeTurret() {
+	// empty
 }
 
 void PidFrisbeeTurret::TurnHorizontal(float degrees) {
@@ -56,12 +60,12 @@ void PidFrisbeeTurret::TurnVertical(float degrees) {
 	m_verticalPid->SetSetpoint(degrees);
 }
 
-void PidFrisbeeTurret::TurnGivenOffset(Offset offset) {
+void PidFrisbeeTurret::TurnGivenOffset(Tracking::Offset offset) {
 	TurnHorizontal(offset.XOffset);
 	TurnVertical(offset.YOffset);
 }
 
-Offset PidFrisbeeTurret::ReportCurrentOffset() {
+Tracking::Offset PidFrisbeeTurret::GetCurrentOffset() {
 	return m_offset;
 }
-*/
+

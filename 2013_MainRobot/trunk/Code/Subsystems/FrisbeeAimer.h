@@ -133,6 +133,7 @@ public:
  */
 class VisionTablesFrisbeeAimer : public BaseFrisbeeAimer {
 public:
+	VisionTablesFrisbeeAimer();
 	VisionTablesFrisbeeAimer(std::string tableName);
 	~VisionTablesFrisbeeAimer();
 	

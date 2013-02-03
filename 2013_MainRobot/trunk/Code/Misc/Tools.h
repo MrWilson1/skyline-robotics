@@ -39,6 +39,12 @@ namespace Tools {
 	 * negative
 	 */
 	float SquareMagnitude(float value);
+	
+	/**
+	 * Returns true if the input number is within a certain range of
+	 * a target number (in both the positive and negative range).
+	 */
+	bool IsWithinRange(float input, float target, float range);
 }
 
 #endif

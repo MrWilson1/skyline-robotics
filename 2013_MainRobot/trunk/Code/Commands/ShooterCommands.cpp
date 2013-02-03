@@ -37,10 +37,14 @@ void LoadFrisbeeCommand::Interrupted() {
 	// empty
 }
 
-AimTurretCommand::AimTurretCommand(BaseFrisbeeAimer *aimer) :
-		Command("AimTurret") {
+AimTurretCommand::AimTurretCommand(BaseFrisbeeAimer *aimer, BaseFrisbeeTurret *turret, float allowedRange) :
+		Command("AimTurret"),
+		m_isFinished(false),
+		m_allowedRange(allowedRange){
 	m_aimer = aimer;
+	m_turret = turret;
 	Requires(m_aimer);
+	Requires(m_turret);
 }
 
 AimTurretCommand::~AimTurretCommand() {
@@ -52,11 +56,19 @@ void AimTurretCommand::Initialize() {
 }
 
 void AimTurretCommand::Execute() {
-	// empty
+	Tracking::Target target = m_aimer->GetClosestTargetByOffset();
+	Tracking::Offset desired = target.ShooterOffset;
+	Tracking::Offset current = m_turret->GetCurrentOffset();
+	bool isXDone = Tools::IsWithinRange(desired.XOffset, current.XOffset, m_allowedRange);
+	bool isYDone = Tools::IsWithinRange(desired.YOffset, current.YOffset, m_allowedRange);
+	m_isFinished = isXDone and isYDone;
+	if (!m_isFinished) {
+		m_turret->TurnGivenOffset(desired);
+	}
 }
 
 bool AimTurretCommand::IsFinished() {
-	return true;
+	return m_isFinished;
 }
 
 void AimTurretCommand::End() {
@@ -135,10 +147,14 @@ void EjectFrisbeeCommand::Interrupted() {
 	// empty
 }
 
-LoadAndFireCommand::LoadAndFireCommand(BaseFrisbeeLoader *loader, BaseFrisbeeAimer *aimer, BaseFrisbeeShooter *shooter) :
-	CommandGroup("LoadAndFire") {
+LoadAndFireCommand::LoadAndFireCommand(
+		BaseFrisbeeLoader *loader, 
+		BaseFrisbeeAimer *aimer, 
+		BaseFrisbeeTurret *turret, 
+		BaseFrisbeeShooter *shooter) :
+		CommandGroup("LoadAndFireCommand") {
 	AddSequential(new LoadFrisbeeCommand(loader));
-	AddSequential(new AimTurretCommand(aimer));
+	AddSequential(new AimTurretCommand(aimer, turret, 5));
 	AddSequential(new FireFrisbeeCommand(shooter));
 }
 

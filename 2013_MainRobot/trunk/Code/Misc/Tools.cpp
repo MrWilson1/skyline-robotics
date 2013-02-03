@@ -71,3 +71,12 @@ float Tools::SquareMagnitude(float value) {
 		return -squared;
 	}
 }
+
+bool Tools::IsWithinRange(float input, float target, float range) {
+	float offset = target - input;
+	if (offset < 0.0) {
+		offset = -offset;
+	}
+	return offset <= range;
+}
+

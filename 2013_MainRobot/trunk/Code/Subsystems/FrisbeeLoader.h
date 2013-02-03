@@ -32,9 +32,22 @@ public:
 	virtual void PrepareFrisbee() = 0;
 	virtual bool IsFrisbeePrepared() = 0;
 	virtual void LoadFrisbee() = 0;
-	
 };
 
-
+/**
+ * Doesn't actually do anything -- a placeholder until we can
+ * actually code this.
+ */
+class PlaceholderFrisbeeLoader : public BaseFrisbeeLoader {
+public:
+	PlaceholderFrisbeeLoader();
+	~PlaceholderFrisbeeLoader();
+	
+	int GetNumberOfFrisbeesLoaded();
+	void UnloadFrisbee();
+	void PrepareFrisbee();
+	bool IsFrisbeePrepared();
+	void LoadFrisbee();
+};
 
 #endif

@@ -27,7 +27,7 @@ private:
 
 class AimTurretCommand : public Command {
 public:
-	AimTurretCommand(BaseFrisbeeAimer *aimer);
+	AimTurretCommand(BaseFrisbeeAimer *aimer, BaseFrisbeeTurret *turret, float allowedRange);
 	~AimTurretCommand();
 	void Initialize();
 	void Execute();
@@ -37,6 +37,9 @@ public:
 	
 private:
 	BaseFrisbeeAimer *m_aimer;
+	BaseFrisbeeTurret *m_turret;
+	bool m_isFinished;
+	float m_allowedRange;
 };
 
 class FireFrisbeeCommand : public Command {
@@ -72,7 +75,11 @@ private:
 
 class LoadAndFireCommand : public CommandGroup {
 public:
-	LoadAndFireCommand(BaseFrisbeeLoader *loader, BaseFrisbeeAimer *aimer, BaseFrisbeeShooter *shooter);
+	LoadAndFireCommand(
+		BaseFrisbeeLoader *loader, 
+		BaseFrisbeeAimer *aimer, 
+		BaseFrisbeeTurret *turret, 
+		BaseFrisbeeShooter *shooter);
 	~LoadAndFireCommand();
 };
 

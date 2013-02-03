@@ -46,3 +46,45 @@ void SimpleBeltShooter::SetMaxDistance(float inches) {
 float SimpleBeltShooter::GetMaxDistance() {
 	return m_maxDistance;
 }
+
+
+
+ThreeWheelShooter::ThreeWheelShooter(SpeedController *frontMotor, SpeedController *middleMotor, SpeedController *lastMotor) :
+		BaseFrisbeeShooter("ThreeWheelShooter"),
+		m_maxDistance(120) {
+	m_frontMotor = frontMotor;
+	m_middleMotor = middleMotor;
+	m_lastMotor = lastMotor;
+	AddActuatorToLiveWindow("Front Motor", m_frontMotor);
+	AddActuatorToLiveWindow("Middle Motor", m_middleMotor);
+	AddActuatorToLiveWindow("Last Motor", m_lastMotor);
+}
+
+ThreeWheelShooter::~ThreeWheelShooter() {
+	// empty
+}
+
+void ThreeWheelShooter::ShootFrisbee() {
+	m_frontMotor->Set(1.0);
+	m_middleMotor->Set(1.0);
+	m_lastMotor->Set(1.0);
+}
+
+void ThreeWheelShooter::ShootFrisbee(float distanceInInches) {
+	// This needs calibration. For now, just do the default.
+	ShootFrisbee();
+}
+
+void ThreeWheelShooter::EjectFrisbee() {
+	m_frontMotor->Set(-0.1);
+	m_middleMotor->Set(-0.1);
+	m_lastMotor->Set(-0.1);
+}
+
+void ThreeWheelShooter::SetMaxDistance(float inches) {
+	m_maxDistance = inches;
+}
+
+float ThreeWheelShooter::GetMaxdistance() {
+	return m_maxDistance;
+}

@@ -48,4 +48,22 @@ private:
 	float m_maxDistance;
 };
 
+class ThreeWheelShooter : public BaseFrisbeeShooter {
+public:
+	ThreeWheelShooter(SpeedController *frontMotor, SpeedController *middleMotor, SpeedController *lastMotor);
+	~ThreeWheelShooter();
+	
+	void ShootFrisbee();
+	void ShootFrisbee(float distanceInInches);
+	void EjectFrisbee();
+	void SetMaxDistance(float inches);
+	float GetMaxdistance();
+	
+private:
+	SpeedController *m_frontMotor;
+	SpeedController *m_middleMotor;
+	SpeedController *m_lastMotor;
+	float m_maxDistance;
+};
+
 #endif

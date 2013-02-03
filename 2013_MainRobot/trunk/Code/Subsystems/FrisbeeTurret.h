@@ -20,7 +20,7 @@ public:
 	virtual void TurnHorizontal(float degrees) = 0;
 	virtual void TurnVertical(float degrees) = 0;
 	virtual void TurnGivenOffset(Tracking::Offset offset) = 0;
-	virtual Tracking::Offset ReportCurrentOffset() = 0;
+	virtual Tracking::Offset GetCurrentOffset() = 0;
 };
 
 class SimpleFrisbeeTurret : public BaseFrisbeeTurret {
@@ -53,7 +53,7 @@ private:
  * given a full rotation. The encoders must be 
  * calibrated before being passed into this class.
  */
-/*class PidFrisbeeTurret : public BaseFrisbeeTurret {
+class PidFrisbeeTurret : public BaseFrisbeeTurret {
 public:
 	PidFrisbeeTurret(
 			SpeedController *horizontalMotor, 
@@ -64,11 +64,11 @@ public:
 	
 	void TurnHorizontal(float degrees);
 	void TurnVertical(float degrees);
-	void TurnGivenOffset(Offset offset);
-	Offset ReportCurrentOffset();
+	void TurnGivenOffset(Tracking::Offset offset);
+	Tracking::Offset GetCurrentOffset();
 	
 private:
-	Offset m_offset;
+	Tracking::Offset m_offset;
 	SpeedController *m_horizontalMotor;
 	SpeedController *m_verticalMotor;
 	Encoder *m_verticalEncoder;
@@ -77,6 +77,6 @@ private:
 	PIDController *m_horizontalPid;
 	PIDController *m_verticalPid;
 };
-*/
+
 
 #endif

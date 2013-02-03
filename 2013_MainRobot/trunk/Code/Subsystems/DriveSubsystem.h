@@ -20,6 +20,8 @@
  * For the definitions of what these virtual methods are meant to
  * do, please see the WPILib API documentation on the 
  * RobotDrive class. The methods are identical.
+ * 
+ * Note that all drive systems are enabled upon instantiation.
  */
 class BaseDrive : public BaseSubsystem {
 public:
@@ -33,7 +35,8 @@ public:
 	virtual void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs) = 0;
 	virtual void TravelDistance(float distanceInInches) = 0;
 	virtual void Rotate(float degrees) = 0;
-	virtual void StopMoving() = 0;
+	virtual void Disable() = 0;
+	virtual void Enable() = 0;
 	virtual void Brake() = 0;
 };
 
@@ -53,7 +56,8 @@ public:
 	void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
 	void TravelDistance(float distanceInInches);
 	void Rotate(float degrees);
-	void StopMoving();
+	void Disable();
+	void Enable();
 	void Brake();
 	
 private:
@@ -119,7 +123,8 @@ public:
 	void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
 	void TravelDistance(float distanceInInches);
 	void Rotate(float degrees);
-	void StopMoving();
+	void Disable();
+	void Enable();
 	void Brake();
 	
 private:
