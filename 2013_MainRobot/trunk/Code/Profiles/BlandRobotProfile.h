@@ -9,7 +9,7 @@
 #include "../OperatorInterfaces/XboxOI.h"
 #include "../OperatorInterfaces/Xbox.h"
 
-#include "../Subsystems/FrisbeeAimer.h"
+#include "../Subsystems/Shooter\FrisbeeAimer.h"
 
 /**
  * A profile for a generic robot that simply drives around.

@@ -2,8 +2,8 @@
 #define FRISBEE_RAISER_H
 
 #include "WPILib.h"
-#include "BaseSubsystem.h"
-#include "../Misc/Tools.h"
+#include "../BaseSubsystem.h"
+#include "../../Misc/Tools.h"
 
 /**
  * A class to lower and raise the shooter so that it's easier to hit 

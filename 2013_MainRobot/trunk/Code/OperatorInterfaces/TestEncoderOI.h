@@ -7,7 +7,7 @@
 #include "BaseOI.h"
 #include "../Commands/DriveCommands.h"
 #include "../Commands/TestCommands.h"
-#include "../Subsystems/DriveSubsystem.h"
+#include "../Subsystems/Drive/DriveSubsystem.h"
 #include "../Subsystems/Experimental.h"
 
 class TestEncoderOI : public BaseOI

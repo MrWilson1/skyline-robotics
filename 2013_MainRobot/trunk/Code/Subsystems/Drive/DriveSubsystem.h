@@ -8,8 +8,8 @@
 
 #include "WPILib.h"
 
-#include "BaseSubsystem.h"
-#include "../Misc/Tools.h"
+#include "../BaseSubsystem.h"
+#include "../../Misc/Tools.h"
 
 /**
  * A base drive. All drives must be a subclass of this class.
@@ -38,6 +38,13 @@ public:
 	virtual void Disable() = 0;
 	virtual void Enable() = 0;
 	virtual void Brake() = 0;
+};
+
+class IPidDrive {
+public:
+	IPidDrive();
+	virtual ~IPidDrive();
+	virtual void AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
 };
 
 /**
@@ -97,7 +104,8 @@ public:
 	virtual ~Tread();
 	
 	void PIDWrite(float output);
-	
+
+	float m_last;
 private:
 	SpeedController *m_front;
 	SpeedController *m_back;
@@ -105,7 +113,7 @@ private:
 
 
 
-class PidSimpleDrive : public BaseDrive {
+class PidSimpleDrive : public BaseDrive, public IPidDrive {
 public:
 	PidSimpleDrive(
 			SpeedController *leftFront, 
@@ -126,8 +134,15 @@ public:
 	void Disable();
 	void Enable();
 	void Brake();
+	void AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd);
 	
 private:
+	enum PidMode {
+		Rate,
+		Distance
+	};
+	void TryToggling(PidMode mode);
+	
 	SpeedController *m_leftFront; 
 	SpeedController *m_leftBack;
 	SpeedController *m_rightFront;
@@ -139,8 +154,13 @@ private:
 	SmoothEncoder *m_smoothRightEncoder;
 	Tread *m_leftTread;
 	Tread *m_rightTread;
-	PIDController *m_leftPid;
-	PIDController *m_rightPid;
+	
+	PIDController *m_leftPidRate;
+	PIDController *m_rightPidRate;
+	PIDController *m_leftPidDistance;
+	PIDController *m_rightPidDistance;
+	
+	PidMode m_currentMode;
 };
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "WPILib.h"
 
-#include "BaseSubsystem.h"
+#include "../BaseSubsystem.h"
 
 /**
  * A base class to load frisbees into the shooter.

@@ -115,6 +115,26 @@ void TravelStraightManualCommand::Interrupted() {
 }
 
 
+RefreshPidCommand::RefreshPidCommand(IPidDrive *drive) :
+		SimpleCommand("RefreshPidCommand", false) {
+	m_drive = drive;
+}
+
+RefreshPidCommand::~RefreshPidCommand() {
+	// empty
+}
+
+void RefreshPidCommand::Execute() {
+	float lp = SmartDashboard::GetNumber("Left Rate P");
+	float li = SmartDashboard::GetNumber("Left Rate I");
+	float ld = SmartDashboard::GetNumber("Left Rate D");
+	float rp = SmartDashboard::GetNumber("Right Rate P");
+	float ri = SmartDashboard::GetNumber("Right Rate I");
+	float rd = SmartDashboard::GetNumber("Right Rate D");
+	m_drive->AdjustRatePid(lp, li, ld, rp, ri, rd);
+}
+
+
 Spasm::Spasm(BaseDrive *drive) :
 		Command("Spasm"),
 		counter(0) {

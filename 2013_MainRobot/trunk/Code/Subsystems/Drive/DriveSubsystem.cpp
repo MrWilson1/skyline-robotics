@@ -9,6 +9,13 @@ BaseDrive::~BaseDrive() {
 	// empty
 }
 
+IPidDrive::IPidDrive() {
+	// empty
+}
+
+IPidDrive::~IPidDrive() {
+	// empty
+}
 
 
 SimpleDrive::SimpleDrive(RobotDrive *robotDrive) :
@@ -107,7 +114,8 @@ void SmoothEncoder::SetMaxSize(unsigned int maxSize) {
 
 
 
-Tread::Tread(SpeedController *front, SpeedController *back) {
+Tread::Tread(SpeedController *front, SpeedController *back) :
+	m_last(0) {
 	m_front = front;
 	m_back = back;
 }
@@ -117,7 +125,8 @@ Tread::~Tread() {
 }
 
 void Tread::PIDWrite(float output) {
-	Tools::Limit(output, -1.0, 1.0);
+	m_last = output;
+	output = Tools::Limit(output, -1.0, 1.0);
 	m_front->PIDWrite(output);
 	m_back->PIDWrite(output);
 }
@@ -132,7 +141,9 @@ PidSimpleDrive::PidSimpleDrive (
 			SpeedController *rightBack,
 			Encoder *leftEncoder,
 			Encoder *rightEncoder) :
-			BaseDrive("PidSimpleDrive") {
+			BaseDrive("PidSimpleDrive"),
+			IPidDrive(),
+			m_currentMode(Rate) {
 
 	m_leftFront = leftFront;
 	m_leftBack = leftBack;
@@ -150,20 +161,31 @@ PidSimpleDrive::PidSimpleDrive (
 	m_leftTread = new Tread(m_leftFront, m_leftBack);
 	m_rightTread = new Tread(m_rightFront, m_rightBack);
 	
-	m_leftPid = new PIDController(
-			0.1, 0.01, 0.00,
+	m_leftPidRate = new PIDController(
+			0, 0, 0,
 			m_smoothLeftEncoder,
 			m_leftTread);
-	m_rightPid = new PIDController(
-			0.1, 0.01, 0.00,
-			m_smoothLeftEncoder,
-			m_leftTread);
-			
-	m_leftPid->Enable();
-	m_rightPid->Enable();
+	m_rightPidRate = new PIDController(
+			0, 0, 0,
+			m_smoothRightEncoder,
+			m_rightTread);
 	
-	AddActuatorToLiveWindow("Left PID", m_leftPid);
-	AddActuatorToLiveWindow("Right PID", m_rightPid);
+	m_leftPidDistance = new PIDController(
+			0.1, 0.01, 0.00,
+			m_smoothLeftEncoder,
+			m_leftTread);
+	m_rightPidDistance = new PIDController(
+			0.1, 0.01, 0.00,
+			m_smoothRightEncoder,
+			m_rightTread);
+			
+	m_leftPidRate->Enable();
+	m_rightPidRate->Enable();
+	
+	AddActuatorToLiveWindow("Left PID Rate", m_leftPidRate);
+	AddActuatorToLiveWindow("Right PID Rate", m_rightPidRate);
+	AddActuatorToLiveWindow("Left PID Distance", m_leftPidDistance);
+	AddActuatorToLiveWindow("Right PID Distance", m_rightPidDistance);
 }
 
 PidSimpleDrive::~PidSimpleDrive() {
@@ -171,50 +193,88 @@ PidSimpleDrive::~PidSimpleDrive() {
 }
 	
 void PidSimpleDrive::Drive(float outputMagnitude, float curve) {
-	
+	TryToggling(Rate);
 }
 
 void PidSimpleDrive::TankDrive(float leftValue, float rightValue) {
+	TryToggling(Rate);
 	TankDrive(leftValue, rightValue, false);
 }
 
 void PidSimpleDrive::TankDrive(float leftValue, float rightValue, bool squaredInputs) {
+	TryToggling(Rate);
 	if (squaredInputs) {
 		leftValue = Tools::SquareMagnitude(leftValue);
 		rightValue = Tools::SquareMagnitude(rightValue);
 	}
-	m_leftPid->SetSetpoint(leftValue);
-	m_rightPid->SetSetpoint(rightValue);
+	m_leftPidRate->SetSetpoint(leftValue);
+	m_rightPidRate->SetSetpoint(rightValue);
+	SmartDashboard::PutNumber("Left Tread", m_leftTread->m_last);
+	SmartDashboard::PutNumber("Right Tread", m_rightTread->m_last);
 }
 
 void PidSimpleDrive::ArcadeDrive(float moveValue, float rotateValue) {
+	TryToggling(Rate);
 	ArcadeDrive(moveValue, rotateValue, false);
 }
 
 void PidSimpleDrive::ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs) {
+	TryToggling(Rate);
 	
 }
 
 void PidSimpleDrive::TravelDistance(float distanceInInches) {
-	
+	TryToggling(Distance);
 }
 
 void PidSimpleDrive::Rotate(float degrees) {
-	
+	TryToggling(Distance);
 }
 
 void PidSimpleDrive::Disable() {
-	TankDrive(0.0, 0.0);
-	m_leftPid->Disable();
-	m_rightPid->Disable();
+	m_leftPidRate->Disable();
+	m_rightPidRate->Disable();
+	m_leftPidDistance->Disable();
+	m_leftPidDistance->Disable();
+	m_leftTread->PIDWrite(0);
+	m_rightTread->PIDWrite(0);
 }
 
 void PidSimpleDrive::Enable() {
-	m_leftPid->Enable();
-	m_rightPid->Enable();
+	m_leftPidRate->Enable();
+	m_rightPidRate->Enable();
 }
 
 void PidSimpleDrive::Brake() {
 	TankDrive(0.0, 0.0);
+}
+
+void PidSimpleDrive::TryToggling(PidMode mode) {
+	if (mode == m_currentMode) {
+		return;
+	}
+	switch (mode) {
+	case Rate:
+		m_leftPidDistance->Disable();
+		m_rightPidDistance->Disable();
+		m_leftPidRate->Enable();
+		m_rightPidRate->Enable();
+		m_currentMode = Rate;
+		break;
+	case Distance:
+		m_leftPidRate->Disable();
+		m_rightPidRate->Disable();
+		m_leftPidDistance->Enable();
+		m_rightPidDistance->Enable();
+		m_currentMode = Distance;
+		break;
+	default:
+		SmartDashboard::PutString("PidSimpleDrive Toggling error", "Unknown option");
+	}
+}
+
+void PidSimpleDrive::AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd) {
+	m_leftPidRate->SetPID(lp, li, ld);
+	m_rightPidRate->SetPID(rp, ri, rd);
 }
 	

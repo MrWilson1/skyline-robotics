@@ -4,8 +4,8 @@
 #include "WPILib.h"
 #include "..\Misc\Tools.h"
 #include "..\OperatorInterfaces\BaseOI.h"
-
-#include "..\Subsystems\DriveSubsystem.h"
+#include "BaseCommand.h"
+#include "..\Subsystems\Drive\DriveSubsystem.h"
 
 /**
  * \brief Issues a perpetually running command to drive in tank mode.
@@ -91,6 +91,15 @@ private:
 	BaseDrive *m_drive;
 	BaseOI *m_oi;
 	PreferredAxis m_preferredAxis;
+};
+
+class RefreshPidCommand : public SimpleCommand {
+public:
+	RefreshPidCommand(IPidDrive *drive);
+	~RefreshPidCommand();
+	void Execute();
+private:
+	IPidDrive *m_drive;
 };
 
 /*

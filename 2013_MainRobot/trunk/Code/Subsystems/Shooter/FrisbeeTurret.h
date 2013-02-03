@@ -3,7 +3,7 @@
 
 #include "WPILib.h"
 
-#include "BaseSubsystem.h"
+#include "../BaseSubsystem.h"
 #include "FrisbeeAimer.h"
 
 /**

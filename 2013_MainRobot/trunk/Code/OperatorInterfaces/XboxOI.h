@@ -6,7 +6,7 @@
 #include "Xbox.h"
 #include "BaseOI.h"
 #include "../Commands/DriveCommands.h"
-#include "../Subsystems/DriveSubsystem.h"
+#include "../Subsystems/Drive/DriveSubsystem.h"
 
 /**
  * A simple operator interface using the Xbox Controllers

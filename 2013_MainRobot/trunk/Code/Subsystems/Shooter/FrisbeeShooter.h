@@ -3,8 +3,8 @@
 
 #include "WPILib.h"
 
-#include "BaseSubsystem.h"
-#include "../Misc/Tools.h"
+#include "../BaseSubsystem.h"
+#include "../../Misc/Tools.h"
 
 /**
  * Base class for a Frisbee shooter.

@@ -5,10 +5,10 @@
 #include "..\Misc\Tools.h"
 #include "..\OperatorInterfaces\BaseOI.h"
 
-#include "..\Subsystems\FrisbeeAimer.h"
-#include "..\Subsystems\FrisbeeLoader.h"
-#include "..\Subsystems\FrisbeeShooter.h"
-#include "..\Subsystems\FrisbeeTurret.h"
+#include "..\Subsystems\Shooter\FrisbeeAimer.h"
+#include "..\Subsystems\Shooter\FrisbeeLoader.h"
+#include "..\Subsystems\Shooter\FrisbeeShooter.h"
+#include "..\Subsystems\Shooter\FrisbeeTurret.h"
 
 class LoadFrisbeeCommand : public Command {
 public:

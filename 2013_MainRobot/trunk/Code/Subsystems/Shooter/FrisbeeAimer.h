@@ -7,8 +7,8 @@
 #include "WPILib.h"
 #include "WPILib/networktables2/type/NumberArray.h"
 
-#include "BaseSubsystem.h"
-#include "../Misc/Tools.h"
+#include "../BaseSubsystem.h"
+#include "../../Misc/Tools.h"
 
 namespace Tracking {
 	/**

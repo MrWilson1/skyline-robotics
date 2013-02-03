@@ -28,12 +28,21 @@ void TestEncoderOI::SetupTeleop() {
 	m_driveStraightButton->WhileHeld(new TravelStraightManualCommand(m_drive, this, Left));
 	
 
+	// Various config stuff.
 	std::string key = m_leftEncoderTest->GetName() + std::string(" ") + std::string("SetDistancePerPulse");
 	SmartDashboard::PutNumber(key, m_leftEncoderTest->GetDistancePerPulse());
 
 	key = m_rightEncoderTest->GetName() + std::string(" ") + std::string("SetDistancePerPulse");
 	SmartDashboard::PutNumber(key, m_rightEncoderTest->GetDistancePerPulse());
+	SmartDashboard::PutNumber("Left Rate P", 0);
+	SmartDashboard::PutNumber("Left Rate I", 0);
+	SmartDashboard::PutNumber("Left Rate D", 0);
+	SmartDashboard::PutNumber("Right Rate P", 0);
+	SmartDashboard::PutNumber("Right Rate I", 0);
+	SmartDashboard::PutNumber("Right Rate D", 0);
 	
+	// SmartDashboard buttons
+	SmartDashboard::PutData("Refresh PID Rate", new RefreshPidCommand(dynamic_cast<IPidDrive *>(m_drive)));
 	
 	SmartDashboard::PutData("left Encoder Start", new StartTestEncoderCommand(m_leftEncoderTest, "left Encoder Start"));
 	SmartDashboard::PutData("right Encoder Start", new StartTestEncoderCommand(m_rightEncoderTest, "right Encoder Start"));
@@ -54,6 +63,12 @@ TankValues TestEncoderOI::GetTankValues() {
 	TankValues t;
 	t.Left = left;
 	t.Right = right;
+	if (Tools::IsWithinRange(left, 0, 0.2)) {
+		t.Left = 0;
+	}
+	if (Tools::IsWithinRange(right, 0, 0.2)) {
+		t.Right = 0;
+	}
 	return t;
 }
 
