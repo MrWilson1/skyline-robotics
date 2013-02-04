@@ -27,7 +27,11 @@ private:
 
 class AimTurretCommand : public Command {
 public:
-	AimTurretCommand(BaseFrisbeeAimer *aimer, BaseFrisbeeTurret *turret, float allowedRange);
+	AimTurretCommand(
+			BaseFrisbeeAimer *aimer, 
+			BaseFrisbeeTurret *turret, 
+			Tracking::TargetType desiredTarget, 
+			float allowedRange);
 	~AimTurretCommand();
 	void Initialize();
 	void Execute();
@@ -39,6 +43,7 @@ private:
 	BaseFrisbeeAimer *m_aimer;
 	BaseFrisbeeTurret *m_turret;
 	bool m_isFinished;
+	Tracking::TargetType m_desiredTarget;
 	float m_allowedRange;
 };
 

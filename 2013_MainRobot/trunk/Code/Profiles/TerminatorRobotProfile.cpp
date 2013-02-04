@@ -39,6 +39,7 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 	
 	m_leftEncoder->SetDistancePerPulse(1.0f / 4500.0f);
 	m_rightEncoder->SetDistancePerPulse(1.0f / 4500.0f);
+	//m_rightEncoder->SetReverseDirection(true);
 
 	m_leftEncoder->Start();
 	m_rightEncoder->Start();

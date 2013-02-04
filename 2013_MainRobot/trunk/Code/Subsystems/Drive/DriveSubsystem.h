@@ -100,15 +100,27 @@ private:
 
 class Tread : public PIDOutput {
 public:
-	Tread(SpeedController *front, SpeedController *back);
+	enum TreadPidMode {
+		kRate,
+		kDistance
+	};
+	enum Direction {
+		kForward = 1,
+		kReversed = -1
+	};
+	Tread(SpeedController *front, SpeedController *back, Direction direction);
 	virtual ~Tread();
 	
+	//TreadPidMode GetMode();
+	//void SetMode(TreadPidMode PidMode);
 	void PIDWrite(float output);
 
 	float m_last;
 private:
 	SpeedController *m_front;
 	SpeedController *m_back;
+	Direction m_direction;
+	//TreadPidMode m_currentMode;
 };
 
 

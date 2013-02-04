@@ -37,9 +37,14 @@ void LoadFrisbeeCommand::Interrupted() {
 	// empty
 }
 
-AimTurretCommand::AimTurretCommand(BaseFrisbeeAimer *aimer, BaseFrisbeeTurret *turret, float allowedRange) :
+AimTurretCommand::AimTurretCommand(
+		BaseFrisbeeAimer *aimer, 
+		BaseFrisbeeTurret *turret, 
+		Tracking::TargetType desiredTarget,
+		float allowedRange) :
 		Command("AimTurret"),
 		m_isFinished(false),
+		m_desiredTarget(desiredTarget),
 		m_allowedRange(allowedRange){
 	m_aimer = aimer;
 	m_turret = turret;
@@ -56,7 +61,36 @@ void AimTurretCommand::Initialize() {
 }
 
 void AimTurretCommand::Execute() {
-	Tracking::Target target = m_aimer->GetClosestTargetByOffset();
+	Tracking::Target target;
+	switch (m_desiredTarget) {
+	case (Tracking::Low) :
+		target = m_aimer->GetLowTarget();
+		break;
+	case (Tracking::MediumLeft) :
+		target = m_aimer->GetMediumLeftTarget();
+		break;
+	case (Tracking::MediumRight) :
+		target = m_aimer->GetMediumRightTarget();
+		break;
+	case (Tracking::High) :
+		target = m_aimer->GetHighTarget();
+		break;
+	case (Tracking::ClosestDistance) :
+		target = m_aimer->GetClosestTargetByDistance();
+		break;
+	case (Tracking::ClosestOffset) :
+		target = m_aimer->GetClosestTargetByOffset();
+		break;
+	case (Tracking::None) :
+	case (Tracking::Unknown) :
+	case (Tracking::Test) :
+	case (Tracking::Pyramid) :
+	default:
+		SmartDashboard::PutString("AimTurrentCommand error", "Invalid TargetType");
+		m_isFinished = true;
+		return;
+	}
+		
 	Tracking::Offset desired = target.ShooterOffset;
 	Tracking::Offset current = m_turret->GetCurrentOffset();
 	bool isXDone = Tools::IsWithinRange(desired.XOffset, current.XOffset, m_allowedRange);
@@ -154,7 +188,7 @@ LoadAndFireCommand::LoadAndFireCommand(
 		BaseFrisbeeShooter *shooter) :
 		CommandGroup("LoadAndFireCommand") {
 	AddSequential(new LoadFrisbeeCommand(loader));
-	AddSequential(new AimTurretCommand(aimer, turret, 5));
+	AddSequential(new AimTurretCommand(aimer, turret, Tracking::ClosestOffset, 5));
 	AddSequential(new FireFrisbeeCommand(shooter));
 }
 

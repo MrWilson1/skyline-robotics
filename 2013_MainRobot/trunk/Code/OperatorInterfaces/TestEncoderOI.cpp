@@ -34,11 +34,11 @@ void TestEncoderOI::SetupTeleop() {
 
 	key = m_rightEncoderTest->GetName() + std::string(" ") + std::string("SetDistancePerPulse");
 	SmartDashboard::PutNumber(key, m_rightEncoderTest->GetDistancePerPulse());
-	SmartDashboard::PutNumber("Left Rate P", 0);
-	SmartDashboard::PutNumber("Left Rate I", 0);
+	SmartDashboard::PutNumber("Left Rate P", 0.1);
+	SmartDashboard::PutNumber("Left Rate I", 0.2);
 	SmartDashboard::PutNumber("Left Rate D", 0);
-	SmartDashboard::PutNumber("Right Rate P", 0);
-	SmartDashboard::PutNumber("Right Rate I", 0);
+	SmartDashboard::PutNumber("Right Rate P", 0.1);
+	SmartDashboard::PutNumber("Right Rate I", 0.2);
 	SmartDashboard::PutNumber("Right Rate D", 0);
 	
 	// SmartDashboard buttons

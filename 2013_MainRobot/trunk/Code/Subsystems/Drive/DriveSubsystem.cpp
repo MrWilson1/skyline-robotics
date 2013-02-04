@@ -114,8 +114,9 @@ void SmoothEncoder::SetMaxSize(unsigned int maxSize) {
 
 
 
-Tread::Tread(SpeedController *front, SpeedController *back) :
-	m_last(0) {
+Tread::Tread(SpeedController *front, SpeedController *back, Direction direction) :
+	m_last(0),
+	m_direction(direction) {
 	m_front = front;
 	m_back = back;
 }
@@ -125,11 +126,23 @@ Tread::~Tread() {
 }
 
 void Tread::PIDWrite(float output) {
-	m_last = output;
-	output = Tools::Limit(output, -1.0, 1.0);
-	m_front->PIDWrite(output);
-	m_back->PIDWrite(output);
+	/*if (m_currentMode == kDistance) {
+		m_last = output;
+	} else {
+		m_last += output;
+	}*/
+	m_last = Tools::Limit(output, -1.0, 1.0);
+	m_front->PIDWrite(m_last * m_direction);
+	m_back->PIDWrite(m_last * m_direction);
 }
+/*
+Tread::TreadPidMode Tread::GetMode() {
+	return m_currentMode;
+}
+
+void Tread::SetMode(Tread::TreadPidMode mode) {
+	m_currentMode = mode;
+}*/
 
 
 
@@ -152,21 +165,24 @@ PidSimpleDrive::PidSimpleDrive (
 	m_leftEncoder = leftEncoder;
 	m_rightEncoder = rightEncoder;
 	
+	m_leftEncoder->SetPIDSourceParameter(Encoder::kRate);
+	m_rightEncoder->SetPIDSourceParameter(Encoder::kRate);
+	
 	m_leftEncoder->Start();
 	m_rightEncoder->Start();
 	
 	m_smoothLeftEncoder = new SmoothEncoder(m_leftEncoder, 5);
 	m_smoothRightEncoder = new SmoothEncoder(m_rightEncoder, 5);
 	
-	m_leftTread = new Tread(m_leftFront, m_leftBack);
-	m_rightTread = new Tread(m_rightFront, m_rightBack);
+	m_leftTread = new Tread(m_leftFront, m_leftBack, Tread::kForward);
+	m_rightTread = new Tread(m_rightFront, m_rightBack, Tread::kReversed);
 	
 	m_leftPidRate = new PIDController(
-			0, 0, 0,
+			0.1, 0.2, 0,
 			m_smoothLeftEncoder,
 			m_leftTread);
 	m_rightPidRate = new PIDController(
-			0, 0, 0,
+			0.1, 0.2, 0,
 			m_smoothRightEncoder,
 			m_rightTread);
 	
@@ -259,6 +275,8 @@ void PidSimpleDrive::TryToggling(PidMode mode) {
 		m_rightPidDistance->Disable();
 		m_leftPidRate->Enable();
 		m_rightPidRate->Enable();
+		//m_leftTread->SetMode(Tread::kRate);
+		//m_rightTread->SetMode(Tread::kRate);
 		m_currentMode = Rate;
 		break;
 	case Distance:
@@ -266,6 +284,8 @@ void PidSimpleDrive::TryToggling(PidMode mode) {
 		m_rightPidRate->Disable();
 		m_leftPidDistance->Enable();
 		m_rightPidDistance->Enable();
+		//m_leftTread->SetMode(Tread::kDistance);
+		//m_rightTread->SetMode(Tread::kDistance);
 		m_currentMode = Distance;
 		break;
 	default:

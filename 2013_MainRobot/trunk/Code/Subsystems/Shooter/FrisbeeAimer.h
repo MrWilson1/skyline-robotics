@@ -12,7 +12,7 @@
 
 namespace Tracking {
 	/**
-	 * The 5 different types of targets the robot can aim for.
+	 * The different types of targets the robot can aim for.
 	 */
 	enum TargetType {
 		None,
@@ -22,7 +22,9 @@ namespace Tracking {
 		MediumLeft,
 		MediumRight,
 		High,
-		Pyramid
+		Pyramid,
+		ClosestOffset,
+		ClosestDistance
 	};
 
 	/**
