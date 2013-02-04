@@ -8,10 +8,10 @@
 #include "../Commands/DriveCommands.h"
 #include "../Commands/ShooterCommands.h"
 #include "../Subsystems/Drive/DriveSubsystem.h"
-#include "../Subsystems/FrisbeeLoader.h"
-#include "../Subsystems/FrisbeeTurret.h"
-#include "../Subsystems/FrisbeeShooter.h"
-#include "../Subsystems/FrisbeeAimer.h"
+#include "../Subsystems/Shooter/FrisbeeLoader.h"
+#include "../Subsystems/Shooter/FrisbeeTurret.h"
+#include "../Subsystems/Shooter/FrisbeeShooter.h"
+#include "../Subsystems/Shooter/FrisbeeAimer.h"
 
 /**
  * A simple operator interface using the Xbox Controllers

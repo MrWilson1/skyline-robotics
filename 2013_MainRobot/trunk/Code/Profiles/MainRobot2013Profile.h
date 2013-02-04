@@ -9,11 +9,11 @@
 #include "../OperatorInterfaces/CompetitionXboxOI.h"
 #include "../OperatorInterfaces/Xbox.h"
 
-#include "../Subsystems/DriveSubsystem.h"
-#include "../Subsystems/FrisbeeTurret.h"
-#include "../Subsystems/FrisbeeLoader.h"
-#include "../Subsystems/FrisbeeShooter.h"
-#include "../Subsystems/FrisbeeAimer.h"
+#include "../Subsystems/Drive/DriveSubsystem.h"
+#include "../Subsystems/Shooter/FrisbeeTurret.h"
+#include "../Subsystems/Shooter/FrisbeeLoader.h"
+#include "../Subsystems/Shooter/FrisbeeShooter.h"
+#include "../Subsystems/Shooter/FrisbeeAimer.h"
 
 /**
  * A profile for a generic robot that simply drives around.
