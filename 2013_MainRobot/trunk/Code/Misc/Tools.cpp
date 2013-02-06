@@ -3,16 +3,16 @@
 float Tools::ConvertUnits(float number, Units start, Units target) {
 	float intermediateValue = 0;
 	switch (start) {
-	case Inches:
+	case kInches:
 		intermediateValue = number;
 		break;
-	case Feet:
+	case kFeet:
 		intermediateValue = number * 12;
 		break;
-	case Meters:
+	case kMeters:
 		intermediateValue = number * 39.3701;
 		break;
-	case Centimeters:
+	case kCentimeters:
 		intermediateValue = number * 0.393701;
 		break;
 	default:
@@ -22,16 +22,16 @@ float Tools::ConvertUnits(float number, Units start, Units target) {
 	
 	float endValue = 0;
 	switch (target) {
-	case Inches:
+	case kInches:
 		endValue = intermediateValue;
 		break;
-	case Feet:
+	case kFeet:
 		endValue = intermediateValue / 12;
 		break;
-	case Meters:
+	case kMeters:
 		endValue = intermediateValue * 0.0254;
 		break;
-	case Centimeters:
+	case kCentimeters:
 		endValue = intermediateValue * 2.54;
 		break;
 	default:
@@ -78,5 +78,13 @@ bool Tools::IsWithinRange(float input, float target, float range) {
 		offset = -offset;
 	}
 	return offset <= range;
+}
+
+double Tools::Deadband(double input, double deadband) {
+	if (Tools::IsWithinRange(input, 0, deadband)) {
+		return 0;
+	} else {
+		return input;
+	}
 }
 

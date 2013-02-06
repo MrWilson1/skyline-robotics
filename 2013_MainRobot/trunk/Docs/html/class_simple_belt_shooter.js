@@ -10,5 +10,5 @@ var class_simple_belt_shooter =
     [ "GetMaxDistance", "class_simple_belt_shooter.html#a124bdb5b56d095ebe379115e99a1263e", null ],
     [ "SetMaxDistance", "class_simple_belt_shooter.html#a56e48ca1a2b80e2917ba3ce2372acf5c", null ],
     [ "ShootFrisbee", "class_simple_belt_shooter.html#a21cb0601c9020d27af91e221da3080fb", null ],
-    [ "ShootFrisbee", "class_simple_belt_shooter.html#a88e51cb3becb2ec2ae8d52bc34ff669f", null ]
+    [ "ShootFrisbee", "class_simple_belt_shooter.html#a684b160738c6fee78f990ad08c5695a4", null ]
 ];

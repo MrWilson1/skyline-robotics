@@ -1,3 +1,4 @@
 <map id="BaseFrisbeeAimer" name="BaseFrisbeeAimer">
-<area shape="rect" id="node2" href="$class_base_subsystem.html" title="BaseSubsystem" alt="" coords="10,80,128,107"/>
+<area shape="rect" id="node7" href="$class_vision_tables_frisbee_aimer.html" title="VisionTablesFrisbeeAimer" alt="" coords="5,229,179,256"/>
+<area shape="rect" id="node2" href="$class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="33,80,151,107"/>
 </map>

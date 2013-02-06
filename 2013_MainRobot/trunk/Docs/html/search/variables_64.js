@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['distanceininches',['DistanceInInches',['../struct_target.html#a430ce8095762105e5babb0bb2369a5bc',1,'Target']]]
+  ['distanceininches',['DistanceInInches',['../struct_tracking_1_1_target.html#a9f7338bacba357f319124ddec9ad5b85',1,'Tracking::Target']]]
 ];

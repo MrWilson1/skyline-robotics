@@ -17,7 +17,9 @@ CompetitionXboxOI::CompetitionXboxOI(
 
 	m_fireButton = new JoystickButton(m_xbox, m_xbox->A);
 	m_teleopCommand = new TankDriveCommand(m_drive, this);
-	m_loadAndFireCommand = new LoadAndFireCommand(m_loader,  m_aimer, m_turret, m_shooter); 
+	m_loadAndFireCommand = new LoadAndFireCommand(m_loader,  m_aimer, m_turret, m_shooter);
+	m_autoAimTargetCommand = new AimTurretCommand(m_aimer, m_turret, Tracking::ClosestOffset, 3.0);
+	// Will stop if the shooter is within 3 degrees of the centerpoint of the target
 }
 
 CompetitionXboxOI::~CompetitionXboxOI() {
@@ -26,7 +28,8 @@ CompetitionXboxOI::~CompetitionXboxOI() {
 
 void CompetitionXboxOI::SetupTeleop() {
 	m_fireButton->WhenPressed(m_loadAndFireCommand);
-	m_teleopCommand->Start();
+	m_drive->SetDefaultCommand(m_teleopCommand);
+	m_turret->SetDefaultCommand(m_autoAimTargetCommand);
 }
 
 TankValues CompetitionXboxOI::GetTankValues() {

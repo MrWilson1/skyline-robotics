@@ -35,10 +35,10 @@ SimpleDriveTransmission::TransmissionMode SimpleDriveTransmission::GetCurrentMod
 	bool right = m_rightPiston->Get();
 	
 	if (left != right) {
-		return Error;
+		return kError;
 	} else if (left) {
-		return HighGear;
+		return kHighGear;
 	} else {
-		return LowGear;
+		return kLowGear;
 	}
 }

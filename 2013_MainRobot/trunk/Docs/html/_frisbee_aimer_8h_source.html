@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.3.1"/>
-<title>2013_MainRobot: Code/Subsystems/FrisbeeAimer.h Source File</title>
+<title>2013_MainRobot: Code/Subsystems/Shooter/FrisbeeAimer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_frisbee_aimer_8h_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -108,65 +109,106 @@ $(document).ready(function(){initNavTree('_frisbee_aimer_8h_source.html','');});
 <a href="_frisbee_aimer_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef FRISBEE_AIMER_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define FRISBEE_AIMER_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;WPILib.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_subsystem_8h.html">BaseSubsystem.h</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668f">   11</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668f">TargetType</a> {</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668fa7a352a3dd2accc1dd65a4538c3754ee8">   12</a></span>&#160;    <a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668fa7a352a3dd2accc1dd65a4538c3754ee8">Low</a>,</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668fa8cfb9311a439a51b14159ed0970f398b">   13</a></span>&#160;    <a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668fa8cfb9311a439a51b14159ed0970f398b">Medium</a>,</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668fa24c57acd029e3f96fede49402ea01e6f">   14</a></span>&#160;    <a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668fa24c57acd029e3f96fede49402ea01e6f">High</a>,</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668fa93741628092cae967f2e417a9c0aea0d">   15</a></span>&#160;    <a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668fa93741628092cae967f2e417a9c0aea0d">Pyramid</a></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;};</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="code" href="struct_offset.html">   23</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_offset.html">Offset</a> {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="struct_offset.html#a6c32632129c98a7e4ab202cfa7423325">Offset</a>(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y);</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="code" href="struct_offset.html#aaffacfb8a658e589742e356177c41b68">   25</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="struct_offset.html#aaffacfb8a658e589742e356177c41b68">XOffset</a>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="code" href="struct_offset.html#a1e34ba813a760eeaa860b8bf1d79ff69">   26</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="struct_offset.html#a1e34ba813a760eeaa860b8bf1d79ff69">YOffset</a>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;};</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="code" href="struct_target.html">   32</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_target.html">Target</a> {</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="code" href="struct_target.html#abac219352dc6492e65db1dc9ebdaca87">   33</a></span>&#160;    <a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668f">TargetType</a> <a class="code" href="struct_target.html#abac219352dc6492e65db1dc9ebdaca87">Target</a>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="code" href="struct_target.html#a7cfd699393b4361367272c013673de71">   34</a></span>&#160;    <a class="code" href="struct_offset.html">Offset</a> <a class="code" href="struct_target.html#a7cfd699393b4361367272c013673de71">ShooterOffset</a>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="code" href="struct_target.html#a430ce8095762105e5babb0bb2369a5bc">   35</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="struct_target.html#a430ce8095762105e5babb0bb2369a5bc">DistanceInInches</a>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;};</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="code" href="class_base_frisbee_aimer.html">   43</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_frisbee_aimer.html">BaseFrisbeeAimer</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html">BaseSubsystem</a> {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="class_base_frisbee_aimer.html#a5a4662d47a48aaa088e41e1c82d672dc">BaseFrisbeeAimer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_base_frisbee_aimer.html#ae68d1e21937de7b1213a432a1ed09b3f">~BaseFrisbeeAimer</a>();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// Selects the target to aim for</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_base_frisbee_aimer.html#a8d47ebdc0d4ea8b2792ee89401535a73">SetTarget</a>(<a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668f">TargetType</a> target) = 0;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// Is the target selected visible?</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_base_frisbee_aimer.html#a7477885122b37bb39261ca3c6570d435">IsTargetVisible</a>() = 0;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// Return all targets in sight</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;Target&gt; <a class="code" href="class_base_frisbee_aimer.html#a129d188482661daa77a6e95373b78aa7">GetAllTargets</a>() = 0;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="comment">// Return the offset needed to turn the shooter to point at</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">// the target</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_offset.html">Offset</a> <a class="code" href="class_base_frisbee_aimer.html#a34673a4b2d371c55b702ec87beae8dec">GetOffset</a>() = 0;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// Gets the distance from the robot to the target in inches.</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="class_base_frisbee_aimer.html#a6eaf3a586e8573e690f7cfc9ed8e17f6">GetDistanceFromTargetInches</a>() = 0;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">// Gets the type of target the sensor is detecting.</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="_frisbee_aimer_8h.html#a0d59972970c855496cb4c877501e668f">TargetType</a> <a class="code" href="class_base_frisbee_aimer.html#a3ee08a0e1350134bd4824851717c0280">GetTargetType</a>() = 0;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">// Gets the combined target info</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_target.html">Target</a> <a class="code" href="class_base_frisbee_aimer.html#ad2d562b1a87bec505239f9c8d33a52f2">GetTargetData</a>() = 0;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;WPILib.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;WPILib/networktables2/type/NumberArray.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;../BaseSubsystem.h&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;../../Misc/Tools.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="code" href="namespace_tracking.html">   13</a></span>&#160;<span class="keyword">namespace </span>Tracking {</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dd">   17</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dd">TargetType</a> {</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda80cd58661dcd94390ed8b5cf4e898fb4">   18</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda80cd58661dcd94390ed8b5cf4e898fb4">None</a>,</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda92f3eb67d6c39f84e304c2a66f8665f4">   19</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda92f3eb67d6c39f84e304c2a66f8665f4">Unknown</a>,</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7ddaf7e0235318e36cb8f3af90f485b6b153">   20</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7ddaf7e0235318e36cb8f3af90f485b6b153">Test</a>,</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda1e8ec5835070325cad6cae8cca9c5614">   21</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda1e8ec5835070325cad6cae8cca9c5614">Low</a>,</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7ddac0ccfa695ea676846658b802e6e8eed8">   22</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7ddac0ccfa695ea676846658b802e6e8eed8">MediumLeft</a>,</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda5206fb2faa99a481d2f0da652e265ebb">   23</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda5206fb2faa99a481d2f0da652e265ebb">MediumRight</a>,</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda785e11bdcc3dc09a45ff366a37543348">   24</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda785e11bdcc3dc09a45ff366a37543348">High</a>,</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda661df7377b1fe0063663cdbd59efda19">   25</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda661df7377b1fe0063663cdbd59efda19">Pyramid</a>,</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7ddae76c5fbb03e3057920927b2c37e29fa2">   26</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7ddae76c5fbb03e3057920927b2c37e29fa2">ClosestOffset</a>,</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda0b01b8911e1f0436dc6cfd4d41979f0f">   27</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda0b01b8911e1f0436dc6cfd4d41979f0f">ClosestDistance</a></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    };</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="code" href="struct_tracking_1_1_offset.html">   35</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_tracking_1_1_offset.html">Offset</a> {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="struct_tracking_1_1_offset.html#a64eb35065c6d7ff8dfecfcc5aecc882c">Offset</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <a class="code" href="struct_tracking_1_1_offset.html#a64eb35065c6d7ff8dfecfcc5aecc882c">Offset</a>(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y);</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="struct_tracking_1_1_offset.html#a47003a7c3932d380cf923a7a5985574c">   38</a></span>&#160;        <span class="keywordtype">float</span> <a class="code" href="struct_tracking_1_1_offset.html#a47003a7c3932d380cf923a7a5985574c">XOffset</a>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="struct_tracking_1_1_offset.html#a9cf7504a0ee51054952ea3047da5c2ff">   39</a></span>&#160;        <span class="keywordtype">float</span> <a class="code" href="struct_tracking_1_1_offset.html#a9cf7504a0ee51054952ea3047da5c2ff">YOffset</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    };</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    </div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="code" href="struct_tracking_1_1_target.html">   45</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_tracking_1_1_target.html">Target</a> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="struct_tracking_1_1_target.html#af43b7283962f424c25c245a8b8644cdd">Target</a>();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <a class="code" href="struct_tracking_1_1_target.html#af43b7283962f424c25c245a8b8644cdd">Target</a>(<a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dd">TargetType</a> type, <a class="code" href="struct_tracking_1_1_offset.html">Offset</a> shooterOffset, <span class="keywordtype">double</span> distanceInInches);</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="struct_tracking_1_1_target.html#aecbfcdac9353e147ba44d89b3633f9ef">   48</a></span>&#160;        <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dd">TargetType</a> <a class="code" href="struct_tracking_1_1_target.html#aecbfcdac9353e147ba44d89b3633f9ef">Type</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="code" href="struct_tracking_1_1_target.html#a02870ebc737350dadd487e0558c6d4f7">   49</a></span>&#160;        <a class="code" href="struct_tracking_1_1_offset.html">Offset</a> <a class="code" href="struct_tracking_1_1_target.html#a02870ebc737350dadd487e0558c6d4f7">ShooterOffset</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="struct_tracking_1_1_target.html#a9f7338bacba357f319124ddec9ad5b85">   50</a></span>&#160;        <span class="keywordtype">double</span> <a class="code" href="struct_tracking_1_1_target.html#a9f7338bacba357f319124ddec9ad5b85">DistanceInInches</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    };</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="namespace_tracking.html#ab3dfe0834d142c270a8c093f1e0e8769">FindTargetMagnitude</a>(<a class="code" href="struct_tracking_1_1_target.html">Target</a> target);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="namespace_tracking.html#a179e968808aba18956b442892d3b66ff">   55</a></span>&#160;    <span class="keyword">typedef</span> std::map&lt;TargetType, Target&gt; <a class="code" href="namespace_tracking.html#a179e968808aba18956b442892d3b66ff">TargetMap</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="code" href="class_base_frisbee_aimer.html">   63</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_frisbee_aimer.html">BaseFrisbeeAimer</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html" title="The abstract base class for all subsystems.">BaseSubsystem</a> {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="class_base_frisbee_aimer.html#a5a4662d47a48aaa088e41e1c82d672dc">BaseFrisbeeAimer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_base_frisbee_aimer.html#ae68d1e21937de7b1213a432a1ed09b3f">~BaseFrisbeeAimer</a>();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="namespace_tracking.html#a179e968808aba18956b442892d3b66ff">Tracking::TargetMap</a> <a class="code" href="class_base_frisbee_aimer.html#ab26c95fb4dd72baa010a21b9478f99fe">GetAllTargets</a>() = 0;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_base_frisbee_aimer.html#a9ce7655d607b07ca225e1b73689f7a05">GetHighTarget</a>() = 0;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_base_frisbee_aimer.html#ab4a4b4528a05a1834a09628798996d9f">GetMediumLeftTarget</a>() = 0;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_base_frisbee_aimer.html#a87482bcdb94592cd07b12fae7e61226c">GetMediumRightTarget</a>() = 0;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_base_frisbee_aimer.html#ab26712f0788b35ff4ff0dbbd472075ae">GetLowTarget</a>() = 0;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_base_frisbee_aimer.html#ab6979157ef7a67496e1c2e6265579a92">GetClosestTargetByDistance</a>() = 0;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_base_frisbee_aimer.html#a44e404aafe736f293315e12ecee9af2d">GetClosestTargetByOffset</a>() = 0;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;};</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="code" href="class_vision_tables_frisbee_aimer.html">  136</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_vision_tables_frisbee_aimer.html">VisionTablesFrisbeeAimer</a> : <span class="keyword">public</span> <a class="code" href="class_base_frisbee_aimer.html">BaseFrisbeeAimer</a> {</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <a class="code" href="class_vision_tables_frisbee_aimer.html#a4c6c0a6ff85375ebe14ecdac2805c092">VisionTablesFrisbeeAimer</a>();</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <a class="code" href="class_vision_tables_frisbee_aimer.html#a4c6c0a6ff85375ebe14ecdac2805c092">VisionTablesFrisbeeAimer</a>(std::string tableName);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <a class="code" href="class_vision_tables_frisbee_aimer.html#ad45dfe475543af9bbcc6705e07591d8c">~VisionTablesFrisbeeAimer</a>();</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="namespace_tracking.html#a179e968808aba18956b442892d3b66ff">Tracking::TargetMap</a> <a class="code" href="class_vision_tables_frisbee_aimer.html#a5381c65d1e8b1cf89d45707122f08982">GetAllTargets</a>();</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_vision_tables_frisbee_aimer.html#a23735d94f65e6d6a2fefac3935eee9c8">GetHighTarget</a>();</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_vision_tables_frisbee_aimer.html#a92c4b0758276a64f305ac04401e8489d">GetMediumLeftTarget</a>();</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_vision_tables_frisbee_aimer.html#a47c2d2723d277d35c6a8e76fc70aee55">GetMediumRightTarget</a>();</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_vision_tables_frisbee_aimer.html#a763b305261661433a68d41b16e47ec4b">GetLowTarget</a>();</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_vision_tables_frisbee_aimer.html#ae470d55b08ec0b649eddf117d2ff2c93">GetClosestTargetByDistance</a>();</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> <a class="code" href="class_vision_tables_frisbee_aimer.html#af81a9b4e94cbdc6e7ff4bb0bfd0dc74f">GetClosestTargetByOffset</a>();</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    </div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <a class="code" href="struct_tracking_1_1_target.html">Tracking::Target</a> GetTarget(std::string key);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    NetworkTable *m_visionTable;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    std::string m_tableName;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;};</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="code" href="class_test_aimer.html">  156</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_test_aimer.html">TestAimer</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html" title="The abstract base class for all subsystems.">BaseSubsystem</a> {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="class_test_aimer.html#a7cbe2a00d16304f33573c0d76c7a4f6b">TestAimer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <a class="code" href="class_test_aimer.html#a1351479ee13a4649108c57f5de671bc6">~TestAimer</a>();</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_aimer.html#ad809351f00e14cd2286af8f1fa1ed728">Run</a>();</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;};</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_23fdee2f6995db16c755697cdf620cf4.html">Code</a></li><li class="navelem"><a class="el" href="dir_7597f66b0d059e987d25db1b89aa63ec.html">Subsystems</a></li><li class="navelem"><a class="el" href="_frisbee_aimer_8h.html">FrisbeeAimer.h</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:04 for 2013_MainRobot by
+    <li class="navelem"><a class="el" href="dir_cd575884794bbd9245ab7f4f8f2a7983.html">Code</a></li><li class="navelem"><a class="el" href="dir_f9cc9dd264cde71432b1b66c96e526f8.html">Subsystems</a></li><li class="navelem"><a class="el" href="dir_78fe08602fe217e3f41e3ac258a14ae7.html">Shooter</a></li><li class="navelem"><a class="el" href="_frisbee_aimer_8h.html">FrisbeeAimer.h</a></li>
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:28 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

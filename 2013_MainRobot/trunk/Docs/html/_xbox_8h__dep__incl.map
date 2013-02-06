@@ -1,12 +1,16 @@
 <map id="Code/OperatorInterfaces/Xbox.h" name="Code/OperatorInterfaces/Xbox.h">
-<area shape="rect" id="node3" href="$_xbox_o_i_8h.html" title="Code/OperatorInterfaces\l/XboxOI.h" alt="" coords="175,97,337,138"/>
+<area shape="rect" id="node3" href="$_xbox_o_i_8h.html" title="Code/OperatorInterfaces\l/XboxOI.h" alt="" coords="236,97,399,138"/>
 <area shape="rect" id="node5" href="$_bland_robot_profile_8h.html" title="Code/Profiles/BlandRobot\lProfile.h" alt="" coords="5,187,176,229"/>
-<area shape="rect" id="node14" href="$_test_encoder_o_i_8h.html" title="Code/OperatorInterfaces\l/TestEncoderOI.h" alt="" coords="412,97,575,138"/>
-<area shape="rect" id="node16" href="$_terminator_robot_profile_8h.html" title="Code/Profiles/Terminator\lRobotProfile.h" alt="" coords="387,187,551,229"/>
-<area shape="rect" id="node24" href="$_xbox_8cpp.html" title="Code/OperatorInterfaces\l/Xbox.cpp" alt="" coords="599,97,761,138"/>
-<area shape="rect" id="node11" href="$_xbox_o_i_8cpp.html" title="Code/OperatorInterfaces\l/XboxOI.cpp" alt="" coords="200,187,363,229"/>
-<area shape="rect" id="node7" href="$_main_8cpp.html" title="Code/Main.cpp" alt="" coords="227,285,336,312"/>
+<area shape="rect" id="node11" href="$_terminator_robot_profile_8h.html" title="Code/Profiles/Terminator\lRobotProfile.h" alt="" coords="387,187,551,229"/>
+<area shape="rect" id="node19" href="$_test_encoder_o_i_8h.html" title="Code/OperatorInterfaces\l/TestEncoderOI.h" alt="" coords="527,97,689,138"/>
+<area shape="rect" id="node25" href="$_competition_xbox_o_i_8h.html" title="Code/OperatorInterfaces\l/CompetitionXboxOI.h" alt="" coords="776,97,939,138"/>
+<area shape="rect" id="node27" href="$_main_robot2013_profile_8h.html" title="Code/Profiles/MainRobot2013\lProfile.h" alt="" coords="763,187,956,229"/>
+<area shape="rect" id="node35" href="$_xbox_8cpp.html" title="Code/OperatorInterfaces\l/Xbox.cpp" alt="" coords="963,97,1125,138"/>
+<area shape="rect" id="node16" href="$_xbox_o_i_8cpp.html" title="Code/OperatorInterfaces\l/XboxOI.cpp" alt="" coords="200,187,363,229"/>
+<area shape="rect" id="node7" href="$_main_8cpp.html" title="This file is the main entry point of the robot." alt="" coords="333,285,443,312"/>
 <area shape="rect" id="node9" href="$_bland_robot_profile_8cpp.html" title="Code/Profiles/BlandRobot\lProfile.cpp" alt="" coords="5,278,176,319"/>
-<area shape="rect" id="node21" href="$_test_encoder_o_i_8cpp.html" title="Code/OperatorInterfaces\l/TestEncoderOI.cpp" alt="" coords="576,187,739,229"/>
-<area shape="rect" id="node19" href="$_terminator_robot_profile_8cpp.html" title="Code/Profiles/Terminator\lRobotProfile.cpp" alt="" coords="387,278,551,319"/>
+<area shape="rect" id="node14" href="$_terminator_robot_profile_8cpp.html" title="Code/Profiles/Terminator\lRobotProfile.cpp" alt="" coords="467,278,631,319"/>
+<area shape="rect" id="node22" href="$_test_encoder_o_i_8cpp.html" title="Code/OperatorInterfaces\l/TestEncoderOI.cpp" alt="" coords="576,187,739,229"/>
+<area shape="rect" id="node32" href="$_competition_xbox_o_i_8cpp.html" title="Code/OperatorInterfaces\l/CompetitionXboxOI.cpp" alt="" coords="981,187,1144,229"/>
+<area shape="rect" id="node30" href="$_main_robot2013_profile_8cpp.html" title="Code/Profiles/MainRobot2013\lProfile.cpp" alt="" coords="763,278,956,319"/>
 </map>

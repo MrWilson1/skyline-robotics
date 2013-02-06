@@ -1,0 +1,6 @@
+<map id="VisionTablesFrisbeeAimer::GetAllTargets" name="VisionTablesFrisbeeAimer::GetAllTargets">
+<area shape="rect" id="node3" href="$class_vision_tables_frisbee_aimer.html#a23735d94f65e6d6a2fefac3935eee9c8" title="VisionTablesFrisbeeAimer\l::GetHighTarget" alt="" coords="227,5,400,46"/>
+<area shape="rect" id="node5" href="$class_vision_tables_frisbee_aimer.html#a92c4b0758276a64f305ac04401e8489d" title="VisionTablesFrisbeeAimer\l::GetMediumLeftTarget" alt="" coords="227,70,400,111"/>
+<area shape="rect" id="node7" href="$class_vision_tables_frisbee_aimer.html#a47c2d2723d277d35c6a8e76fc70aee55" title="VisionTablesFrisbeeAimer\l::GetMediumRightTarget" alt="" coords="227,135,400,177"/>
+<area shape="rect" id="node9" href="$class_vision_tables_frisbee_aimer.html#a763b305261661433a68d41b16e47ec4b" title="VisionTablesFrisbeeAimer\l::GetLowTarget" alt="" coords="227,201,400,242"/>
+</map>

@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -93,7 +94,7 @@ $(document).ready(function(){initNavTree('class_test_encoder_command.html','');}
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -117,35 +118,46 @@ Inheritance diagram for TestEncoderCommand:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_test_encoder_command__inherit__graph.png" border="0" usemap="#_test_encoder_command_inherit__map" alt="Inheritance graph"/></div>
 <map name="_test_encoder_command_inherit__map" id="_test_encoder_command_inherit__map">
-</map>
+<area shape="rect" id="node2" href="class_simple_command.html" title="SimpleCommand" alt="" coords="22,80,143,107"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for TestEncoderCommand:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_test_encoder_command__coll__graph.png" border="0" usemap="#_test_encoder_command_coll__map" alt="Collaboration graph"/></div>
 <map name="_test_encoder_command_coll__map" id="_test_encoder_command_coll__map">
-</map>
+<area shape="rect" id="node2" href="class_simple_command.html" title="SimpleCommand" alt="" coords="22,80,143,107"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aef3189341b71eaf842b24d381bbb8076"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_test_encoder_command.html#aef3189341b71eaf842b24d381bbb8076">TestEncoderCommand</a> (<a class="el" href="class_test_encoder.html">TestEncoder</a> *testEncoder)</td></tr>
-<tr class="separator:aef3189341b71eaf842b24d381bbb8076"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c592cc9bfa40ed9ec7c76e3fc318311"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_test_encoder_command.html#a1c592cc9bfa40ed9ec7c76e3fc318311">TestEncoderCommand</a> (<a class="el" href="class_test_encoder.html">TestEncoder</a> *testEncoder, const char *name)</td></tr>
+<tr class="separator:a1c592cc9bfa40ed9ec7c76e3fc318311"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48269c021cdedef629446708e52ba732"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_test_encoder_command.html#a48269c021cdedef629446708e52ba732">~TestEncoderCommand</a> ()</td></tr>
 <tr class="separator:a48269c021cdedef629446708e52ba732"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d6696ffe88ce3b7e8fdd6d2fc1103fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_test_encoder_command.html#a2d6696ffe88ce3b7e8fdd6d2fc1103fe">Initialize</a> ()</td></tr>
-<tr class="separator:a2d6696ffe88ce3b7e8fdd6d2fc1103fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fb4507953cf13c8eaf689009cc27988"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_test_encoder_command.html#a9fb4507953cf13c8eaf689009cc27988">Execute</a> ()</td></tr>
 <tr class="separator:a9fb4507953cf13c8eaf689009cc27988"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d4f2e6c0306daaf18f3bd4d99e270d5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_test_encoder_command.html#a9d4f2e6c0306daaf18f3bd4d99e270d5">IsFinished</a> ()</td></tr>
-<tr class="separator:a9d4f2e6c0306daaf18f3bd4d99e270d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2f074c1314bbbe987db727c8acb7b27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_test_encoder_command.html#ab2f074c1314bbbe987db727c8acb7b27">End</a> ()</td></tr>
-<tr class="separator:ab2f074c1314bbbe987db727c8acb7b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea7b89f95a48884d8aca57f3bf838bc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_test_encoder_command.html#aea7b89f95a48884d8aca57f3bf838bc0">Interrupted</a> ()</td></tr>
-<tr class="separator:aea7b89f95a48884d8aca57f3bf838bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_simple_command"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_simple_command')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_simple_command.html">SimpleCommand</a></td></tr>
+<tr class="memitem:acca9a1d5286d6c1756c76ba6113296c1 inherit pub_methods_class_simple_command"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simple_command.html#acca9a1d5286d6c1756c76ba6113296c1">SimpleCommand</a> (const char *name, bool doesCommandRunEndlessly)</td></tr>
+<tr class="separator:acca9a1d5286d6c1756c76ba6113296c1 inherit pub_methods_class_simple_command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfb1ed4e511259a452008f81635128cc inherit pub_methods_class_simple_command"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simple_command.html#adfb1ed4e511259a452008f81635128cc">~SimpleCommand</a> ()</td></tr>
+<tr class="separator:adfb1ed4e511259a452008f81635128cc inherit pub_methods_class_simple_command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecbb310d7007e11c1b667436fa6c0347 inherit pub_methods_class_simple_command"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simple_command.html#aecbb310d7007e11c1b667436fa6c0347">Initialize</a> ()</td></tr>
+<tr class="separator:aecbb310d7007e11c1b667436fa6c0347 inherit pub_methods_class_simple_command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acea95b142d38ac449e9255d8d0f8c352 inherit pub_methods_class_simple_command"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simple_command.html#acea95b142d38ac449e9255d8d0f8c352">IsFinished</a> ()</td></tr>
+<tr class="separator:acea95b142d38ac449e9255d8d0f8c352 inherit pub_methods_class_simple_command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a690619a04ff5813223dc4695ce4bb689 inherit pub_methods_class_simple_command"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simple_command.html#a690619a04ff5813223dc4695ce4bb689">End</a> ()</td></tr>
+<tr class="separator:a690619a04ff5813223dc4695ce4bb689 inherit pub_methods_class_simple_command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93eab725daf0798d272e146630841890 inherit pub_methods_class_simple_command"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simple_command.html#a93eab725daf0798d272e146630841890">Interrupted</a> ()</td></tr>
+<tr class="separator:a93eab725daf0798d272e146630841890 inherit pub_methods_class_simple_command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_class_simple_command"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_simple_command')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_simple_command.html">SimpleCommand</a></td></tr>
+<tr class="memitem:aa1081762a9f874f357e1d35fe007f4c3 inherit pro_attribs_class_simple_command"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simple_command.html#aa1081762a9f874f357e1d35fe007f4c3">m_doesCommandRunEndlessly</a></td></tr>
+<tr class="separator:aa1081762a9f874f357e1d35fe007f4c3 inherit pro_attribs_class_simple_command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aef3189341b71eaf842b24d381bbb8076"></a>
+<a class="anchor" id="a1c592cc9bfa40ed9ec7c76e3fc318311"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -153,8 +165,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">TestEncoderCommand::TestEncoderCommand </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_test_encoder.html">TestEncoder</a> *&#160;</td>
-          <td class="paramname"><em>testEncoder</em></td><td>)</td>
+          <td class="paramname"><em>testEncoder</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -177,24 +199,12 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ab2f074c1314bbbe987db727c8acb7b27"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TestEncoderCommand::End </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a9fb4507953cf13c8eaf689009cc27988"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void TestEncoderCommand::Execute </td>
@@ -203,61 +213,23 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_simple_command.html#af2be23e220b6fd9aabcf65a4b7c79a6e">SimpleCommand</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_test_encoder_command_a9fb4507953cf13c8eaf689009cc27988_cgraph.png" border="0" usemap="#class_test_encoder_command_a9fb4507953cf13c8eaf689009cc27988_cgraph" alt=""/></div>
 <map name="class_test_encoder_command_a9fb4507953cf13c8eaf689009cc27988_cgraph" id="class_test_encoder_command_a9fb4507953cf13c8eaf689009cc27988_cgraph">
-<area shape="rect" id="node3" href="class_test_encoder.html#aafdec9702f4ce04ad25e738833fcf40a" title="TestEncoder::Run" alt="" coords="209,12,335,39"/></map>
+<area shape="rect" id="node3" href="class_test_encoder.html#a6b131055b0dcee65f750d6c650f2dab1" title="Writes all encoder values to the SmartDashboard." alt="" coords="209,12,365,39"/></map>
 </div>
 </p>
-
-</div>
-</div>
-<a class="anchor" id="a2d6696ffe88ce3b7e8fdd6d2fc1103fe"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TestEncoderCommand::Initialize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aea7b89f95a48884d8aca57f3bf838bc0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TestEncoderCommand::Interrupted </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a9d4f2e6c0306daaf18f3bd4d99e270d5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TestEncoderCommand::IsFinished </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -271,7 +243,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_test_encoder_command.html">TestEncoderCommand</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:05 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:31 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

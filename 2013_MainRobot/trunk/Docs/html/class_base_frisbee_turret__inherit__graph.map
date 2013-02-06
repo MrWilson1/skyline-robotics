@@ -1,4 +1,5 @@
 <map id="BaseFrisbeeTurret" name="BaseFrisbeeTurret">
-<area shape="rect" id="node7" href="$class_simple_frisbee_turret.html" title="SimpleFrisbeeTurret" alt="" coords="5,229,144,256"/>
-<area shape="rect" id="node2" href="$class_base_subsystem.html" title="BaseSubsystem" alt="" coords="15,80,133,107"/>
+<area shape="rect" id="node7" href="$class_pid_frisbee_turret.html" title="PidFrisbeeTurret" alt="" coords="5,229,123,256"/>
+<area shape="rect" id="node9" href="$class_simple_frisbee_turret.html" title="SimpleFrisbeeTurret" alt="" coords="147,229,285,256"/>
+<area shape="rect" id="node2" href="$class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="81,80,199,107"/>
 </map>

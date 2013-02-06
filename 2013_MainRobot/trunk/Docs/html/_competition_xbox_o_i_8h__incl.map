@@ -1,0 +1,14 @@
+<map id="Code/OperatorInterfaces/CompetitionXboxOI.h" name="Code/OperatorInterfaces/CompetitionXboxOI.h">
+<area shape="rect" id="node5" href="$_xbox_8h.html" title="Xbox.h" alt="" coords="5,96,67,123"/>
+<area shape="rect" id="node8" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="386,269,461,296"/>
+<area shape="rect" id="node13" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="243,179,452,205"/>
+<area shape="rect" id="node24" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\Drive\l\\DriveSubsystem.h" alt="" coords="871,262,1009,303"/>
+<area shape="rect" id="node33" href="$_shooter_commands_8h.html" title="../Commands/ShooterCommands.h" alt="" coords="695,96,921,123"/>
+<area shape="rect" id="node38" href="$_frisbee_aimer_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeAimer.h" alt="" coords="1135,262,1291,303"/>
+<area shape="rect" id="node48" href="$_frisbee_loader_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeLoader.h" alt="" coords="529,171,684,213"/>
+<area shape="rect" id="node52" href="$_frisbee_shooter_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeShooter.h" alt="" coords="589,262,744,303"/>
+<area shape="rect" id="node57" href="$_frisbee_turret_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeTurret.h" alt="" coords="877,171,1032,213"/>
+<area shape="rect" id="node16" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="993,360,1100,387"/>
+<area shape="rect" id="node21" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="213,360,336,387"/>
+<area shape="rect" id="node28" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="725,360,867,387"/>
+</map>

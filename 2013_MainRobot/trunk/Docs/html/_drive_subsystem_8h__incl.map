@@ -1,4 +1,4 @@
-<map id="Code/Subsystems/DriveSubsystem.h" name="Code/Subsystems/DriveSubsystem.h">
-<area shape="rect" id="node7" href="$_base_subsystem_8h.html" title="BaseSubsystem.h" alt="" coords="63,80,192,107"/>
-<area shape="rect" id="node11" href="$_tools_8h.html" title="../Misc/Tools.h" alt="" coords="269,80,376,107"/>
+<map id="Code/Subsystems/Drive/DriveSubsystem.h" name="Code/Subsystems/Drive/DriveSubsystem.h">
+<area shape="rect" id="node7" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="60,96,201,123"/>
+<area shape="rect" id="node11" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="276,96,396,123"/>
 </map>

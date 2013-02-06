@@ -1,4 +1,5 @@
 <map id="BaseFrisbeeShooter" name="BaseFrisbeeShooter">
-<area shape="rect" id="node7" href="$class_simple_belt_shooter.html" title="SimpleBeltShooter" alt="" coords="9,229,140,256"/>
-<area shape="rect" id="node2" href="$class_base_subsystem.html" title="BaseSubsystem" alt="" coords="15,80,133,107"/>
+<area shape="rect" id="node7" href="$class_simple_belt_shooter.html" title="SimpleBeltShooter" alt="" coords="5,229,136,256"/>
+<area shape="rect" id="node9" href="$class_three_wheel_shooter.html" title="ThreeWheelShooter" alt="" coords="160,229,296,256"/>
+<area shape="rect" id="node2" href="$class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="90,80,208,107"/>
 </map>

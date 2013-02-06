@@ -195,3 +195,58 @@ LoadAndFireCommand::LoadAndFireCommand(
 LoadAndFireCommand::~LoadAndFireCommand() {
 	// empty
 }
+
+
+ManuallyAdjustTurretCommand::ManuallyAdjustTurretCommand(
+		BaseFrisbeeTurret *turret, 
+		BaseOI *oi,
+		int verticalAxis, 
+		int rotateAxis,
+		float allowedRange) :
+		Command("ManuallyAdjustTurretCommand"),
+		m_verticalAxis(verticalAxis), 
+		m_rotateAxis(rotateAxis),
+		m_allowedRange(allowedRange),
+		m_isFinished(false) {
+	m_turret = turret;
+	m_oi = oi;
+}
+
+ManuallyAdjustTurretCommand::~ManuallyAdjustTurretCommand() {
+	// empty
+}
+
+void ManuallyAdjustTurretCommand::Initialize() {
+	// empty
+}
+
+void ManuallyAdjustTurretCommand::Execute() {
+	float rawVertical = Tools::Deadband(m_oi->GetAxis(m_verticalAxis), 0.1);
+	float rawRotate = Tools::Deadband(m_oi->GetAxis(m_rotateAxis), 0.1);
+	
+	// This might not be a good idead
+	if (rawVertical == 0 and rawRotate == 0) {
+		m_isFinished = true;
+		return;
+	}
+	
+	Tracking::Offset desired = m_turret->GetCurrentOffset();
+	desired.YOffset += Tools::Scale(rawVertical, -1.0, 1.0, -5.0, 5.0);
+	desired.XOffset += Tools::Scale(rawRotate, -1.0, 1.0, -5.0, 5.0);
+	
+	m_turret->TurnGivenOffset(desired);
+}
+
+bool ManuallyAdjustTurretCommand::IsFinished() {
+	return m_isFinished;
+}
+
+void ManuallyAdjustTurretCommand::End() {
+	// empty
+}
+
+void ManuallyAdjustTurretCommand::Interrupted() {
+	// empty
+}
+
+

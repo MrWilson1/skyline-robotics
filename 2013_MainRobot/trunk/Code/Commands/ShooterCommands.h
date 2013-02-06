@@ -25,6 +25,20 @@ private:
 	bool m_isFinished;
 };
 
+/**
+ * \brief Aims the turret at the given target
+ * 
+ * Protip: If you set this to the default turret command, using
+ * 
+ * 	   Tracking::ClosestOffset
+ * 	   
+ * ...as the desiredTarget param, the turret will automatically
+ * lock on and track the target it's pointing at.
+ * 
+ * You can manually adjust the target to point at a different target,
+ * or issue a command to point it at the appropriate target and let
+ * this take over once that command is finished.
+ */
 class AimTurretCommand : public Command {
 public:
 	AimTurretCommand(
@@ -86,6 +100,29 @@ public:
 		BaseFrisbeeTurret *turret, 
 		BaseFrisbeeShooter *shooter);
 	~LoadAndFireCommand();
+};
+
+/**
+ * \brief Manually adjusts where the turret is pointing using two joystick axis
+ */
+class ManuallyAdjustTurretCommand : public Command {
+public:
+	ManuallyAdjustTurretCommand(BaseFrisbeeTurret *turret, BaseOI *oi, 
+								int verticalAxis, int rotateAxis, float allowedRange);
+	~ManuallyAdjustTurretCommand();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+	
+private:
+	BaseFrisbeeTurret *m_turret;
+	BaseOI *m_oi;
+	int m_verticalAxis;
+	int m_rotateAxis;
+	float m_allowedRange;
+	bool m_isFinished;
 };
 
 #endif

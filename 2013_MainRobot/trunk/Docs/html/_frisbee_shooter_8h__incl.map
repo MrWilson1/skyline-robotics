@@ -1,4 +1,4 @@
-<map id="Code/Subsystems/FrisbeeShooter.h" name="Code/Subsystems/FrisbeeShooter.h">
-<area shape="rect" id="node5" href="$_base_subsystem_8h.html" title="BaseSubsystem.h" alt="" coords="74,80,203,107"/>
-<area shape="rect" id="node10" href="$_tools_8h.html" title="../Misc/Tools.h" alt="" coords="227,80,335,107"/>
+<map id="Code/Subsystems/Shooter/FrisbeeShooter.h" name="Code/Subsystems/Shooter/FrisbeeShooter.h">
+<area shape="rect" id="node5" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="71,96,212,123"/>
+<area shape="rect" id="node10" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="236,96,356,123"/>
 </map>

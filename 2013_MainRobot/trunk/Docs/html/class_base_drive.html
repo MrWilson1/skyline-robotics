@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -93,7 +94,7 @@ $(document).ready(function(){initNavTree('class_base_drive.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -107,9 +108,12 @@ $(document).ready(function(){initNavTree('class_base_drive.html','');});
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_base_drive-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">BaseDrive Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">BaseDrive Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__drive__subsystems.html">Drive</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A base drive. All drives must be a subclass of this class.  
+ <a href="class_base_drive.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_drive_subsystem_8h_source.html">DriveSubsystem.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -117,14 +121,14 @@ Inheritance diagram for BaseDrive:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_drive__inherit__graph.png" border="0" usemap="#_base_drive_inherit__map" alt="Inheritance graph"/></div>
 <map name="_base_drive_inherit__map" id="_base_drive_inherit__map">
-<area shape="rect" id="node7" href="class_pid_simple_drive.html" title="PidSimpleDrive" alt="" coords="5,229,115,256"/><area shape="rect" id="node9" href="class_simple_drive.html" title="SimpleDrive" alt="" coords="139,229,229,256"/><area shape="rect" id="node2" href="class_base_subsystem.html" title="BaseSubsystem" alt="" coords="62,80,180,107"/></map>
+<area shape="rect" id="node7" href="class_pid_simple_drive.html" title="A drive system using PID controllers." alt="" coords="5,229,115,256"/><area shape="rect" id="node9" href="class_simple_drive.html" title="The absolute simplest drive possible. Contains no PID loops or other forms of feedback systems..." alt="" coords="139,229,229,256"/><area shape="rect" id="node2" href="class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="62,80,180,107"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for BaseDrive:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_drive__coll__graph.png" border="0" usemap="#_base_drive_coll__map" alt="Collaboration graph"/></div>
 <map name="_base_drive_coll__map" id="_base_drive_coll__map">
-<area shape="rect" id="node2" href="class_base_subsystem.html" title="BaseSubsystem" alt="" coords="5,80,123,107"/></map>
+<area shape="rect" id="node2" href="class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="5,80,123,107"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -147,8 +151,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a258cdd87343dd3bd8dd2a7e3fbe0d528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dbddf0b99537d0608822ac21721cbc8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_drive.html#a0dbddf0b99537d0608822ac21721cbc8">Rotate</a> (float degrees)=0</td></tr>
 <tr class="separator:a0dbddf0b99537d0608822ac21721cbc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fba7e54f130a2c3a3152565cdfac9f7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_drive.html#a3fba7e54f130a2c3a3152565cdfac9f7">StopMoving</a> ()=0</td></tr>
-<tr class="separator:a3fba7e54f130a2c3a3152565cdfac9f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade1b904eec505a42793c2eab3f8b7ae8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_drive.html#ade1b904eec505a42793c2eab3f8b7ae8">Disable</a> ()=0</td></tr>
+<tr class="separator:ade1b904eec505a42793c2eab3f8b7ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f78520c95019427eef082d2db5dbba6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_drive.html#a5f78520c95019427eef082d2db5dbba6">Enable</a> ()=0</td></tr>
+<tr class="separator:a5f78520c95019427eef082d2db5dbba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a867a49aaad599e35a495465ba6930c4a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_drive.html#a867a49aaad599e35a495465ba6930c4a">Brake</a> ()=0</td></tr>
 <tr class="separator:a867a49aaad599e35a495465ba6930c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_base_subsystem"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_base_subsystem')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_base_subsystem.html">BaseSubsystem</a></td></tr>
@@ -162,20 +168,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaa9ad1c584faa485ec4780e1c89b42e6 inherit pub_methods_class_base_subsystem"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:aaa9ad1c584faa485ec4780e1c89b42e6 inherit pub_methods_class_base_subsystem"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_base_subsystem.html#aaa9ad1c584faa485ec4780e1c89b42e6">AddSensorToLiveWindow</a> (char *name, T *object)</td></tr>
 <tr class="separator:aaa9ad1c584faa485ec4780e1c89b42e6 inherit pub_methods_class_base_subsystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73d33e6bd6fb3b76635991bec6aef15e inherit pub_methods_class_base_subsystem"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a73d33e6bd6fb3b76635991bec6aef15e inherit pub_methods_class_base_subsystem"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_base_subsystem.html#a73d33e6bd6fb3b76635991bec6aef15e">AddComponentToLiveWindow</a> (char *name, T *object)</td></tr>
-<tr class="separator:a73d33e6bd6fb3b76635991bec6aef15e inherit pub_methods_class_base_subsystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_class_base_subsystem"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_base_subsystem')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_base_subsystem.html">BaseSubsystem</a></td></tr>
 <tr class="memitem:ae1237ae7b516d90856b4529e014dac29 inherit pro_methods_class_base_subsystem"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29">ReportLiveWindowError</a> (char *name)</td></tr>
+<tr class="memdesc:ae1237ae7b516d90856b4529e014dac29 inherit pro_methods_class_base_subsystem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reports an error to SmartDashboard.  <a href="#ae1237ae7b516d90856b4529e014dac29">More...</a><br/></td></tr>
 <tr class="separator:ae1237ae7b516d90856b4529e014dac29 inherit pro_methods_class_base_subsystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Implements various subsystems related to the drive. A base drive. All drives must be a subclass of this class.</p>
-<p>Note that Holonomic and Mechanum wheel drives are currently not implemented by this interface.</p>
-<p>For the definitions of what these virtual methods are meant to do, please see the WPILib API documentation on the RobotDrive class. The methods are identical. </p>
+<div class="textblock"><p>A base drive. All drives must be a subclass of this class. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Note that Holonomic and Mechanum wheel drives are currently not implemented by this interface.</dd></dl>
+<p>For the definitions of what these virtual methods are meant to do, please see the WPILib API documentation on the RobotDrive class. The methods are identical.</p>
+<p>Note that all drive systems are enabled upon instantiation. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a6d355cd74ce7e01ef517cd19e586a7ad"></a>
 <div class="memitem">
@@ -329,6 +334,31 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="ade1b904eec505a42793c2eab3f8b7ae8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void BaseDrive::Disable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_pid_simple_drive.html#adf71ed44e6cf7b5d0b6456859a3b26a6">PidSimpleDrive</a>, and <a class="el" href="class_simple_drive.html#abe59a0f87837074dc5783a7829492239">SimpleDrive</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a39bb6c415a7e6badaf8b2dc2d4b9d32c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -365,6 +395,31 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a5f78520c95019427eef082d2db5dbba6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void BaseDrive::Enable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_pid_simple_drive.html#ad9e5240a81aece76d6159da9d1b80770">PidSimpleDrive</a>, and <a class="el" href="class_simple_drive.html#a68276c7557eae5bc0428749d8310b559">SimpleDrive</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a0dbddf0b99537d0608822ac21721cbc8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -388,31 +443,6 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="class_pid_simple_drive.html#a187f91bccc0e23e8c6256edae36ac806">PidSimpleDrive</a>, and <a class="el" href="class_simple_drive.html#ae3372515cb75b526a25310358c2db68f">SimpleDrive</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3fba7e54f130a2c3a3152565cdfac9f7"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void BaseDrive::StopMoving </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implemented in <a class="el" href="class_pid_simple_drive.html#a7fbf3772291620737bd69cdbbc72df3b">PidSimpleDrive</a>, and <a class="el" href="class_simple_drive.html#ab8a93a890b37c77b9a189496cbd21cf8">SimpleDrive</a>.</p>
 
 </div>
 </div>
@@ -455,7 +485,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_drive_ad022c567febfc053655e9b23a926305f_icgraph.png" border="0" usemap="#class_base_drive_ad022c567febfc053655e9b23a926305f_icgraph" alt=""/></div>
 <map name="class_base_drive_ad022c567febfc053655e9b23a926305f_icgraph" id="class_base_drive_ad022c567febfc053655e9b23a926305f_icgraph">
-<area shape="rect" id="node3" href="class_tank_drive_command.html#aed1190c58fd643e8856b2ae012ec41e5" title="TankDriveCommand::Execute" alt="" coords="198,5,391,32"/><area shape="rect" id="node5" href="class_spasm.html#af14ef887bb438bae7795940dc383b5e4" title="Spasm::Execute" alt="" coords="235,56,354,83"/><area shape="rect" id="node7" href="class_spasm.html#a25414461892f480323413ff520408713" title="Spasm::Interrupted" alt="" coords="229,107,361,133"/></map>
+<area shape="rect" id="node3" href="class_tank_drive_command.html#aed1190c58fd643e8856b2ae012ec41e5" title="TankDriveCommand::Execute" alt="" coords="202,5,395,32"/><area shape="rect" id="node5" href="class_travel_straight_manual_command.html#aa7b84f2a0a4784d9e939d6c84908405b" title="TravelStraightManualCommand\l::Execute" alt="" coords="198,57,399,98"/><area shape="rect" id="node7" href="class_spasm.html#af14ef887bb438bae7795940dc383b5e4" title="Spasm::Execute" alt="" coords="239,123,358,149"/><area shape="rect" id="node9" href="class_spasm.html#a25414461892f480323413ff520408713" title="Spasm::Interrupted" alt="" coords="233,173,365,200"/></map>
 </div>
 </p>
 
@@ -530,8 +560,8 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>Code/Subsystems/<a class="el" href="_drive_subsystem_8h_source.html">DriveSubsystem.h</a></li>
-<li>Code/Subsystems/<a class="el" href="_drive_subsystem_8cpp.html">DriveSubsystem.cpp</a></li>
+<li>Code/Subsystems/Drive/<a class="el" href="_drive_subsystem_8h_source.html">DriveSubsystem.h</a></li>
+<li>Code/Subsystems/Drive/<a class="el" href="_drive_subsystem_8cpp.html">DriveSubsystem.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -539,7 +569,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_base_drive.html">BaseDrive</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:05 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:30 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

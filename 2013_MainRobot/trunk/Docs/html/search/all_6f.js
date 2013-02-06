@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['offset',['Offset',['../struct_offset.html',1,'Offset'],['../struct_offset.html#a6c32632129c98a7e4ab202cfa7423325',1,'Offset::Offset()']]]
+  ['offset',['Offset',['../struct_tracking_1_1_offset.html',1,'Tracking']]],
+  ['offset',['Offset',['../struct_tracking_1_1_offset.html#a64eb35065c6d7ff8dfecfcc5aecc882c',1,'Tracking::Offset::Offset()'],['../struct_tracking_1_1_offset.html#ab32f1bb53a238bc887d2e819710308df',1,'Tracking::Offset::Offset(float x, float y)']]]
 ];

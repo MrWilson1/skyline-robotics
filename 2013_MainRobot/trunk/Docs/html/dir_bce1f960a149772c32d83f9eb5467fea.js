@@ -6,6 +6,10 @@ var dir_bce1f960a149772c32d83f9eb5467fea =
       [ "ArcadeValues", "struct_arcade_values.html", "struct_arcade_values" ],
       [ "BaseOI", "class_base_o_i.html", "class_base_o_i" ]
     ] ],
+    [ "CompetitionXboxOI.cpp", "_competition_xbox_o_i_8cpp.html", null ],
+    [ "CompetitionXboxOI.h", "_competition_xbox_o_i_8h.html", [
+      [ "CompetitionXboxOI", "class_competition_xbox_o_i.html", "class_competition_xbox_o_i" ]
+    ] ],
     [ "TestEncoderOI.cpp", "_test_encoder_o_i_8cpp.html", null ],
     [ "TestEncoderOI.h", "_test_encoder_o_i_8h.html", [
       [ "TestEncoderOI", "class_test_encoder_o_i.html", "class_test_encoder_o_i" ]

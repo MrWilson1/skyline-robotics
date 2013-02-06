@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('namespace_tools.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -105,197 +106,53 @@ $(document).ready(function(){initNavTree('namespace_tools.html','');});
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">Tools Namespace Reference</div>  </div>
+<div class="title">Tools Namespace Reference<div class="ingroups"><a class="el" href="group__tools.html">Tools</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Contains all functions within the <a href="/ref tools">Tools module</a>  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:acf24d07ae201887b88b73731d536c0d5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5">Units</a> { <a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5ac58eafca3959441c32a5837e0e7303f8">Inches</a>, 
-<a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5a3258ea4a1b70e4d627b7eb0dc70a80bb">Feet</a>, 
-<a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5a7c4d5c195e10eaf79b236aee29675183">Meters</a>, 
-<a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5a61558ce042d7e6a84612e602dfe843ee">Centimeters</a>
+<tr class="memitem:gacf24d07ae201887b88b73731d536c0d5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tools.html#gacf24d07ae201887b88b73731d536c0d5">Units</a> { <a class="el" href="group__tools.html#ggacf24d07ae201887b88b73731d536c0d5a6d4bb6adeb5a8392192703301db09ab6">kInches</a>, 
+<a class="el" href="group__tools.html#ggacf24d07ae201887b88b73731d536c0d5afed836c1dbc34d7f526fb04914fca2e9">kFeet</a>, 
+<a class="el" href="group__tools.html#ggacf24d07ae201887b88b73731d536c0d5aa316b3d74ce885c4f0e28f8d0e74a85d">kMeters</a>, 
+<a class="el" href="group__tools.html#ggacf24d07ae201887b88b73731d536c0d5a30d59394e61b918a78a799f2ee91ce03">kCentimeters</a>
  }</td></tr>
-<tr class="separator:acf24d07ae201887b88b73731d536c0d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:gacf24d07ae201887b88b73731d536c0d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum for various units (for unit conversion)  <a href="group__tools.html#gacf24d07ae201887b88b73731d536c0d5">More...</a><br/></td></tr>
+<tr class="separator:gacf24d07ae201887b88b73731d536c0d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a07b994aa7d74ab81f3eb6d6b22ced58e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_tools.html#a07b994aa7d74ab81f3eb6d6b22ced58e">ConvertUnits</a> (float value, <a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5">Units</a> start, <a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5">Units</a> target)</td></tr>
-<tr class="separator:a07b994aa7d74ab81f3eb6d6b22ced58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10349cc2f8ef777272aa44b0b9a09270"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_tools.html#a10349cc2f8ef777272aa44b0b9a09270">Limit</a> (float value, float lowLimit, float highLimit)</td></tr>
-<tr class="separator:a10349cc2f8ef777272aa44b0b9a09270"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af23501b58339faa07f586a664ec57992"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_tools.html#af23501b58339faa07f586a664ec57992">Scale</a> (float value, float inputStart, float inputEnd, float outputStart, float outputEnd)</td></tr>
-<tr class="separator:af23501b58339faa07f586a664ec57992"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga07b994aa7d74ab81f3eb6d6b22ced58e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tools.html#ga07b994aa7d74ab81f3eb6d6b22ced58e">ConvertUnits</a> (float value, <a class="el" href="group__tools.html#gacf24d07ae201887b88b73731d536c0d5">Units</a> start, <a class="el" href="group__tools.html#gacf24d07ae201887b88b73731d536c0d5">Units</a> target)</td></tr>
+<tr class="memdesc:ga07b994aa7d74ab81f3eb6d6b22ced58e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts number in the START unit to the TARGET unit.  <a href="group__tools.html#ga07b994aa7d74ab81f3eb6d6b22ced58e">More...</a><br/></td></tr>
+<tr class="separator:ga07b994aa7d74ab81f3eb6d6b22ced58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10349cc2f8ef777272aa44b0b9a09270"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tools.html#ga10349cc2f8ef777272aa44b0b9a09270">Limit</a> (float value, float lowLimit, float highLimit)</td></tr>
+<tr class="memdesc:ga10349cc2f8ef777272aa44b0b9a09270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes sure that a number lies between the range [lowLimit] and [highLimit].  <a href="group__tools.html#ga10349cc2f8ef777272aa44b0b9a09270">More...</a><br/></td></tr>
+<tr class="separator:ga10349cc2f8ef777272aa44b0b9a09270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf23501b58339faa07f586a664ec57992"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tools.html#gaf23501b58339faa07f586a664ec57992">Scale</a> (float value, float inputStart, float inputEnd, float outputStart, float outputEnd)</td></tr>
+<tr class="memdesc:gaf23501b58339faa07f586a664ec57992"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales a value from the range [inputStart, inputEnd] to the range [outputStart, outputEnd].  <a href="group__tools.html#gaf23501b58339faa07f586a664ec57992">More...</a><br/></td></tr>
+<tr class="separator:gaf23501b58339faa07f586a664ec57992"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac4ec1dc7517e93864479935b762c12f4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tools.html#gac4ec1dc7517e93864479935b762c12f4">FindMagnitude</a> (float a, float b)</td></tr>
+<tr class="memdesc:gac4ec1dc7517e93864479935b762c12f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the magnitude of two coordinate pairs.  <a href="group__tools.html#gac4ec1dc7517e93864479935b762c12f4">More...</a><br/></td></tr>
+<tr class="separator:gac4ec1dc7517e93864479935b762c12f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9acd0f8f92c3679a67b5c5d09e8319ca"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tools.html#ga9acd0f8f92c3679a67b5c5d09e8319ca">SquareMagnitude</a> (float value)</td></tr>
+<tr class="memdesc:ga9acd0f8f92c3679a67b5c5d09e8319ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Squares the number, but makes the output negative if the original was negative.  <a href="group__tools.html#ga9acd0f8f92c3679a67b5c5d09e8319ca">More...</a><br/></td></tr>
+<tr class="separator:ga9acd0f8f92c3679a67b5c5d09e8319ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4887ab35ffb7fc7b48a4c75267c1bf52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tools.html#ga4887ab35ffb7fc7b48a4c75267c1bf52">IsWithinRange</a> (float input, float target, float range)</td></tr>
+<tr class="memdesc:ga4887ab35ffb7fc7b48a4c75267c1bf52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the input number is within a certain range of a target number (in both the positive and negative range).  <a href="group__tools.html#ga4887ab35ffb7fc7b48a4c75267c1bf52">More...</a><br/></td></tr>
+<tr class="separator:ga4887ab35ffb7fc7b48a4c75267c1bf52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="acf24d07ae201887b88b73731d536c0d5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5">Tools::Units</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="acf24d07ae201887b88b73731d536c0d5ac58eafca3959441c32a5837e0e7303f8"></a>Inches</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="acf24d07ae201887b88b73731d536c0d5a3258ea4a1b70e4d627b7eb0dc70a80bb"></a>Feet</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="acf24d07ae201887b88b73731d536c0d5a7c4d5c195e10eaf79b236aee29675183"></a>Meters</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="acf24d07ae201887b88b73731d536c0d5a61558ce042d7e6a84612e602dfe843ee"></a>Centimeters</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a07b994aa7d74ab81f3eb6d6b22ced58e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float Tools::ConvertUnits </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Units&#160;</td>
-          <td class="paramname"><em>start</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Units&#160;</td>
-          <td class="paramname"><em>target</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Converts number in the START unit to the TARGET unit. </p>
-
-</div>
-</div>
-<a class="anchor" id="a10349cc2f8ef777272aa44b0b9a09270"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float Tools::Limit </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>lowLimit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>highLimit</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Makes sure that a number lies between the range [lowLimit] and [highLimit]. If not, it forces it to conform to that range. </p>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="namespace_tools_a10349cc2f8ef777272aa44b0b9a09270_icgraph.png" border="0" usemap="#namespace_tools_a10349cc2f8ef777272aa44b0b9a09270_icgraph" alt=""/></div>
-<map name="namespace_tools_a10349cc2f8ef777272aa44b0b9a09270_icgraph" id="namespace_tools_a10349cc2f8ef777272aa44b0b9a09270_icgraph">
-<area shape="rect" id="node3" href="namespace_tools.html#af23501b58339faa07f586a664ec57992" title="Tools::Scale" alt="" coords="154,5,249,32"/><area shape="rect" id="node5" href="class_simple_belt_shooter.html#a88e51cb3becb2ec2ae8d52bc34ff669f" title="SimpleBeltShooter::\lShootFrisbee" alt="" coords="307,23,445,65"/><area shape="rect" id="node7" href="class_tread.html#a1bfd612b3ce405bb35a81fcb68e01002" title="Tread::PIDWrite" alt="" coords="144,107,259,133"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="af23501b58339faa07f586a664ec57992"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float Tools::Scale </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>inputStart</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>inputEnd</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>outputStart</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>outputEnd</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Scales a value from the range [inputStart, inputEnd] to the range [outputStart, outputEnd] </p>
-
-<p><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="namespace_tools_af23501b58339faa07f586a664ec57992_cgraph.png" border="0" usemap="#namespace_tools_af23501b58339faa07f586a664ec57992_cgraph" alt=""/></div>
-<map name="namespace_tools_af23501b58339faa07f586a664ec57992_cgraph" id="namespace_tools_af23501b58339faa07f586a664ec57992_cgraph">
-<area shape="rect" id="node3" href="namespace_tools.html#a10349cc2f8ef777272aa44b0b9a09270" title="Tools::Limit" alt="" coords="150,5,239,32"/></map>
-</div>
-</p>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="namespace_tools_af23501b58339faa07f586a664ec57992_icgraph.png" border="0" usemap="#namespace_tools_af23501b58339faa07f586a664ec57992_icgraph" alt=""/></div>
-<map name="namespace_tools_af23501b58339faa07f586a664ec57992_icgraph" id="namespace_tools_af23501b58339faa07f586a664ec57992_icgraph">
-<area shape="rect" id="node3" href="class_simple_belt_shooter.html#a88e51cb3becb2ec2ae8d52bc34ff669f" title="SimpleBeltShooter::\lShootFrisbee" alt="" coords="149,5,288,46"/></map>
-</div>
-</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Contains all functions within the <a href="/ref tools">Tools module</a> </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_tools.html">Tools</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:05 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:31 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

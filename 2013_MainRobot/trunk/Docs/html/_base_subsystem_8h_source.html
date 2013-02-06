@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_base_subsystem_8h_source.html','');})
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -105,62 +106,52 @@ $(document).ready(function(){initNavTree('_base_subsystem_8h_source.html','');})
 <div class="title">BaseSubsystem.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_base_subsystem_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef BASE_SUBSYSTEM_H</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define BASE_SUBSYSTEM_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;WPILib.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="code" href="class_base_subsystem.html">    7</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_subsystem.html">BaseSubsystem</a> : <span class="keyword">public</span> Subsystem {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="class_base_subsystem.html#ab1db98d2a6e127445ebb77e195d14d47">BaseSubsystem</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_base_subsystem.html#a8792c972774cf93d25398a31d23d128a">~BaseSubsystem</a>();</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="code" href="class_base_subsystem.html#ae42626d939ccb8bbe1a4152d3c627b31">   27</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_base_subsystem.html#ae42626d939ccb8bbe1a4152d3c627b31">AddActuatorToLiveWindow</a>(<span class="keywordtype">char</span> *name, T *<span class="keywordtype">object</span>) {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        LiveWindow *lw = LiveWindow::GetInstance();</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        LiveWindowSendable *sendable = <span class="keyword">dynamic_cast&lt;</span>LiveWindowSendable *<span class="keyword">&gt;</span>(object);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordflow">if</span> (sendable == NULL) {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <a class="code" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29">ReportLiveWindowError</a>(name);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            lw-&gt;AddActuator((<span class="keywordtype">char</span> *) GetName().c_str(), name, sendable);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="class_base_subsystem.html#aaa9ad1c584faa485ec4780e1c89b42e6">   38</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_base_subsystem.html#aaa9ad1c584faa485ec4780e1c89b42e6">AddSensorToLiveWindow</a>(<span class="keywordtype">char</span> *name, T *<span class="keywordtype">object</span>) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        LiveWindow *lw = LiveWindow::GetInstance();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        LiveWindowSendable *sendable = <span class="keyword">dynamic_cast&lt;</span>LiveWindowSendable *<span class="keyword">&gt;</span>(object);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">if</span> (sendable == NULL) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29">ReportLiveWindowError</a>(name);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            lw-&gt;AddSensor((<span class="keywordtype">char</span> *) GetName().c_str(), name, sendable);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="code" href="class_base_subsystem.html#a73d33e6bd6fb3b76635991bec6aef15e">   49</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_base_subsystem.html#a73d33e6bd6fb3b76635991bec6aef15e">AddComponentToLiveWindow</a>(<span class="keywordtype">char</span> *name, T *<span class="keywordtype">object</span>) {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        LiveWindow *lw = LiveWindow::GetInstance();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        LiveWindowSendable *sendable = <span class="keyword">dynamic_cast&lt;</span>LiveWindowSendable *<span class="keyword">&gt;</span>(object);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">if</span> (sendable == NULL) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <a class="code" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29">ReportLiveWindowError</a>(name);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            lw-&gt;AddComponent((<span class="keywordtype">char</span> *) GetName().c_str(), name, sendable);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29">ReportLiveWindowError</a>(<span class="keywordtype">char</span> *name);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span></div>
+<a href="_base_subsystem_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef BASE_SUBSYSTEM_H</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define BASE_SUBSYSTEM_H</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;WPILib.h&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="class_base_subsystem.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_subsystem.html" title="The abstract base class for all subsystems.">BaseSubsystem</a> : <span class="keyword">public</span> Subsystem {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="class_base_subsystem.html#ab1db98d2a6e127445ebb77e195d14d47">BaseSubsystem</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_base_subsystem.html#a8792c972774cf93d25398a31d23d128a">~BaseSubsystem</a>();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="class_base_subsystem.html#ae42626d939ccb8bbe1a4152d3c627b31">   52</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_base_subsystem.html#ae42626d939ccb8bbe1a4152d3c627b31">AddActuatorToLiveWindow</a>(<span class="keywordtype">char</span> *name, T *<span class="keywordtype">object</span>) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        LiveWindow *lw = LiveWindow::GetInstance();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        LiveWindowSendable *sendable = <span class="keyword">dynamic_cast&lt;</span>LiveWindowSendable *<span class="keyword">&gt;</span>(object);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">if</span> (sendable == NULL) {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <a class="code" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29" title="Reports an error to SmartDashboard.">ReportLiveWindowError</a>(name);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            lw-&gt;AddActuator((<span class="keywordtype">char</span> *) GetName().c_str(), name, sendable);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="code" href="class_base_subsystem.html#aaa9ad1c584faa485ec4780e1c89b42e6">   63</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_base_subsystem.html#aaa9ad1c584faa485ec4780e1c89b42e6">AddSensorToLiveWindow</a>(<span class="keywordtype">char</span> *name, T *<span class="keywordtype">object</span>) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        LiveWindow *lw = LiveWindow::GetInstance();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        LiveWindowSendable *sendable = <span class="keyword">dynamic_cast&lt;</span>LiveWindowSendable *<span class="keyword">&gt;</span>(object);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">if</span> (sendable == NULL) {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <a class="code" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29" title="Reports an error to SmartDashboard.">ReportLiveWindowError</a>(name);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            lw-&gt;AddSensor((<span class="keywordtype">char</span> *) GetName().c_str(), name, sendable);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29" title="Reports an error to SmartDashboard.">ReportLiveWindowError</a>(<span class="keywordtype">char</span> *name);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_23fdee2f6995db16c755697cdf620cf4.html">Code</a></li><li class="navelem"><a class="el" href="dir_7597f66b0d059e987d25db1b89aa63ec.html">Subsystems</a></li><li class="navelem"><a class="el" href="_base_subsystem_8h.html">BaseSubsystem.h</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:04 for 2013_MainRobot by
+    <li class="navelem"><a class="el" href="dir_cd575884794bbd9245ab7f4f8f2a7983.html">Code</a></li><li class="navelem"><a class="el" href="dir_f9cc9dd264cde71432b1b66c96e526f8.html">Subsystems</a></li><li class="navelem"><a class="el" href="_base_subsystem_8h.html">BaseSubsystem.h</a></li>
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:28 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xoffset',['XOffset',['../struct_offset.html#aaffacfb8a658e589742e356177c41b68',1,'Offset']]]
+  ['xoffset',['XOffset',['../struct_tracking_1_1_offset.html#a47003a7c3932d380cf923a7a5985574c',1,'Tracking::Offset']]]
 ];

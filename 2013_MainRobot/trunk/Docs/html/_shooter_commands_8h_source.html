@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_shooter_commands_8h_source.html','');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -112,12 +113,12 @@ $(document).ready(function(){initNavTree('_shooter_commands_8h_source.html','');
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;..\Misc\Tools.h&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;..\OperatorInterfaces\BaseOI.h&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;..\Subsystems\FrisbeeAimer.h&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;..\Subsystems\FrisbeeLoader.h&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;..\Subsystems\FrisbeeShooter.h&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;..\Subsystems\FrisbeeTurret.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;..\Subsystems\Shooter\FrisbeeAimer.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;..\Subsystems\Shooter\FrisbeeLoader.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;..\Subsystems\Shooter\FrisbeeShooter.h&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;..\Subsystems\Shooter\FrisbeeTurret.h&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="code" href="class_load_frisbee_command.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_load_frisbee_command.html">LoadFrisbeeCommand</a> : Command {</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="code" href="class_load_frisbee_command.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_load_frisbee_command.html">LoadFrisbeeCommand</a> : <span class="keyword">public</span> Command {</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="class_load_frisbee_command.html#abb59534d4e4491ccf856198750c40d7d">LoadFrisbeeCommand</a>(<a class="code" href="class_base_frisbee_loader.html">BaseFrisbeeLoader</a> *loader);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="class_load_frisbee_command.html#ae3fdfed7f5617f44888d5293a3168e79">~LoadFrisbeeCommand</a>();</div>
@@ -132,72 +133,77 @@ $(document).ready(function(){initNavTree('_shooter_commands_8h_source.html','');
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">bool</span> m_isFinished;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="class_aim_turret_command.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_aim_turret_command.html">AimTurretCommand</a> : Command {</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="class_aim_turret_command.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_aim_turret_command.html">AimTurretCommand</a> : <span class="keyword">public</span> Command {</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="class_aim_turret_command.html#ae03d22e07abf7a1bdb935a97baf4b688">AimTurretCommand</a>(<a class="code" href="class_base_frisbee_aimer.html">BaseFrisbeeAimer</a> *aimer);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="class_aim_turret_command.html#a3724b031f308e8c9bf5935772e635730">~AimTurretCommand</a>();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_aim_turret_command.html#ab33cfc793a6ae79adbb241cca0692b11">Initialize</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_aim_turret_command.html#a25d71ff7dde448aa9fd4d7b58ab8ef6c">Execute</a>();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_aim_turret_command.html#a0445b16ae8f9870c273d882fc88cc56f">IsFinished</a>();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_aim_turret_command.html#a734e78423abdf8246cd43e9a331ba4e8">End</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_aim_turret_command.html#a4d47eb970e770a500ab0a1a1b68c06c6">Interrupted</a>();</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="class_base_frisbee_aimer.html">BaseFrisbeeAimer</a> *m_aimer;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="class_fire_frisbee_max_speed_command.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_fire_frisbee_max_speed_command.html">FireFrisbeeMaxSpeedCommand</a> : Command {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="class_fire_frisbee_max_speed_command.html#a9d96e2b6fc653b7526e56513425143ad">FireFrisbeeMaxSpeedCommand</a>(<a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *shooter);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="class_fire_frisbee_max_speed_command.html#a3874bffd4b8cb12eee34af41763779fb">~FireFrisbeeMaxSpeedCommand</a>();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_max_speed_command.html#a1a6da780d0452b2c5593d0e4813cd143">Initialize</a>();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_max_speed_command.html#a27b141d49621abfaf1520c228d0b039f">Execute</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_fire_frisbee_max_speed_command.html#ac1995bf5509b2216bf60985ed4ece492">IsFinished</a>();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_max_speed_command.html#aa140daca61ff10514e3ee567c27b1f1e">End</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_max_speed_command.html#ab465b339b8d03fcd05757a8513457c11">Interrupted</a>();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *m_shooter;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="class_fire_frisbee_set_speed_command.html">   56</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_fire_frisbee_set_speed_command.html">FireFrisbeeSetSpeedCommand</a> : Command {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="class_fire_frisbee_set_speed_command.html#a7e3a27258822a19dde5e99728759f3f3">FireFrisbeeSetSpeedCommand</a>(<a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *shooter, <span class="keywordtype">float</span> setSpeed);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="class_fire_frisbee_set_speed_command.html#aa688994ce9de686e3fb19afc9ae0a5a5">~FireFrisbeeSetSpeedCommand</a>();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_set_speed_command.html#a29b4db38a626b3deeda8c0acbb11c896">Initialize</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_set_speed_command.html#a98a0d6727e19ee808b3523e799b3c8ac">Execute</a>();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_fire_frisbee_set_speed_command.html#a05903599db45591b1d9506d94cfcfc76">IsFinished</a>();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_set_speed_command.html#a77ec12dda33e1ffa4a97e872ba6ae873">End</a>();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_set_speed_command.html#a1399fc4da90dd2e7db0ff80bd9977f06">Interrupted</a>();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *m_shooter;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">float</span> speed;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="code" href="class_eject_frisbee_command.html">   72</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_eject_frisbee_command.html">EjectFrisbeeCommand</a> : Command {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="class_eject_frisbee_command.html#a97fe88dfb2cf295b719214fce1737cec">EjectFrisbeeCommand</a>(<a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *shooter);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="class_eject_frisbee_command.html#aed1a3be0fa16b1855e61fd2d1ec9b769">~EjectFrisbeeCommand</a>();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_eject_frisbee_command.html#a1e9b9e9d2aea242d309d52d2b9e6e743">Initialize</a>();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_eject_frisbee_command.html#af3f1039ea150df2588dc33607d333aa8">Execute</a>();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_eject_frisbee_command.html#ae6579c81deb8d620e147bd40887bf409">IsFinished</a>();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_eject_frisbee_command.html#aaa28cf50ec330486321a7fc0eddf1107">End</a>();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_eject_frisbee_command.html#a885629de017a9abfde4249e34eaf9bac">Interrupted</a>();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *m_shooter;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="class_aim_turret_command.html#a393ebfbf9ba4a170b7efa4dd99c9c62e">AimTurretCommand</a>(</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <a class="code" href="class_base_frisbee_aimer.html">BaseFrisbeeAimer</a> *aimer, </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <a class="code" href="class_base_frisbee_turret.html">BaseFrisbeeTurret</a> *turret, </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dd">Tracking::TargetType</a> desiredTarget, </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordtype">float</span> allowedRange);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_aim_turret_command.html#a3724b031f308e8c9bf5935772e635730">~AimTurretCommand</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_aim_turret_command.html#ab33cfc793a6ae79adbb241cca0692b11">Initialize</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_aim_turret_command.html#a25d71ff7dde448aa9fd4d7b58ab8ef6c">Execute</a>();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_aim_turret_command.html#a0445b16ae8f9870c273d882fc88cc56f">IsFinished</a>();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_aim_turret_command.html#a734e78423abdf8246cd43e9a331ba4e8">End</a>();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_aim_turret_command.html#a4d47eb970e770a500ab0a1a1b68c06c6">Interrupted</a>();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="class_base_frisbee_aimer.html">BaseFrisbeeAimer</a> *m_aimer;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="class_base_frisbee_turret.html">BaseFrisbeeTurret</a> *m_turret;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">bool</span> m_isFinished;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dd">Tracking::TargetType</a> m_desiredTarget;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">float</span> m_allowedRange;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;};</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="class_fire_frisbee_command.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_fire_frisbee_command.html">FireFrisbeeCommand</a> : <span class="keyword">public</span> Command {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="class_fire_frisbee_command.html#aa237f369775ff79661ff808f07fd6975">FireFrisbeeCommand</a>(<a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *shooter);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="class_fire_frisbee_command.html#aa237f369775ff79661ff808f07fd6975">FireFrisbeeCommand</a>(<a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *shooter, <span class="keywordtype">double</span> distanceInInches);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="class_fire_frisbee_command.html#a42d410052fb2528c9be638c024b23e26">~FireFrisbeeCommand</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_command.html#aecb2fef779043d0263f8d8dab2ab7b49">Initialize</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_command.html#a4a40f76a2db7ae5c93ee68bdef76154a">Execute</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_fire_frisbee_command.html#a60cb5bdf90fdf7295f7f857aa6178ff9">IsFinished</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_command.html#a20340567b6d140a0e37a532b7b49a5e5">End</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_fire_frisbee_command.html#a1c20e94a21670c35a927fc7c190c6851">Interrupted</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *m_shooter;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">double</span> m_distanceInInches;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;};</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="code" href="class_eject_frisbee_command.html">   67</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_eject_frisbee_command.html">EjectFrisbeeCommand</a> : <span class="keyword">public</span> Command {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="class_eject_frisbee_command.html#a97fe88dfb2cf295b719214fce1737cec">EjectFrisbeeCommand</a>(<a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *shooter);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="class_eject_frisbee_command.html#aed1a3be0fa16b1855e61fd2d1ec9b769">~EjectFrisbeeCommand</a>();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_eject_frisbee_command.html#a1e9b9e9d2aea242d309d52d2b9e6e743">Initialize</a>();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_eject_frisbee_command.html#af3f1039ea150df2588dc33607d333aa8">Execute</a>();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_eject_frisbee_command.html#ae6579c81deb8d620e147bd40887bf409">IsFinished</a>();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_eject_frisbee_command.html#aaa28cf50ec330486321a7fc0eddf1107">End</a>();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_eject_frisbee_command.html#a885629de017a9abfde4249e34eaf9bac">Interrupted</a>();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *m_shooter;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="code" href="class_load_and_fire_command.html">   81</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_load_and_fire_command.html">LoadAndFireCommand</a> : <span class="keyword">public</span> CommandGroup {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="class_load_and_fire_command.html#a11cdaa3faf825438658a08d319813918">LoadAndFireCommand</a>(</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="class_base_frisbee_loader.html">BaseFrisbeeLoader</a> *loader, </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="class_base_frisbee_aimer.html">BaseFrisbeeAimer</a> *aimer, </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <a class="code" href="class_base_frisbee_turret.html">BaseFrisbeeTurret</a> *turret, </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="code" href="class_base_frisbee_shooter.html">BaseFrisbeeShooter</a> *shooter);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="class_load_and_fire_command.html#a8abce2bf8c1b8ccf01d2ee3fa8e9d536">~LoadAndFireCommand</a>();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;};</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_23fdee2f6995db16c755697cdf620cf4.html">Code</a></li><li class="navelem"><a class="el" href="dir_5c3620ad359e4a31b01db4b3771c9efd.html">Commands</a></li><li class="navelem"><a class="el" href="_shooter_commands_8h.html">ShooterCommands.h</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:04 for 2013_MainRobot by
+    <li class="navelem"><a class="el" href="dir_cd575884794bbd9245ab7f4f8f2a7983.html">Code</a></li><li class="navelem"><a class="el" href="dir_ed17389dfdbfffa40abb56b1c475b73d.html">Commands</a></li><li class="navelem"><a class="el" href="_shooter_commands_8h.html">ShooterCommands.h</a></li>
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:28 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

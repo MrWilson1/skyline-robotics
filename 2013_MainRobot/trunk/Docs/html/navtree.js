@@ -1,11 +1,17 @@
 var NAVTREE =
 [
   [ "2013_MainRobot", "index.html", [
+    [ "2013_MainRobot Documentation", "index.html", [
+      [ "Introduction", "index.html#intro_sec", null ],
+      [ "About the Code", "index.html#about_architecture_sec", null ]
+    ] ],
+    [ "Modules", "modules.html", "modules" ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
+        [ "Typedefs", "namespacemembers_type.html", null ],
         [ "Enumerations", "namespacemembers_enum.html", null ],
         [ "Enumerator", "namespacemembers_eval.html", null ]
       ] ]
@@ -37,9 +43,9 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_base_o_i_8cpp.html",
-"class_base_subsystem.html#ab1db98d2a6e127445ebb77e195d14d47",
-"functions_func_0x73.html"
+"_base_command_8cpp.html",
+"class_base_frisbee_raiser.html#a587ad9647ef7ffefd16de3156293ecc1",
+"class_test_encoder.html#a1b806760746d8a96bc803f1e3642be3f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

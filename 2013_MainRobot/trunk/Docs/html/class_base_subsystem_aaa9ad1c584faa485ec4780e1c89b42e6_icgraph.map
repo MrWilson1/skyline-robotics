@@ -1,3 +1,4 @@
 <map id="BaseSubsystem::AddSensorToLiveWindow" name="BaseSubsystem::AddSensorToLiveWindow">
-<area shape="rect" id="node3" href="$class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc" title="TestEncoder::TestEncoder" alt="" coords="245,12,421,39"/>
+<area shape="rect" id="node3" href="$class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc" title="TestEncoder::TestEncoder" alt="" coords="251,5,427,32"/>
+<area shape="rect" id="node5" href="$class_pid_frisbee_turret.html#aaeacc3693796aa441bac56a9639c8683" title="PidFrisbeeTurret::PidFrisbee\lTurret" alt="" coords="245,57,432,98"/>
 </map>

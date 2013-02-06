@@ -1,15 +1,25 @@
 <map id="BaseSubsystem" name="BaseSubsystem">
-<area shape="rect" id="node5" href="$class_base_drive.html" title="BaseDrive" alt="" coords="340,31,420,57"/>
-<area shape="rect" id="node11" href="$class_base_frisbee_aimer.html" title="BaseFrisbeeAimer" alt="" coords="315,81,445,108"/>
-<area shape="rect" id="node13" href="$class_base_frisbee_loader.html" title="BaseFrisbeeLoader" alt="" coords="313,132,447,159"/>
-<area shape="rect" id="node15" href="$class_base_frisbee_pickup.html" title="BaseFrisbeePickup" alt="" coords="313,183,447,209"/>
-<area shape="rect" id="node17" href="$class_base_frisbee_raiser.html" title="BaseFrisbeeRaiser" alt="" coords="314,233,446,260"/>
-<area shape="rect" id="node19" href="$class_base_frisbee_shooter.html" title="BaseFrisbeeShooter" alt="" coords="310,284,450,311"/>
-<area shape="rect" id="node23" href="$class_base_frisbee_turret.html" title="BaseFrisbeeTurret" alt="" coords="316,335,444,361"/>
-<area shape="rect" id="node27" href="$class_test_encoder.html" title="TestEncoder" alt="" coords="333,385,427,412"/>
-<area shape="rect" id="node29" href="$class_test_motor.html" title="TestMotor" alt="" coords="340,436,420,463"/>
-<area shape="rect" id="node7" href="$class_pid_simple_drive.html" title="PidSimpleDrive" alt="" coords="513,5,623,32"/>
-<area shape="rect" id="node9" href="$class_simple_drive.html" title="SimpleDrive" alt="" coords="523,56,613,83"/>
-<area shape="rect" id="node21" href="$class_simple_belt_shooter.html" title="SimpleBeltShooter" alt="" coords="503,284,633,311"/>
-<area shape="rect" id="node25" href="$class_simple_frisbee_turret.html" title="SimpleFrisbeeTurret" alt="" coords="499,335,637,361"/>
+<area shape="rect" id="node5" href="$class_base_climber_extender.html" title="BaseClimberExtender" alt="" coords="314,31,462,57"/>
+<area shape="rect" id="node9" href="$class_base_drive.html" title="A base drive. All drives must be a subclass of this class." alt="" coords="348,107,428,133"/>
+<area shape="rect" id="node15" href="$class_base_drive_transmission.html" title="A base class for any Drive Tranmission." alt="" coords="309,157,467,184"/>
+<area shape="rect" id="node19" href="$class_base_frisbee_aimer.html" title="BaseFrisbeeAimer" alt="" coords="323,208,453,235"/>
+<area shape="rect" id="node23" href="$class_base_frisbee_loader.html" title="BaseFrisbeeLoader" alt="" coords="321,259,455,285"/>
+<area shape="rect" id="node27" href="$class_base_frisbee_pickup.html" title="BaseFrisbeePickup" alt="" coords="321,309,455,336"/>
+<area shape="rect" id="node29" href="$class_base_frisbee_raiser.html" title="BaseFrisbeeRaiser" alt="" coords="322,360,454,387"/>
+<area shape="rect" id="node33" href="$class_base_frisbee_shooter.html" title="BaseFrisbeeShooter" alt="" coords="318,411,458,437"/>
+<area shape="rect" id="node39" href="$class_base_frisbee_turret.html" title="BaseFrisbeeTurret" alt="" coords="324,461,452,488"/>
+<area shape="rect" id="node45" href="$class_test_aimer.html" title="TestAimer" alt="" coords="347,512,429,539"/>
+<area shape="rect" id="node47" href="$class_test_encoder.html" title="Reports all telemetry from an encoder, and provides hooks to configure it during runtime." alt="" coords="341,563,435,589"/>
+<area shape="rect" id="node49" href="$class_test_motor.html" title="Controls a single motor." alt="" coords="348,613,428,640"/>
+<area shape="rect" id="node7" href="$class_pneumatic_climber_extender.html" title="PneumaticClimberExtender" alt="" coords="515,5,695,32"/>
+<area shape="rect" id="node11" href="$class_pid_simple_drive.html" title="A drive system using PID controllers." alt="" coords="551,56,660,83"/>
+<area shape="rect" id="node13" href="$class_simple_drive.html" title="The absolute simplest drive possible. Contains no PID loops or other forms of feedback systems..." alt="" coords="560,107,651,133"/>
+<area shape="rect" id="node17" href="$class_simple_drive_transmission.html" title="A simple transmission, using solenoids to switch between the gearings." alt="" coords="522,157,689,184"/>
+<area shape="rect" id="node21" href="$class_vision_tables_frisbee_aimer.html" title="VisionTablesFrisbeeAimer" alt="" coords="519,208,692,235"/>
+<area shape="rect" id="node25" href="$class_placeholder_frisbee_loader.html" title="PlaceholderFrisbeeLoader" alt="" coords="519,259,691,285"/>
+<area shape="rect" id="node31" href="$class_guarded_frisbee_raiser.html" title="GuardedFrisbeeRaiser" alt="" coords="530,309,681,336"/>
+<area shape="rect" id="node35" href="$class_simple_belt_shooter.html" title="SimpleBeltShooter" alt="" coords="540,360,671,387"/>
+<area shape="rect" id="node37" href="$class_three_wheel_shooter.html" title="ThreeWheelShooter" alt="" coords="537,411,673,437"/>
+<area shape="rect" id="node41" href="$class_pid_frisbee_turret.html" title="PidFrisbeeTurret" alt="" coords="547,461,664,488"/>
+<area shape="rect" id="node43" href="$class_simple_frisbee_turret.html" title="SimpleFrisbeeTurret" alt="" coords="536,512,675,539"/>
 </map>

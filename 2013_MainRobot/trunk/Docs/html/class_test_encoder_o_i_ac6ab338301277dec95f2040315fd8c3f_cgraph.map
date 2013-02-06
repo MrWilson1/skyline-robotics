@@ -1,3 +1,4 @@
 <map id="TestEncoderOI::GetTankValues" name="TestEncoderOI::GetTankValues">
 <area shape="rect" id="node3" href="$class_test_encoder_o_i.html#aa07d77e72dde51e26f5a227eac44207d" title="TestEncoderOI::GetAxis" alt="" coords="259,5,421,32"/>
+<area shape="rect" id="node5" href="$group__tools.html#ga4887ab35ffb7fc7b48a4c75267c1bf52" title="Returns true if the input number is within a certain range of a target number (in both the positive a..." alt="" coords="267,56,413,83"/>
 </map>

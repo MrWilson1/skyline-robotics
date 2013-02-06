@@ -1,3 +1,3 @@
-<map id="Code/Subsystems/FrisbeePickup.h" name="Code/Subsystems/FrisbeePickup.h">
-<area shape="rect" id="node5" href="$_base_subsystem_8h.html" title="BaseSubsystem.h" alt="" coords="106,80,235,107"/>
+<map id="Code/Subsystems/Shooter/FrisbeePickup.h" name="Code/Subsystems/Shooter/FrisbeePickup.h">
+<area shape="rect" id="node5" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="82,96,211,123"/>
 </map>

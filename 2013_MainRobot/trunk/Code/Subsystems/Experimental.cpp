@@ -29,6 +29,14 @@ TestEncoder::TestEncoder(Encoder *encoder, const char *name) :
 	AddSensorToLiveWindow("Raw Encoder", m_encoder);
 }
 
+TestEncoder::TestEncoder(Encoder *encoder, float distancePerPulse, const char *name) :
+		BaseSubsystem(name),
+		m_distancePerPulse(distancePerPulse) {
+	m_encoder = encoder;
+	m_encoder->SetDistancePerPulse(m_distancePerPulse);
+	AddSensorToLiveWindow("Raw Encoder", m_encoder);
+}
+
 TestEncoder::~TestEncoder() {
 	// Empty
 }

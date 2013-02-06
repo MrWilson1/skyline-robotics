@@ -1,3 +1,3 @@
 <map id="Tools::Scale" name="Tools::Scale">
-<area shape="rect" id="node3" href="$namespace_tools.html#a10349cc2f8ef777272aa44b0b9a09270" title="Tools::Limit" alt="" coords="150,5,239,32"/>
+<area shape="rect" id="node3" href="$namespace_tools.html#a10349cc2f8ef777272aa44b0b9a09270" title="Makes sure that a number lies between the range [lowLimit] and [highLimit]." alt="" coords="150,5,239,32"/>
 </map>

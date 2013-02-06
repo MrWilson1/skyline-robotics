@@ -1,8 +1,9 @@
 <map id="Code/OperatorInterfaces/XboxOI.h" name="Code/OperatorInterfaces/XboxOI.h">
-<area shape="rect" id="node5" href="$_xbox_8h.html" title="Xbox.h" alt="" coords="46,96,107,123"/>
-<area shape="rect" id="node8" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="515,171,590,197"/>
-<area shape="rect" id="node13" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="132,96,341,123"/>
-<area shape="rect" id="node19" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\DriveSubsystem.h" alt="" coords="265,171,481,197"/>
-<area shape="rect" id="node16" href="$_tools_8h.html" title="..\\Misc\\Tools.h" alt="" coords="156,245,263,272"/>
-<area shape="rect" id="node23" href="$_base_subsystem_8h.html" title="BaseSubsystem.h" alt="" coords="340,245,469,272"/>
+<area shape="rect" id="node5" href="$_xbox_8h.html" title="Xbox.h" alt="" coords="21,96,82,123"/>
+<area shape="rect" id="node8" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="101,261,177,288"/>
+<area shape="rect" id="node13" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="183,96,391,123"/>
+<area shape="rect" id="node24" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\Drive\l\\DriveSubsystem.h" alt="" coords="399,171,538,213"/>
+<area shape="rect" id="node16" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="571,261,678,288"/>
+<area shape="rect" id="node21" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="253,179,375,205"/>
+<area shape="rect" id="node28" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="354,261,495,288"/>
 </map>

@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -93,7 +94,7 @@ $(document).ready(function(){initNavTree('class_smooth_encoder.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -107,24 +108,23 @@ $(document).ready(function(){initNavTree('class_smooth_encoder.html','');});
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_smooth_encoder-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SmoothEncoder Class Reference</div>  </div>
+<div class="title">SmoothEncoder Class Reference<div class="ingroups"><a class="el" href="group__drive__subsystems.html">Drive</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A varient of an encoder which returns a running average of the past five values from PIDGet.  
+ <a href="class_smooth_encoder.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_drive_subsystem_8h_source.html">DriveSubsystem.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SmoothEncoder:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_smooth_encoder__inherit__graph.png" border="0" usemap="#_smooth_encoder_inherit__map" alt="Inheritance graph"/></div>
-<map name="_smooth_encoder_inherit__map" id="_smooth_encoder_inherit__map">
-</map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for SmoothEncoder:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_smooth_encoder__coll__graph.png" border="0" usemap="#_smooth_encoder_coll__map" alt="Collaboration graph"/></div>
-<map name="_smooth_encoder_coll__map" id="_smooth_encoder_coll__map">
-</map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -134,15 +134,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8b826fd27c28ede652e287c27bd955cb"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_smooth_encoder.html#a8b826fd27c28ede652e287c27bd955cb">~SmoothEncoder</a> ()</td></tr>
 <tr class="separator:a8b826fd27c28ede652e287c27bd955cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4ecd3f60677763cc5a0652e0ba1bd08"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_smooth_encoder.html#ac4ecd3f60677763cc5a0652e0ba1bd08">PIDGet</a> ()</td></tr>
+<tr class="memdesc:ac4ecd3f60677763cc5a0652e0ba1bd08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Completes the PIDSource interface.  <a href="#ac4ecd3f60677763cc5a0652e0ba1bd08">More...</a><br/></td></tr>
 <tr class="separator:ac4ecd3f60677763cc5a0652e0ba1bd08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6acdb310eb149a36bd566ac3da0bc029"><td class="memItemLeft" align="right" valign="top">Encoder *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_smooth_encoder.html#a6acdb310eb149a36bd566ac3da0bc029">GetEncoder</a> ()</td></tr>
+<tr class="memdesc:a6acdb310eb149a36bd566ac3da0bc029"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the internal encoder.  <a href="#a6acdb310eb149a36bd566ac3da0bc029">More...</a><br/></td></tr>
 <tr class="separator:a6acdb310eb149a36bd566ac3da0bc029"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12be3709573a609c7f7a3f9690791e7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_smooth_encoder.html#a12be3709573a609c7f7a3f9690791e7e">SetMaxSize</a> (unsigned int maxSize)</td></tr>
+<tr class="memdesc:a12be3709573a609c7f7a3f9690791e7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the size of the running average.  <a href="#a12be3709573a609c7f7a3f9690791e7e">More...</a><br/></td></tr>
 <tr class="separator:a12be3709573a609c7f7a3f9690791e7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Returns running average of size <code>maxSize</code> when calling <a class="el" href="class_smooth_encoder.html#ac4ecd3f60677763cc5a0652e0ba1bd08">PIDGet()</a>. The type (rate or distance) must be specified beforehand by configuring the encoder.</p>
-<p>I could have inherited from Encoder, but I wanted to keep it simple. The various config stuff of the Encoder are exposed through <a class="el" href="class_smooth_encoder.html#a6acdb310eb149a36bd566ac3da0bc029">GetEncoder()</a>. </p>
+<div class="textblock"><p>A varient of an encoder which returns a running average of the past five values from PIDGet. </p>
+<p>Specifically, it returns running average of size <code>maxSize</code> when calling <a class="el" href="class_smooth_encoder.html#ac4ecd3f60677763cc5a0652e0ba1bd08" title="Completes the PIDSource interface.">PIDGet()</a>. The type (rate or distance) must be specified beforehand by configuring the encoder.</p>
+<p>I could have inherited from Encoder, but I wanted to keep it simple. The various config stuff of the Encoder are exposed through <a class="el" href="class_smooth_encoder.html#a6acdb310eb149a36bd566ac3da0bc029" title="Returns a pointer to the internal encoder.">GetEncoder()</a>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7236080b706ff009442c51a65d5cd368"></a>
 <div class="memitem">
@@ -167,6 +171,13 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">encoder</td><td>A pointer to the encoder </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxSize</td><td>The length of the running average </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -207,6 +218,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Returns a pointer to the internal encoder. </p>
+
 </div>
 </div>
 <a class="anchor" id="ac4ecd3f60677763cc5a0652e0ba1bd08"></a>
@@ -221,6 +234,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Completes the PIDSource interface. </p>
+<p>Returns the rate or the distance, depending on what the encoder is set to. </p>
 
 </div>
 </div>
@@ -238,11 +254,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Sets the size of the running average. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>Code/Subsystems/<a class="el" href="_drive_subsystem_8h_source.html">DriveSubsystem.h</a></li>
-<li>Code/Subsystems/<a class="el" href="_drive_subsystem_8cpp.html">DriveSubsystem.cpp</a></li>
+<li>Code/Subsystems/Drive/<a class="el" href="_drive_subsystem_8h_source.html">DriveSubsystem.h</a></li>
+<li>Code/Subsystems/Drive/<a class="el" href="_drive_subsystem_8cpp.html">DriveSubsystem.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -250,7 +268,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_smooth_encoder.html">SmoothEncoder</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:05 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:31 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

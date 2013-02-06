@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.3.1"/>
-<title>2013_MainRobot: Code/Subsystems/FrisbeeTurret.h Source File</title>
+<title>2013_MainRobot: Code/Subsystems/Shooter/FrisbeeTurret.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_frisbee_turret_8h_source.html','');})
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -110,18 +111,18 @@ $(document).ready(function(){initNavTree('_frisbee_turret_8h_source.html','');})
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;WPILib.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_subsystem_8h.html">BaseSubsystem.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;../BaseSubsystem.h&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_frisbee_aimer_8h.html">FrisbeeAimer.h</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="code" href="class_base_frisbee_turret.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_frisbee_turret.html">BaseFrisbeeTurret</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html">BaseSubsystem</a> {</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="code" href="class_base_frisbee_turret.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_frisbee_turret.html">BaseFrisbeeTurret</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html" title="The abstract base class for all subsystems.">BaseSubsystem</a> {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="class_base_frisbee_turret.html#a02d534523f02f26015a71650ddde39b9">BaseFrisbeeTurret</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_base_frisbee_turret.html#a4258d274c461369358d5fd889235b43a">~BaseFrisbeeTurret</a>();</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_turret.html#a3736f253d9165f331c7f9c8bc9a696f9">TurnHorizontal</a>(<span class="keywordtype">float</span> degrees) = 0;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_turret.html#a58dcb6c2a32a8700bb67cee0a98800a8">TurnVertical</a>(<span class="keywordtype">float</span> degrees) = 0;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_turret.html#a9a90d404c99597b5a2fd55f6d6d13a49">TurnGivenOffset</a>(<a class="code" href="struct_offset.html">Offset</a> offset) = 0;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_offset.html">Offset</a> <a class="code" href="class_base_frisbee_turret.html#a1e6702a71737a95df25cfb3693212266">ReportCurrentOffset</a>() = 0;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_turret.html#a53eb7bc7d64de96b522d3e542592c57e">TurnGivenOffset</a>(<a class="code" href="struct_tracking_1_1_offset.html">Tracking::Offset</a> offset) = 0;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="struct_tracking_1_1_offset.html">Tracking::Offset</a> <a class="code" href="class_base_frisbee_turret.html#acbcc333e479f68b6a5e377539625b497">GetCurrentOffset</a>() = 0;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;};</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="code" href="class_simple_frisbee_turret.html">   26</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_simple_frisbee_turret.html">SimpleFrisbeeTurret</a> : <span class="keyword">public</span> <a class="code" href="class_base_frisbee_turret.html">BaseFrisbeeTurret</a> {</div>
@@ -146,31 +147,31 @@ $(document).ready(function(){initNavTree('_frisbee_turret_8h_source.html','');})
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;};</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">/*class PidFrisbeeTurret : public BaseFrisbeeTurret {</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">public:</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">    PidFrisbeeTurret(</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">            SpeedController *horizontalMotor, </span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">            SpeedController *verticalMotor,</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">            Encoder *horizontalEncoder,</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">            Encoder *verticalEncoder);</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">    ~PidFrisbeeTurret();</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">    </span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">    void TurnHorizontal(float degrees);</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">    void TurnVertical(float degrees);</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">    void TurnGivenOffset(Offset offset);</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">    Offset ReportCurrentOffset();</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">    </span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">private:</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">    Offset m_offset;</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">    SpeedController *m_horizontalMotor;</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">    SpeedController *m_verticalMotor;</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">    Encoder *m_verticalEncoder;</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">    Encoder *m_horizontalEncoder;</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">    </span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">    PIDController *m_horizontalPid;</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">    PIDController *m_verticalPid;</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">};</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="class_pid_frisbee_turret.html">   56</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_pid_frisbee_turret.html">PidFrisbeeTurret</a> : <span class="keyword">public</span> <a class="code" href="class_base_frisbee_turret.html">BaseFrisbeeTurret</a> {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="class_pid_frisbee_turret.html#aaeacc3693796aa441bac56a9639c8683">PidFrisbeeTurret</a>(</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            SpeedController *horizontalMotor, </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            SpeedController *verticalMotor,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            Encoder *horizontalEncoder,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            Encoder *verticalEncoder);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="class_pid_frisbee_turret.html#a01191f5a8ef03e6543d0f4021b1931ec">~PidFrisbeeTurret</a>();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_pid_frisbee_turret.html#a6be05dea81c9b27b39059cc7dc700e62">TurnHorizontal</a>(<span class="keywordtype">float</span> degrees);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_pid_frisbee_turret.html#a238aa432612a2b4f36352773b8f7366e">TurnVertical</a>(<span class="keywordtype">float</span> degrees);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_pid_frisbee_turret.html#a8e9897d64de2ec03408b49c7182147ac">TurnGivenOffset</a>(<a class="code" href="struct_tracking_1_1_offset.html">Tracking::Offset</a> offset);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="struct_tracking_1_1_offset.html">Tracking::Offset</a> <a class="code" href="class_pid_frisbee_turret.html#a7d0dd736b73e4ddfe997e236ca55670e">GetCurrentOffset</a>();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="struct_tracking_1_1_offset.html">Tracking::Offset</a> m_offset;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    SpeedController *m_horizontalMotor;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    SpeedController *m_verticalMotor;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    Encoder *m_verticalEncoder;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    Encoder *m_horizontalEncoder;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    PIDController *m_horizontalPid;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    PIDController *m_verticalPid;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -178,8 +179,8 @@ $(document).ready(function(){initNavTree('_frisbee_turret_8h_source.html','');})
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_23fdee2f6995db16c755697cdf620cf4.html">Code</a></li><li class="navelem"><a class="el" href="dir_7597f66b0d059e987d25db1b89aa63ec.html">Subsystems</a></li><li class="navelem"><a class="el" href="_frisbee_turret_8h.html">FrisbeeTurret.h</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:04 for 2013_MainRobot by
+    <li class="navelem"><a class="el" href="dir_cd575884794bbd9245ab7f4f8f2a7983.html">Code</a></li><li class="navelem"><a class="el" href="dir_f9cc9dd264cde71432b1b66c96e526f8.html">Subsystems</a></li><li class="navelem"><a class="el" href="dir_78fe08602fe217e3f41e3ac258a14ae7.html">Shooter</a></li><li class="navelem"><a class="el" href="_frisbee_turret_8h.html">FrisbeeTurret.h</a></li>
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:29 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

@@ -1,0 +1,4 @@
+<map id="BaseDriveTransmission" name="BaseDriveTransmission">
+<area shape="rect" id="node7" href="$class_simple_drive_transmission.html" title="A simple transmission, using solenoids to switch between the gearings." alt="" coords="5,229,171,256"/>
+<area shape="rect" id="node2" href="$class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="29,80,147,107"/>
+</map>

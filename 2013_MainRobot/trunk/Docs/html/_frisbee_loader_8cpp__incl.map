@@ -1,4 +1,4 @@
-<map id="Code/Subsystems/FrisbeeLoader.cpp" name="Code/Subsystems/FrisbeeLoader.cpp">
-<area shape="rect" id="node3" href="$_frisbee_loader_8h.html" title="FrisbeeLoader.h" alt="" coords="68,80,183,107"/>
-<area shape="rect" id="node7" href="$_base_subsystem_8h.html" title="BaseSubsystem.h" alt="" coords="113,155,241,181"/>
+<map id="Code/Subsystems/Shooter/FrisbeeLoader.cpp" name="Code/Subsystems/Shooter/FrisbeeLoader.cpp">
+<area shape="rect" id="node3" href="$_frisbee_loader_8h.html" title="FrisbeeLoader.h" alt="" coords="37,96,152,123"/>
+<area shape="rect" id="node7" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="79,171,220,197"/>
 </map>

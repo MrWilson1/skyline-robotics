@@ -1,16 +1,24 @@
 <map id="Code/Main.cpp" name="Code/Main.cpp">
-<area shape="rect" id="node3" href="$_bland_robot_profile_8h.html" title="Profiles/BlandRobotProfile.h" alt="" coords="242,88,424,115"/>
-<area shape="rect" id="node41" href="$_terminator_robot_profile_8h.html" title="Profiles/TerminatorRobot\lProfile.h" alt="" coords="498,81,661,122"/>
-<area shape="rect" id="node7" href="$_ports_8h.html" title="../Misc/Ports.h" alt="" coords="378,179,485,205"/>
-<area shape="rect" id="node9" href="$_base_robot_profile_8h.html" title="BaseRobotProfile.h" alt="" coords="1048,411,1181,437"/>
-<area shape="rect" id="node14" href="$_xbox_o_i_8h.html" title="../OperatorInterfaces\l/XboxOI.h" alt="" coords="214,171,353,213"/>
-<area shape="rect" id="node17" href="$_xbox_8h.html" title="Xbox.h" alt="" coords="43,261,104,288"/>
-<area shape="rect" id="node20" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="521,336,596,363"/>
-<area shape="rect" id="node24" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="179,261,388,288"/>
-<area shape="rect" id="node30" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\DriveSubsystem.h" alt="" coords="280,336,496,363"/>
-<area shape="rect" id="node27" href="$_tools_8h.html" title="..\\Misc\\Tools.h" alt="" coords="274,411,381,437"/>
-<area shape="rect" id="node34" href="$_base_subsystem_8h.html" title="BaseSubsystem.h" alt="" coords="625,411,753,437"/>
-<area shape="rect" id="node46" href="$_test_encoder_o_i_8h.html" title="../OperatorInterfaces\l/TestEncoderOI.h" alt="" coords="510,171,649,213"/>
-<area shape="rect" id="node54" href="$_experimental_8h.html" title="../Subsystems/Experimental.h" alt="" coords="722,336,920,363"/>
-<area shape="rect" id="node52" href="$_test_commands_8h.html" title="../Commands/TestCommands.h" alt="" coords="718,261,924,288"/>
+<area shape="rect" id="node3" href="$_bland_robot_profile_8h.html" title="Profiles/BlandRobotProfile.h" alt="" coords="866,163,1048,189"/>
+<area shape="rect" id="node56" href="$_terminator_robot_profile_8h.html" title="Profiles/TerminatorRobot\lProfile.h" alt="" coords="573,155,736,197"/>
+<area shape="rect" id="node79" href="$_main_robot2013_profile_8h.html" title="Profiles/MainRobot2013Profile.h" alt="" coords="1380,80,1586,107"/>
+<area shape="rect" id="node7" href="$_ports_8h.html" title="Contains various enums representing physical ports and pins on the robot and client computer..." alt="" coords="764,253,871,280"/>
+<area shape="rect" id="node9" href="$_base_robot_profile_8h.html" title="BaseRobotProfile.h" alt="" coords="998,253,1131,280"/>
+<area shape="rect" id="node14" href="$_xbox_o_i_8h.html" title="../OperatorInterfaces\l/XboxOI.h" alt="" coords="548,246,687,287"/>
+<area shape="rect" id="node17" href="$_xbox_8h.html" title="Xbox.h" alt="" coords="968,344,1030,371"/>
+<area shape="rect" id="node46" href="$_frisbee_aimer_8h.html" title="../Subsystems/Shooter\l\\FrisbeeAimer.h" alt="" coords="2057,427,2212,469"/>
+<area shape="rect" id="node20" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="902,435,978,461"/>
+<area shape="rect" id="node24" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="582,344,791,371"/>
+<area shape="rect" id="node35" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\Drive\l\\DriveSubsystem.h" alt="" coords="1408,427,1547,469"/>
+<area shape="rect" id="node27" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="1873,525,1980,552"/>
+<area shape="rect" id="node32" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="384,435,507,461"/>
+<area shape="rect" id="node39" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="1707,525,1848,552"/>
+<area shape="rect" id="node61" href="$_test_encoder_o_i_8h.html" title="../OperatorInterfaces\l/TestEncoderOI.h" alt="" coords="384,246,523,287"/>
+<area shape="rect" id="node70" href="$_experimental_8h.html" title="A file containing short experimental subsystems or subsystems used for testing." alt="" coords="80,435,278,461"/>
+<area shape="rect" id="node67" href="$_test_commands_8h.html" title="../Commands/TestCommands.h" alt="" coords="249,344,455,371"/>
+<area shape="rect" id="node84" href="$_competition_xbox_o_i_8h.html" title="../OperatorInterfaces\l/CompetitionXboxOI.h" alt="" coords="1520,155,1667,197"/>
+<area shape="rect" id="node96" href="$_frisbee_loader_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeLoader.h" alt="" coords="1409,337,1564,378"/>
+<area shape="rect" id="node100" href="$_frisbee_shooter_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeShooter.h" alt="" coords="1724,427,1879,469"/>
+<area shape="rect" id="node105" href="$_frisbee_turret_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeTurret.h" alt="" coords="1996,337,2151,378"/>
+<area shape="rect" id="node90" href="$_shooter_commands_8h.html" title="../Commands/ShooterCommands.h" alt="" coords="1792,253,2019,280"/>
 </map>

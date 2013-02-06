@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.3.1"/>
-<title>2013_MainRobot: Code/Subsystems/FrisbeeRaiser.h Source File</title>
+<title>2013_MainRobot: Code/Subsystems/Shooter/FrisbeeRaiser.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_frisbee_raiser_8h_source.html','');})
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,30 +110,50 @@ $(document).ready(function(){initNavTree('_frisbee_raiser_8h_source.html','');})
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define FRISBEE_RAISER_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;WPILib.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_subsystem_8h.html">BaseSubsystem.h</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="code" href="class_base_frisbee_raiser.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_frisbee_raiser.html">BaseFrisbeeRaiser</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html">BaseSubsystem</a> {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="class_base_frisbee_raiser.html#a4ce7e934029616fc02e86d29b2f8e65f">BaseFrisbeeRaiser</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_base_frisbee_raiser.html#a10d3743e2844c9fa4b4eadd6b2e3b9af">~BaseFrisbeeRaiser</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_base_frisbee_raiser.html#a9529bcf05b7af91daa4a11951eaaa104">IsAtTop</a>() = 0;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_base_frisbee_raiser.html#acd78f029fcec9f1c646aa59584167c58">IsAtBottom</a>() = 0;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#a587ad9647ef7ffefd16de3156293ecc1">Raise</a>() = 0;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#ac346fb409b383ac89af66de8fa7cb10d">Lower</a>() = 0;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#a587ad9647ef7ffefd16de3156293ecc1">Raise</a>(<span class="keywordtype">float</span> magnitude) = 0;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#ac346fb409b383ac89af66de8fa7cb10d">Lower</a>(<span class="keywordtype">float</span> magnitude) = 0;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#a4957f73e65e6a6765cd04f281fe3edd7">Stop</a>() = 0;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;};</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;../BaseSubsystem.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;../../Misc/Tools.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="code" href="class_base_frisbee_raiser.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_frisbee_raiser.html">BaseFrisbeeRaiser</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html" title="The abstract base class for all subsystems.">BaseSubsystem</a> {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="class_base_frisbee_raiser.html#a4ce7e934029616fc02e86d29b2f8e65f">BaseFrisbeeRaiser</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_base_frisbee_raiser.html#a10d3743e2844c9fa4b4eadd6b2e3b9af">~BaseFrisbeeRaiser</a>();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_base_frisbee_raiser.html#a9529bcf05b7af91daa4a11951eaaa104">IsAtTop</a>() = 0;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_base_frisbee_raiser.html#acd78f029fcec9f1c646aa59584167c58">IsAtBottom</a>() = 0;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#a587ad9647ef7ffefd16de3156293ecc1">Raise</a>() = 0;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#ac346fb409b383ac89af66de8fa7cb10d">Lower</a>() = 0;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#a587ad9647ef7ffefd16de3156293ecc1">Raise</a>(<span class="keywordtype">float</span> magnitude) = 0;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#ac346fb409b383ac89af66de8fa7cb10d">Lower</a>(<span class="keywordtype">float</span> magnitude) = 0;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_frisbee_raiser.html#a4957f73e65e6a6765cd04f281fe3edd7">Stop</a>() = 0;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;};</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="class_guarded_frisbee_raiser.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_guarded_frisbee_raiser.html">GuardedFrisbeeRaiser</a> : <span class="keyword">public</span> <a class="code" href="class_base_frisbee_raiser.html">BaseFrisbeeRaiser</a> {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="class_guarded_frisbee_raiser.html#a17f79a861f512840a8cb295e3214c2fa">GuardedFrisbeeRaiser</a>(SpeedController *raiserMotor, DigitalInput *topLimitSwitch, DigitalInput *bottomLimitSwitch, <span class="keywordtype">double</span> motorSpeed);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="class_guarded_frisbee_raiser.html#a5b3d12fa5d2210fe8799b4f695568180">~GuardedFrisbeeRaiser</a>();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_guarded_frisbee_raiser.html#a93e8c28b7d56e0d1cdf0af79dcd6d3cd">IsAtTop</a>();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_guarded_frisbee_raiser.html#af67d89882cd7bb6b9b970ab36c91c648">IsAtBottom</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_guarded_frisbee_raiser.html#a00def89a2452717a86be123e551fe0a3">Raise</a>();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_guarded_frisbee_raiser.html#a5be67bd4ff6e333ab7d430feb6f94187">Lower</a>();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_guarded_frisbee_raiser.html#a00def89a2452717a86be123e551fe0a3">Raise</a>(<span class="keywordtype">float</span> magnitude);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_guarded_frisbee_raiser.html#a5be67bd4ff6e333ab7d430feb6f94187">Lower</a>(<span class="keywordtype">float</span> magnitude);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_guarded_frisbee_raiser.html#a4ab52bb4bcafe1ab8e7c4042dc8cfa7e">Stop</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">double</span> m_motorSpeed; <span class="comment">// may change later when we test it</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    SpeedController *m_raiserMotor;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    DigitalInput *m_topLimitSwitch;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    DigitalInput *m_bottomLimitSwitch;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_23fdee2f6995db16c755697cdf620cf4.html">Code</a></li><li class="navelem"><a class="el" href="dir_7597f66b0d059e987d25db1b89aa63ec.html">Subsystems</a></li><li class="navelem"><a class="el" href="_frisbee_raiser_8h.html">FrisbeeRaiser.h</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:04 for 2013_MainRobot by
+    <li class="navelem"><a class="el" href="dir_cd575884794bbd9245ab7f4f8f2a7983.html">Code</a></li><li class="navelem"><a class="el" href="dir_f9cc9dd264cde71432b1b66c96e526f8.html">Subsystems</a></li><li class="navelem"><a class="el" href="dir_78fe08602fe217e3f41e3ac258a14ae7.html">Shooter</a></li><li class="navelem"><a class="el" href="_frisbee_raiser_8h.html">FrisbeeRaiser.h</a></li>
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:29 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

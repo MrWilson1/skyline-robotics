@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['firefrisbeemaxspeedcommand',['FireFrisbeeMaxSpeedCommand',['../class_fire_frisbee_max_speed_command.html#a9d96e2b6fc653b7526e56513425143ad',1,'FireFrisbeeMaxSpeedCommand']]],
-  ['firefrisbeesetspeedcommand',['FireFrisbeeSetSpeedCommand',['../class_fire_frisbee_set_speed_command.html#a7e3a27258822a19dde5e99728759f3f3',1,'FireFrisbeeSetSpeedCommand']]]
+  ['findmagnitude',['FindMagnitude',['../group__tools.html#gac4ec1dc7517e93864479935b762c12f4',1,'Tools']]],
+  ['findtargetmagnitude',['FindTargetMagnitude',['../namespace_tracking.html#ab3dfe0834d142c270a8c093f1e0e8769',1,'Tracking']]],
+  ['firefrisbeecommand',['FireFrisbeeCommand',['../class_fire_frisbee_command.html#aa237f369775ff79661ff808f07fd6975',1,'FireFrisbeeCommand::FireFrisbeeCommand(BaseFrisbeeShooter *shooter)'],['../class_fire_frisbee_command.html#a00c59743f915b81aa35361cee3cb9a25',1,'FireFrisbeeCommand::FireFrisbeeCommand(BaseFrisbeeShooter *shooter, double distanceInInches)']]]
 ];

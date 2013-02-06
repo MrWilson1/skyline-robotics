@@ -1,5 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_base_o_i.html" title="BaseOI" alt="" coords="6,31,71,57"/>
-<area shape="rect" id="node3" href="$class_test_encoder_o_i.html" title="TestEncoderOI" alt="" coords="121,5,229,32"/>
-<area shape="rect" id="node5" href="$class_xbox_o_i.html" title="XboxOI" alt="" coords="143,56,206,83"/>
+<area shape="rect" id="node1" href="$class_base_o_i.html" title="BaseOI" alt="" coords="6,56,71,83"/>
+<area shape="rect" id="node3" href="$class_competition_xbox_o_i.html" title="CompetitionXboxOI" alt="" coords="121,5,253,32"/>
+<area shape="rect" id="node5" href="$class_test_encoder_o_i.html" title="TestEncoderOI" alt="" coords="133,56,241,83"/>
+<area shape="rect" id="node7" href="$class_xbox_o_i.html" title="XboxOI" alt="" coords="155,107,218,133"/>
 </map>

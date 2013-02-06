@@ -44,6 +44,7 @@ private:
 	JoystickButton *m_fireButton;
 	Command *m_teleopCommand;
 	Command *m_loadAndFireCommand;
+	Command *m_autoAimTargetCommand;
 };
 
 #endif

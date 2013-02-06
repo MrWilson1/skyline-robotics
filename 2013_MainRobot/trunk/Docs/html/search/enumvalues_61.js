@@ -8,5 +8,6 @@ var searchData=
   ['analogchannel5',['AnalogChannel5',['../namespace_ports_1_1_crio.html#a7559819d31079e0677b999150af1b1b1a311a82575261819ac401c1180b5e76f3',1,'Ports::Crio']]],
   ['analogchannel6',['AnalogChannel6',['../namespace_ports_1_1_crio.html#a7559819d31079e0677b999150af1b1b1a013309228793baa3f0545e44e0c0aa83',1,'Ports::Crio']]],
   ['analogchannel7',['AnalogChannel7',['../namespace_ports_1_1_crio.html#a7559819d31079e0677b999150af1b1b1a5420e4fb8eeb5b15081ba27a881e54d6',1,'Ports::Crio']]],
-  ['analogchannel8',['AnalogChannel8',['../namespace_ports_1_1_crio.html#a7559819d31079e0677b999150af1b1b1a1abd070d1aadd566432dd6d5634898d9',1,'Ports::Crio']]]
+  ['analogchannel8',['AnalogChannel8',['../namespace_ports_1_1_crio.html#a7559819d31079e0677b999150af1b1b1a1abd070d1aadd566432dd6d5634898d9',1,'Ports::Crio']]],
+  ['average',['Average',['../_drive_commands_8h.html#a244c8f2adf59cd698ad0268287683e7cab3c87ec2c47256239220b24e46acda7f',1,'DriveCommands.h']]]
 ];

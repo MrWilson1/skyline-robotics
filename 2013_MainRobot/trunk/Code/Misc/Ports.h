@@ -1,13 +1,28 @@
 #ifndef PORTS_H
 #define PORTS_H
+/**
+ * \file Ports.h
+ * 
+ * \brief Contains various enums representing physical ports and pins on
+ * the robot and client computer. 
+ * 
+ * There is no corresponding .cpp file.
+ * 
+ * \defgroup ports Ports
+ * \addtogroup ports
+ * \{
+ */
 
+/**
+ * \brief Contains all enums within the [Ports module](\ref ports) 
+ */
 namespace Ports {
 	/**
-	 * @brief Contains enums and such for various port assignments for the robot.
+	 * \brief Mappings for the digital sidecar (digital values)
 	 */
 	namespace DigitalSidecar {
 		/**
-		 * @brief Used primarily for motors and servos.
+		 * \brief Pulse-width modulation: used primarily for motors and servos.
 		 */
 		enum Pwm {
 			Pwm1 = 1,
@@ -23,7 +38,7 @@ namespace Ports {
 		};
 		
 		/**
-		 * @brief General purpose input/output
+		 * \brief General purpose input/output: used mostly for sensors
 		 */
 		enum Gpio {
 			Gpio1 = 1,
@@ -43,7 +58,7 @@ namespace Ports {
 		};
 		
 		/**
-		 * @brief For pneumatics
+		 * \brief Used mostly for pneumatics (Spikes, etc)
 		 */
 		enum Relay {
 			Relay1 = 1,
@@ -57,9 +72,12 @@ namespace Ports {
 		};
 	}
 	
+	/**
+	 * \brief Mappings on the controller computer
+	 */
 	namespace Computer {
 		/**
-		 * @brief Used mostly for joysticks (or other forms of input)
+		 * \brief Used mostly for joysticks (or other forms of input)
 		 */
 		enum Usb {
 			Usb1 = 1,
@@ -69,9 +87,12 @@ namespace Ports {
 		};
 	}
 	
+	/**
+	 * \brief Additional mappings for the breakouts on the cRIO
+	 */
 	namespace Crio {
 		/**
-		 * @brief Used mostly for analog sensors
+		 * \brief Used mostly for analog sensors
 		 */
 		enum AnalogBreakout {
 			AnalogChannel1 = 1,
@@ -85,7 +106,7 @@ namespace Ports {
 		};
 		
 		/**
-		 * @brief Used mostly for pneumatics
+		 * \brief Used mostly for pneumatics
 		 */
 		enum SolenoidBreakout {
 			SolenoidBreakout1 = 1,
@@ -99,25 +120,24 @@ namespace Ports {
 		};
 		
 		/**
-		 * @brief Sections of the cRIO
+		 * \brief Sections of the cRIO
 		 * 
-		 * @details
 		 * This is a relatively new concept, which is meant
 		 * to deal with how some FRC teams have 4-slot cRIOS
 		 * while others have 8-slot cRIOS.
 		 * 
-		 * Slot -- the physical space you can plug a module
+		 * Slot: the physical space you can plug a module
 		 * in.  Module number -- something FIRST invented.
 		 * 
 		 * For a 8-slot cRIO:
-		 *   - Slot 1: Module 1 {Analog Module 9201)
-		 *   - Slot 2: Module 1 {Digital Module 9403)
-		 *   - Slot 3: Module 1 {Solenoid Module 9472)
-		 *   - Slot 4: Module 2 {empty)
-		 *   - Slot 5: Module 2 {Analog Module 9201)
-		 *   - Slot 6: Module 2 {Digital Module 9403)
-		 *   - Slot 7: Module 2 {Solenoid Module 9472)
-		 *   - Slot 8: Module   {empty)
+		 * -   Slot 1: Module 1 {Analog Module 9201)
+		 * -   Slot 2: Module 1 {Digital Module 9403)
+		 * -   Slot 3: Module 1 {Solenoid Module 9472)
+		 * -   Slot 4: Module 2 {empty)
+		 * -   Slot 5: Module 2 {Analog Module 9201)
+		 * -   Slot 6: Module 2 {Digital Module 9403)
+		 * -   Slot 7: Module 2 {Solenoid Module 9472)
+		 * -   Slot 8: Module   {empty)
 		 */
 		enum Module {
 			Module1 = 1,
@@ -126,4 +146,7 @@ namespace Ports {
 	}
 }
 
+/**
+ * \}
+ */
 #endif

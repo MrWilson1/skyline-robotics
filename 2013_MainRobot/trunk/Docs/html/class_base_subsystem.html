@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -93,7 +94,7 @@ $(document).ready(function(){initNavTree('class_base_subsystem.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -108,9 +109,12 @@ $(document).ready(function(){initNavTree('class_base_subsystem.html','');});
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="class_base_subsystem-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">BaseSubsystem Class Reference</div>  </div>
+<div class="title">BaseSubsystem Class Reference<div class="ingroups"><a class="el" href="group__subsystems.html">Subsystems</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>The abstract base class for all subsystems.  
+ <a href="class_base_subsystem.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_base_subsystem_8h_source.html">BaseSubsystem.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -118,14 +122,12 @@ Inheritance diagram for BaseSubsystem:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_subsystem__inherit__graph.png" border="0" usemap="#_base_subsystem_inherit__map" alt="Inheritance graph"/></div>
 <map name="_base_subsystem_inherit__map" id="_base_subsystem_inherit__map">
-<area shape="rect" id="node5" href="class_base_drive.html" title="BaseDrive" alt="" coords="340,31,420,57"/><area shape="rect" id="node11" href="class_base_frisbee_aimer.html" title="BaseFrisbeeAimer" alt="" coords="315,81,445,108"/><area shape="rect" id="node13" href="class_base_frisbee_loader.html" title="BaseFrisbeeLoader" alt="" coords="313,132,447,159"/><area shape="rect" id="node15" href="class_base_frisbee_pickup.html" title="BaseFrisbeePickup" alt="" coords="313,183,447,209"/><area shape="rect" id="node17" href="class_base_frisbee_raiser.html" title="BaseFrisbeeRaiser" alt="" coords="314,233,446,260"/><area shape="rect" id="node19" href="class_base_frisbee_shooter.html" title="BaseFrisbeeShooter" alt="" coords="310,284,450,311"/><area shape="rect" id="node23" href="class_base_frisbee_turret.html" title="BaseFrisbeeTurret" alt="" coords="316,335,444,361"/><area shape="rect" id="node27" href="class_test_encoder.html" title="TestEncoder" alt="" coords="333,385,427,412"/><area shape="rect" id="node29" href="class_test_motor.html" title="TestMotor" alt="" coords="340,436,420,463"/><area shape="rect" id="node7" href="class_pid_simple_drive.html" title="PidSimpleDrive" alt="" coords="513,5,623,32"/><area shape="rect" id="node9" href="class_simple_drive.html" title="SimpleDrive" alt="" coords="523,56,613,83"/><area shape="rect" id="node21" href="class_simple_belt_shooter.html" title="SimpleBeltShooter" alt="" coords="503,284,633,311"/><area shape="rect" id="node25" href="class_simple_frisbee_turret.html" title="SimpleFrisbeeTurret" alt="" coords="499,335,637,361"/></map>
+<area shape="rect" id="node5" href="class_base_climber_extender.html" title="BaseClimberExtender" alt="" coords="314,31,462,57"/><area shape="rect" id="node9" href="class_base_drive.html" title="A base drive. All drives must be a subclass of this class." alt="" coords="348,107,428,133"/><area shape="rect" id="node15" href="class_base_drive_transmission.html" title="A base class for any Drive Tranmission." alt="" coords="309,157,467,184"/><area shape="rect" id="node19" href="class_base_frisbee_aimer.html" title="BaseFrisbeeAimer" alt="" coords="323,208,453,235"/><area shape="rect" id="node23" href="class_base_frisbee_loader.html" title="BaseFrisbeeLoader" alt="" coords="321,259,455,285"/><area shape="rect" id="node27" href="class_base_frisbee_pickup.html" title="BaseFrisbeePickup" alt="" coords="321,309,455,336"/><area shape="rect" id="node29" href="class_base_frisbee_raiser.html" title="BaseFrisbeeRaiser" alt="" coords="322,360,454,387"/><area shape="rect" id="node33" href="class_base_frisbee_shooter.html" title="BaseFrisbeeShooter" alt="" coords="318,411,458,437"/><area shape="rect" id="node39" href="class_base_frisbee_turret.html" title="BaseFrisbeeTurret" alt="" coords="324,461,452,488"/><area shape="rect" id="node45" href="class_test_aimer.html" title="TestAimer" alt="" coords="347,512,429,539"/><area shape="rect" id="node47" href="class_test_encoder.html" title="Reports all telemetry from an encoder, and provides hooks to configure it during runtime." alt="" coords="341,563,435,589"/><area shape="rect" id="node49" href="class_test_motor.html" title="Controls a single motor." alt="" coords="348,613,428,640"/><area shape="rect" id="node7" href="class_pneumatic_climber_extender.html" title="PneumaticClimberExtender" alt="" coords="515,5,695,32"/><area shape="rect" id="node11" href="class_pid_simple_drive.html" title="A drive system using PID controllers." alt="" coords="551,56,660,83"/><area shape="rect" id="node13" href="class_simple_drive.html" title="The absolute simplest drive possible. Contains no PID loops or other forms of feedback systems..." alt="" coords="560,107,651,133"/><area shape="rect" id="node17" href="class_simple_drive_transmission.html" title="A simple transmission, using solenoids to switch between the gearings." alt="" coords="522,157,689,184"/><area shape="rect" id="node21" href="class_vision_tables_frisbee_aimer.html" title="VisionTablesFrisbeeAimer" alt="" coords="519,208,692,235"/><area shape="rect" id="node25" href="class_placeholder_frisbee_loader.html" title="PlaceholderFrisbeeLoader" alt="" coords="519,259,691,285"/><area shape="rect" id="node31" href="class_guarded_frisbee_raiser.html" title="GuardedFrisbeeRaiser" alt="" coords="530,309,681,336"/><area shape="rect" id="node35" href="class_simple_belt_shooter.html" title="SimpleBeltShooter" alt="" coords="540,360,671,387"/><area shape="rect" id="node37" href="class_three_wheel_shooter.html" title="ThreeWheelShooter" alt="" coords="537,411,673,437"/><area shape="rect" id="node41" href="class_pid_frisbee_turret.html" title="PidFrisbeeTurret" alt="" coords="547,461,664,488"/><area shape="rect" id="node43" href="class_simple_frisbee_turret.html" title="SimpleFrisbeeTurret" alt="" coords="536,512,675,539"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for BaseSubsystem:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_subsystem__coll__graph.png" border="0" usemap="#_base_subsystem_coll__map" alt="Collaboration graph"/></div>
-<map name="_base_subsystem_coll__map" id="_base_subsystem_coll__map">
-</map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -140,16 +142,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaa9ad1c584faa485ec4780e1c89b42e6"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:aaa9ad1c584faa485ec4780e1c89b42e6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_base_subsystem.html#aaa9ad1c584faa485ec4780e1c89b42e6">AddSensorToLiveWindow</a> (char *name, T *object)</td></tr>
 <tr class="separator:aaa9ad1c584faa485ec4780e1c89b42e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73d33e6bd6fb3b76635991bec6aef15e"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a73d33e6bd6fb3b76635991bec6aef15e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_base_subsystem.html#a73d33e6bd6fb3b76635991bec6aef15e">AddComponentToLiveWindow</a> (char *name, T *object)</td></tr>
-<tr class="separator:a73d33e6bd6fb3b76635991bec6aef15e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ae1237ae7b516d90856b4529e014dac29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29">ReportLiveWindowError</a> (char *name)</td></tr>
+<tr class="memdesc:ae1237ae7b516d90856b4529e014dac29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reports an error to SmartDashboard.  <a href="#ae1237ae7b516d90856b4529e014dac29">More...</a><br/></td></tr>
 <tr class="separator:ae1237ae7b516d90856b4529e014dac29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The abstract base class for all subsystems. </p>
+<p>Provides additional functionality to automatically dynamically cast arbitrary actuators and sensors and add them to the LiveWindow.</p>
+<p>The <a class="el" href="class_base_subsystem.html#ae42626d939ccb8bbe1a4152d3c627b31">AddActuatorToLiveWindow</a> and <a class="el" href="class_base_subsystem.html#aaa9ad1c584faa485ec4780e1c89b42e6">AddSensorToLiveWindow</a> are equivalent to calling: </p>
+<pre class="fragment">LiveWindow::GetInstance()-&gt;AddActuator();
+LiveWindow::GetInstance()-&gt;AddSensor();
+</pre><p>...except it properly dynamically casts the objects and do some basic error checking.</p>
+<p>All objects are first dynamically cast to ErrorBase, since they nearly all inherit from it. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab1db98d2a6e127445ebb77e195d14d47"></a>
 <div class="memitem">
 <div class="memproto">
@@ -163,6 +171,12 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>The name of the subsystem (can be any arbitrary string). Used to display a nice name on the SmartDashboard. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -223,18 +237,13 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The following are equivalent to</p>
-<p>LiveWindow::GetInstance()-&gt;AddActuator LiveWindow::GetInstance()-&gt;AddSensor LiveWindow::GetInstance()-&gt;AddComponent</p>
-<p>...except they automatically specify the subsystem and do some basic error checking.</p>
-<p>Nearly all WPILib objects inherit from ErrorBase.</p>
-<p>I don't actually know what a 'Component' is, so don't use it unless you find out what it is. </p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_subsystem_ae42626d939ccb8bbe1a4152d3c627b31_cgraph.png" border="0" usemap="#class_base_subsystem_ae42626d939ccb8bbe1a4152d3c627b31_cgraph" alt=""/></div>
 <map name="class_base_subsystem_ae42626d939ccb8bbe1a4152d3c627b31_cgraph" id="class_base_subsystem_ae42626d939ccb8bbe1a4152d3c627b31_cgraph">
-<area shape="rect" id="node3" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29" title="BaseSubsystem::ReportLive\lWindowError" alt="" coords="253,5,440,46"/></map>
+<area shape="rect" id="node3" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29" title="Reports an error to SmartDashboard." alt="" coords="253,5,440,46"/></map>
 </div>
 </p>
 
@@ -243,52 +252,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_subsystem_ae42626d939ccb8bbe1a4152d3c627b31_icgraph.png" border="0" usemap="#class_base_subsystem_ae42626d939ccb8bbe1a4152d3c627b31_icgraph" alt=""/></div>
 <map name="class_base_subsystem_ae42626d939ccb8bbe1a4152d3c627b31_icgraph" id="class_base_subsystem_ae42626d939ccb8bbe1a4152d3c627b31_icgraph">
-<area shape="rect" id="node3" href="class_pid_simple_drive.html#a1522be3c25a2e8e2dc12660e8f6c7153" title="PidSimpleDrive::PidSimple\lDrive" alt="" coords="253,5,429,46"/><area shape="rect" id="node5" href="class_test_motor.html#a61e5ae996ac8d4286053b2f956d1d4b7" title="TestMotor::TestMotor" alt="" coords="268,71,415,97"/><area shape="rect" id="node7" href="class_simple_belt_shooter.html#a1e2b8956f022b8608f85ea83a4715292" title="SimpleBeltShooter::\lSimpleBeltShooter" alt="" coords="272,122,411,163"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="a73d33e6bd6fb3b76635991bec6aef15e"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void BaseSubsystem::AddComponentToLiveWindow </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T *&#160;</td>
-          <td class="paramname"><em>object</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_base_subsystem_a73d33e6bd6fb3b76635991bec6aef15e_cgraph.png" border="0" usemap="#class_base_subsystem_a73d33e6bd6fb3b76635991bec6aef15e_cgraph" alt=""/></div>
-<map name="class_base_subsystem_a73d33e6bd6fb3b76635991bec6aef15e_cgraph" id="class_base_subsystem_a73d33e6bd6fb3b76635991bec6aef15e_cgraph">
-<area shape="rect" id="node3" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29" title="BaseSubsystem::ReportLive\lWindowError" alt="" coords="269,5,456,46"/></map>
+<area shape="rect" id="node3" href="class_pid_simple_drive.html#a1522be3c25a2e8e2dc12660e8f6c7153" title="PidSimpleDrive::PidSimple\lDrive" alt="" coords="259,5,435,46"/><area shape="rect" id="node5" href="class_test_motor.html#a61e5ae996ac8d4286053b2f956d1d4b7" title="TestMotor::TestMotor" alt="" coords="273,71,420,97"/><area shape="rect" id="node7" href="class_simple_belt_shooter.html#a1e2b8956f022b8608f85ea83a4715292" title="SimpleBeltShooter::\lSimpleBeltShooter" alt="" coords="277,122,416,163"/><area shape="rect" id="node9" href="class_three_wheel_shooter.html#a7cd7c2a883264b195b1258952fd92f6e" title="ThreeWheelShooter::\lThreeWheelShooter" alt="" coords="275,187,419,229"/><area shape="rect" id="node11" href="class_pid_frisbee_turret.html#aaeacc3693796aa441bac56a9639c8683" title="PidFrisbeeTurret::PidFrisbee\lTurret" alt="" coords="253,253,440,294"/></map>
 </div>
 </p>
 
@@ -333,7 +297,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_subsystem_aaa9ad1c584faa485ec4780e1c89b42e6_cgraph.png" border="0" usemap="#class_base_subsystem_aaa9ad1c584faa485ec4780e1c89b42e6_cgraph" alt=""/></div>
 <map name="class_base_subsystem_aaa9ad1c584faa485ec4780e1c89b42e6_cgraph" id="class_base_subsystem_aaa9ad1c584faa485ec4780e1c89b42e6_cgraph">
-<area shape="rect" id="node3" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29" title="BaseSubsystem::ReportLive\lWindowError" alt="" coords="245,5,432,46"/></map>
+<area shape="rect" id="node3" href="class_base_subsystem.html#ae1237ae7b516d90856b4529e014dac29" title="Reports an error to SmartDashboard." alt="" coords="245,5,432,46"/></map>
 </div>
 </p>
 
@@ -342,7 +306,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_subsystem_aaa9ad1c584faa485ec4780e1c89b42e6_icgraph.png" border="0" usemap="#class_base_subsystem_aaa9ad1c584faa485ec4780e1c89b42e6_icgraph" alt=""/></div>
 <map name="class_base_subsystem_aaa9ad1c584faa485ec4780e1c89b42e6_icgraph" id="class_base_subsystem_aaa9ad1c584faa485ec4780e1c89b42e6_icgraph">
-<area shape="rect" id="node3" href="class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc" title="TestEncoder::TestEncoder" alt="" coords="245,12,421,39"/></map>
+<area shape="rect" id="node3" href="class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc" title="TestEncoder::TestEncoder" alt="" coords="251,5,427,32"/><area shape="rect" id="node5" href="class_pid_frisbee_turret.html#aaeacc3693796aa441bac56a9639c8683" title="PidFrisbeeTurret::PidFrisbee\lTurret" alt="" coords="245,57,432,98"/></map>
 </div>
 </p>
 
@@ -370,12 +334,14 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Reports an error to SmartDashboard. </p>
+
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_subsystem_ae1237ae7b516d90856b4529e014dac29_icgraph.png" border="0" usemap="#class_base_subsystem_ae1237ae7b516d90856b4529e014dac29_icgraph" alt=""/></div>
 <map name="class_base_subsystem_ae1237ae7b516d90856b4529e014dac29_icgraph" id="class_base_subsystem_ae1237ae7b516d90856b4529e014dac29_icgraph">
-<area shape="rect" id="node3" href="class_base_subsystem.html#ae42626d939ccb8bbe1a4152d3c627b31" title="BaseSubsystem::AddActuator\lToLiveWindow" alt="" coords="249,77,447,118"/><area shape="rect" id="node11" href="class_base_subsystem.html#aaa9ad1c584faa485ec4780e1c89b42e6" title="BaseSubsystem::AddSensor\lToLiveWindow" alt="" coords="253,167,443,209"/><area shape="rect" id="node15" href="class_base_subsystem.html#a73d33e6bd6fb3b76635991bec6aef15e" title="BaseSubsystem::AddComponent\lToLiveWindow" alt="" coords="241,233,455,274"/><area shape="rect" id="node5" href="class_pid_simple_drive.html#a1522be3c25a2e8e2dc12660e8f6c7153" title="PidSimpleDrive::PidSimple\lDrive" alt="" coords="504,5,680,46"/><area shape="rect" id="node7" href="class_test_motor.html#a61e5ae996ac8d4286053b2f956d1d4b7" title="TestMotor::TestMotor" alt="" coords="519,71,665,97"/><area shape="rect" id="node9" href="class_simple_belt_shooter.html#a1e2b8956f022b8608f85ea83a4715292" title="SimpleBeltShooter::\lSimpleBeltShooter" alt="" coords="523,122,661,163"/><area shape="rect" id="node13" href="class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc" title="TestEncoder::TestEncoder" alt="" coords="504,188,680,215"/></map>
+<area shape="rect" id="node3" href="class_base_subsystem.html#ae42626d939ccb8bbe1a4152d3c627b31" title="BaseSubsystem::AddActuator\lToLiveWindow" alt="" coords="241,155,439,197"/><area shape="rect" id="node15" href="class_base_subsystem.html#aaa9ad1c584faa485ec4780e1c89b42e6" title="BaseSubsystem::AddSensor\lToLiveWindow" alt="" coords="245,253,435,294"/><area shape="rect" id="node5" href="class_pid_simple_drive.html#a1522be3c25a2e8e2dc12660e8f6c7153" title="PidSimpleDrive::PidSimple\lDrive" alt="" coords="493,5,669,46"/><area shape="rect" id="node7" href="class_test_motor.html#a61e5ae996ac8d4286053b2f956d1d4b7" title="TestMotor::TestMotor" alt="" coords="508,71,655,97"/><area shape="rect" id="node9" href="class_simple_belt_shooter.html#a1e2b8956f022b8608f85ea83a4715292" title="SimpleBeltShooter::\lSimpleBeltShooter" alt="" coords="512,122,651,163"/><area shape="rect" id="node11" href="class_three_wheel_shooter.html#a7cd7c2a883264b195b1258952fd92f6e" title="ThreeWheelShooter::\lThreeWheelShooter" alt="" coords="509,187,653,229"/><area shape="rect" id="node13" href="class_pid_frisbee_turret.html#aaeacc3693796aa441bac56a9639c8683" title="PidFrisbeeTurret::PidFrisbee\lTurret" alt="" coords="488,253,675,294"/><area shape="rect" id="node17" href="class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc" title="TestEncoder::TestEncoder" alt="" coords="493,319,669,345"/></map>
 </div>
 </p>
 
@@ -391,7 +357,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_base_subsystem.html">BaseSubsystem</a></li>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:05 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:30 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

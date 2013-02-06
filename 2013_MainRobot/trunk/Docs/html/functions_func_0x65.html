@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -100,6 +101,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_0x73.html#index_s"><span>s</span></a></li>
       <li><a href="functions_func_0x74.html#index_t"><span>t</span></a></li>
       <li><a href="functions_func_0x75.html#index_u"><span>u</span></a></li>
+      <li><a href="functions_func_0x76.html#index_v"><span>v</span></a></li>
       <li><a href="functions_func_0x78.html#index_x"><span>x</span></a></li>
       <li><a href="functions_func_0x7e.html#index_0x7e"><span>~</span></a></li>
     </ul>
@@ -124,7 +126,7 @@ $(document).ready(function(){initNavTree('functions_func_0x65.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -140,33 +142,45 @@ $(document).ready(function(){initNavTree('functions_func_0x65.html','');});
 <li>EjectFrisbee()
 : <a class="el" href="class_base_frisbee_shooter.html#ad7905420712e980490197224c686c601">BaseFrisbeeShooter</a>
 , <a class="el" href="class_simple_belt_shooter.html#a1567b563d90e48d8314c895b753a1d47">SimpleBeltShooter</a>
+, <a class="el" href="class_three_wheel_shooter.html#a3e0229d0dd5d67ad929a3ab3559ddaf9">ThreeWheelShooter</a>
 </li>
 <li>EjectFrisbeeCommand()
 : <a class="el" href="class_eject_frisbee_command.html#a97fe88dfb2cf295b719214fce1737cec">EjectFrisbeeCommand</a>
 </li>
+<li>Enable()
+: <a class="el" href="class_base_drive.html#a5f78520c95019427eef082d2db5dbba6">BaseDrive</a>
+, <a class="el" href="class_simple_drive.html#a68276c7557eae5bc0428749d8310b559">SimpleDrive</a>
+, <a class="el" href="class_pid_simple_drive.html#ad9e5240a81aece76d6159da9d1b80770">PidSimpleDrive</a>
+</li>
 <li>End()
-: <a class="el" href="class_tank_drive_command.html#a1d51c1dbf1ec4873fca02c14b851d6b8">TankDriveCommand</a>
-, <a class="el" href="class_aim_turret_command.html#a734e78423abdf8246cd43e9a331ba4e8">AimTurretCommand</a>
-, <a class="el" href="class_fire_frisbee_max_speed_command.html#aa140daca61ff10514e3ee567c27b1f1e">FireFrisbeeMaxSpeedCommand</a>
-, <a class="el" href="class_arcade_drive_command.html#a7b3f026a9b0f6668bb93491b423a8961">ArcadeDriveCommand</a>
-, <a class="el" href="class_fire_frisbee_set_speed_command.html#a77ec12dda33e1ffa4a97e872ba6ae873">FireFrisbeeSetSpeedCommand</a>
+: <a class="el" href="class_simple_command.html#a690619a04ff5813223dc4695ce4bb689">SimpleCommand</a>
 , <a class="el" href="class_eject_frisbee_command.html#aaa28cf50ec330486321a7fc0eddf1107">EjectFrisbeeCommand</a>
-, <a class="el" href="class_spasm.html#af7dbbb136af41caa8338793a9d9e8853">Spasm</a>
 , <a class="el" href="class_test_motor_command.html#a9662cb600751a1bf39dd3cbabca7d0b1">TestMotorCommand</a>
-, <a class="el" href="class_test_encoder_command.html#ab2f074c1314bbbe987db727c8acb7b27">TestEncoderCommand</a>
+, <a class="el" href="class_tank_drive_command.html#a1d51c1dbf1ec4873fca02c14b851d6b8">TankDriveCommand</a>
+, <a class="el" href="class_arcade_drive_command.html#a7b3f026a9b0f6668bb93491b423a8961">ArcadeDriveCommand</a>
+, <a class="el" href="class_spasm.html#af7dbbb136af41caa8338793a9d9e8853">Spasm</a>
+, <a class="el" href="class_travel_straight_manual_command.html#a70bcfd53a0404e4644ddd364f77970d7">TravelStraightManualCommand</a>
 , <a class="el" href="class_load_frisbee_command.html#a9e9aba6dcea930ae5da27be792feef63">LoadFrisbeeCommand</a>
+, <a class="el" href="class_aim_turret_command.html#a734e78423abdf8246cd43e9a331ba4e8">AimTurretCommand</a>
+, <a class="el" href="class_fire_frisbee_command.html#a20340567b6d140a0e37a532b7b49a5e5">FireFrisbeeCommand</a>
 </li>
 <li>Execute()
-: <a class="el" href="class_aim_turret_command.html#a25d71ff7dde448aa9fd4d7b58ab8ef6c">AimTurretCommand</a>
-, <a class="el" href="class_fire_frisbee_max_speed_command.html#a27b141d49621abfaf1520c228d0b039f">FireFrisbeeMaxSpeedCommand</a>
-, <a class="el" href="class_eject_frisbee_command.html#af3f1039ea150df2588dc33607d333aa8">EjectFrisbeeCommand</a>
-, <a class="el" href="class_test_encoder_command.html#a9fb4507953cf13c8eaf689009cc27988">TestEncoderCommand</a>
+: <a class="el" href="class_start_test_encoder_command.html#a4b952118dfda5a8ee1b637fd6a57bf53">StartTestEncoderCommand</a>
+, <a class="el" href="class_update_test_encoder_command.html#a6e0fadc08bcc19205590b80f12f14b3f">UpdateTestEncoderCommand</a>
 , <a class="el" href="class_arcade_drive_command.html#a8bc759a473f6676ff34b80975a9e1e0c">ArcadeDriveCommand</a>
-, <a class="el" href="class_tank_drive_command.html#aed1190c58fd643e8856b2ae012ec41e5">TankDriveCommand</a>
-, <a class="el" href="class_load_frisbee_command.html#a621140e88a427149d490fd3edf5bfcd5">LoadFrisbeeCommand</a>
-, <a class="el" href="class_fire_frisbee_set_speed_command.html#a98a0d6727e19ee808b3523e799b3c8ac">FireFrisbeeSetSpeedCommand</a>
+, <a class="el" href="class_test_encoder_command.html#a9fb4507953cf13c8eaf689009cc27988">TestEncoderCommand</a>
 , <a class="el" href="class_test_motor_command.html#ad4fde71225e88f2097b2404ce521e3f1">TestMotorCommand</a>
+, <a class="el" href="class_reset_test_encoder_command.html#a8037d46164a3f87812b0b9d8161652bc">ResetTestEncoderCommand</a>
+, <a class="el" href="class_load_frisbee_command.html#a621140e88a427149d490fd3edf5bfcd5">LoadFrisbeeCommand</a>
+, <a class="el" href="class_stop_test_encoder_command.html#ad503a5672ee8b7ff8c4c51d5283d358a">StopTestEncoderCommand</a>
+, <a class="el" href="class_fire_frisbee_command.html#a4a40f76a2db7ae5c93ee68bdef76154a">FireFrisbeeCommand</a>
+, <a class="el" href="class_eject_frisbee_command.html#af3f1039ea150df2588dc33607d333aa8">EjectFrisbeeCommand</a>
+, <a class="el" href="class_tank_drive_command.html#aed1190c58fd643e8856b2ae012ec41e5">TankDriveCommand</a>
 , <a class="el" href="class_spasm.html#af14ef887bb438bae7795940dc383b5e4">Spasm</a>
+, <a class="el" href="class_refresh_pid_command.html#ab2bd054214bc311a0a828e31279f5353">RefreshPidCommand</a>
+, <a class="el" href="class_aim_turret_command.html#a25d71ff7dde448aa9fd4d7b58ab8ef6c">AimTurretCommand</a>
+, <a class="el" href="class_simple_command.html#af2be23e220b6fd9aabcf65a4b7c79a6e">SimpleCommand</a>
+, <a class="el" href="class_travel_straight_manual_command.html#aa7b84f2a0a4784d9e939d6c84908405b">TravelStraightManualCommand</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -174,7 +188,7 @@ $(document).ready(function(){initNavTree('functions_func_0x65.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:05 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:32 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

@@ -1,11 +1,13 @@
 <map id="Code/Profiles/BlandRobotProfile.h" name="Code/Profiles/BlandRobotProfile.h">
-<area shape="rect" id="node5" href="$_ports_8h.html" title="../Misc/Ports.h" alt="" coords="662,104,769,131"/>
-<area shape="rect" id="node7" href="$_base_robot_profile_8h.html" title="BaseRobotProfile.h" alt="" coords="659,336,792,363"/>
-<area shape="rect" id="node12" href="$_xbox_o_i_8h.html" title="../OperatorInterfaces\l/XboxOI.h" alt="" coords="122,97,261,138"/>
+<area shape="rect" id="node5" href="$_ports_8h.html" title="Contains various enums representing physical ports and pins on the robot and client computer..." alt="" coords="58,104,165,131"/>
+<area shape="rect" id="node7" href="$_base_robot_profile_8h.html" title="BaseRobotProfile.h" alt="" coords="839,360,972,387"/>
+<area shape="rect" id="node12" href="$_xbox_o_i_8h.html" title="../OperatorInterfaces\l/XboxOI.h" alt="" coords="242,97,381,138"/>
 <area shape="rect" id="node15" href="$_xbox_8h.html" title="Xbox.h" alt="" coords="43,187,104,213"/>
-<area shape="rect" id="node18" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="169,261,244,288"/>
-<area shape="rect" id="node22" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="230,187,439,213"/>
-<area shape="rect" id="node28" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\DriveSubsystem.h" alt="" coords="371,261,587,288"/>
-<area shape="rect" id="node25" href="$_tools_8h.html" title="..\\Misc\\Tools.h" alt="" coords="321,336,428,363"/>
-<area shape="rect" id="node32" href="$_base_subsystem_8h.html" title="BaseSubsystem.h" alt="" coords="505,336,633,363"/>
+<area shape="rect" id="node44" href="$_frisbee_aimer_8h.html" title="../Subsystems/Shooter\l\\FrisbeeAimer.h" alt="" coords="715,262,871,303"/>
+<area shape="rect" id="node18" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="401,269,476,296"/>
+<area shape="rect" id="node22" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="207,187,416,213"/>
+<area shape="rect" id="node33" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\Drive\l\\DriveSubsystem.h" alt="" coords="501,262,640,303"/>
+<area shape="rect" id="node25" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="389,360,496,387"/>
+<area shape="rect" id="node30" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="152,269,275,296"/>
+<area shape="rect" id="node37" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="673,360,815,387"/>
 </map>

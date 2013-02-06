@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -100,6 +101,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="functions_func_0x73.html#index_s"><span>s</span></a></li>
       <li><a href="functions_func_0x74.html#index_t"><span>t</span></a></li>
       <li><a href="functions_func_0x75.html#index_u"><span>u</span></a></li>
+      <li><a href="functions_func_0x76.html#index_v"><span>v</span></a></li>
       <li><a href="functions_func_0x78.html#index_x"><span>x</span></a></li>
       <li><a href="functions_func_0x7e.html#index_0x7e"><span>~</span></a></li>
     </ul>
@@ -124,7 +126,7 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -140,32 +142,59 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 <li>SetDistancePerPulse()
 : <a class="el" href="class_test_encoder.html#a1b806760746d8a96bc803f1e3642be3f">TestEncoder</a>
 </li>
+<li>SetHighGear()
+: <a class="el" href="class_base_drive_transmission.html#a909caa4d1802b92cfb29f786a18d7b7d">BaseDriveTransmission</a>
+, <a class="el" href="class_simple_drive_transmission.html#a0e5e88ace54579a2124cd1825e7ea9a2">SimpleDriveTransmission</a>
+</li>
+<li>SetLowGear()
+: <a class="el" href="class_base_drive_transmission.html#af9e75393b782ca59ca4ee30407ed3757">BaseDriveTransmission</a>
+, <a class="el" href="class_simple_drive_transmission.html#a5bcc3e23cf7dd642b32615db06e32a6d">SimpleDriveTransmission</a>
+</li>
 <li>SetMaxDistance()
 : <a class="el" href="class_simple_belt_shooter.html#a56e48ca1a2b80e2917ba3ce2372acf5c">SimpleBeltShooter</a>
+, <a class="el" href="class_three_wheel_shooter.html#a009718b8bde40513b04198803dc6cabb">ThreeWheelShooter</a>
+</li>
+<li>SetMaxPeriod()
+: <a class="el" href="class_test_encoder.html#a440e9d4e77f0958ff4848cfa864171b2">TestEncoder</a>
 </li>
 <li>SetMaxSize()
 : <a class="el" href="class_smooth_encoder.html#a12be3709573a609c7f7a3f9690791e7e">SmoothEncoder</a>
 </li>
+<li>SetMinRate()
+: <a class="el" href="class_test_encoder.html#af8ebfa3093d501001695bb50d7e93dd4">TestEncoder</a>
+</li>
+<li>SetPIDSourceParameter()
+: <a class="el" href="class_test_encoder.html#a80c5606f7045a25a9bde4defb2ae529d">TestEncoder</a>
+</li>
+<li>SetReverseDirection()
+: <a class="el" href="class_test_encoder.html#a56852d62d351177abc58937dfc5e5fad">TestEncoder</a>
+</li>
 <li>SetSpeed()
 : <a class="el" href="class_test_motor.html#a6f1584f9283b7b71334f7af9daf6b0f8">TestMotor</a>
 </li>
-<li>SetTarget()
-: <a class="el" href="class_base_frisbee_aimer.html#a8d47ebdc0d4ea8b2792ee89401535a73">BaseFrisbeeAimer</a>
-</li>
 <li>SetupTeleop()
-: <a class="el" href="class_xbox_o_i.html#ab8d12fbd95da1780e87c2c830315c8ee">XboxOI</a>
+: <a class="el" href="class_test_encoder_o_i.html#a8fd44a88c5d048cef2045327c8a397e2">TestEncoderOI</a>
+, <a class="el" href="class_xbox_o_i.html#ab8d12fbd95da1780e87c2c830315c8ee">XboxOI</a>
 , <a class="el" href="class_base_o_i.html#aaec9630f4d1925a6cbfea130923bf524">BaseOI</a>
-, <a class="el" href="class_test_encoder_o_i.html#a8fd44a88c5d048cef2045327c8a397e2">TestEncoderOI</a>
+, <a class="el" href="class_competition_xbox_o_i.html#ac38621c43173da137773bad970e3ffd4">CompetitionXboxOI</a>
 </li>
 <li>ShootFrisbee()
-: <a class="el" href="class_base_frisbee_shooter.html#aaade5df38745f55891fb980210690c81">BaseFrisbeeShooter</a>
+: <a class="el" href="class_three_wheel_shooter.html#a9989320a58b5fb98206fc76032dea876">ThreeWheelShooter</a>
+, <a class="el" href="class_base_frisbee_shooter.html#aaade5df38745f55891fb980210690c81">BaseFrisbeeShooter</a>
 , <a class="el" href="class_simple_belt_shooter.html#a21cb0601c9020d27af91e221da3080fb">SimpleBeltShooter</a>
+, <a class="el" href="class_three_wheel_shooter.html#afe6dd1c6f96f5c120fcce444ba9f6012">ThreeWheelShooter</a>
 </li>
 <li>SimpleBeltShooter()
 : <a class="el" href="class_simple_belt_shooter.html#a1e2b8956f022b8608f85ea83a4715292">SimpleBeltShooter</a>
 </li>
+<li>SimpleCommand()
+: <a class="el" href="class_simple_command.html#acca9a1d5286d6c1756c76ba6113296c1">SimpleCommand</a>
+</li>
 <li>SimpleDrive()
 : <a class="el" href="class_simple_drive.html#a91c79cacdcd4b92d885d555302428d1b">SimpleDrive</a>
+</li>
+<li>SimpleDriveTransmission()
+: <a class="el" href="class_simple_drive_transmission.html#a82db77cb4f938c3f4074f898e19fa969">SimpleDriveTransmission</a>
 </li>
 <li>SimpleFrisbeeTurret()
 : <a class="el" href="class_simple_frisbee_turret.html#acf8aa01d8a6179087dc823d381c7bd38">SimpleFrisbeeTurret</a>
@@ -176,13 +205,19 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 <li>Spasm()
 : <a class="el" href="class_spasm.html#ac2d93063cf86d622a219faafd5ef6d3a">Spasm</a>
 </li>
-<li>Stop()
-: <a class="el" href="class_base_frisbee_raiser.html#a4957f73e65e6a6765cd04f281fe3edd7">BaseFrisbeeRaiser</a>
+<li>Start()
+: <a class="el" href="class_test_encoder.html#a0325b1671202c9894d75df9b8cfc109e">TestEncoder</a>
 </li>
-<li>StopMoving()
-: <a class="el" href="class_base_drive.html#a3fba7e54f130a2c3a3152565cdfac9f7">BaseDrive</a>
-, <a class="el" href="class_simple_drive.html#ab8a93a890b37c77b9a189496cbd21cf8">SimpleDrive</a>
-, <a class="el" href="class_pid_simple_drive.html#a7fbf3772291620737bd69cdbbc72df3b">PidSimpleDrive</a>
+<li>StartTestEncoderCommand()
+: <a class="el" href="class_start_test_encoder_command.html#acc92aa9cde7dae9014ac19fb30b93f98">StartTestEncoderCommand</a>
+</li>
+<li>Stop()
+: <a class="el" href="class_test_encoder.html#addfc960e91676362fb777d7c81c60d01">TestEncoder</a>
+, <a class="el" href="class_guarded_frisbee_raiser.html#a4ab52bb4bcafe1ab8e7c4042dc8cfa7e">GuardedFrisbeeRaiser</a>
+, <a class="el" href="class_base_frisbee_raiser.html#a4957f73e65e6a6765cd04f281fe3edd7">BaseFrisbeeRaiser</a>
+</li>
+<li>StopTestEncoderCommand()
+: <a class="el" href="class_stop_test_encoder_command.html#a7d51ec01f0e6524d511453778b9de9f0">StopTestEncoderCommand</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -190,7 +225,7 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:05 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:32 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

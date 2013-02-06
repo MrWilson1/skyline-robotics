@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -75,6 +76,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li class="current"><a href="namespacemembers.html"><span>All</span></a></li>
       <li><a href="namespacemembers_func.html"><span>Functions</span></a></li>
+      <li><a href="namespacemembers_type.html"><span>Typedefs</span></a></li>
       <li><a href="namespacemembers_enum.html"><span>Enumerations</span></a></li>
       <li><a href="namespacemembers_eval.html"><span>Enumerator</span></a></li>
     </ul>
@@ -85,12 +87,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
+      <li><a href="#index_h"><span>h</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
+      <li><a href="#index_k"><span>k</span></a></li>
       <li><a href="#index_l"><span>l</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
+      <li><a href="#index_n"><span>n</span></a></li>
       <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
+      <li><a href="#index_t"><span>t</span></a></li>
       <li><a href="#index_u"><span>u</span></a></li>
     </ul>
   </div>
@@ -114,7 +120,7 @@ $(document).ready(function(){initNavTree('namespacemembers.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -158,18 +164,24 @@ $(document).ready(function(){initNavTree('namespacemembers.html','');});
 
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
-<li>Centimeters
-: <a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5a61558ce042d7e6a84612e602dfe843ee">Tools</a>
+<li>ClosestDistance
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda0b01b8911e1f0436dc6cfd4d41979f0f">Tracking</a>
+</li>
+<li>ClosestOffset
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7ddae76c5fbb03e3057920927b2c37e29fa2">Tracking</a>
 </li>
 <li>ConvertUnits()
-: <a class="el" href="namespace_tools.html#a07b994aa7d74ab81f3eb6d6b22ced58e">Tools</a>
+: <a class="el" href="group__tools.html#ga07b994aa7d74ab81f3eb6d6b22ced58e">Tools</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
-<li>Feet
-: <a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5a3258ea4a1b70e4d627b7eb0dc70a80bb">Tools</a>
+<li>FindMagnitude()
+: <a class="el" href="group__tools.html#gac4ec1dc7517e93864479935b762c12f4">Tools</a>
+</li>
+<li>FindTargetMagnitude()
+: <a class="el" href="namespace_tracking.html#ab3dfe0834d142c270a8c093f1e0e8769">Tracking</a>
 </li>
 </ul>
 
@@ -223,23 +235,52 @@ $(document).ready(function(){initNavTree('namespacemembers.html','');});
 </ul>
 
 
+<h3><a class="anchor" id="index_h"></a>- h -</h3><ul>
+<li>High
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda785e11bdcc3dc09a45ff366a37543348">Tracking</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
-<li>Inches
-: <a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5ac58eafca3959441c32a5837e0e7303f8">Tools</a>
+<li>IsWithinRange()
+: <a class="el" href="group__tools.html#ga4887ab35ffb7fc7b48a4c75267c1bf52">Tools</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_k"></a>- k -</h3><ul>
+<li>kCentimeters
+: <a class="el" href="group__tools.html#ggacf24d07ae201887b88b73731d536c0d5a30d59394e61b918a78a799f2ee91ce03">Tools</a>
+</li>
+<li>kFeet
+: <a class="el" href="group__tools.html#ggacf24d07ae201887b88b73731d536c0d5afed836c1dbc34d7f526fb04914fca2e9">Tools</a>
+</li>
+<li>kInches
+: <a class="el" href="group__tools.html#ggacf24d07ae201887b88b73731d536c0d5a6d4bb6adeb5a8392192703301db09ab6">Tools</a>
+</li>
+<li>kMeters
+: <a class="el" href="group__tools.html#ggacf24d07ae201887b88b73731d536c0d5aa316b3d74ce885c4f0e28f8d0e74a85d">Tools</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
 <li>Limit()
-: <a class="el" href="namespace_tools.html#a10349cc2f8ef777272aa44b0b9a09270">Tools</a>
+: <a class="el" href="group__tools.html#ga10349cc2f8ef777272aa44b0b9a09270">Tools</a>
+</li>
+<li>Low
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda1e8ec5835070325cad6cae8cca9c5614">Tracking</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
-<li>Meters
-: <a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5a7c4d5c195e10eaf79b236aee29675183">Tools</a>
+<li>MediumLeft
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7ddac0ccfa695ea676846658b802e6e8eed8">Tracking</a>
+</li>
+<li>MediumRight
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda5206fb2faa99a481d2f0da652e265ebb">Tracking</a>
 </li>
 <li>Module
 : <a class="el" href="namespace_ports_1_1_crio.html#aa86b9e625abfa5049c7e1570b31cc56e">Ports::Crio</a>
@@ -249,6 +290,13 @@ $(document).ready(function(){initNavTree('namespacemembers.html','');});
 </li>
 <li>Module2
 : <a class="el" href="namespace_ports_1_1_crio.html#aa86b9e625abfa5049c7e1570b31cc56ea914ea7bcb2f017abbfb257a9a3d91766">Ports::Crio</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_n"></a>- n -</h3><ul>
+<li>None
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda80cd58661dcd94390ed8b5cf4e898fb4">Tracking</a>
 </li>
 </ul>
 
@@ -287,6 +335,9 @@ $(document).ready(function(){initNavTree('namespacemembers.html','');});
 <li>Pwm9
 : <a class="el" href="namespace_ports_1_1_digital_sidecar.html#a6310b3ee141fd167269e60cd822388b8a73bc4667700df43c6b6c48beaafc8a90">Ports::DigitalSidecar</a>
 </li>
+<li>Pyramid
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda661df7377b1fe0063663cdbd59efda19">Tracking</a>
+</li>
 </ul>
 
 
@@ -323,7 +374,7 @@ $(document).ready(function(){initNavTree('namespacemembers.html','');});
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
 <li>Scale()
-: <a class="el" href="namespace_tools.html#af23501b58339faa07f586a664ec57992">Tools</a>
+: <a class="el" href="group__tools.html#gaf23501b58339faa07f586a664ec57992">Tools</a>
 </li>
 <li>SolenoidBreakout
 : <a class="el" href="namespace_ports_1_1_crio.html#a22e0c5a7a7529735b35a09e0f727cf72">Ports::Crio</a>
@@ -352,12 +403,31 @@ $(document).ready(function(){initNavTree('namespacemembers.html','');});
 <li>SolenoidBreakout8
 : <a class="el" href="namespace_ports_1_1_crio.html#a22e0c5a7a7529735b35a09e0f727cf72ae1130fb78ac05430d663a48ae4eae554">Ports::Crio</a>
 </li>
+<li>SquareMagnitude()
+: <a class="el" href="group__tools.html#ga9acd0f8f92c3679a67b5c5d09e8319ca">Tools</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>TargetMap
+: <a class="el" href="namespace_tracking.html#a179e968808aba18956b442892d3b66ff">Tracking</a>
+</li>
+<li>TargetType
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dd">Tracking</a>
+</li>
+<li>Test
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7ddaf7e0235318e36cb8f3af90f485b6b153">Tracking</a>
+</li>
 </ul>
 
 
 <h3><a class="anchor" id="index_u"></a>- u -</h3><ul>
 <li>Units
-: <a class="el" href="namespace_tools.html#acf24d07ae201887b88b73731d536c0d5">Tools</a>
+: <a class="el" href="group__tools.html#gacf24d07ae201887b88b73731d536c0d5">Tools</a>
+</li>
+<li>Unknown
+: <a class="el" href="namespace_tracking.html#ad9f418c48b489555841e90768087f7dda92f3eb67d6c39f84e304c2a66f8665f4">Tracking</a>
 </li>
 <li>Usb
 : <a class="el" href="namespace_ports_1_1_computer.html#a93fe4d3fb6d1612f2cb1bcd0f8379d5b">Ports::Computer</a>
@@ -380,7 +450,7 @@ $(document).ready(function(){initNavTree('namespacemembers.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 26 2013 11:29:05 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 09:18:32 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

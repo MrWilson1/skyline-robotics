@@ -8,5 +8,5 @@ var searchData=
   ['xboxoi_2ecpp',['XboxOI.cpp',['../_xbox_o_i_8cpp.html',1,'']]],
   ['xboxoi_2eh',['XboxOI.h',['../_xbox_o_i_8h.html',1,'']]],
   ['xdir',['XDir',['../class_xbox_controller.html#a2cf07e63fc6d085896f440ff336b8c3aa297ff58923b265c4a0d1104698eb6aae',1,'XboxController']]],
-  ['xoffset',['XOffset',['../struct_offset.html#aaffacfb8a658e589742e356177c41b68',1,'Offset']]]
+  ['xoffset',['XOffset',['../struct_tracking_1_1_offset.html#a47003a7c3932d380cf923a7a5985574c',1,'Tracking::Offset']]]
 ];

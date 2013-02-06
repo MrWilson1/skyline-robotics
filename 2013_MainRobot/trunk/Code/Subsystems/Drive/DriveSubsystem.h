@@ -1,7 +1,14 @@
 #ifndef DRIVE_SUBSYSTEM_H
 #define DRIVE_SUBSYSTEM_H
 /**
+ * \file DriveSubsystem.h
+ * 
  * Implements various subsystems related to the drive.
+ * 
+ * \addtogroup subsystems
+ * \{
+ * \defgroup drive_subsystems Drive
+ * \{
  */
 
 #include <string>
@@ -12,9 +19,9 @@
 #include "../../Misc/Tools.h"
 
 /**
- * A base drive. All drives must be a subclass of this class.
+ * \brief A base drive. All drives must be a subclass of this class.
  * 
- * Note that Holonomic and Mechanum wheel drives are currently
+ * \warning Note that Holonomic and Mechanum wheel drives are currently
  * not implemented by this interface. 
  * 
  * For the definitions of what these virtual methods are meant to
@@ -40,6 +47,9 @@ public:
 	virtual void Brake() = 0;
 };
 
+/**
+ * \brief An interface for any PID-based drive.
+ */
 class IPidDrive {
 public:
 	IPidDrive();
@@ -48,7 +58,7 @@ public:
 };
 
 /**
- * The absolute simplest drive possible. Contains
+ * \brief The absolute simplest drive possible. Contains
  * no PID loops or other forms of feedback systems.
  */
 class SimpleDrive : public BaseDrive {
@@ -74,7 +84,10 @@ private:
 
 
 /**
- * Returns running average of size `maxSize`
+ * \brief A varient of an encoder which returns a running average 
+ * of the past five values from PIDGet.
+ * 
+ * Specifically, it returns running average of size `maxSize`
  * when calling PIDGet(). The type (rate or distance) must
  * be specified beforehand by configuring the encoder.
  * 
@@ -84,11 +97,27 @@ private:
  */
 class SmoothEncoder : public PIDSource {
 public:
+	/**
+	 * \param[in] encoder A pointer to the encoder
+	 * \param[in] maxSize The length of the running average
+	 */
 	SmoothEncoder(Encoder *encoder, unsigned int maxSize);
 	virtual ~SmoothEncoder();
 	
+	/**
+	 * \brief Completes the PIDSource interface.
+	 * 
+	 * Returns the rate or the distance, depending on what
+	 * the encoder is set to.
+	 */
 	double PIDGet();
+	/**
+	 * \brief Returns a pointer to the internal encoder
+	 */
 	Encoder *GetEncoder();
+	/**
+	 * \brief Sets the size of the running average.
+	 */
 	void SetMaxSize(unsigned int maxSize);
 	
 private:
@@ -98,23 +127,30 @@ private:
 	
 };
 
+/**
+ * \brief Represents a single side of the robot drive
+ * 
+ * Forces the two wheels to spin at the same time.
+ */
 class Tread : public PIDOutput {
 public:
-	enum TreadPidMode {
-		kRate,
-		kDistance
-	};
+	/**
+	 * \brief Specifies the direction the motors should spin to move forwards
+	 */
 	enum Direction {
 		kForward = 1,
 		kReversed = -1
 	};
 	Tread(SpeedController *front, SpeedController *back, Direction direction);
 	virtual ~Tread();
-	
-	//TreadPidMode GetMode();
-	//void SetMode(TreadPidMode PidMode);
+	/**
+	 * \brief Sets the motor speed
+	 */
 	void PIDWrite(float output);
 
+	/**
+	 * \brief The motor speed
+	 */
 	float m_last;
 private:
 	SpeedController *m_front;
@@ -124,7 +160,17 @@ private:
 };
 
 
-
+/**
+ * \brief A drive system using PID controllers.
+ * 
+ * Contains two sets of PID controllers -- one for rate, and another for distance.
+ * 
+ * \warning The PID loops are not yet well-calibrated, and are buggy.
+ * 
+ * \warning Not all methods have been implemented
+ * 
+ * \warning Only the rate PID loops have been calibrated
+ */
 class PidSimpleDrive : public BaseDrive, public IPidDrive {
 public:
 	PidSimpleDrive(
@@ -175,4 +221,8 @@ private:
 	PidMode m_currentMode;
 };
 
+/**
+ * \}
+ * \}
+ */
 #endif

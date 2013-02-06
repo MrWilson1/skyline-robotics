@@ -1,4 +1,4 @@
 <map id="SimpleDrive" name="SimpleDrive">
-<area shape="rect" id="node2" href="$class_base_drive.html" title="BaseDrive" alt="" coords="24,155,104,181"/>
-<area shape="rect" id="node4" href="$class_base_subsystem.html" title="BaseSubsystem" alt="" coords="5,80,123,107"/>
+<area shape="rect" id="node2" href="$class_base_drive.html" title="A base drive. All drives must be a subclass of this class." alt="" coords="24,155,104,181"/>
+<area shape="rect" id="node4" href="$class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="5,80,123,107"/>
 </map>

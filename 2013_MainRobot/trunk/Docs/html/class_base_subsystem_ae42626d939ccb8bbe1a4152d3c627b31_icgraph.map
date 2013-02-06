@@ -1,5 +1,7 @@
 <map id="BaseSubsystem::AddActuatorToLiveWindow" name="BaseSubsystem::AddActuatorToLiveWindow">
-<area shape="rect" id="node3" href="$class_pid_simple_drive.html#a1522be3c25a2e8e2dc12660e8f6c7153" title="PidSimpleDrive::PidSimple\lDrive" alt="" coords="253,5,429,46"/>
-<area shape="rect" id="node5" href="$class_test_motor.html#a61e5ae996ac8d4286053b2f956d1d4b7" title="TestMotor::TestMotor" alt="" coords="268,71,415,97"/>
-<area shape="rect" id="node7" href="$class_simple_belt_shooter.html#a1e2b8956f022b8608f85ea83a4715292" title="SimpleBeltShooter::\lSimpleBeltShooter" alt="" coords="272,122,411,163"/>
+<area shape="rect" id="node3" href="$class_pid_simple_drive.html#a1522be3c25a2e8e2dc12660e8f6c7153" title="PidSimpleDrive::PidSimple\lDrive" alt="" coords="259,5,435,46"/>
+<area shape="rect" id="node5" href="$class_test_motor.html#a61e5ae996ac8d4286053b2f956d1d4b7" title="TestMotor::TestMotor" alt="" coords="273,71,420,97"/>
+<area shape="rect" id="node7" href="$class_simple_belt_shooter.html#a1e2b8956f022b8608f85ea83a4715292" title="SimpleBeltShooter::\lSimpleBeltShooter" alt="" coords="277,122,416,163"/>
+<area shape="rect" id="node9" href="$class_three_wheel_shooter.html#a7cd7c2a883264b195b1258952fd92f6e" title="ThreeWheelShooter::\lThreeWheelShooter" alt="" coords="275,187,419,229"/>
+<area shape="rect" id="node11" href="$class_pid_frisbee_turret.html#aaeacc3693796aa441bac56a9639c8683" title="PidFrisbeeTurret::PidFrisbee\lTurret" alt="" coords="253,253,440,294"/>
 </map>

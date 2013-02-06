@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['target',['Target',['../struct_target.html#abac219352dc6492e65db1dc9ebdaca87',1,'Target']]]
+  ['type',['Type',['../struct_tracking_1_1_target.html#aecbfcdac9353e147ba44d89b3633f9ef',1,'Tracking::Target']]]
 ];
