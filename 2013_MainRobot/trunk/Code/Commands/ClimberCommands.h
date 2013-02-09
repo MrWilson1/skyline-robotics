@@ -21,4 +21,5 @@ public:
 		
 private: 
 	BaseClimberArm *m_arm; 	
+	float m_magnitude;
 };
