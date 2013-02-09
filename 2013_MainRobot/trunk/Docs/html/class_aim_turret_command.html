@@ -112,6 +112,9 @@ $(document).ready(function(){initNavTree('class_aim_turret_command.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Aims the turret at the given target.  
+ <a href="class_aim_turret_command.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_shooter_commands_8h_source.html">ShooterCommands.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for AimTurretCommand:</div>
@@ -141,7 +144,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4d47eb970e770a500ab0a1a1b68c06c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_aim_turret_command.html#a4d47eb970e770a500ab0a1a1b68c06c6">Interrupted</a> ()</td></tr>
 <tr class="separator:a4d47eb970e770a500ab0a1a1b68c06c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Aims the turret at the given target. </p>
+<p>Protip: If you set this to the default turret command, using </p>
+<pre class="fragment">   Tracking::ClosestOffset
+</pre><p>...as the desiredTarget param, the turret will automatically lock on and track the target it's pointing at.</p>
+<p>You can manually adjust the target to point at a different target, or issue a command to point it at the appropriate target and let this take over once that command is finished. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a393ebfbf9ba4a170b7efa4dd99c9c62e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -290,7 +299,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_aim_turret_command.html">AimTurretCommand</a></li>
-    <li class="footer">Generated on Tue Feb 5 2013 09:18:29 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 19:36:01 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

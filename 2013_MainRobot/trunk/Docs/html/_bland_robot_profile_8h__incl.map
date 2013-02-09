@@ -7,7 +7,7 @@
 <area shape="rect" id="node18" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="401,269,476,296"/>
 <area shape="rect" id="node22" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="207,187,416,213"/>
 <area shape="rect" id="node33" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\Drive\l\\DriveSubsystem.h" alt="" coords="501,262,640,303"/>
-<area shape="rect" id="node25" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="389,360,496,387"/>
+<area shape="rect" id="node25" href="$_tools_8h.html" title="Contains utility functions. See the Tools module." alt="" coords="389,360,496,387"/>
 <area shape="rect" id="node30" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="152,269,275,296"/>
 <area shape="rect" id="node37" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="673,360,815,387"/>
 </map>

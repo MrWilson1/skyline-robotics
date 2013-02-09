@@ -12,7 +12,8 @@ var dir_ed17389dfdbfffa40abb56b1c475b73d =
       [ "AimTurretCommand", "class_aim_turret_command.html", "class_aim_turret_command" ],
       [ "FireFrisbeeCommand", "class_fire_frisbee_command.html", "class_fire_frisbee_command" ],
       [ "EjectFrisbeeCommand", "class_eject_frisbee_command.html", "class_eject_frisbee_command" ],
-      [ "LoadAndFireCommand", "class_load_and_fire_command.html", "class_load_and_fire_command" ]
+      [ "LoadAndFireCommand", "class_load_and_fire_command.html", "class_load_and_fire_command" ],
+      [ "ManuallyAdjustTurretCommand", "class_manually_adjust_turret_command.html", "class_manually_adjust_turret_command" ]
     ] ],
     [ "TestCommands.cpp", "_test_commands_8cpp.html", null ],
     [ "TestCommands.h", "_test_commands_8h.html", [

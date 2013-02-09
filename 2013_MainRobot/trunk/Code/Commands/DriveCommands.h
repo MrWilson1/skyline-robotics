@@ -102,25 +102,26 @@ private:
 	IPidDrive *m_drive;
 };
 
-/*
-class TravelDistance : public Command
+
+class TravelDistanceCommand : public Command
 {
 public:
-	TravelDistance(BaseDrive *drive, float distance, Units unit);
-	TravelDistance(BaseDrive *drive, float distanceInInches);
-	virtual ~TravelDistance();
+	TravelDistanceCommand(BaseDrive *drive, float distance, Tools::Units unit);
+	TravelDistanceCommand(BaseDrive *drive, float distanceInInches);
+	~TravelDistanceCommand();
 	
-	virtual void Initialize();
-	virtual void Execute();
-	virtual bool IsFinished();
-	virtual void End();
-	virtual void Interrupted();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
 	
 private:
 	float m_distanceInInches;
 	BaseDrive *m_drive;
 };
 
+/*
 class RotateRobot : public Command
 {
 public:

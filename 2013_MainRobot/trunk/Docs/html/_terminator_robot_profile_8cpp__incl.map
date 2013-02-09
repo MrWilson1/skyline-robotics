@@ -4,13 +4,13 @@
 <area shape="rect" id="node9" href="$_base_robot_profile_8h.html" title="BaseRobotProfile.h" alt="" coords="5,427,139,453"/>
 <area shape="rect" id="node14" href="$_test_encoder_o_i_8h.html" title="../OperatorInterfaces\l/TestEncoderOI.h" alt="" coords="462,171,601,213"/>
 <area shape="rect" id="node17" href="$_xbox_8h.html" title="Xbox.h" alt="" coords="956,261,1017,288"/>
-<area shape="rect" id="node47" href="$_experimental_8h.html" title="A file containing short experimental subsystems or subsystems used for testing." alt="" coords="98,344,296,371"/>
+<area shape="rect" id="node47" href="$_experimental_8h.html" title="A file containing short experimental subsystems or subsystems used for testing. See the Experimental ..." alt="" coords="98,344,296,371"/>
 <area shape="rect" id="node53" href="$_xbox_o_i_8h.html" title="../OperatorInterfaces\l/XboxOI.h" alt="" coords="694,171,833,213"/>
 <area shape="rect" id="node20" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="817,344,892,371"/>
 <area shape="rect" id="node24" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="621,261,829,288"/>
 <area shape="rect" id="node35" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\Drive\l\\DriveSubsystem.h" alt="" coords="519,337,657,378"/>
 <area shape="rect" id="node44" href="$_test_commands_8h.html" title="../Commands/TestCommands.h" alt="" coords="237,261,443,288"/>
-<area shape="rect" id="node27" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="582,427,689,453"/>
+<area shape="rect" id="node27" href="$_tools_8h.html" title="Contains utility functions. See the Tools module." alt="" coords="582,427,689,453"/>
 <area shape="rect" id="node32" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="321,344,444,371"/>
 <area shape="rect" id="node39" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="264,427,405,453"/>
 </map>

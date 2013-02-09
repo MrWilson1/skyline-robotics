@@ -175,3 +175,43 @@ void Spasm::Interrupted() {
 	counter = 103;
 	m_drive->TankDrive(value, value);
 }
+
+
+
+TravelDistanceCommand::TravelDistanceCommand(BaseDrive *drive, float distance, Tools::Units unit) :
+		Command("TravelDistanceCommand"),
+		m_distanceInInches(Tools::ConvertUnits(distance, unit, Tools::kInches)) {
+	m_drive = drive;
+}
+
+TravelDistanceCommand::TravelDistanceCommand(BaseDrive *drive, float distanceInInches) :
+		Command("TravelDistanceCommand"),
+		m_distanceInInches(distanceInInches) {
+	m_drive = drive;
+	Requires(m_drive);
+}
+
+
+TravelDistanceCommand::~TravelDistanceCommand() {
+	//empty
+}
+	
+void TravelDistanceCommand::Initialize() {
+	// empty
+}
+
+void TravelDistanceCommand::Execute() {
+	m_drive->TravelDistance(m_distanceInInches);
+}
+
+bool IsFinished() {
+	return true;
+}
+
+void End() {
+	// empty
+}
+
+void Interrupted() {
+	// empty
+}

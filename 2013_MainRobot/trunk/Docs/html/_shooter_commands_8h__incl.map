@@ -1,5 +1,5 @@
 <map id="Code/Commands/ShooterCommands.h" name="Code/Commands/ShooterCommands.h">
-<area shape="rect" id="node5" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="920,269,1027,296"/>
+<area shape="rect" id="node5" href="$_tools_8h.html" title="Contains utility functions. See the Tools module." alt="" coords="920,269,1027,296"/>
 <area shape="rect" id="node9" href="$_base_o_i_8h.html" title="..\\OperatorInterfaces\l\\BaseOI.h" alt="" coords="756,262,895,303"/>
 <area shape="rect" id="node14" href="$_frisbee_aimer_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeAimer.h" alt="" coords="339,171,494,213"/>
 <area shape="rect" id="node27" href="$_frisbee_loader_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeLoader.h" alt="" coords="27,171,182,213"/>

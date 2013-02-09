@@ -101,7 +101,11 @@ public:
 	 * \param[in] encoder A pointer to the encoder
 	 * \param[in] maxSize The length of the running average
 	 */
-	SmoothEncoder(Encoder *encoder, unsigned int maxSize);
+	SmoothEncoder(
+			Encoder *encoder, 
+			unsigned int maxSize,
+			Encoder::PIDSourceParameter pidSourceParameter,
+			float distancePerPulse);
 	virtual ~SmoothEncoder();
 	
 	/**
@@ -119,12 +123,22 @@ public:
 	 * \brief Sets the size of the running average.
 	 */
 	void SetMaxSize(unsigned int maxSize);
+	unsigned int GetMaxSize();
+	
+	void SetPIDSourceParameter(Encoder::PIDSourceParameter pidSourceParameter);
+	Encoder::PIDSourceParameter GetPIDSourceParameter();
+	
+	void SetDistancePerPulse(float distancePerPulse);
+	float GetDistancePerPulse();
+	
+	void Reset();
 	
 private:
 	Encoder *m_encoder;
 	std::deque<double> m_history;
 	unsigned int m_maxSize;
-	
+	Encoder::PIDSourceParameter m_pidSourceParameter;
+	float m_distancePerPulse;
 };
 
 /**
@@ -179,7 +193,11 @@ public:
 			SpeedController *rightFront,
 			SpeedController *rightBack,
 			Encoder *leftEncoder,
-			Encoder *rightEncoder);
+			Encoder *rightEncoder,
+			float leftRateDPP,
+			float rightRateDPP,
+			float leftDistanceDPP,
+			float rightDistanceDPP);
 	~PidSimpleDrive();
 	
 	void Drive(float outputMagnitude, float curve);
@@ -219,6 +237,11 @@ private:
 	PIDController *m_rightPidDistance;
 	
 	PidMode m_currentMode;
+	
+	float m_leftRateDPP;
+	float m_rightRateDPP;
+	float m_leftDistanceDPP;
+	float m_rightDistanceDPP;
 };
 
 /**

@@ -107,61 +107,61 @@ $(document).ready(function(){initNavTree('_experimental_8h_source.html','');});
 </div><!--header-->
 <div class="contents">
 <a href="_experimental_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#ifndef EXPERIMENTAL_H</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define EXPERIMENTAL_H</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;WPILib.h&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_subsystem_8h.html" title="Extends the WPILib Subsystem class.">BaseSubsystem.h</a>&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="code" href="class_test_motor.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_test_motor.html" title="Controls a single motor.">TestMotor</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html" title="The abstract base class for all subsystems.">BaseSubsystem</a> {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="class_test_motor.html#a61e5ae996ac8d4286053b2f956d1d4b7">TestMotor</a>(SpeedController *motor, <span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="class_test_motor.html#a0c4ee2dd9ccf025921959c0ffbae3505">~TestMotor</a>();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_motor.html#a6f1584f9283b7b71334f7af9daf6b0f8" title="Sets the speed of the motor to the given speed.">SetSpeed</a>(<span class="keywordtype">float</span> speed);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_motor.html#ad7fc11d1322cfa037bc673038bceb4a8" title="Sets the speed of the motor to 1.0.">MaxSpeed</a>();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="class_test_motor.html#aff0c3b9cfc6dfa3592eb655a803d707b">   51</a></span>&#160;    SpeedController *<a class="code" href="class_test_motor.html#aff0c3b9cfc6dfa3592eb655a803d707b">m_motor</a>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="code" href="class_test_encoder.html">   61</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_test_encoder.html" title="Reports all telemetry from an encoder, and provides hooks to configure it during runtime.">TestEncoder</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html" title="The abstract base class for all subsystems.">BaseSubsystem</a> {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc">TestEncoder</a>(Encoder *encoder, <span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc">TestEncoder</a>(Encoder *encoder, <span class="keywordtype">float</span> distancePerPulse, <span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="class_test_encoder.html#ab2af6856a7bdd5287bb98448c4222243">~TestEncoder</a>();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a6b131055b0dcee65f750d6c650f2dab1" title="Writes all encoder values to the SmartDashboard.">ReportAll</a>();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a0325b1671202c9894d75df9b8cfc109e">Start</a>();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#addfc960e91676362fb777d7c81c60d01">Stop</a>();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a17ed3c71a0e9860277c025536fe9d1b3">Reset</a>();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a440e9d4e77f0958ff4848cfa864171b2">SetMaxPeriod</a>(<span class="keywordtype">double</span> maxPeriod);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#af8ebfa3093d501001695bb50d7e93dd4">SetMinRate</a>(<span class="keywordtype">double</span> minRate);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a1b806760746d8a96bc803f1e3642be3f">SetDistancePerPulse</a>(<span class="keywordtype">double</span> input);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a56852d62d351177abc58937dfc5e5fad">SetReverseDirection</a>(<span class="keywordtype">bool</span> reverseDirection);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a80c5606f7045a25a9bde4defb2ae529d">SetPIDSourceParameter</a>(Encoder::PIDSourceParameter pidSource);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_test_encoder.html#a0ca27e43f2a0442919557d0da7876ad6">GetDistancePerPulse</a>();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">void</span> Log(<span class="keyword">const</span> <span class="keywordtype">char</span> *key, <span class="keywordtype">int</span> value);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span> Log(<span class="keyword">const</span> <span class="keywordtype">char</span> *key, <span class="keywordtype">double</span> value);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordtype">void</span> LogBool(<span class="keyword">const</span> <span class="keywordtype">char</span> *key, <span class="keywordtype">bool</span> value);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    Encoder *m_encoder;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="comment">// Manually keeping track because there&#39;s no way to get it directly</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="comment">// from the Encoder.</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordtype">double</span> m_distancePerPulse;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;};</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef EXPERIMENTAL_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define EXPERIMENTAL_H</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;WPILib.h&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_subsystem_8h.html" title="Extends the WPILib Subsystem class.">BaseSubsystem.h</a>&quot;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="code" href="class_test_motor.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_test_motor.html" title="Controls a single motor.">TestMotor</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html" title="The abstract base class for all subsystems.">BaseSubsystem</a> {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="class_test_motor.html#a61e5ae996ac8d4286053b2f956d1d4b7">TestMotor</a>(SpeedController *motor, <span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="class_test_motor.html#a0c4ee2dd9ccf025921959c0ffbae3505">~TestMotor</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_motor.html#a6f1584f9283b7b71334f7af9daf6b0f8" title="Sets the speed of the motor to the given speed.">SetSpeed</a>(<span class="keywordtype">float</span> speed);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_motor.html#ad7fc11d1322cfa037bc673038bceb4a8" title="Sets the speed of the motor to 1.0.">MaxSpeed</a>();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="class_test_motor.html#aff0c3b9cfc6dfa3592eb655a803d707b">   56</a></span>&#160;    SpeedController *<a class="code" href="class_test_motor.html#aff0c3b9cfc6dfa3592eb655a803d707b">m_motor</a>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="code" href="class_test_encoder.html">   66</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_test_encoder.html" title="Reports all telemetry from an encoder, and provides hooks to configure it during runtime.">TestEncoder</a> : <span class="keyword">public</span> <a class="code" href="class_base_subsystem.html" title="The abstract base class for all subsystems.">BaseSubsystem</a> {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc">TestEncoder</a>(Encoder *encoder, <span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="class_test_encoder.html#ae523f514e216fba6dd845ab05a2cbbbc">TestEncoder</a>(Encoder *encoder, <span class="keywordtype">float</span> distancePerPulse, <span class="keyword">const</span> <span class="keywordtype">char</span> *name);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="class_test_encoder.html#ab2af6856a7bdd5287bb98448c4222243">~TestEncoder</a>();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a6b131055b0dcee65f750d6c650f2dab1" title="Writes all encoder values to the SmartDashboard.">ReportAll</a>();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a0325b1671202c9894d75df9b8cfc109e">Start</a>();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#addfc960e91676362fb777d7c81c60d01">Stop</a>();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a17ed3c71a0e9860277c025536fe9d1b3">Reset</a>();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a440e9d4e77f0958ff4848cfa864171b2">SetMaxPeriod</a>(<span class="keywordtype">double</span> maxPeriod);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#af8ebfa3093d501001695bb50d7e93dd4">SetMinRate</a>(<span class="keywordtype">double</span> minRate);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a1b806760746d8a96bc803f1e3642be3f">SetDistancePerPulse</a>(<span class="keywordtype">double</span> input);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a56852d62d351177abc58937dfc5e5fad">SetReverseDirection</a>(<span class="keywordtype">bool</span> reverseDirection);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_test_encoder.html#a80c5606f7045a25a9bde4defb2ae529d">SetPIDSourceParameter</a>(Encoder::PIDSourceParameter pidSource);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_test_encoder.html#a0ca27e43f2a0442919557d0da7876ad6">GetDistancePerPulse</a>();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">void</span> Log(<span class="keyword">const</span> <span class="keywordtype">char</span> *key, <span class="keywordtype">int</span> value);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">void</span> Log(<span class="keyword">const</span> <span class="keywordtype">char</span> *key, <span class="keywordtype">double</span> value);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">void</span> LogBool(<span class="keyword">const</span> <span class="keywordtype">char</span> *key, <span class="keywordtype">bool</span> value);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    Encoder *m_encoder;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="comment">// Manually keeping track because there&#39;s no way to get it directly</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="comment">// from the Encoder.</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordtype">double</span> m_distancePerPulse;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;};</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd575884794bbd9245ab7f4f8f2a7983.html">Code</a></li><li class="navelem"><a class="el" href="dir_f9cc9dd264cde71432b1b66c96e526f8.html">Subsystems</a></li><li class="navelem"><a class="el" href="_experimental_8h.html">Experimental.h</a></li>
-    <li class="footer">Generated on Tue Feb 5 2013 09:18:28 for 2013_MainRobot by
+    <li class="footer">Generated on Tue Feb 5 2013 19:36:00 for 2013_MainRobot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

@@ -1,6 +1,6 @@
 <map id="Code/Commands/DriveCommands.cpp" name="Code/Commands/DriveCommands.cpp">
 <area shape="rect" id="node3" href="$_drive_commands_8h.html" title="DriveCommands.h" alt="" coords="121,80,247,107"/>
-<area shape="rect" id="node7" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="508,253,615,280"/>
+<area shape="rect" id="node7" href="$_tools_8h.html" title="Contains utility functions. See the Tools module." alt="" coords="508,253,615,280"/>
 <area shape="rect" id="node11" href="$_base_o_i_8h.html" title="..\\OperatorInterfaces\l\\BaseOI.h" alt="" coords="76,246,215,287"/>
 <area shape="rect" id="node16" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="25,163,147,189"/>
 <area shape="rect" id="node19" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\Drive\l\\DriveSubsystem.h" alt="" coords="293,155,431,197"/>

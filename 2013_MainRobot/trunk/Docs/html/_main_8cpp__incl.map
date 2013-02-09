@@ -10,11 +10,11 @@
 <area shape="rect" id="node20" href="$_base_o_i_8h.html" title="BaseOI.h" alt="" coords="902,435,978,461"/>
 <area shape="rect" id="node24" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="582,344,791,371"/>
 <area shape="rect" id="node35" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\Drive\l\\DriveSubsystem.h" alt="" coords="1408,427,1547,469"/>
-<area shape="rect" id="node27" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="1873,525,1980,552"/>
+<area shape="rect" id="node27" href="$_tools_8h.html" title="Contains utility functions. See the Tools module." alt="" coords="1873,525,1980,552"/>
 <area shape="rect" id="node32" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="384,435,507,461"/>
 <area shape="rect" id="node39" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="1707,525,1848,552"/>
 <area shape="rect" id="node61" href="$_test_encoder_o_i_8h.html" title="../OperatorInterfaces\l/TestEncoderOI.h" alt="" coords="384,246,523,287"/>
-<area shape="rect" id="node70" href="$_experimental_8h.html" title="A file containing short experimental subsystems or subsystems used for testing." alt="" coords="80,435,278,461"/>
+<area shape="rect" id="node70" href="$_experimental_8h.html" title="A file containing short experimental subsystems or subsystems used for testing. See the Experimental ..." alt="" coords="80,435,278,461"/>
 <area shape="rect" id="node67" href="$_test_commands_8h.html" title="../Commands/TestCommands.h" alt="" coords="249,344,455,371"/>
 <area shape="rect" id="node84" href="$_competition_xbox_o_i_8h.html" title="../OperatorInterfaces\l/CompetitionXboxOI.h" alt="" coords="1520,155,1667,197"/>
 <area shape="rect" id="node96" href="$_frisbee_loader_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeLoader.h" alt="" coords="1409,337,1564,378"/>

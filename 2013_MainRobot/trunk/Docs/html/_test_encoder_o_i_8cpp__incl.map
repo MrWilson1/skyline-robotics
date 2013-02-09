@@ -5,8 +5,8 @@
 <area shape="rect" id="node15" href="$_drive_commands_8h.html" title="../Commands/DriveCommands.h" alt="" coords="582,171,791,197"/>
 <area shape="rect" id="node26" href="$_drive_subsystem_8h.html" title="..\\Subsystems\\Drive\l\\DriveSubsystem.h" alt="" coords="512,246,651,287"/>
 <area shape="rect" id="node35" href="$_test_commands_8h.html" title="../Commands/TestCommands.h" alt="" coords="286,171,492,197"/>
-<area shape="rect" id="node38" href="$_experimental_8h.html" title="A file containing short experimental subsystems or subsystems used for testing." alt="" coords="142,253,340,280"/>
-<area shape="rect" id="node18" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="677,336,784,363"/>
+<area shape="rect" id="node38" href="$_experimental_8h.html" title="A file containing short experimental subsystems or subsystems used for testing. See the Experimental ..." alt="" coords="142,253,340,280"/>
+<area shape="rect" id="node18" href="$_tools_8h.html" title="Contains utility functions. See the Tools module." alt="" coords="677,336,784,363"/>
 <area shape="rect" id="node23" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="365,253,488,280"/>
 <area shape="rect" id="node30" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="359,336,500,363"/>
 </map>

@@ -1,5 +1,5 @@
 <map id="Code/Subsystems/Drive/DriveSubsystem.cpp" name="Code/Subsystems/Drive/DriveSubsystem.cpp">
 <area shape="rect" id="node3" href="$_drive_subsystem_8h.html" title="DriveSubsystem.h" alt="" coords="121,96,247,123"/>
 <area shape="rect" id="node9" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="60,171,201,197"/>
-<area shape="rect" id="node13" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="276,171,396,197"/>
+<area shape="rect" id="node13" href="$_tools_8h.html" title="Contains utility functions. See the Tools module." alt="" coords="276,171,396,197"/>
 </map>

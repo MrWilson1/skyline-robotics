@@ -12,6 +12,7 @@ var hierarchy =
       [ "EjectFrisbeeCommand", "class_eject_frisbee_command.html", null ],
       [ "FireFrisbeeCommand", "class_fire_frisbee_command.html", null ],
       [ "LoadFrisbeeCommand", "class_load_frisbee_command.html", null ],
+      [ "ManuallyAdjustTurretCommand", "class_manually_adjust_turret_command.html", null ],
       [ "SimpleCommand", "class_simple_command.html", [
         [ "RefreshPidCommand", "class_refresh_pid_command.html", null ],
         [ "ResetTestEncoderCommand", "class_reset_test_encoder_command.html", null ],

@@ -27,6 +27,7 @@ var annotated =
     [ "LoadAndFireCommand", "class_load_and_fire_command.html", "class_load_and_fire_command" ],
     [ "LoadFrisbeeCommand", "class_load_frisbee_command.html", "class_load_frisbee_command" ],
     [ "MainRobot2013Profile", "class_main_robot2013_profile.html", "class_main_robot2013_profile" ],
+    [ "ManuallyAdjustTurretCommand", "class_manually_adjust_turret_command.html", "class_manually_adjust_turret_command" ],
     [ "PidFrisbeeTurret", "class_pid_frisbee_turret.html", "class_pid_frisbee_turret" ],
     [ "PidSimpleDrive", "class_pid_simple_drive.html", "class_pid_simple_drive" ],
     [ "PlaceholderFrisbeeLoader", "class_placeholder_frisbee_loader.html", "class_placeholder_frisbee_loader" ],

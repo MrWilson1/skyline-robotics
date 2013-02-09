@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['deadband',['Deadband',['../namespace_tools.html#aa35183c5fff2b4e45a33e65bced338d2',1,'Tools']]],
   ['direction',['Direction',['../class_tread.html#a1949b06778aa32266ca808d16b00af4d',1,'Tread::Direction()'],['../class_simple_belt_shooter.html#a4e11f56860e46c961eb6cc634ad541eb',1,'SimpleBeltShooter::Direction()'],['../class_simple_frisbee_turret.html#a9af02d909f874d240f5be4f67f3f6554',1,'SimpleFrisbeeTurret::Direction()']]],
   ['disable',['Disable',['../class_base_drive.html#ade1b904eec505a42793c2eab3f8b7ae8',1,'BaseDrive::Disable()'],['../class_simple_drive.html#abe59a0f87837074dc5783a7829492239',1,'SimpleDrive::Disable()'],['../class_pid_simple_drive.html#adf71ed44e6cf7b5d0b6456859a3b26a6',1,'PidSimpleDrive::Disable()']]],
   ['distanceininches',['DistanceInInches',['../struct_tracking_1_1_target.html#a9f7338bacba357f319124ddec9ad5b85',1,'Tracking::Target']]],

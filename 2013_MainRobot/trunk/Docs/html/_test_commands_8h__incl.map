@@ -1,5 +1,5 @@
 <map id="Code/Commands/TestCommands.h" name="Code/Commands/TestCommands.h">
 <area shape="rect" id="node3" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="5,155,128,181"/>
-<area shape="rect" id="node7" href="$_experimental_8h.html" title="A file containing short experimental subsystems or subsystems used for testing." alt="" coords="105,80,303,107"/>
+<area shape="rect" id="node7" href="$_experimental_8h.html" title="A file containing short experimental subsystems or subsystems used for testing. See the Experimental ..." alt="" coords="105,80,303,107"/>
 <area shape="rect" id="node10" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="203,155,332,181"/>
 </map>

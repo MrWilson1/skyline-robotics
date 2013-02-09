@@ -37,13 +37,6 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio9);
 	
-	m_leftEncoder->SetDistancePerPulse(1.0f / 4500.0f);
-	m_rightEncoder->SetDistancePerPulse(1.0f / 4500.0f);
-	//m_rightEncoder->SetReverseDirection(true);
-
-	m_leftEncoder->Start();
-	m_rightEncoder->Start();
-	
 	m_xbox = new XboxController(
 			Ports::Computer::Usb1);
 }
@@ -55,7 +48,11 @@ void TerminatorRobotProfile::CreateSubsystems() {
 		m_rightFrontMotor,
 		m_rightBackMotor,
 		m_leftEncoder,
-		m_rightEncoder);
+		m_rightEncoder,
+		1.0f / 4134.0f,
+		1.0f / 4054.0f,
+		240.f / 4134.0f,
+		240.f / 4054.0f);
 	m_leftTestEncoder = new TestEncoder(m_leftEncoder, "Left Encoder Test");
 	m_rightTestEncoder = new TestEncoder(m_rightEncoder, "Right Encoder Test");
 }

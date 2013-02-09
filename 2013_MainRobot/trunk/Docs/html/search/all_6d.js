@@ -10,6 +10,7 @@ var searchData=
   ['mainrobot2013profile',['MainRobot2013Profile',['../class_main_robot2013_profile.html',1,'MainRobot2013Profile'],['../class_main_robot2013_profile.html#aece0e83ba81f045e22910303e8329931',1,'MainRobot2013Profile::MainRobot2013Profile()']]],
   ['mainrobot2013profile_2ecpp',['MainRobot2013Profile.cpp',['../_main_robot2013_profile_8cpp.html',1,'']]],
   ['mainrobot2013profile_2eh',['MainRobot2013Profile.h',['../_main_robot2013_profile_8h.html',1,'']]],
+  ['manuallyadjustturretcommand',['ManuallyAdjustTurretCommand',['../class_manually_adjust_turret_command.html',1,'ManuallyAdjustTurretCommand'],['../class_manually_adjust_turret_command.html#a4572557dc87d235629d1df6ecd9d0cc3',1,'ManuallyAdjustTurretCommand::ManuallyAdjustTurretCommand()']]],
   ['maxspeed',['MaxSpeed',['../class_test_motor.html#ad7fc11d1322cfa037bc673038bceb4a8',1,'TestMotor']]],
   ['mediumleft',['MediumLeft',['../namespace_tracking.html#ad9f418c48b489555841e90768087f7ddac0ccfa695ea676846658b802e6e8eed8',1,'Tracking']]],
   ['mediumright',['MediumRight',['../namespace_tracking.html#ad9f418c48b489555841e90768087f7dda5206fb2faa99a481d2f0da652e265ebb',1,'Tracking']]],

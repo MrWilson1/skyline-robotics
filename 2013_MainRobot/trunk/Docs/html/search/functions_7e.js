@@ -23,6 +23,7 @@ var searchData=
   ['_7eloadandfirecommand',['~LoadAndFireCommand',['../class_load_and_fire_command.html#a8abce2bf8c1b8ccf01d2ee3fa8e9d536',1,'LoadAndFireCommand']]],
   ['_7eloadfrisbeecommand',['~LoadFrisbeeCommand',['../class_load_frisbee_command.html#ae3fdfed7f5617f44888d5293a3168e79',1,'LoadFrisbeeCommand']]],
   ['_7emainrobot2013profile',['~MainRobot2013Profile',['../class_main_robot2013_profile.html#aa1c26ad8a5be196cd27f22952f0bf83c',1,'MainRobot2013Profile']]],
+  ['_7emanuallyadjustturretcommand',['~ManuallyAdjustTurretCommand',['../class_manually_adjust_turret_command.html#a14a261f94c47348a3c66ae34b35728b6',1,'ManuallyAdjustTurretCommand']]],
   ['_7epidfrisbeeturret',['~PidFrisbeeTurret',['../class_pid_frisbee_turret.html#a01191f5a8ef03e6543d0f4021b1931ec',1,'PidFrisbeeTurret']]],
   ['_7epidsimpledrive',['~PidSimpleDrive',['../class_pid_simple_drive.html#a92a7043815cf48329c65690b1a5765d1',1,'PidSimpleDrive']]],
   ['_7eplaceholderfrisbeeloader',['~PlaceholderFrisbeeLoader',['../class_placeholder_frisbee_loader.html#a47dcac48c6411e0b3a6007c4e879e974',1,'PlaceholderFrisbeeLoader']]],

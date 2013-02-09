@@ -9,7 +9,7 @@
 <area shape="rect" id="node50" href="$_frisbee_loader_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeLoader.h" alt="" coords="529,246,684,287"/>
 <area shape="rect" id="node54" href="$_frisbee_shooter_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeShooter.h" alt="" coords="589,337,744,378"/>
 <area shape="rect" id="node59" href="$_frisbee_turret_8h.html" title="..\\Subsystems\\Shooter\l\\FrisbeeTurret.h" alt="" coords="877,246,1032,287"/>
-<area shape="rect" id="node18" href="$_tools_8h.html" title="Contains utility functions." alt="" coords="993,435,1100,461"/>
+<area shape="rect" id="node18" href="$_tools_8h.html" title="Contains utility functions. See the Tools module." alt="" coords="993,435,1100,461"/>
 <area shape="rect" id="node23" href="$_base_command_8h.html" title="BaseCommand.h" alt="" coords="213,435,336,461"/>
 <area shape="rect" id="node30" href="$_base_subsystem_8h.html" title="Extends the WPILib Subsystem class." alt="" coords="725,435,867,461"/>
 </map>

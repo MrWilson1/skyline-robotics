@@ -1,4 +1,6 @@
 <map id="Tools::IsWithinRange" name="Tools::IsWithinRange">
 <area shape="rect" id="node3" href="$class_aim_turret_command.html#a25d71ff7dde448aa9fd4d7b58ab8ef6c" title="AimTurretCommand::Execute" alt="" coords="206,5,399,32"/>
-<area shape="rect" id="node5" href="$class_test_encoder_o_i.html#ac6ab338301277dec95f2040315fd8c3f" title="TestEncoderOI::GetTankValues" alt="" coords="200,56,405,83"/>
+<area shape="rect" id="node5" href="$namespace_tools.html#aa35183c5fff2b4e45a33e65bced338d2" title="If a number is within a certain range of zero, outputs zero. Otherwise, the original number is return..." alt="" coords="243,56,362,83"/>
+<area shape="rect" id="node9" href="$class_test_encoder_o_i.html#ac6ab338301277dec95f2040315fd8c3f" title="TestEncoderOI::GetTankValues" alt="" coords="200,107,405,133"/>
+<area shape="rect" id="node7" href="$class_manually_adjust_turret_command.html#adc14dd71407f4c115913d76af268c5e1" title="ManuallyAdjustTurretCommand\l::Execute" alt="" coords="453,49,656,90"/>
 </map>
