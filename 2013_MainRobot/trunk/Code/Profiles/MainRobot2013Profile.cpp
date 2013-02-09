@@ -76,7 +76,11 @@ void MainRobot2013Profile::CreateSubsystems() {
 		m_rightFront,
 		m_rightBack,
 		m_leftEncoder,
-		m_rightEncoder);
+		m_rightEncoder,
+		1.0f / 4134.0f,
+		1.0f / 4054.0f,
+		240.f / 4134.0f,
+		240.f / 4054.0f);
 	m_loader = new PlaceholderFrisbeeLoader();
 	m_aimer = new VisionTablesFrisbeeAimer();
 	m_turret = new PidFrisbeeTurret(

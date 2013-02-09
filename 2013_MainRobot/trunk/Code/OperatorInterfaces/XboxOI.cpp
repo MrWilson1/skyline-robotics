@@ -43,3 +43,9 @@ float XboxOI::GetAxis(int axis) {
 	// Apply filters to value here if necessary
 	return value;
 }
+
+float XboxOI::GetAxis(int axis, int joystickNumber) {
+	float value = m_xbox->GetRawAxis(axis);
+	// Apply filters to value here if necessary
+	return value;
+}

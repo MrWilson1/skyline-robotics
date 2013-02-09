@@ -32,6 +32,7 @@ public:
 	TankValues GetTankValues();
 	ArcadeValues GetArcadeValues();
 	float GetAxis(int axis);
+	float GetAxis(int axis, int joystickNumber);
 	
 private:
 	XboxController *m_xbox;
