@@ -88,3 +88,30 @@ double Tools::Deadband(double input, double deadband) {
 	}
 }
 
+double Tools::DegSin(double angle) {
+	return sin(angle * Tools::PI / 180) * 180 / Tools::PI;
+}
+	
+double Tools::DegCos(double angle) {
+	return cos(angle * Tools::PI / 180) * 180 / Tools::PI;
+}
+
+double Tools::DegTan(double angle) {
+	return tan(angle * Tools::PI / 180) * 180 / Tools::PI;
+}
+
+double Tools::DegAsin(double value) {
+	return asin(value) * 180 / Tools::PI;
+}
+
+double Tools::DegAcos(double value) {
+	return acos(value) * 180 / Tools::PI;
+}
+
+double Tools::DegAtan(double value) {
+	return atan(value) * 180 / Tools::PI;
+}
+
+double Tools::FindAngleOnTriangle(double side1, double side2, double angleSide) {
+	return Tools::DegAcos((pow(angleSide, 2) - pow(side1, 2) - pow(side2, 2))/(-2 * side1 * side2));
+}

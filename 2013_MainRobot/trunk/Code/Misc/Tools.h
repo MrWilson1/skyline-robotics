@@ -24,6 +24,7 @@
  * \brief Contains all functions within the [Tools module](/ref tools)
  */
 namespace Tools {
+	const double PI = 3.14159;
 	/**
 	 * \brief An enum for various units (for unit conversion)
 	 * 
@@ -89,6 +90,42 @@ namespace Tools {
 	 * the original number is returned.
 	 */
 	double Deadband(double input, double deadband);
+	
+	/**
+	 * \brief cmath's sin() function, but with degrees instead of radians.
+	 */
+	double DegSin(double angle);
+	
+	/**
+	 * \brief cmath's cos() function, but with degrees instead of radians.
+	 */
+	double DegCos(double angle);
+	
+	/**
+	 * \brief cmath's tan() function, but with degrees instead of radians.
+	 */
+	double DegTan(double angle);
+	
+	/**
+	 * \brief cmath's asin() function, but with degrees instead of radians.
+	 */
+	double DegAsin(double value);
+	
+	/**
+	 * \brief cmath's acos() function, but with degrees instead of radians.
+	 */
+	double DegAcos(double value);
+	
+	/**
+	 * \brief cmath's atan() function, but with degrees instead of radians.
+	 */
+	double DegAtan(double value);
+	
+	/**
+	 * \brief Using three sides of a triangle, calculates the angle opposite to the parameter angleSide with the law of cosines.
+	 */
+	
+	double FindAngleOnTriangle(double side1, double side2, double angleSide);
 }
 
 /**

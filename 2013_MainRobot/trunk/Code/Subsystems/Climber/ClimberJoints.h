@@ -13,7 +13,7 @@ public:
 	virtual float GetAngle() = 0;
 };
 
-class MotorClimberJoint : public BaseSubsystem {
+class MotorClimberJoint : public BaseClimberJoint {
 public:
 	MotorClimberJoint(SpeedController *motor, Encoder *encoder);
 	~MotorClimberJoint();
@@ -26,14 +26,13 @@ private:
 	Encoder *m_encoder;
 };
 
-class WinchClimberJoint : public BaseSubsystem {
+class WinchClimberJoint : public BaseClimberJoint {
 public:
 	WinchClimberJoint(SpeedController *motor, Encoder *encoder);
 	~WinchClimberJoint();
 	
 	void SetAngle(float degrees);
 	float GetAngle();
-	
 private:
 	SpeedController *m_motor;
 	Encoder *m_encoder;	
