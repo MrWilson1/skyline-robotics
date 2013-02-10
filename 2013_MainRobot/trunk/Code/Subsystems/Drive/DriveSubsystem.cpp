@@ -47,6 +47,10 @@ void SimpleDrive::ArcadeDrive(float moveValue, float rotateValue, bool squaredIn
 	m_robotDrive->ArcadeDrive(moveValue, rotateValue, squaredInputs);
 }
 
+void SimpleDrive::ResetDistanceAndRotation() {
+	// do nothing
+}
+
 void SimpleDrive::TravelDistance(float distanceInInches) {
 	// do nothing
 }
@@ -289,10 +293,13 @@ void PidSimpleDrive::ArcadeDrive(float moveValue, float rotateValue, bool square
 	
 }
 
-void PidSimpleDrive::TravelDistance(float distanceInInches) {
-	TryToggling(Distance);
+void PidSimpleDrive::ResetDistanceAndRotation() {
 	m_smoothLeftEncoder->Reset();
 	m_smoothRightEncoder->Reset();
+}
+
+void PidSimpleDrive::TravelDistance(float distanceInInches) {
+	TryToggling(Distance);
 	m_leftPidDistance->SetSetpoint(distanceInInches);
 	m_rightPidDistance->SetSetpoint(distanceInInches);
 }
@@ -359,3 +366,7 @@ void PidSimpleDrive::AdjustRatePid(float lp, float li, float ld, float rp, float
 	m_rightPidRate->SetPID(rp, ri, rd);
 }
 	
+void PidSimpleDrive::AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd) {
+	m_leftPidDistance->SetPID(lp, li, ld);
+	m_rightPidDistance->SetPID(rp, ri, rd);
+}

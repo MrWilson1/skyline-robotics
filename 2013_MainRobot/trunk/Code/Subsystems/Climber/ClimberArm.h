@@ -12,6 +12,10 @@ public:
 	
 	virtual void SetPolar(float degrees, float magnitude) = 0;
 	virtual void SetCartesian(float x, float y) = 0;
+	virtual void SetDegrees(float degrees) = 0;
+	virtual void SetMagnitude(float magnitude) = 0;
+	virtual void SetX() = 0;
+	virtual void SetY() = 0;
 	virtual float GetAngle() = 0;
 	virtual float GetMagnitude() = 0;
 	virtual float GetX() = 0;

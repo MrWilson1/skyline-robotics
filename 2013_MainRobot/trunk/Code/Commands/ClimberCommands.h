@@ -10,16 +10,19 @@
 
 class PullRobotUpCommand : public Command {
 public:
-	PullRobotUpCommand (BaseClimberArm *arm);
+	PullRobotUpCommand(BaseClimberArm *arm);
+	PullRobotUpCommand(BaseClimberArm *arm, float magnitude);
 	~PullRobotUpCommand();
 	
 	void Initialize();
-		void Execute();
-		bool IsFinished();
-		void End();
-		void Interrupted();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
 		
 private: 
 	BaseClimberArm *m_arm; 	
 	float m_magnitude;
 };
+
+#endif

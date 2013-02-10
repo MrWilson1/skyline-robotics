@@ -40,6 +40,7 @@ public:
 	virtual void TankDrive(float leftValue, float rightValue, bool squaredInputs) = 0;
 	virtual void ArcadeDrive(float moveValue, float rotateValue) = 0;
 	virtual void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs) = 0;
+	virtual void ResetDistanceAndRotation() = 0;
 	virtual void TravelDistance(float distanceInInches) = 0;
 	virtual void Rotate(float degrees) = 0;
 	virtual void Disable() = 0;
@@ -55,6 +56,7 @@ public:
 	IPidDrive();
 	virtual ~IPidDrive();
 	virtual void AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
+	virtual void AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
 };
 
 /**
@@ -71,6 +73,7 @@ public:
 	void TankDrive(float leftValue, float rightValue, bool squaredInputs);
 	void ArcadeDrive(float moveValue, float rotateValue);
 	void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
+	void ResetDistanceAndRotation();
 	void TravelDistance(float distanceInInches);
 	void Rotate(float degrees);
 	void Disable();
@@ -205,12 +208,14 @@ public:
 	void TankDrive(float leftValue, float rightValue, bool squaredInputs);
 	void ArcadeDrive(float moveValue, float rotateValue);
 	void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
+	void ResetDistanceAndRotation();
 	void TravelDistance(float distanceInInches);
 	void Rotate(float degrees);
 	void Disable();
 	void Enable();
 	void Brake();
 	void AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd);
+	void AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd);
 	
 private:
 	enum PidMode {

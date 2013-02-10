@@ -47,19 +47,21 @@
 // Modify these lines below:
 
 //#define ROBOT BLAND
-#define ROBOT TERMINATOR
+//#define ROBOT TERMINATOR
 //#define ROBOT MAINROBOT2013
-
+#define ROBOT TESTBEDROBOT2013
 
 // DO NOT MODIFY BELOW
 
 #include "Profiles/BlandRobotProfile.h"
 #include "Profiles/TerminatorRobotProfile.h"
 #include "Profiles/MainRobot2013Profile.h"
+#include "Profiles/TestbedRobot2013Profile.h"
 
 #define BLAND 1
 #define TERMINATOR 2
 #define MAINROBOT2013 3
+#define TESTBEDROBOT2013 4
 
 #if ROBOT == BLAND
 	START_ROBOT_CLASS(BlandRobotProfile);
@@ -67,4 +69,6 @@
 	START_ROBOT_CLASS(TerminatorRobotProfile);
 #elif ROBOT == MAINROBOT2013
 	START_ROBOT_CLASS(MainRobot2013Profile);
+#elif ROBOT == TESTBEDROBOT2013
+	START_ROBOT_CLASS(TestbedRobot2013Profile);
 #endif

@@ -197,21 +197,21 @@ TravelDistanceCommand::~TravelDistanceCommand() {
 }
 	
 void TravelDistanceCommand::Initialize() {
-	// empty
+	m_drive->ResetDistanceAndRotation();
 }
 
 void TravelDistanceCommand::Execute() {
 	m_drive->TravelDistance(m_distanceInInches);
 }
 
-bool IsFinished() {
+bool TravelDistanceCommand::IsFinished() {
 	return true;
 }
 
-void End() {
+void TravelDistanceCommand::End() {
 	// empty
 }
 
-void Interrupted() {
+void TravelDistanceCommand::Interrupted() {
 	// empty
 }
