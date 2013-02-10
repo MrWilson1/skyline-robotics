@@ -4,12 +4,16 @@
 #include "WPILib.h"
 
 #include "../Misc/Ports.h"
-
 #include "BaseRobotProfile.h"
-#include "../OperatorInterfaces/TestEncoderOI.h"
-#include "../OperatorInterfaces/XboxOI.h"
-#include "../OperatorInterfaces/Xbox.h"
+
+#include "../Subsystems/Drive/DriveSubsystem.h"
 #include "../Subsystems/Experimental.h"
+
+#include "../Commands/DriveCommands.h"
+#include "../Commands/TestCommands.h"
+
+#include "../Subsystems/Controllers/Axis.h"
+#include "../OperatorInterfaces/Xbox.h"
 
 /**
  * A profile for the Terminator robot.
@@ -31,8 +35,8 @@ private:
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
 	
-	// Operator Interfaces
-	TestEncoderOI *m_OI;
+	// Commands and buttons
+	JoystickButton *m_driveStraightButton;
 	
 public:
 	TerminatorRobotProfile();

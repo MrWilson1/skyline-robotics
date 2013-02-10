@@ -8,7 +8,7 @@ TestEncoderOI::TestEncoderOI(XboxController *xbox, BaseDrive *drive,
 	m_leftEncoderTest = leftEncoderTest;
 	m_rightEncoderTest = rightEncoderTest;
 	
-	m_teleopCommand = new TankDriveCommand(m_drive, this);
+	//m_teleopCommand = new TankDriveCommand(m_drive, this);
 	
 	m_testLeftEncoderCommand = new TestEncoderCommand(m_leftEncoderTest, "left Encoder");
 	m_testRightEncoderCommand = new TestEncoderCommand(m_rightEncoderTest, "right Encoder");
@@ -25,7 +25,7 @@ void TestEncoderOI::SetupTeleop() {
 	m_drive->SetDefaultCommand(m_teleopCommand);
 	m_leftEncoderTest->SetDefaultCommand(m_testLeftEncoderCommand);
 	m_rightEncoderTest->SetDefaultCommand(m_testRightEncoderCommand);
-	m_driveStraightButton->WhileHeld(new TravelStraightManualCommand(m_drive, this, Left));
+	//m_driveStraightButton->WhileHeld(new TravelStraightManualCommand(m_drive, this, Left));
 	
 
 	// Various config stuff.

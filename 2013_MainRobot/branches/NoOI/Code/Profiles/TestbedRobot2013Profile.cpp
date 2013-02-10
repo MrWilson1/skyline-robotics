@@ -31,9 +31,7 @@ void TestbedRobot2013Profile::CreateSubsystems() {
 }
 
 void TestbedRobot2013Profile::CreateOI() {
-	m_OI = new XboxOI(
-		m_xbox,
-		m_drive);
+	// empty
 }
 
 void TestbedRobot2013Profile::RobotInit() {
@@ -45,6 +43,9 @@ void TestbedRobot2013Profile::AutonomousInit() {
 }
 
 void TestbedRobot2013Profile::TeleopInit() {
-	m_OI->SetupTeleop();
+	m_drive->SetDefaultCommand(new TankDriveCommand(
+			m_drive,
+			new Axis(m_xbox, m_xbox->LeftY),
+			new Axis(m_xbox, m_xbox->RightY)));
 }
 

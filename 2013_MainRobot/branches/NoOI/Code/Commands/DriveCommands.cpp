@@ -1,9 +1,10 @@
 #include "DriveCommands.h"
 
-TankDriveCommand::TankDriveCommand(BaseDrive *drive, BaseOI *OI) :
-		Command("TankDrive") {
+TankDriveCommand::TankDriveCommand(BaseDrive *drive, Axis *leftAxis, Axis *rightAxis) :
+		SimpleCommand("TankDrive", true) {
 	m_drive = drive;
-	m_OI = OI;
+	m_leftAxis = leftAxis;
+	m_rightAxis = rightAxis;
 	Requires(m_drive);
 }
 
@@ -11,34 +12,20 @@ TankDriveCommand::~TankDriveCommand() {
 	// Empty
 }
 
-void TankDriveCommand::Initialize()  {
-	// Empty
-}
-
 void TankDriveCommand::Execute() {
-	TankValues t = m_OI->GetTankValues();
-	SmartDashboard::PutNumber("TankDriveCommand Left", t.Left);
-	SmartDashboard::PutNumber("TankDriveCommand Right", t.Right);
-	m_drive->TankDrive(t.Left, t.Right, true);
-}
-
-bool TankDriveCommand::IsFinished() {
-	return false; // Runs forever until explicitly silenced.
-}
-
-void TankDriveCommand::End() { 
-	// Empty
-}
-
-void TankDriveCommand::Interrupted() { 
-	// Empty
+	float left = m_leftAxis->Get();
+	float right = m_rightAxis->Get();
+	SmartDashboard::PutNumber("TankDriveCommand Left", left);
+	SmartDashboard::PutNumber("TankDriveCommand Right", right);
+	m_drive->TankDrive(left, right, true);
 }
 
 
-ArcadeDriveCommand::ArcadeDriveCommand(BaseDrive *drive, BaseOI *OI) :
-		Command("ArcadeDrive") {
+ArcadeDriveCommand::ArcadeDriveCommand(BaseDrive *drive,  Axis *magnitudeAxis, Axis *rotateAxis) :
+		SimpleCommand("ArcadeDrive", true) {
 	m_drive = drive;
-	m_OI = OI;
+	m_magnitudeAxis = magnitudeAxis;
+	m_rotateAxis = rotateAxis;
 	Requires(m_drive);
 }
 
@@ -47,34 +34,18 @@ ArcadeDriveCommand::~ArcadeDriveCommand() {
 	
 }
 
-void ArcadeDriveCommand::Initialize() {
-	// Empty
-}
-
 void ArcadeDriveCommand::Execute() {
-	ArcadeValues a = m_OI->GetArcadeValues();
-	m_drive->ArcadeDrive(a.Move, a.Rotate, true);
-}
-
-bool ArcadeDriveCommand::IsFinished() {
-	return false; // Runs forever until explicitly silenced.
-}
-
-void ArcadeDriveCommand::End() { 
-	// Empty
-}
-
-void ArcadeDriveCommand::Interrupted() 
-{ 
-	// Empty
+	float magnitude = m_magnitudeAxis->Get();
+	float rotate = m_rotateAxis->Get();
+	m_drive->ArcadeDrive(magnitude, rotate, true);
 }
 
 
-TravelStraightManualCommand::TravelStraightManualCommand(BaseDrive *drive, BaseOI *oi, PreferredAxis preferredAxis) :
-		Command("TravelStraightManualCommand"),
-		m_preferredAxis(preferredAxis) {
+
+TravelStraightManualCommand::TravelStraightManualCommand(BaseDrive *drive, Axis *axis) :
+		Command("TravelStraightManualCommand") {
 	m_drive = drive;
-	m_oi = oi;
+	m_axis = axis;
 	Requires(m_drive);
 }
 
@@ -87,18 +58,7 @@ void TravelStraightManualCommand::Initialize() {
 }
 
 void TravelStraightManualCommand::Execute() {
-	TankValues t = m_oi->GetTankValues();
-	float magnitude;
-	switch(m_preferredAxis) {
-	case Left:
-		magnitude = t.Left;
-		break;
-	case Right:
-		magnitude = t.Right;
-		break;
-	case Average:
-		magnitude = (t.Left + t.Right) / 2;
-	}
+	float magnitude = m_axis->Get();
 	m_drive->TankDrive(magnitude, magnitude);
 }
 

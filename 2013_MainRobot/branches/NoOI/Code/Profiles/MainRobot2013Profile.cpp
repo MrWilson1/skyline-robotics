@@ -95,13 +95,7 @@ void MainRobot2013Profile::CreateSubsystems() {
 }
 
 void MainRobot2013Profile::CreateOI() {
-	m_OI = new CompetitionXboxOI(
-		m_xbox,
-		m_drive,
-		m_loader,
-		m_aimer,
-		m_turret,
-		m_shooter);
+	m_fireButton = new JoystickButton(m_xbox, m_xbox->A);
 }
 
 void MainRobot2013Profile::RobotInit() {
@@ -113,7 +107,19 @@ void MainRobot2013Profile::AutonomousInit() {
 }
 
 void MainRobot2013Profile::TeleopInit() {
-	SmartDashboard::PutString("bland status 1", "initializing Telop");
-	m_OI->SetupTeleop();
-	SmartDashboard::PutString("bland status 2", "done init");
+	m_fireButton->WhenPressed(new LoadAndFireCommand(
+			m_loader, 
+			m_aimer, 
+			m_turret, 
+			m_shooter));
+	m_drive->SetDefaultCommand(new TankDriveCommand(
+			m_drive, 
+			new Axis(m_xbox, m_xbox->LeftY),
+			new Axis(m_xbox, m_xbox->RightY)));
+	m_turret->SetDefaultCommand(new AimTurretCommand(
+			m_aimer, 
+			m_turret, 
+			Tracking::ClosestOffset, 
+			3.0));
+	// Will stop if the shooter is within 3 degrees of the centerpoint of the target
 }

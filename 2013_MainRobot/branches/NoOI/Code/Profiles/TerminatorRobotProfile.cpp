@@ -58,11 +58,7 @@ void TerminatorRobotProfile::CreateSubsystems() {
 }
 
 void TerminatorRobotProfile::CreateOI() {
-	m_OI = new TestEncoderOI(
-		m_xbox,
-		m_drive,
-		m_leftTestEncoder,
-		m_rightTestEncoder);		
+	m_driveStraightButton = new JoystickButton(m_xbox, m_xbox->X);
 }
 
 void TerminatorRobotProfile::RobotInit() {
@@ -75,5 +71,17 @@ void TerminatorRobotProfile::AutonomousInit() {
 }
 
 void TerminatorRobotProfile::TeleopInit() {
-	m_OI->SetupTeleop();
+	m_drive->SetDefaultCommand(new TankDriveCommand(
+			m_drive,
+			new Axis(m_xbox, m_xbox->LeftY),
+			new Axis(m_xbox, m_xbox->RightY)));
+	m_leftTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_leftTestEncoder, 
+			"left Encoder"));
+	m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_rightTestEncoder, 
+			"right Encoder"));
+	m_driveStraightButton->WhileHeld(new TravelStraightManualCommand(
+			m_drive, 
+			new Axis(m_xbox, m_xbox->LeftY)));
 }

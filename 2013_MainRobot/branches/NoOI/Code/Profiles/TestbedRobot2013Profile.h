@@ -4,12 +4,15 @@
 #include "WPILib.h"
 
 #include "../Misc/Ports.h"
-
 #include "BaseRobotProfile.h"
-#include "../OperatorInterfaces/XboxOI.h"
-#include "../OperatorInterfaces/Xbox.h"
+
 #include "../Subsystems/Drive/DriveSubsystem.h"
 #include "../Subsystems/Drive/DriveTransmission.h"
+
+#include "../Commands/DriveCommands.h"
+
+#include "../OperatorInterfaces/Xbox.h"
+#include "../Subsystems/Controllers/Axis.h"
 
 
 class TestbedRobot2013Profile : public BaseRobotProfile {
@@ -21,9 +24,6 @@ private:
 	
 	// Subsystems
 	BaseDrive *m_drive;
-	
-	// Operator Interfaces
-	XboxOI *m_OI;
 	
 public:
 	TestbedRobot2013Profile();
