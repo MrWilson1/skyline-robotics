@@ -1,5 +1,0 @@
-<map id="TerminatorRobotProfile::TerminatorRobotProfile" name="TerminatorRobotProfile::TerminatorRobotProfile">
-<area shape="rect" id="node3" href="$class_terminator_robot_profile.html#aa6d60b73dd89c893e7b75f0bab0c8c07" title="TerminatorRobotProfile\l::CreateBasicHardwareObjects" alt="" coords="216,5,416,46"/>
-<area shape="rect" id="node5" href="$class_terminator_robot_profile.html#a1ebebc3204330b2f79d55486c2a8d966" title="TerminatorRobotProfile\l::CreateSubsystems" alt="" coords="239,70,393,111"/>
-<area shape="rect" id="node7" href="$class_terminator_robot_profile.html#a3276625331d3fc89c0baa870a75569a3" title="TerminatorRobotProfile\l::CreateOI" alt="" coords="239,135,393,177"/>
-</map>

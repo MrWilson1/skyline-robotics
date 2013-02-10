@@ -1,4 +1,0 @@
-<map id="ArcadeDriveCommand::Execute" name="ArcadeDriveCommand::Execute">
-<area shape="rect" id="node3" href="$class_base_o_i.html#a42fea5e7eaca8c722f2a317c73ef9193" title="BaseOI::GetArcadeValues" alt="" coords="206,5,381,32"/>
-<area shape="rect" id="node5" href="$class_base_drive.html#ad5352d0493fa0cb821996923245a99d2" title="BaseDrive::ArcadeDrive" alt="" coords="215,56,372,83"/>
-</map>

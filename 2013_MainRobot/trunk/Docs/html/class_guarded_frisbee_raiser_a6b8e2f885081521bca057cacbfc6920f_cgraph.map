@@ -1,5 +1,0 @@
-<map id="GuardedFrisbeeRaiser::Lower" name="GuardedFrisbeeRaiser::Lower">
-<area shape="rect" id="node3" href="$class_guarded_frisbee_raiser.html#a93e8c28b7d56e0d1cdf0af79dcd6d3cd" title="GuardedFrisbeeRaiser\l::IsAtTop" alt="" coords="206,5,357,46"/>
-<area shape="rect" id="node5" href="$group__tools.html#ga10349cc2f8ef777272aa44b0b9a09270" title="Makes sure that a number lies between the range [lowLimit] and [highLimit]." alt="" coords="237,71,326,97"/>
-<area shape="rect" id="node7" href="$class_guarded_frisbee_raiser.html#a4ab52bb4bcafe1ab8e7c4042dc8cfa7e" title="GuardedFrisbeeRaiser\l::Stop" alt="" coords="206,122,357,163"/>
-</map>

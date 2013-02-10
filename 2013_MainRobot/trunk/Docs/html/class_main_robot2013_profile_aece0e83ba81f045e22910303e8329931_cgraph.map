@@ -1,5 +1,0 @@
-<map id="MainRobot2013Profile::MainRobot2013Profile" name="MainRobot2013Profile::MainRobot2013Profile">
-<area shape="rect" id="node3" href="$class_main_robot2013_profile.html#aa9c3e896729d58dc1968e9176d108dff" title="MainRobot2013Profile\l::CreateBasicHardwareObjects" alt="" coords="211,5,411,46"/>
-<area shape="rect" id="node5" href="$class_main_robot2013_profile.html#ab8d24c9bc177f6009795b547aee87509" title="MainRobot2013Profile\l::CreateSubsystems" alt="" coords="237,70,385,111"/>
-<area shape="rect" id="node7" href="$class_main_robot2013_profile.html#a2447b80cc948d4d08bb4a26a10aa2f3d" title="MainRobot2013Profile\l::CreateOI" alt="" coords="237,135,385,177"/>
-</map>

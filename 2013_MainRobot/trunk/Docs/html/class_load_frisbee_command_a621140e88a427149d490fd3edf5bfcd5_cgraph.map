@@ -1,6 +1,0 @@
-<map id="LoadFrisbeeCommand::Execute" name="LoadFrisbeeCommand::Execute">
-<area shape="rect" id="node3" href="$class_base_frisbee_loader.html#ae95954feae8baaddf6646c9d1bc9b957" title="BaseFrisbeeLoader::\lGetNumberOfFrisbeesLoaded" alt="" coords="206,5,399,46"/>
-<area shape="rect" id="node5" href="$class_base_frisbee_loader.html#ae866d3aa4bfd76ba9bb984f968d31240" title="BaseFrisbeeLoader::\lIsFrisbeePrepared" alt="" coords="231,70,374,111"/>
-<area shape="rect" id="node7" href="$class_base_frisbee_loader.html#a589ce1ea0d372258d9faf0a19894298a" title="BaseFrisbeeLoader::\lLoadFrisbee" alt="" coords="231,135,374,177"/>
-<area shape="rect" id="node9" href="$class_base_frisbee_loader.html#a26346689489756b5e9272fbcb26236d4" title="BaseFrisbeeLoader::\lPrepareFrisbee" alt="" coords="231,201,374,242"/>
-</map>

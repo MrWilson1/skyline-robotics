@@ -1,4 +1,0 @@
-<map id="SimpleDriveTransmission" name="SimpleDriveTransmission">
-<area shape="rect" id="node2" href="$class_base_drive_transmission.html" title="A base class for any Drive Tranmission." alt="" coords="9,155,167,181"/>
-<area shape="rect" id="node4" href="$class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="29,80,147,107"/>
-</map>

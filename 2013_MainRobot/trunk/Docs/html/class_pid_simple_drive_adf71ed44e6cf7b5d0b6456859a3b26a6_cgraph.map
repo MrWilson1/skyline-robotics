@@ -1,4 +1,0 @@
-<map id="PidSimpleDrive::Disable" name="PidSimpleDrive::Disable">
-<area shape="rect" id="node3" href="$class_tread.html#a1bfd612b3ce405bb35a81fcb68e01002" title="Sets the motor speed." alt="" coords="213,5,328,32"/>
-<area shape="rect" id="node5" href="$group__tools.html#ga10349cc2f8ef777272aa44b0b9a09270" title="Makes sure that a number lies between the range [lowLimit] and [highLimit]." alt="" coords="377,5,466,32"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="BaseClimberExtender" name="BaseClimberExtender">
-<area shape="rect" id="node7" href="$class_pneumatic_climber_extender.html" title="PneumaticClimberExtender" alt="" coords="5,229,184,256"/>
-<area shape="rect" id="node2" href="$class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="35,80,153,107"/>
-</map>

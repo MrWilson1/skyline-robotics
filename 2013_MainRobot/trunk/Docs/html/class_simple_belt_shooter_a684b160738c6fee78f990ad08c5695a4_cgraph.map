@@ -1,4 +1,0 @@
-<map id="SimpleBeltShooter::ShootFrisbee" name="SimpleBeltShooter::ShootFrisbee">
-<area shape="rect" id="node3" href="$group__tools.html#ga10349cc2f8ef777272aa44b0b9a09270" title="Makes sure that a number lies between the range [lowLimit] and [highLimit]." alt="" coords="337,12,426,39"/>
-<area shape="rect" id="node5" href="$group__tools.html#gaf23501b58339faa07f586a664ec57992" title="Scales a value from the range [inputStart, inputEnd] to the range [outputStart, outputEnd]." alt="" coords="193,37,287,64"/>
-</map>

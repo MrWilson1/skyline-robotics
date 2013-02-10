@@ -1,5 +1,0 @@
-<map id="BaseDrive" name="BaseDrive">
-<area shape="rect" id="node7" href="$class_pid_simple_drive.html" title="A drive system using PID controllers." alt="" coords="5,229,115,256"/>
-<area shape="rect" id="node9" href="$class_simple_drive.html" title="The absolute simplest drive possible. Contains no PID loops or other forms of feedback systems..." alt="" coords="139,229,229,256"/>
-<area shape="rect" id="node2" href="$class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="62,80,180,107"/>
-</map>

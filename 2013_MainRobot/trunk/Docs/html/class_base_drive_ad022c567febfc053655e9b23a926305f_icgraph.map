@@ -1,6 +1,0 @@
-<map id="BaseDrive::TankDrive" name="BaseDrive::TankDrive">
-<area shape="rect" id="node3" href="$class_tank_drive_command.html#aed1190c58fd643e8856b2ae012ec41e5" title="TankDriveCommand::Execute" alt="" coords="202,5,395,32"/>
-<area shape="rect" id="node5" href="$class_travel_straight_manual_command.html#aa7b84f2a0a4784d9e939d6c84908405b" title="TravelStraightManualCommand\l::Execute" alt="" coords="198,57,399,98"/>
-<area shape="rect" id="node7" href="$class_spasm.html#af14ef887bb438bae7795940dc383b5e4" title="Spasm::Execute" alt="" coords="239,123,358,149"/>
-<area shape="rect" id="node9" href="$class_spasm.html#a25414461892f480323413ff520408713" title="Spasm::Interrupted" alt="" coords="233,173,365,200"/>
-</map>

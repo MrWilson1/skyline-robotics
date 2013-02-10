@@ -1,4 +1,0 @@
-<map id="BaseFrisbeeRaiser" name="BaseFrisbeeRaiser">
-<area shape="rect" id="node7" href="$class_guarded_frisbee_raiser.html" title="GuardedFrisbeeRaiser" alt="" coords="5,229,155,256"/>
-<area shape="rect" id="node2" href="$class_base_subsystem.html" title="The abstract base class for all subsystems." alt="" coords="21,80,139,107"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="Tools::Limit" name="Tools::Limit">
-<area shape="rect" id="node3" href="$group__tools.html#gaf23501b58339faa07f586a664ec57992" title="Scales a value from the range [inputStart, inputEnd] to the range [outputStart, outputEnd]." alt="" coords="173,31,267,57"/>
-<area shape="rect" id="node7" href="$class_simple_belt_shooter.html#a684b160738c6fee78f990ad08c5695a4" title="SimpleBeltShooter::\lShootFrisbee" alt="" coords="376,70,515,111"/>
-<area shape="rect" id="node9" href="$class_tread.html#a1bfd612b3ce405bb35a81fcb68e01002" title="Sets the motor speed." alt="" coords="163,132,277,159"/>
-<area shape="rect" id="node13" href="$class_guarded_frisbee_raiser.html#a89ce6870f1f3cc85255212e091234c77" title="GuardedFrisbeeRaiser\l::Raise" alt="" coords="145,183,295,225"/>
-<area shape="rect" id="node15" href="$class_guarded_frisbee_raiser.html#a6b8e2f885081521bca057cacbfc6920f" title="GuardedFrisbeeRaiser\l::Lower" alt="" coords="145,249,295,290"/>
-<area shape="rect" id="node5" href="$class_manually_adjust_turret_command.html#adc14dd71407f4c115913d76af268c5e1" title="ManuallyAdjustTurretCommand\l::Execute" alt="" coords="344,5,547,46"/>
-<area shape="rect" id="node11" href="$class_pid_simple_drive.html#adf71ed44e6cf7b5d0b6456859a3b26a6" title="PidSimpleDrive::Disable" alt="" coords="365,136,525,163"/>
-</map>

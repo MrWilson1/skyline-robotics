@@ -1,4 +1,0 @@
-<map id="TankDriveCommand::Execute" name="TankDriveCommand::Execute">
-<area shape="rect" id="node3" href="$class_base_o_i.html#aaa0d5d71f436e852c212894c50fd1a69" title="BaseOI::GetTankValues" alt="" coords="248,5,411,32"/>
-<area shape="rect" id="node5" href="$class_base_drive.html#ad022c567febfc053655e9b23a926305f" title="BaseDrive::TankDrive" alt="" coords="257,56,401,83"/>
-</map>
