@@ -20,6 +20,8 @@
 
 #include <math.h>
 
+#include "WPILib.h"
+
 /**
  * \brief Contains all functions within the [Tools module](/ref tools)
  */
@@ -124,8 +126,17 @@ namespace Tools {
 	/**
 	 * \brief Using three sides of a triangle, calculates the angle opposite to the parameter angleSide with the law of cosines.
 	 */
-	
 	double FindAngleOnTriangle(double side1, double side2, double angleSide);
+	
+	/**
+	 * \brief Adds a robot preference with the default value, but only if it doesn't exist.
+	 */
+	void TrySaveString (const char *key, const char *value);
+	void TrySaveInt (const char *key, int value);
+	void TrySaveDouble (const char *key, double value);
+	void TrySaveFloat (const char *key, float value);
+	void TrySaveBoolean (const char *key, bool value);
+	void TrySaveLong (const char *key, INT64 value);  
 }
 
 /**

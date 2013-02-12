@@ -5,7 +5,6 @@ TerminatorRobotProfile::TerminatorRobotProfile() :
 	CreateBasicHardwareObjects();
 	CreateSubsystems();
 	CreateOI();
-	
 }
 
 TerminatorRobotProfile::~TerminatorRobotProfile() {
@@ -42,6 +41,20 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 }
 
 void TerminatorRobotProfile::CreateSubsystems() {
+	// These currently have no effect on the robot whatsoever.
+	Tools::TrySaveDouble("SimplePidDrive_leftRateDDP", 1.0f / 4134.0f);
+	Tools::TrySaveDouble("SimplePidDrive_rightRateDDP", 1.0f / 4054.0f);
+	Tools::TrySaveDouble("SimplePidDrive_leftDistanceDDP", 240.f / 4134.0f);
+	Tools::TrySaveDouble("SimplePidDrive_rightDistanceDDP", 240.f / 4054.0f);
+	
+	Tools::TrySaveDouble("SimplePidDrive_leftRateP", 240.f / 4054.0f);
+	Tools::TrySaveDouble("SimplePidDrive_leftRateI", 240.f / 4054.0f);
+	Tools::TrySaveDouble("SimplePidDrive_leftRateD", 240.f / 4054.0f);
+	
+	Tools::TrySaveDouble("SimplePidDrive_rightRateP", 240.f / 4054.0f);
+	Tools::TrySaveDouble("SimplePidDrive_rightRateI", 240.f / 4054.0f);
+	Tools::TrySaveDouble("SimplePidDrive_rightRateD", 240.f / 4054.0f);
+	
 	m_drive = new PidSimpleDrive(
 		m_leftFrontMotor,
 		m_leftBackMotor,
@@ -62,7 +75,6 @@ void TerminatorRobotProfile::CreateOI() {
 }
 
 void TerminatorRobotProfile::RobotInit() {
-	//SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
 	GetWatchdog().SetExpiration(3.0);
 }
 

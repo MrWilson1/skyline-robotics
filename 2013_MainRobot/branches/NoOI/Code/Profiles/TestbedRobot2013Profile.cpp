@@ -24,14 +24,31 @@ void TestbedRobot2013Profile::CreateBasicHardwareObjects() {
 			Ports::DigitalSidecar::Gpio1,
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Relay1);
+	m_leftEncoder = new Encoder(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio2,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio3);
+	m_rightEncoder = new Encoder(
+				Ports::Crio::Module1,
+				Ports::DigitalSidecar::Gpio4,
+				Ports::Crio::Module1,
+				Ports::DigitalSidecar::Gpio5);
 }
 
 void TestbedRobot2013Profile::CreateSubsystems() {
 	m_drive = new SimpleDrive(m_robotDrive);
+	m_leftTestEncoder = new TestEncoder(
+			m_leftEncoder,
+			"Left Encoder");
+	m_rightTestEncoder = new TestEncoder(
+			m_rightEncoder, 
+			"Right Encoder");
 }
 
 void TestbedRobot2013Profile::CreateOI() {
-	// empty
+	m_driveStraightButton = new JoystickButton(m_xbox, m_xbox->A);
+	m_toggleTransmissionButton = new JoystickButton(m_xbox, m_xbox->B);
 }
 
 void TestbedRobot2013Profile::RobotInit() {
@@ -47,5 +64,16 @@ void TestbedRobot2013Profile::TeleopInit() {
 			m_drive,
 			new Axis(m_xbox, m_xbox->LeftY),
 			new Axis(m_xbox, m_xbox->RightY)));
+	m_leftTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_leftTestEncoder, 
+			"left Encoder"));
+	m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_rightTestEncoder, 
+			"right Encoder"));
+	m_toggleTransmissionButton->WhileHeld(new ToggleTransmissionCommand(
+			m_transmission));
+	m_driveStraightButton->WhileHeld(new TravelStraightManualCommand(
+			m_drive, 
+			new Axis(m_xbox, m_xbox->LeftY)));
 }
 

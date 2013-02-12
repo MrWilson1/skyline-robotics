@@ -39,10 +39,17 @@ public:
 	 * \brief Makes the robot have more maneuverability
 	 */
 	virtual void SetHighGear() = 0;
+	
 	/**
 	 * \brief Makes the robot more powerful
 	 */
 	virtual void SetLowGear() = 0;
+	
+	/**
+	 * \brief Toggles the transmission to whatever the opposite setting is.
+	 */
+	virtual void ToggleGear() = 0;
+	
 	/**
 	 * \brief Gets the current transmission mode.
 	 */
@@ -59,6 +66,7 @@ public:
 	
 	void SetHighGear();
 	void SetLowGear();
+	void ToggleGear();
 	virtual TransmissionMode GetCurrentMode();
 	
 private:

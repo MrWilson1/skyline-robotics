@@ -14,6 +14,8 @@ SimpleDriveTransmission::SimpleDriveTransmission(Solenoid *leftPiston, Solenoid 
 		BaseDriveTransmission("SimpleDriveTransmision") {
 	m_leftPiston = leftPiston;
 	m_rightPiston = rightPiston;
+	AddActuatorToLiveWindow("Left Solenoid", m_leftPiston);
+	AddActuatorToLiveWindow("Right Solenoid", m_rightPiston);
 }
 
 SimpleDriveTransmission::~SimpleDriveTransmission() {
@@ -30,7 +32,12 @@ void SimpleDriveTransmission::SetLowGear() {
 	m_rightPiston->Set(false);
 }
 
-SimpleDriveTransmission::TransmissionMode SimpleDriveTransmission::GetCurrentMode() {
+void SimpleDriveTransmission::ToggleGear() {
+	m_leftPiston->Set(!m_leftPiston->Get());
+	m_rightPiston->Set(!m_rightPiston->Get());
+}
+
+BaseDriveTransmission::TransmissionMode SimpleDriveTransmission::GetCurrentMode() {
 	bool left = m_leftPiston->Get();
 	bool right = m_rightPiston->Get();
 	

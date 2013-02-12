@@ -175,3 +175,18 @@ void TravelDistanceCommand::End() {
 void TravelDistanceCommand::Interrupted() {
 	// empty
 }
+
+
+ToggleTransmissionCommand::ToggleTransmissionCommand(BaseDriveTransmission *transmission) :
+		SimpleCommand("ToggleTransmissionCommand", false) {
+	m_transmission = transmission;
+	Requires(m_transmission);
+}
+
+ToggleTransmissionCommand::~ToggleTransmissionCommand() {
+	// empty
+}
+
+void ToggleTransmissionCommand::Execute() {
+	m_transmission->ToggleGear();
+}

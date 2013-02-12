@@ -6,6 +6,7 @@
 #include "BaseCommand.h"
 
 #include "..\Subsystems\Drive\DriveSubsystem.h"
+#include "..\Subsystems\Drive\DriveTransmission.h"
 #include "..\Subsystems\Controllers\Axis.h"
 
 /**
@@ -126,4 +127,14 @@ private:
 	BaseDrive *m_drive;
 };
 */
+
+class ToggleTransmissionCommand : public SimpleCommand {
+public:
+	ToggleTransmissionCommand(BaseDriveTransmission *transmission);
+	~ToggleTransmissionCommand();
+	void Execute();
+	
+private:
+	BaseDriveTransmission *m_transmission;
+};
 #endif

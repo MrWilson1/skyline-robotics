@@ -200,8 +200,8 @@ PidSimpleDrive::PidSimpleDrive (
 			m_currentMode(Rate),
 			m_leftRateDPP(leftRateDPP),
 			m_rightRateDPP(rightRateDPP),
-			m_leftDistanceDPP(leftRateDPP),
-			m_rightDistanceDPP(rightRateDPP) {
+			m_leftDistanceDPP(leftDistanceDPP),
+			m_rightDistanceDPP(rightDistanceDPP) {
 
 	m_leftFront = leftFront;
 	m_leftBack = leftBack;
@@ -359,6 +359,10 @@ void PidSimpleDrive::TryToggling(PidMode mode) {
 	default:
 		SmartDashboard::PutString("PidSimpleDrive Toggling error", "Unknown option");
 	}
+}
+
+void PidSimpleDrive::UpdatePidValues() {
+	// currently not implemented.
 }
 
 void PidSimpleDrive::AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd) {
