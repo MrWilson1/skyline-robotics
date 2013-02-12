@@ -25,6 +25,8 @@ private:
 	Compressor *m_compressor;
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
+	DoubleSolenoid *m_leftTransmissionSolenoid;
+	DoubleSolenoid *m_rightTransmissionSolenoid;
 	
 	// Subsystems
 	BaseDrive *m_drive;

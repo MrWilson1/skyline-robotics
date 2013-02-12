@@ -17,6 +17,10 @@ BungeeWinchClimberArm::BungeeWinchClimberArm(BaseClimberJoint *elbow, BaseClimbe
 	m_shoulder = shoulder;
 }
 
+BungeeWinchClimberArm::~BungeeWinchClimberArm() {
+	// empty
+}
+
 void BungeeWinchClimberArm::SetPolar(double degrees, double magnitude) {
 	double shoulder_angle = degrees + Tools::FindAngleOnTriangle(m_elbowLength, magnitude, m_shoulderLength);
 	double elbow_angle = 180 - Tools::FindAngleOnTriangle(m_shoulderLength, magnitude, m_elbowLength);

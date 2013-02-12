@@ -10,8 +10,9 @@ BaseDriveTransmission::~BaseDriveTransmission() {
 }
 
 
-SimpleDriveTransmission::SimpleDriveTransmission(Solenoid *leftPiston, Solenoid *rightPiston) :
-		BaseDriveTransmission("SimpleDriveTransmision") {
+SimpleDriveTransmission::SimpleDriveTransmission(DoubleSolenoid *leftPiston, DoubleSolenoid *rightPiston) :
+		BaseDriveTransmission("SimpleDriveTransmision"),
+		m_mode(BaseDriveTransmission::kHighGear){
 	m_leftPiston = leftPiston;
 	m_rightPiston = rightPiston;
 	AddActuatorToLiveWindow("Left Solenoid", m_leftPiston);
@@ -23,29 +24,31 @@ SimpleDriveTransmission::~SimpleDriveTransmission() {
 }
 
 void SimpleDriveTransmission::SetHighGear() {
-	m_leftPiston->Set(true);
-	m_rightPiston->Set(true);
+	m_leftPiston->Set(DoubleSolenoid::kForward);
+	m_rightPiston->Set(DoubleSolenoid::kForward);
+	m_mode = BaseDriveTransmission::kHighGear;
 }
 
 void SimpleDriveTransmission::SetLowGear() {
-	m_leftPiston->Set(false);
-	m_rightPiston->Set(false);
+	m_leftPiston->Set(DoubleSolenoid::kReverse);
+	m_rightPiston->Set(DoubleSolenoid::kReverse);
+	m_mode = BaseDriveTransmission::kLowGear;
 }
 
 void SimpleDriveTransmission::ToggleGear() {
-	m_leftPiston->Set(!m_leftPiston->Get());
-	m_rightPiston->Set(!m_rightPiston->Get());
+	if (m_mode == BaseDriveTransmission::kHighGear) {
+		m_leftPiston->Set(DoubleSolenoid::kReverse);
+		m_rightPiston->Set(DoubleSolenoid::kReverse);
+		m_mode = BaseDriveTransmission::kLowGear;
+	} else if (m_mode == BaseDriveTransmission::kLowGear) {
+		m_leftPiston->Set(DoubleSolenoid::kForward);
+		m_rightPiston->Set(DoubleSolenoid::kForward);
+		m_mode = BaseDriveTransmission::kHighGear;
+	} else {
+		SmartDashboard::PutString(GetName() + std::string(" Error"), "Unknown mode");
+	}
 }
 
 BaseDriveTransmission::TransmissionMode SimpleDriveTransmission::GetCurrentMode() {
-	bool left = m_leftPiston->Get();
-	bool right = m_rightPiston->Get();
-	
-	if (left != right) {
-		return kError;
-	} else if (left) {
-		return kHighGear;
-	} else {
-		return kLowGear;
-	}
+	return m_mode;
 }

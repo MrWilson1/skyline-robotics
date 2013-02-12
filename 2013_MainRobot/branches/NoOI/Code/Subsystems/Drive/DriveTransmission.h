@@ -61,7 +61,7 @@ public:
  */
 class SimpleDriveTransmission : public BaseDriveTransmission {
 public:
-	SimpleDriveTransmission(Solenoid *leftPiston, Solenoid *rightPiston);
+	SimpleDriveTransmission(DoubleSolenoid *leftPiston, DoubleSolenoid *rightPiston);
 	~SimpleDriveTransmission();
 	
 	void SetHighGear();
@@ -70,8 +70,10 @@ public:
 	virtual TransmissionMode GetCurrentMode();
 	
 private:
-	Solenoid *m_leftPiston;
-	Solenoid *m_rightPiston;
+	void Set();
+	DoubleSolenoid *m_leftPiston;
+	DoubleSolenoid *m_rightPiston;
+	BaseDriveTransmission::TransmissionMode m_mode;
 };
 
 /**
