@@ -25,4 +25,65 @@ private:
 	float m_magnitude;
 };
 
+class ExtendArmCommand : public Command {
+public:
+	ExtendArmCommand(BaseClimberExtender *climberExtender);
+	~ExtendArmCommand();
+	
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+	
+private:
+	BaseClimberExtender *m_climberExtender;
+};
+
+class MoveArmCartesianCommand : public Command {
+public:
+	MoveArmCartesianCommand(BaseClimberArm *arm, double newX, double newY);
+	~MoveArmCartesianCommand();
+	
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+
+private:
+	BaseClimberArm *m_arm;
+	double m_newX;
+	double m_newY;
+	double range;
+};
+
+class MoveArmPolarCommand : public Command {
+public:
+	MoveArmPolarCommand(BaseClimberArm *arm, double newAngle, double newMagnitude);
+	~MoveArmPolarCommand();
+	
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+	
+private:
+	BaseClimberArm *m_arm;
+	double m_newAngle;
+	double m_newMagnitude;
+	double m_angleRange;
+	double m_magnitudeRange;
+};
+
+class DisengageArmCommand : public CommandGroup {
+public:
+	DisengageArmCommand(BaseClimberArm *arm);
+	~DisengageArmCommand();
+private:
+	double m_xDisplacement;
+	double m_yDisplacement;
+};
+
 #endif
