@@ -4,23 +4,6 @@
 #include "WPILib.h"
 #include <string>
 
-/**
- * Represents the speeds of the two sides of the 
- * robot in tank drive.
- */
-struct TankValues {
-	float Left;
-	float Right;
-};
-
-/**
- * Represents the magnitude and rotational factor of the
- * robot in arcade drive. 
- */
-struct ArcadeValues {
-	float Move;
-	float Rotate;
-};
 
 /**
  * A class representing a base Operator Interface. Initializes 
