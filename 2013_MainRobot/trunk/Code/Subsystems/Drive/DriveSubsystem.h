@@ -55,6 +55,7 @@ class IPidDrive {
 public:
 	IPidDrive();
 	virtual ~IPidDrive();
+	virtual void UpdatePidValues() = 0;
 	virtual void AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
 	virtual void AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
 };
@@ -214,6 +215,7 @@ public:
 	void Disable();
 	void Enable();
 	void Brake();
+	void UpdatePidValues();
 	void AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd);
 	void AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd);
 	

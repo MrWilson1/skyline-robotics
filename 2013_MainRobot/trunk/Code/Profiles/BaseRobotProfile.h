@@ -6,7 +6,7 @@
 #include "WPILib.h"
 
 /**
- * Defines a base robot profile. All robot profiles should
+ * \brief Defines a base robot profile. All robot profiles should
  * be child classes of this one.
  * 
  * This class will automatically call the scheduler for events

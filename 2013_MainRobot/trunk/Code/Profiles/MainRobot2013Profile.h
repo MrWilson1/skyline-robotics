@@ -6,14 +6,20 @@
 #include "../Misc/Ports.h"
 
 #include "BaseRobotProfile.h"
-#include "../OperatorInterfaces/CompetitionXboxOI.h"
-#include "../OperatorInterfaces/Xbox.h"
 
 #include "../Subsystems/Drive/DriveSubsystem.h"
 #include "../Subsystems/Shooter/FrisbeeTurret.h"
 #include "../Subsystems/Shooter/FrisbeeLoader.h"
 #include "../Subsystems/Shooter/FrisbeeShooter.h"
 #include "../Subsystems/Shooter/FrisbeeAimer.h"
+
+#include "../Commands/DriveCommands.h"
+#include "../Commands/ShooterCommands.h"
+
+#include "../Subsystems/Controllers/Axis.h"
+#include "../Subsystems/Controllers/XboxController.h"
+
+#include "../OperatorInterfaces/CompetitionOI.h"
 
 /**
  * A profile for a generic robot that simply drives around.
@@ -46,8 +52,8 @@ private:
 	BaseFrisbeeTurret *m_turret;
 	BaseFrisbeeShooter *m_shooter;
 	
-	// Operator Interfaces
-	BaseOI *m_OI;
+	// Commands and buttons
+	CompetitionOI *m_oi;
 	
 public:
 	MainRobot2013Profile();

@@ -26,9 +26,7 @@ void BlandRobotProfile::CreateSubsystems() {
 }
 
 void BlandRobotProfile::CreateOI() {
-	m_OI = new XboxOI(
-		m_xbox,
-		m_drive);
+	m_oi = new SimpleOI(m_xbox);
 }
 
 void BlandRobotProfile::RobotInit() {
@@ -40,8 +38,9 @@ void BlandRobotProfile::AutonomousInit() {
 }
 
 void BlandRobotProfile::TeleopInit() {
-	SmartDashboard::PutString("bland status 1", "initializing Telop");
-	m_OI->SetupTeleop();
-	SmartDashboard::PutString("bland status 2", "done init");
+	m_drive->SetDefaultCommand(new TankDriveCommand(
+			m_drive, 
+			m_oi->TankLeftAxis,
+			m_oi->TankRightAxis));
 }
 

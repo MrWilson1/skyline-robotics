@@ -115,3 +115,45 @@ double Tools::DegAtan(double value) {
 double Tools::FindAngleOnTriangle(double side1, double side2, double angleSide) {
 	return Tools::DegAcos((pow(angleSide, 2) - pow(side1, 2) - pow(side2, 2))/(-2 * side1 * side2));
 }
+
+void Tools::TrySaveString (const char *key, const char *value) {
+	Preferences *p = Preferences::GetInstance();
+	if (!p->ContainsKey(key)) {
+		p->PutString(key, value);
+	}
+}
+
+void Tools::TrySaveInt (const char *key, int value) {
+	Preferences *p = Preferences::GetInstance();
+	if (!p->ContainsKey(key)) {
+		p->PutInt(key, value);
+	}
+}
+
+void Tools::TrySaveDouble (const char *key, double value) {
+	Preferences *p = Preferences::GetInstance();
+	if (!p->ContainsKey(key)) {
+		p->PutDouble(key, value);
+	}
+}
+
+void Tools::TrySaveFloat (const char *key, float value) {
+	Preferences *p = Preferences::GetInstance();
+	if (!p->ContainsKey(key)) {
+		p->PutFloat(key, value);
+	}
+}
+
+void Tools::TrySaveBoolean (const char *key, bool value) {
+	Preferences *p = Preferences::GetInstance();
+	if (!p->ContainsKey(key)) {
+		p->PutBoolean(key, value);
+	}
+}
+
+void Tools::TrySaveLong (const char *key, INT64 value) {
+	Preferences *p = Preferences::GetInstance();
+	if (!p->ContainsKey(key)) {
+		p->PutLong(key, value);
+	}
+}

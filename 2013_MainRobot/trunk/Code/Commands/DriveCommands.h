@@ -3,49 +3,44 @@
 
 #include "WPILib.h"
 #include "..\Misc\Tools.h"
-#include "..\OperatorInterfaces\BaseOI.h"
 #include "BaseCommand.h"
+
 #include "..\Subsystems\Drive\DriveSubsystem.h"
+#include "..\Subsystems\Drive\DriveTransmission.h"
+#include "..\Subsystems\Controllers\Axis.h"
 
 /**
  * \brief Issues a perpetually running command to drive in tank mode.
  */
-class TankDriveCommand : public Command {
+class TankDriveCommand : public SimpleCommand {
 public:
-	TankDriveCommand(BaseDrive *drive, BaseOI *OI);
+	TankDriveCommand(BaseDrive *drive, Axis *leftAxis, Axis *rightAxis);
 	~TankDriveCommand();
-	void Initialize();
 	/**
 	 * Grabs the appropriate tank values from the OI and 
 	 * displays them on the SmartDashboard.
 	 */
 	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
 	
 private:
 	BaseDrive *m_drive;
-	BaseOI *m_OI;
+	Axis *m_leftAxis;
+	Axis *m_rightAxis;
 };
 
 /**
  * Issues a perpetually running command to drive in arcade mode.
  */
-class ArcadeDriveCommand : public Command {
+class ArcadeDriveCommand : public SimpleCommand {
 public:
-	ArcadeDriveCommand(BaseDrive *drive, BaseOI *OI);
+	ArcadeDriveCommand(BaseDrive *drive, Axis *magnitudeAxis, Axis *rotateAxis);
 	~ArcadeDriveCommand();
-	
-	void Initialize();
 	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
 	
 private:
 	BaseDrive *m_drive;
-	BaseOI *m_OI;
+	Axis *m_magnitudeAxis;
+	Axis *m_rotateAxis;
 };
 
 /**
@@ -70,15 +65,9 @@ private:
 	int counter;
 };
 
-enum PreferredAxis {
-	Left,
-	Right,
-	Average
-};
-
 class TravelStraightManualCommand : public Command {
 public:
-	TravelStraightManualCommand(BaseDrive *drive, BaseOI *OI, PreferredAxis preferedAxis);
+	TravelStraightManualCommand(BaseDrive *drive, Axis *axis);
 	~TravelStraightManualCommand();
 	
 	void Initialize();
@@ -89,8 +78,7 @@ public:
 	
 private:
 	BaseDrive *m_drive;
-	BaseOI *m_oi;
-	PreferredAxis m_preferredAxis;
+	Axis *m_axis;
 };
 
 class RefreshPidCommand : public SimpleCommand {
@@ -139,4 +127,14 @@ private:
 	BaseDrive *m_drive;
 };
 */
+
+class ToggleTransmissionCommand : public SimpleCommand {
+public:
+	ToggleTransmissionCommand(BaseDriveTransmission *transmission);
+	~ToggleTransmissionCommand();
+	void Execute();
+	
+private:
+	BaseDriveTransmission *m_transmission;
+};
 #endif

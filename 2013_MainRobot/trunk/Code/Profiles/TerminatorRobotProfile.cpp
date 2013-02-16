@@ -5,7 +5,6 @@ TerminatorRobotProfile::TerminatorRobotProfile() :
 	CreateBasicHardwareObjects();
 	CreateSubsystems();
 	CreateOI();
-	
 }
 
 TerminatorRobotProfile::~TerminatorRobotProfile() {
@@ -42,6 +41,8 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 }
 
 void TerminatorRobotProfile::CreateSubsystems() {
+	// These currently have no effect on the robot whatsoever.
+	
 	m_drive = new PidSimpleDrive(
 		m_leftFrontMotor,
 		m_leftBackMotor,
@@ -58,15 +59,10 @@ void TerminatorRobotProfile::CreateSubsystems() {
 }
 
 void TerminatorRobotProfile::CreateOI() {
-	m_OI = new TestEncoderOI(
-		m_xbox,
-		m_drive,
-		m_leftTestEncoder,
-		m_rightTestEncoder);		
+	m_oi = new SimpleOI(m_xbox);
 }
 
 void TerminatorRobotProfile::RobotInit() {
-	//SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
 	GetWatchdog().SetExpiration(3.0);
 }
 
@@ -75,5 +71,17 @@ void TerminatorRobotProfile::AutonomousInit() {
 }
 
 void TerminatorRobotProfile::TeleopInit() {
-	m_OI->SetupTeleop();
+	m_drive->SetDefaultCommand(new TankDriveCommand(
+			m_drive,
+			m_oi->TankLeftAxis,
+			m_oi->TankRightAxis));
+	m_leftTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_leftTestEncoder, 
+			"left Encoder"));
+	m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_rightTestEncoder, 
+			"right Encoder"));
+	m_oi->DriveStraightButton->WhileHeld(new TravelStraightManualCommand(
+			m_drive, 
+			m_oi->DriveStraightAxis));
 }

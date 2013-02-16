@@ -4,12 +4,17 @@
 #include "WPILib.h"
 
 #include "../Misc/Ports.h"
-
 #include "BaseRobotProfile.h"
-#include "../OperatorInterfaces/XboxOI.h"
-#include "../OperatorInterfaces/Xbox.h"
 
-#include "../Subsystems/Shooter\FrisbeeAimer.h"
+
+#include "../Subsystems/Drive/DriveSubsystem.h"
+
+#include "../Commands/DriveCommands.h"
+
+#include "../Subsystems/Controllers/Axis.h"
+#include "../Subsystems/Controllers/XboxController.h"
+
+#include "../OperatorInterfaces/SimpleOI.h"
 
 /**
  * A profile for a generic robot that simply drives around.
@@ -23,8 +28,7 @@ private:
 	// Subsystems
 	BaseDrive *m_drive;
 	
-	// Operator Interfaces
-	XboxOI *m_OI;
+	SimpleOI *m_oi;
 	
 public:
 	BlandRobotProfile();

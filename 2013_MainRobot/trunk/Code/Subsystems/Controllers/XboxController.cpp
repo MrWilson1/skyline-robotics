@@ -1,4 +1,4 @@
-#include "Xbox.h"
+#include "XboxController.h"
 
 XboxController::XboxController(UINT32 port) : 
 		Joystick(port, numAxisTypes, numButtonTypes) {

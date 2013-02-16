@@ -39,10 +39,17 @@ public:
 	 * \brief Makes the robot have more maneuverability
 	 */
 	virtual void SetHighGear() = 0;
+	
 	/**
 	 * \brief Makes the robot more powerful
 	 */
 	virtual void SetLowGear() = 0;
+	
+	/**
+	 * \brief Toggles the transmission to whatever the opposite setting is.
+	 */
+	virtual void ToggleGear() = 0;
+	
 	/**
 	 * \brief Gets the current transmission mode.
 	 */
@@ -54,16 +61,19 @@ public:
  */
 class SimpleDriveTransmission : public BaseDriveTransmission {
 public:
-	SimpleDriveTransmission(Solenoid *leftPiston, Solenoid *rightPiston);
+	SimpleDriveTransmission(DoubleSolenoid *leftPiston, DoubleSolenoid *rightPiston);
 	~SimpleDriveTransmission();
 	
 	void SetHighGear();
 	void SetLowGear();
+	void ToggleGear();
 	virtual TransmissionMode GetCurrentMode();
 	
 private:
-	Solenoid *m_leftPiston;
-	Solenoid *m_rightPiston;
+	void Set();
+	DoubleSolenoid *m_leftPiston;
+	DoubleSolenoid *m_rightPiston;
+	BaseDriveTransmission::TransmissionMode m_mode;
 };
 
 /**

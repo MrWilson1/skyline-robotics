@@ -30,6 +30,7 @@ public:
 private:
 	SpeedController *m_motor;
 	Encoder *m_encoder;
+	PIDController *m_pid;
 };
 
 class WinchClimberJoint : public BaseClimberJoint {
@@ -42,6 +43,7 @@ public:
 private:
 	SpeedController *m_motor;
 	Encoder *m_encoder;	
+	PIDController *m_pid;
 };
 
 
