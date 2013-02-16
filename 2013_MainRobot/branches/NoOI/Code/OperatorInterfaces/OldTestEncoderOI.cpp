@@ -1,4 +1,4 @@
-#include "TestEncoderOI.h"
+#include "OldTestEncoderOI.h"
 
 TestEncoderOI::TestEncoderOI(XboxController *xbox, BaseDrive *drive,
 		TestEncoder *leftEncoderTest, TestEncoder *rightEncoderTest) :

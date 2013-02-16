@@ -17,7 +17,7 @@
 #include "../Commands/ShooterCommands.h"
 
 #include "../Subsystems/Controllers/Axis.h"
-#include "../OperatorInterfaces/Xbox.h"
+#include "../Subsystems/Controllers/XboxController.h"
 
 /**
  * A profile for a generic robot that simply drives around.

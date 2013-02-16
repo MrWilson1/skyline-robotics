@@ -33,12 +33,12 @@ public:
 	virtual std::string GetName();
 	
 	// Setup for autonomous should be independent of the OI.
-	virtual void SetupTeleop() = 0;
+	/*virtual void SetupTeleop() = 0;
 	virtual TankValues GetTankValues() = 0;
 	virtual ArcadeValues GetArcadeValues() = 0;
 	virtual float GetAxis(int axis) = 0;
 	virtual float GetAxis(int axis, int joystickNumber) = 0;
-	
+	*/
 protected:
 	const std::string m_name;	
 };

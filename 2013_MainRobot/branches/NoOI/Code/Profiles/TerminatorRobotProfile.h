@@ -13,7 +13,7 @@
 #include "../Commands/TestCommands.h"
 
 #include "../Subsystems/Controllers/Axis.h"
-#include "../OperatorInterfaces/Xbox.h"
+#include "../Subsystems/Controllers/XboxController.h"
 
 /**
  * A profile for the Terminator robot.

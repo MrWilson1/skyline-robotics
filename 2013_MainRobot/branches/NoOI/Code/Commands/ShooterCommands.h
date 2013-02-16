@@ -2,13 +2,15 @@
 #define SHOOTER_COMMANDS_H
 
 #include "WPILib.h"
-#include "..\Misc\Tools.h"
-#include "..\OperatorInterfaces\BaseOI.h"
+#include "../Misc/Tools.h"
+#include "../OperatorInterfaces\BaseOI.h"
 
-#include "..\Subsystems\Shooter\FrisbeeAimer.h"
-#include "..\Subsystems\Shooter\FrisbeeLoader.h"
-#include "..\Subsystems\Shooter\FrisbeeShooter.h"
-#include "..\Subsystems\Shooter\FrisbeeTurret.h"
+#include "../Subsystems/Shooter/FrisbeeAimer.h"
+#include "../Subsystems/Shooter/FrisbeeLoader.h"
+#include "../Subsystems/Shooter/FrisbeeShooter.h"
+#include "../Subsystems/Shooter/FrisbeeTurret.h"
+
+#include "../Subsystems/Controllers/Axis.h"
 
 class LoadFrisbeeCommand : public Command {
 public:
@@ -108,7 +110,7 @@ public:
 class ManuallyAdjustTurretCommand : public Command {
 public:
 	ManuallyAdjustTurretCommand(BaseFrisbeeTurret *turret, BaseOI *oi, 
-								int verticalAxis, int rotateAxis, float allowedRange);
+								Axis *verticalAxis, Axis *rotateAxis, float allowedRange);
 	~ManuallyAdjustTurretCommand();
 	void Initialize();
 	void Execute();
@@ -119,8 +121,8 @@ public:
 private:
 	BaseFrisbeeTurret *m_turret;
 	BaseOI *m_oi;
-	int m_verticalAxis;
-	int m_rotateAxis;
+	Axis *m_verticalAxis;
+	Axis *m_rotateAxis;
 	float m_allowedRange;
 	bool m_isFinished;
 };

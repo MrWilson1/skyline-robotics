@@ -62,8 +62,7 @@ void TestbedRobot2013Profile::CreateSubsystems() {
 }
 
 void TestbedRobot2013Profile::CreateOI() {
-	m_driveStraightButton = new JoystickButton(m_xbox, m_xbox->A);
-	m_toggleTransmissionButton = new JoystickButton(m_xbox, m_xbox->B);
+	m_oi = new CompetitionOI(m_xbox);
 }
 
 void TestbedRobot2013Profile::RobotInit() {
@@ -77,18 +76,18 @@ void TestbedRobot2013Profile::AutonomousInit() {
 void TestbedRobot2013Profile::TeleopInit() {
 	m_drive->SetDefaultCommand(new TankDriveCommand(
 			m_drive,
-			new Axis(m_xbox, m_xbox->LeftY),
-			new Axis(m_xbox, m_xbox->RightY)));
+			m_oi->TankLeftAxis,
+			m_oi->TankRightAxis));
 	m_leftTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_leftTestEncoder, 
 			"left Encoder"));
 	m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_rightTestEncoder, 
 			"right Encoder"));
-	m_toggleTransmissionButton->WhenPressed(new ToggleTransmissionCommand(
+	m_oi->ToggleTransmissionButton->WhenPressed(new ToggleTransmissionCommand(
 			m_transmission));
-	m_driveStraightButton->WhileHeld(new TravelStraightManualCommand(
+	m_oi->DriveStraightButton->WhileHeld(new TravelStraightManualCommand(
 			m_drive, 
-			new Axis(m_xbox, m_xbox->LeftY)));
+			m_oi->DriveStraightAxis));
 }
 

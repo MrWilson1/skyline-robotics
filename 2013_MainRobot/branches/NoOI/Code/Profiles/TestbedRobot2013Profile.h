@@ -13,7 +13,9 @@
 #include "../Commands/DriveCommands.h"
 #include "../Commands/TestCommands.h"
 
-#include "../OperatorInterfaces/Xbox.h"
+#include "../OperatorInterfaces/CompetitionOI.h"
+
+#include "../Subsystems/Controllers/XboxController.h"
 #include "../Subsystems/Controllers/Axis.h"
 
 
@@ -34,9 +36,7 @@ private:
 	TestEncoder *m_rightTestEncoder;
 	BaseDriveTransmission *m_transmission;
 	
-	// Buttons and commands
-	JoystickButton *m_driveStraightButton;
-	JoystickButton *m_toggleTransmissionButton;
+	CompetitionOI *m_oi;
 	
 public:
 	TestbedRobot2013Profile();

@@ -200,8 +200,8 @@ LoadAndFireCommand::~LoadAndFireCommand() {
 ManuallyAdjustTurretCommand::ManuallyAdjustTurretCommand(
 		BaseFrisbeeTurret *turret, 
 		BaseOI *oi,
-		int verticalAxis, 
-		int rotateAxis,
+		Axis *verticalAxis, 
+		Axis *rotateAxis,
 		float allowedRange) :
 		Command("ManuallyAdjustTurretCommand"),
 		m_verticalAxis(verticalAxis), 
@@ -221,8 +221,8 @@ void ManuallyAdjustTurretCommand::Initialize() {
 }
 
 void ManuallyAdjustTurretCommand::Execute() {
-	float rawVertical = Tools::Deadband(m_oi->GetAxis(m_verticalAxis), 0.1);
-	float rawRotate = Tools::Deadband(m_oi->GetAxis(m_rotateAxis), 0.1);
+	float rawVertical = Tools::Deadband(m_verticalAxis->Get(), 0.1);
+	float rawRotate = Tools::Deadband(m_rotateAxis->Get(), 0.1);
 	
 	// This might not be a good idead
 	if (rawVertical == 0 and rawRotate == 0) {
