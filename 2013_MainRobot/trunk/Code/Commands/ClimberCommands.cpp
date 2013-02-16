@@ -137,14 +137,14 @@ DisengageArmCommand::~DisengageArmCommand() {
 	// empty
 }
 
-
-HookOnToRungCommand::HookOnToRungCommand (BaseClimberArm *arm, double x, double y ) :
-		CommandGroup ("HookOnToRung"){
-	AddSequential(new MoveArmPolarCommand(arm,0, x + y ));
-	AddSequential (new MoveArmCartesianCommand (arm, m_arm->GetX(), sqrt(2)*x));
+HookAndDisengageCommand::HookAndDisengageCommand(BaseClimberArm *arm, double heightOfRobot, double distanceBetweenShoulderAndRung) :
+		CommandGroup("HookAndDisengage") {
+	AddSequential(new HookOnToRungCommand(arm, heightOfRobot, distanceBetweenShoulderAndRung));
+	AddSequential(new DisengageArmCommand(arm));
 }
 
-HookOnToRungCommand::~HookOnToRungCommand (){
-	//empty
-}	
-
+HookOnToRungCommand::HookOnToRungCommand (BaseClimberArm *arm, double heightOfRobot, double distanceBetweenShoulderAndRung) :
+		CommandGroup ("HookOnToRung"){
+	AddSequential(new MoveArmPolarCommand(arm, 0, heightOfRobot + distanceBetweenShoulderAndRung ));
+	AddSequential (new MoveArmCartesianCommand (arm, m_arm->GetX(), sqrt(2)*heightOfRobot));
+}

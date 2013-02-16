@@ -4,6 +4,9 @@
 #include "WPILib.h"
 #include "../BaseSubsystem.h"
 
+/**
+ * \brief Base class for all climber joints.
+ */
 class BaseClimberJoint : public BaseSubsystem {
 public:
 	BaseClimberJoint(const char *name);
@@ -13,6 +16,9 @@ public:
 	virtual float GetAngle() = 0;
 };
 
+/**
+ * \brief Joint for climber that uses motors.
+ */
 class MotorClimberJoint : public BaseClimberJoint {
 public:
 	MotorClimberJoint(SpeedController *motor, Encoder *encoder);

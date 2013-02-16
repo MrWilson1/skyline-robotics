@@ -87,13 +87,18 @@ private:
 	double m_yDisplacement;
 };
 
+class HookAndDisengageCommand : public CommandGroup {
+public:
+	HookAndDisengageCommand(BaseClimberArm *arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	~HookAndDisengageCommand();
+};
+
 class HookOnToRungCommand : public CommandGroup {
 public:
-	HookOnToRungCommand (BaseClimberArm *arm, double x, double y);
+	HookOnToRungCommand (BaseClimberArm *arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
 	~HookOnToRungCommand(); 
 	
 private:
 	BaseClimberArm *m_arm;  
 };
-
 #endif
