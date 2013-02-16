@@ -19,6 +19,8 @@
 #include "../Subsystems/Controllers/Axis.h"
 #include "../Subsystems/Controllers/XboxController.h"
 
+#include "../OperatorInterfaces/CompetitionOI.h"
+
 /**
  * A profile for a generic robot that simply drives around.
  */
@@ -51,7 +53,7 @@ private:
 	BaseFrisbeeShooter *m_shooter;
 	
 	// Commands and buttons
-	JoystickButton *m_fireButton;
+	CompetitionOI *m_oi;
 	
 public:
 	MainRobot2013Profile();

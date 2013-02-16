@@ -26,7 +26,7 @@ void BlandRobotProfile::CreateSubsystems() {
 }
 
 void BlandRobotProfile::CreateOI() {
-	// empty
+	m_oi = new SimpleOI(m_xbox);
 }
 
 void BlandRobotProfile::RobotInit() {
@@ -40,7 +40,7 @@ void BlandRobotProfile::AutonomousInit() {
 void BlandRobotProfile::TeleopInit() {
 	m_drive->SetDefaultCommand(new TankDriveCommand(
 			m_drive, 
-			new Axis(m_xbox, m_xbox->LeftY),
-			new Axis(m_xbox, m_xbox->RightY)));
+			m_oi->TankLeftAxis,
+			m_oi->TankRightAxis));
 }
 

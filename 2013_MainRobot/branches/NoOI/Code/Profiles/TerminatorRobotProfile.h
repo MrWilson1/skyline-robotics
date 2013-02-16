@@ -15,6 +15,8 @@
 #include "../Subsystems/Controllers/Axis.h"
 #include "../Subsystems/Controllers/XboxController.h"
 
+#include "../OperatorInterfaces/SimpleOI.h"
+
 /**
  * A profile for the Terminator robot.
  */
@@ -36,7 +38,7 @@ private:
 	TestEncoder *m_rightTestEncoder;
 	
 	// Commands and buttons
-	JoystickButton *m_driveStraightButton;
+	SimpleOI *m_oi;
 	
 public:
 	TerminatorRobotProfile();

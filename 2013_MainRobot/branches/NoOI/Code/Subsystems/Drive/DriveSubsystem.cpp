@@ -181,6 +181,13 @@ void Tread::SetMode(Tread::TreadPidMode mode) {
 	m_currentMode = mode;
 }*/
 
+struct PidState {
+	Encoder::PIDSourceParameter PidSourceParameter;
+	double DistancePerPulse;
+	double P;
+	double I;
+	double D;
+};
 
 
 

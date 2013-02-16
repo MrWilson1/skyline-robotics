@@ -95,7 +95,7 @@ void MainRobot2013Profile::CreateSubsystems() {
 }
 
 void MainRobot2013Profile::CreateOI() {
-	m_fireButton = new JoystickButton(m_xbox, m_xbox->A);
+	m_oi = new CompetitionOI(m_xbox);
 }
 
 void MainRobot2013Profile::RobotInit() {
@@ -107,15 +107,15 @@ void MainRobot2013Profile::AutonomousInit() {
 }
 
 void MainRobot2013Profile::TeleopInit() {
-	m_fireButton->WhenPressed(new LoadAndFireCommand(
+	m_oi->FireFrisbeeButton->WhenPressed(new LoadAndFireCommand(
 			m_loader, 
 			m_aimer, 
 			m_turret, 
 			m_shooter));
 	m_drive->SetDefaultCommand(new TankDriveCommand(
 			m_drive, 
-			new Axis(m_xbox, m_xbox->LeftY),
-			new Axis(m_xbox, m_xbox->RightY)));
+			m_oi->TankLeftAxis,
+			m_oi->TankRightAxis));
 	m_turret->SetDefaultCommand(new AimTurretCommand(
 			m_aimer, 
 			m_turret, 

@@ -8,12 +8,13 @@
 
 
 #include "../Subsystems/Drive/DriveSubsystem.h"
-#include "../OperatorInterfaces/Xbox.h"
 
 #include "../Commands/DriveCommands.h"
 
 #include "../Subsystems/Controllers/Axis.h"
+#include "../Subsystems/Controllers/XboxController.h"
 
+#include "../OperatorInterfaces/SimpleOI.h"
 
 /**
  * A profile for a generic robot that simply drives around.
@@ -26,6 +27,8 @@ private:
 	
 	// Subsystems
 	BaseDrive *m_drive;
+	
+	SimpleOI *m_oi;
 	
 public:
 	BlandRobotProfile();

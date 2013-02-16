@@ -42,18 +42,6 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 
 void TerminatorRobotProfile::CreateSubsystems() {
 	// These currently have no effect on the robot whatsoever.
-	Tools::TrySaveDouble("SimplePidDrive_leftRateDDP", 1.0f / 4134.0f);
-	Tools::TrySaveDouble("SimplePidDrive_rightRateDDP", 1.0f / 4054.0f);
-	Tools::TrySaveDouble("SimplePidDrive_leftDistanceDDP", 240.f / 4134.0f);
-	Tools::TrySaveDouble("SimplePidDrive_rightDistanceDDP", 240.f / 4054.0f);
-	
-	Tools::TrySaveDouble("SimplePidDrive_leftRateP", 240.f / 4054.0f);
-	Tools::TrySaveDouble("SimplePidDrive_leftRateI", 240.f / 4054.0f);
-	Tools::TrySaveDouble("SimplePidDrive_leftRateD", 240.f / 4054.0f);
-	
-	Tools::TrySaveDouble("SimplePidDrive_rightRateP", 240.f / 4054.0f);
-	Tools::TrySaveDouble("SimplePidDrive_rightRateI", 240.f / 4054.0f);
-	Tools::TrySaveDouble("SimplePidDrive_rightRateD", 240.f / 4054.0f);
 	
 	m_drive = new PidSimpleDrive(
 		m_leftFrontMotor,
@@ -71,7 +59,7 @@ void TerminatorRobotProfile::CreateSubsystems() {
 }
 
 void TerminatorRobotProfile::CreateOI() {
-	m_driveStraightButton = new JoystickButton(m_xbox, m_xbox->X);
+	m_oi = new SimpleOI(m_xbox);
 }
 
 void TerminatorRobotProfile::RobotInit() {
@@ -85,15 +73,15 @@ void TerminatorRobotProfile::AutonomousInit() {
 void TerminatorRobotProfile::TeleopInit() {
 	m_drive->SetDefaultCommand(new TankDriveCommand(
 			m_drive,
-			new Axis(m_xbox, m_xbox->LeftY),
-			new Axis(m_xbox, m_xbox->RightY)));
+			m_oi->TankLeftAxis,
+			m_oi->TankRightAxis));
 	m_leftTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_leftTestEncoder, 
 			"left Encoder"));
 	m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_rightTestEncoder, 
 			"right Encoder"));
-	m_driveStraightButton->WhileHeld(new TravelStraightManualCommand(
+	m_oi->DriveStraightButton->WhileHeld(new TravelStraightManualCommand(
 			m_drive, 
-			new Axis(m_xbox, m_xbox->LeftY)));
+			m_oi->DriveStraightAxis));
 }
