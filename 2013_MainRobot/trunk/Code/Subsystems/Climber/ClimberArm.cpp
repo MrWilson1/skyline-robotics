@@ -71,3 +71,11 @@ double BungeeWinchClimberArm::GetY() {
 	double shoulder_y = m_shoulderLength * Tools::DegSin(m_shoulder->GetAngle());
 	return elbow_y + shoulder_y;
 }
+
+void BungeeWinchClimberArm::SetElbowAngle(double angle) {
+	m_elbow->SetAngle(angle);
+}
+
+void BungeeWinchClimberArm::SetShoulderAngle(double angle) {
+	m_shoulder->SetAngle(angle);
+}

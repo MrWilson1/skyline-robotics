@@ -8,7 +8,11 @@
 #include "..\Subsystems\Climber\ClimberArm.h"
 #include "..\subsystems\Climber\ClimberExtender.h"
 #include "math.h"
+#include "..\Subsystems\Controllers\Axis.h"
 
+/**
+ * \brief Command to pull robot up.
+ */
 class PullRobotUpCommand : public Command {
 public:
 	PullRobotUpCommand(BaseClimberArm *arm);
@@ -101,4 +105,33 @@ public:
 private:
 	BaseClimberArm *m_arm;  
 };
+
+class ClimbPyramidCommand : public CommandGroup {
+public:
+	ClimbPyramidCommand(BaseClimberArm *arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	~ClimbPyramidCommand();
+};
+
+class ClimbLevelCommand : public CommandGroup {
+public:
+	ClimbLevelCommand(BaseClimberArm *arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	~ClimbLevelCommand();
+};
+
+class ControlArmManuallyCommand : public Command {
+public:
+	ControlArmManuallyCommand(BaseClimberArm *arm, Axis *elbowAxis, Axis *shoulderAxis);
+	~ControlArmManuallyCommand();
+	
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+private:
+	BaseClimberArm *m_arm;
+	Axis *m_elbowAxis;
+	Axis *m_shoulderAxis;
+};
+
 #endif

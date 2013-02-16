@@ -1,5 +1,5 @@
 #ifndef SIMPLE_OI_H
-#define OI_H
+#define SIMPLE_OI_H
 
 #include "WPILib.h"
 #include "BaseOI.h"

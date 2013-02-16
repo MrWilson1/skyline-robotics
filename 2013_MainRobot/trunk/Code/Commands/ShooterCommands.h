@@ -12,6 +12,9 @@
 
 #include "../Subsystems/Controllers/Axis.h"
 
+/**
+ * \brief Command for loading frisbees.
+ */
 class LoadFrisbeeCommand : public Command {
 public:
 	LoadFrisbeeCommand(BaseFrisbeeLoader *loader);
@@ -63,6 +66,9 @@ private:
 	float m_allowedRange;
 };
 
+/**
+ * \brief Fires the frisbee at a default distance or a set distance.
+ */
 class FireFrisbeeCommand : public Command {
 public:
 	FireFrisbeeCommand(BaseFrisbeeShooter *shooter);
@@ -79,7 +85,9 @@ private:
 	double m_distanceInInches;
 };
 
-
+/**
+ * \brief Lightly ejects frisbee.
+ */
 class EjectFrisbeeCommand : public Command {
 public:
 	EjectFrisbeeCommand(BaseFrisbeeShooter *shooter);
@@ -94,6 +102,9 @@ private:
 	BaseFrisbeeShooter *m_shooter;
 };
 
+/**
+ * \brief Loads a frisbee, aims the turret, and fires it.
+ */
 class LoadAndFireCommand : public CommandGroup {
 public:
 	LoadAndFireCommand(

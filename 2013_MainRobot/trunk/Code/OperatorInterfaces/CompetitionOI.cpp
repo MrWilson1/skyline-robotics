@@ -30,4 +30,35 @@ CompetitionOI::~CompetitionOI() {
 	delete FireFrisbeeButton;
 	delete ClimbRobotButton;
 }
+
+CompetitionJoystickOI::CompetitionJoystickOI(Joystick *rightJoystick, Joystick *leftJoystick, Joystick *twistJoystick) :
+		BaseOI("CompetitionJoystickOI") {
+	TankLeftAxis = new Axis(leftJoystick, Joystick::kDefaultYAxis);
+	TankRightAxis = new Axis(rightJoystick, Joystick::kDefaultYAxis);
+	ArcadeMagnitudeAxis = new Axis(twistJoystick, Joystick::kDefaultYAxis);
+	ArcadeRotationAxis = new Axis(twistJoystick, Joystick::kDefaultTwistAxis);
+	DriveStraightAxis = new Axis(leftJoystick, Joystick::kDefaultYAxis);
+	ControlArmShoulderAxis = NULL; // don't know yet
+	ControlArmElbowAxis = NULL; // don't know yet
+	
+	DriveStraightButton = new JoystickButton(leftJoystick, 3);
+	ToggleTransmissionButton = NULL; // don't know yet
+	FireFrisbeeButton = new JoystickButton(twistJoystick, 10);
+	ClimbRobotButton = new JoystickButton(twistJoystick, 9);
+}
+
+CompetitionJoystickOI::~CompetitionJoystickOI() {
+	delete TankLeftAxis;
+	delete TankRightAxis;
+	delete ArcadeMagnitudeAxis;
+	delete ArcadeRotationAxis;
+	delete DriveStraightAxis;
+	delete ControlArmShoulderAxis;
+	delete ControlArmElbowAxis;
+	
+	delete DriveStraightButton;
+	delete ToggleTransmissionButton;
+	delete FireFrisbeeButton;
+	delete ClimbRobotButton;
+}
 		

@@ -146,5 +146,50 @@ HookAndDisengageCommand::HookAndDisengageCommand(BaseClimberArm *arm, double hei
 HookOnToRungCommand::HookOnToRungCommand (BaseClimberArm *arm, double heightOfRobot, double distanceBetweenShoulderAndRung) :
 		CommandGroup ("HookOnToRung"){
 	AddSequential(new MoveArmPolarCommand(arm, 0, heightOfRobot + distanceBetweenShoulderAndRung ));
-	AddSequential (new MoveArmCartesianCommand (arm, m_arm->GetX(), sqrt(2)*heightOfRobot));
+	AddSequential (new MoveArmCartesianCommand (arm, m_arm->GetX() - heightOfRobot, m_arm->GetY() - distanceBetweenShoulderAndRung)); // this doesn't work
+}
+
+ControlArmManuallyCommand::ControlArmManuallyCommand(BaseClimberArm *arm, Axis *elbowAxis, Axis *shoulderAxis) :
+		Command("ControlArmManually") {
+	m_arm = arm;
+	m_elbowAxis = elbowAxis;
+	m_shoulderAxis = shoulderAxis;
+	
+	Requires(m_arm);
+}
+
+ControlArmManuallyCommand::~ControlArmManuallyCommand() {
+	// empty
+}
+
+void ControlArmManuallyCommand::Initialize() {
+	// empty;
+}
+
+void ControlArmManuallyCommand::Execute() {
+	double elbow = m_elbowAxis->Get();
+	double shoulder = m_shoulderAxis->Get();
+	
+	m_arm->SetShoulderAngle(shoulder);
+	m_arm->SetElbowAngle(elbow);
+}
+
+bool ControlArmManuallyCommand::IsFinished() {
+	return true;
+}
+
+void ControlArmManuallyCommand::End() {}
+
+void ControlArmManuallyCommand::Interrupted() {}
+
+ClimbPyramidCommand::ClimbPyramidCommand(BaseClimberArm *arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung) {
+	AddSequential(new ExtendArmCommand(extender));
+	AddSequential(new ClimbLevelCommand(arm, heightOfRobot, distanceBetweenShoulderAndRung));
+	AddSequential(new ClimbLevelCommand(arm, heightOfRobot, distanceBetweenShoulderAndRung));
+}
+
+ClimbLevelCommand::ClimbLevelCommand(BaseClimberArm *arm, double heightOfRobot, double distanceBetweenShoulderAndRung) {
+	AddSequential(new DisengageArmCommand(arm));
+	AddSequential(new HookOnToRungCommand(arm, heightOfRobot, distanceBetweenShoulderAndRung));
+	AddSequential(new PullRobotUpCommand(arm));
 }

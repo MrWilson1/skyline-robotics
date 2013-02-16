@@ -7,6 +7,7 @@
 #include "ClimberJoints.h"
 #include "../../Misc/Tools.h"
 
+
 /**
  * \brief Base class for all climber arms. Uses polar and Cartesian coordinates to move and locate arm, with the shoulder as the origin.
  */
@@ -25,6 +26,8 @@ public:
 	virtual double GetMagnitude() = 0;
 	virtual double GetX() = 0;
 	virtual double GetY() = 0;
+	virtual void SetElbowAngle(double angle) = 0;
+	virtual void SetShoulderAngle(double angle) = 0;
 };
 
 /**
@@ -89,6 +92,16 @@ public:
 	 * \brief Sets y-coordinate of hook.
 	 */
 	double GetY();
+	
+	/**
+	 * \brief Sets elbow angle.
+	 */
+	void SetElbowAngle(double angle);
+	
+	/**
+	 * \brief Sets shoulder angle.
+	 */
+	void SetShoulderAngle(double angle);
 private:
 	BaseClimberJoint *m_elbow;
 	BaseClimberJoint *m_shoulder;
