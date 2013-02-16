@@ -1,15 +1,15 @@
 #include "ClimberCommands.h"
 
-PullRobotUpCommand::PullRobotUpCommand(BaseClimberArm *arm) : 
+PullRobotUpCommand::PullRobotUpCommand(BaseClimberArm *arm, float magnitude) : 
 		Command ("PullRobotUp"),
-		m_magnitude(5.0) {
+		m_magnitude(magnitude) {
 	m_arm = arm;
 	Requires(m_arm); 
 }
 
-PullRobotUpCommand::PullRobotUpCommand(BaseClimberArm *arm, float magnitude) : 
+PullRobotUpCommand::PullRobotUpCommand(BaseClimberArm *arm) : 
 		Command ("PullRobotUp"),
-		m_magnitude(magnitude) {
+		m_magnitude(5.0) {
 	m_arm = arm;
 	Requires (m_arm); 
 }
@@ -136,3 +136,15 @@ DisengageArmCommand::DisengageArmCommand(BaseClimberArm *arm) :
 DisengageArmCommand::~DisengageArmCommand() {
 	// empty
 }
+
+
+HookOnToRungCommand::HookOnToRungCommand (BaseClimberArm *arm, double x, double y ) :
+		CommandGroup ("HookOnToRung"){
+	AddSequential(new MoveArmPolarCommand(arm,0, x + y ));
+	AddSequential (new MoveArmCartesianCommand (arm, m_arm->GetX(), sqrt(2)*x));
+}
+
+HookOnToRungCommand::~HookOnToRungCommand (){
+	//empty
+}	
+

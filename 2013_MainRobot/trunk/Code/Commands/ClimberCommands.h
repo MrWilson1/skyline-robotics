@@ -7,6 +7,7 @@
 #include "BaseCommand.h"
 #include "..\Subsystems\Climber\ClimberArm.h"
 #include "..\subsystems\Climber\ClimberExtender.h"
+#include "math.h"
 
 class PullRobotUpCommand : public Command {
 public:
@@ -84,6 +85,15 @@ public:
 private:
 	double m_xDisplacement;
 	double m_yDisplacement;
+};
+
+class HookOnToRungCommand : public CommandGroup {
+public:
+	HookOnToRungCommand (BaseClimberArm *arm, double x, double y);
+	~HookOnToRungCommand(); 
+	
+private:
+	BaseClimberArm *m_arm;  
 };
 
 #endif
