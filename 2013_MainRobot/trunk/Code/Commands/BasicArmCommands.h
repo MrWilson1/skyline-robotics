@@ -7,24 +7,26 @@
 #include "math.h"
 #include "../Misc/Tools.h"
 
-struct ArmData {
-	ArmData(BaseSmartJoint *elbow, BaseSmartJoint *shoulder, double elbowLength, double shoulderLength);
-	BaseSmartJoint *m_elbow;
-	BaseSmartJoint *m_shoulder;
-	double m_elbowLength;
-	double m_shoulderLength;
+class Arm {
+public:
+	Arm(BaseSmartJoint *elbow, BaseSmartJoint *shoulder, double elbowLength, double shoulderLength);
+	~Arm();
+	BaseSmartJoint *Elbow;
+	BaseSmartJoint *Shoulder;
+	double ElbowLength;
+	double ShoulderLength;
+	
+	double GetX();
+	double GetY();
+	double GetAngle();
+	double GetMagnitude();
 };
 
-class SetJointSpeedCommand : public Command {
+class SetJointSpeedCommand : public SimpleCommand {
 public:
 	SetJointSpeedCommand(BaseJoint *joint, double speed);
 	~SetJointSpeedCommand();
-	
-	void Initialize();
 	void Execute();
-	bool IsFinished();
-	void Interrupted();
-	void End();
 private:
 	BaseJoint *m_joint;
 	double m_speed;
@@ -32,7 +34,7 @@ private:
 
 class SetPolarCommand : public Command {
 public:
-	SetPolarCommand(ArmData arm, double angle, double magnitude);
+	SetPolarCommand(Arm arm, double angle, double magnitude);
 	~SetPolarCommand();
 	
 	void Initialize();
@@ -41,7 +43,7 @@ public:
 	void Interrupted();
 	void End();
 private:
-	ArmData m_armData;
+	Arm m_arm;
 	double m_angle;
 	double m_magnitude;
 	double m_angleRange;
@@ -50,40 +52,33 @@ private:
 
 class SetCartesianCommand : public CommandGroup {
 public:
-	SetCartesianCommand(ArmData arm, double x, double y);
+	SetCartesianCommand(Arm arm, double x, double y);
 	~SetCartesianCommand();
 };
 
 class SetDegreesCommand : public CommandGroup {
 public:
-	SetDegreesCommand(ArmData arm, double degrees);
+	SetDegreesCommand(Arm arm, double degrees);
 	~SetDegreesCommand();
 };
 
 class SetMagnitudeCommand : public CommandGroup {
 public:
-	SetMagnitudeCommand(ArmData arm, double magnitude);
+	SetMagnitudeCommand(Arm arm, double magnitude);
 	~SetMagnitudeCommand();
 };
 
 class SetXCommand : public CommandGroup {
 public:
-	SetXCommand(ArmData arm, double x);
+	SetXCommand(Arm arm, double x);
 	~SetXCommand();
 };
 
 class SetYCommand : public CommandGroup {
 public:
-	SetYCommand(ArmData arm, double y);
+	SetYCommand(Arm arm, double y);
 	~SetYCommand();
 };
-
-namespace Arm {
-	double GetX(ArmData arm);
-	double GetY(ArmData arm);
-	double GetAngle(ArmData arm);
-	double GetMagnitude(ArmData arm);
-}
 
 
 #endif

@@ -26,7 +26,7 @@ private:
 
 class HookOnToRungCommand : public CommandGroup {
 public:
-	HookOnToRungCommand (ArmData arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	HookOnToRungCommand (Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
 	~HookOnToRungCommand(); 
 };
 
@@ -35,14 +35,14 @@ public:
  */
 class PullRobotUpCommand : public CommandGroup {
 public:
-	PullRobotUpCommand(ArmData arm);
-	PullRobotUpCommand(ArmData arm, double magnitude);
+	PullRobotUpCommand(Arm arm);
+	PullRobotUpCommand(Arm arm, double magnitude);
 	~PullRobotUpCommand();
 };
 
 class DisengageArmCommand : public CommandGroup {
 public:
-	DisengageArmCommand(ArmData arm);
+	DisengageArmCommand(Arm arm);
 	~DisengageArmCommand();
 private:
 	double m_xDisplacement;
@@ -51,13 +51,13 @@ private:
 
 class ClimbLevelCommand : public CommandGroup {
 public:
-	ClimbLevelCommand(ArmData arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	ClimbLevelCommand(Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
 	~ClimbLevelCommand();
 };
 
 class ClimbPyramidCommand : public CommandGroup {
 public:
-	ClimbPyramidCommand(ArmData arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	ClimbPyramidCommand(Arm arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung);
 	~ClimbPyramidCommand();
 };
 
