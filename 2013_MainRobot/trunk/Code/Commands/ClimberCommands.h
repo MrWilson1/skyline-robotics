@@ -3,14 +3,14 @@
 
 #include "BasicArmCommands.h"
 
-#include "..\Misc\Tools.h"
+#include "../Misc/Tools.h"
 #include "math.h"
 
 #include "WPILib.h"
 
 #include "BaseCommand.h"
-#include "..\subsystems\Climber\ClimberExtender.h"
-#include "..\Subsystems\Controllers\Axis.h"
+#include "../subsystems/Climber/ClimberExtender.h"
+#include "../Subsystems/Controllers/Axis.h"
 
 
 class ExtendArmCommand : public SimpleCommand {

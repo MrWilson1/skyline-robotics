@@ -7,6 +7,10 @@ Arm::Arm(BaseSmartJoint *elbow, BaseSmartJoint *shoulder, double elbowLength, do
 	ShoulderLength = shoulderLength;
 }
 
+Arm::~Arm() {
+	// empty
+}
+
 double Arm::GetX() {
 	double elbow_x = ElbowLength * Tools::DegCos(Elbow->GetAngle());
 	double shoulder_x = ShoulderLength * Tools::DegCos(Shoulder->GetAngle());

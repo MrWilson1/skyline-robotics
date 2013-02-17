@@ -86,7 +86,8 @@ PidFrisbeeTurret::PidFrisbeeTurret(
 }
 
 PidFrisbeeTurret::~PidFrisbeeTurret() {
-	// empty
+	delete m_horizontalPid;
+	delete m_verticalPid;
 }
 
 void PidFrisbeeTurret::TurnHorizontal(float degrees) {

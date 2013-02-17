@@ -49,7 +49,7 @@ PidWinchClimberJoint::PidWinchClimberJoint(SpeedController *motor, Encoder *enco
 }
 
 PidWinchClimberJoint::~PidWinchClimberJoint() {
-	//
+	delete m_pid;
 }
 
 void PidWinchClimberJoint::SetAngle(float degrees) {

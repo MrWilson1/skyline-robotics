@@ -151,6 +151,10 @@ EjectFrisbeeCommand::EjectFrisbeeCommand(BaseFrisbeeShooter *shooter) :
 	Requires(m_shooter);
 }
 
+EjectFrisbeeCommand::~EjectFrisbeeCommand() {
+	// empty
+}
+
 void EjectFrisbeeCommand::Execute() {
 	m_shooter->EjectFrisbee();
 }

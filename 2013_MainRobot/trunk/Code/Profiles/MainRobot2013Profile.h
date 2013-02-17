@@ -8,11 +8,13 @@
 #include "BaseRobotProfile.h"
 
 #include "../Subsystems/Drive/DriveSubsystem.h"
+#include "../Subsystems/Components/DriveComponents.h"
 #include "../Subsystems/Shooter/FrisbeeTurret.h"
 #include "../Subsystems/Shooter/FrisbeeLoader.h"
 #include "../Subsystems/Shooter/FrisbeeShooter.h"
 #include "../Subsystems/Shooter/FrisbeeAimer.h"
 #include "../Subsystems/Climber/ClimberJoints.h"
+
 
 #include "../Commands/DriveCommands.h"
 #include "../Commands/ShooterCommands.h"
@@ -28,8 +30,10 @@
 class MainRobot2013Profile : public BaseRobotProfile {
 private:
 	// Basic Hardware Objects
-	SpeedController *m_left;
-	SpeedController *m_right;
+	SpeedController *m_leftMotor;
+	SpeedController *m_rightMotor;
+	Tread *m_leftTread;
+	Tread *m_rightTread;
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
 	

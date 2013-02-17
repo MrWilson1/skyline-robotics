@@ -2,12 +2,12 @@
 #define DRIVE_COMMANDS_H
 
 #include "WPILib.h"
-#include "..\Misc\Tools.h"
+#include "../Misc/Tools.h"
 #include "BaseCommand.h"
 
-#include "..\Subsystems\Drive\DriveSubsystem.h"
-#include "..\Subsystems\Drive\DriveTransmission.h"
-#include "..\Subsystems\Controllers\Axis.h"
+#include "../Subsystems/Drive/DriveSubsystem.h"
+#include "../Subsystems/Drive/DriveTransmission.h"
+#include "../Subsystems/Controllers/Axis.h"
 
 /**
  * \brief Issues a perpetually running command to drive in tank mode.

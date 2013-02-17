@@ -8,6 +8,7 @@
 
 
 #include "../Subsystems/Drive/DriveSubsystem.h"
+#include "../Subsystems/Components/DriveComponents.h"
 
 #include "../Commands/DriveCommands.h"
 
@@ -22,7 +23,12 @@
 class BlandRobotProfile : public BaseRobotProfile {
 private:
 	// Basic Hardware Objects
-	RobotDrive *m_robotDrive;
+	SpeedController *m_leftFrontMotor;
+	SpeedController *m_leftBackMotor;
+	SpeedController *m_rightFrontMotor;
+	SpeedController *m_rightBackMotor;
+	Tread *m_leftTread;
+	Tread *m_rightTread;
 	XboxController *m_xbox;
 	
 	// Subsystems

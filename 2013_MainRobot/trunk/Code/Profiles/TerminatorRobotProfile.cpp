@@ -12,18 +12,24 @@ TerminatorRobotProfile::~TerminatorRobotProfile() {
 }
 
 void TerminatorRobotProfile::CreateBasicHardwareObjects() {
-	m_leftFrontMotor = new Jaguar(
+	m_leftFrontMotor = new Talon(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm1);
-	m_leftBackMotor = new Jaguar(
+	m_leftBackMotor = new Talon(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm2);
-	m_rightFrontMotor = new Jaguar(
+	m_rightFrontMotor = new Talon(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm3);
-	m_rightBackMotor = new Jaguar(
+	m_rightBackMotor = new Talon(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm4);
+	m_leftTread = new Tread(
+			m_leftFrontMotor,
+			m_leftBackMotor);
+	m_rightTread = new Tread(
+			m_rightFrontMotor,
+			m_rightBackMotor);
 	
 	m_leftEncoder = new Encoder(
 			Ports::Crio::Module1,
@@ -44,10 +50,8 @@ void TerminatorRobotProfile::CreateSubsystems() {
 	// These currently have no effect on the robot whatsoever.
 	
 	m_drive = new PidSimpleDrive(
-		m_leftFrontMotor,
-		m_leftBackMotor,
-		m_rightFrontMotor,
-		m_rightBackMotor,
+		m_leftTread,
+		m_rightTread,
 		m_leftEncoder,
 		m_rightEncoder,
 		1.0f / 4134.0f,

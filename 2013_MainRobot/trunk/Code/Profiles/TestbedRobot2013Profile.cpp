@@ -12,11 +12,14 @@ TestbedRobot2013Profile::~TestbedRobot2013Profile() {
 }
 
 void TestbedRobot2013Profile::CreateBasicHardwareObjects() {
-	m_robotDrive = new RobotDrive(
-			Ports::DigitalSidecar::Pwm1,
-			Ports::DigitalSidecar::Pwm2,
-			Ports::DigitalSidecar::Pwm3,
-			Ports::DigitalSidecar::Pwm4);
+	m_leftMotor = new Talon(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm1);
+	m_rightMotor = new Talon(
+	Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm2);
+			m_leftTread = new Tread(m_leftMotor);
+	m_rightTread = new Tread(m_rightMotor);
 	m_xbox = new XboxController(
 			Ports::Computer::Usb1);
 	m_compressor = new Compressor(
@@ -49,7 +52,7 @@ void TestbedRobot2013Profile::CreateBasicHardwareObjects() {
 }
 
 void TestbedRobot2013Profile::CreateSubsystems() {
-	m_drive = new SimpleDrive(m_robotDrive);
+	m_drive = new SimpleDrive(m_leftTread, m_rightTread);
 	m_leftTestEncoder = new TestEncoder(
 			m_leftEncoder,
 			"Left Encoder");

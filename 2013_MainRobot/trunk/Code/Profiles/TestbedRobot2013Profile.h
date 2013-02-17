@@ -22,7 +22,11 @@
 class TestbedRobot2013Profile : public BaseRobotProfile {
 private:
 	// Basic Hardware Objects
-	RobotDrive *m_robotDrive;
+	SpeedController *m_leftMotor;
+	SpeedController *m_rightMotor;
+	Tread *m_leftTread;
+	Tread *m_rightTread;
+	
 	XboxController *m_xbox;
 	Compressor *m_compressor;
 	Encoder *m_leftEncoder;

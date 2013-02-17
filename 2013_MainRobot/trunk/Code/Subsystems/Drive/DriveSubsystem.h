@@ -16,6 +16,7 @@
 #include "WPILib.h"
 
 #include "../BaseSubsystem.h"
+#include "../Components/DriveComponents.h"
 #include "../../Misc/Tools.h"
 
 /**
@@ -66,8 +67,7 @@ public:
  */
 class SimpleDrive : public BaseDrive {
 public:
-	SimpleDrive(SpeedController *left, SpeedController *right);
-	SimpleDrive(RobotDrive *robotDrive);
+	SimpleDrive(Tread *left, Tread *right);
 	~SimpleDrive();
 	
 	void Drive(float outputMagnitude, float curve);
@@ -83,8 +83,8 @@ public:
 	void Brake();
 	
 private:
-	RobotDrive *m_robotDrive;
-	bool m_passedDrive;
+	Tread *m_leftTread;
+	Tread *m_rightTread;
 };
 
 
@@ -152,34 +152,6 @@ private:
  * 
  * Forces the two wheels to spin at the same time.
  */
-class Tread : public PIDOutput {
-public:
-	/**
-	 * \brief Specifies the direction the motors should spin to move forwards
-	 */
-	enum Direction {
-		kForward = 1,
-		kReversed = -1
-	};
-	Tread(SpeedController *front, SpeedController *back, Direction direction);
-	virtual ~Tread();
-	/**
-	 * \brief Sets the motor speed
-	 */
-	void PIDWrite(float output);
-
-	/**
-	 * \brief The motor speed
-	 */
-	float m_last;
-private:
-	SpeedController *m_front;
-	SpeedController *m_back;
-	Direction m_direction;
-	//TreadPidMode m_currentMode;
-};
-
-
 
 
 struct PidState {
@@ -211,10 +183,8 @@ struct PidDriveState {
 class PidSimpleDrive : public BaseDrive, public IPidDrive {
 public:
 	PidSimpleDrive(
-			SpeedController *leftFront, 
-			SpeedController *leftBack, 
-			SpeedController *rightFront,
-			SpeedController *rightBack,
+			Tread *left,
+			Tread *right,
 			Encoder *leftEncoder,
 			Encoder *rightEncoder,
 			float leftRateDPP,
@@ -245,10 +215,6 @@ private:
 	};
 	void TryToggling(PidMode mode);
 	
-	SpeedController *m_leftFront; 
-	SpeedController *m_leftBack;
-	SpeedController *m_rightFront;
-	SpeedController *m_rightBack;
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
 	

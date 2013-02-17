@@ -13,12 +13,14 @@ MainRobot2013Profile::~MainRobot2013Profile() {
 
 void MainRobot2013Profile::CreateBasicHardwareObjects() {
 	// Drive
-	m_left = new Talon(
+	m_leftMotor = new Talon(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm1);
-	m_right = new Talon(
+	m_rightMotor = new Talon(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm2);
+	m_leftTread = new Tread(m_leftMotor);
+	m_rightTread = new Tread(m_rightMotor);
 	m_leftEncoder = new Encoder(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio1,
@@ -85,8 +87,8 @@ void MainRobot2013Profile::CreateSubsystems() {
 		240.f / 4134.0f,
 		240.f / 4054.0f);*/
 	m_drive = new SimpleDrive(
-			m_left,
-			m_right);
+			m_leftTread,
+			m_rightTread);
 	m_loader = new PlaceholderFrisbeeLoader();
 	//m_aimer = new VisionTablesFrisbeeAimer();
 	/*m_turret = new PidFrisbeeTurret(

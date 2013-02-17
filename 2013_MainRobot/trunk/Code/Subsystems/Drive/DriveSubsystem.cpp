@@ -19,47 +19,52 @@ IPidDrive::~IPidDrive() {
 
 
 SimpleDrive::SimpleDrive(
-		SpeedController *left, 
-		SpeedController *right) :
-		BaseDrive("SimpleDrive"),
-		m_passedDrive(false) {
-	m_robotDrive = new RobotDrive(
-		left,
-		right);
-	AddActuatorToLiveWindow("Left", left);
-	AddActuatorToLiveWindow("Right", right);
-}
-
-SimpleDrive::SimpleDrive(RobotDrive *robotDrive) :
-		BaseDrive("SimpleDrive"),
-		m_passedDrive(true) {
-	m_robotDrive = robotDrive;
+		Tread *left, 
+		Tread *right) :
+		BaseDrive("SimpleDrive") {
+	m_leftTread = left;
+	m_rightTread = right;
+	m_rightTread->SetDirection(Tread::kReverse);
+	AddActuatorToLiveWindow("Left", m_leftTread);
+	AddActuatorToLiveWindow("Right", m_rightTread);
 }
 
 SimpleDrive::~SimpleDrive() {
-	if (!m_passedDrive) {
-		delete m_robotDrive;
-	}
+	// empty
 }
 
 void SimpleDrive::Drive(float outputMagnitude, float curve) {
-	m_robotDrive->Drive(outputMagnitude, curve);
+	// empty
 }
 
 void SimpleDrive::TankDrive(float leftValue, float rightValue) {
-	m_robotDrive->TankDrive(leftValue, rightValue);
+	if (m_leftTread == NULL) {
+		SmartDashboard::PutString(GetName(), "leftTread null");
+		return;
+	}
+	if (m_rightTread == NULL) {
+		SmartDashboard::PutString(GetName(), "rightTread null");
+		return;
+	}
+	SmartDashboard::PutString(GetName(), "safe?");
+	m_leftTread->SetSpeed(leftValue);
+	m_rightTread->SetSpeed(rightValue);
 }
 
 void SimpleDrive::TankDrive(float leftValue, float rightValue, bool squaredInputs) {
-	m_robotDrive->TankDrive(leftValue, rightValue, squaredInputs);
+	if (squaredInputs) {
+		leftValue = Tools::SquareMagnitude(leftValue);
+		rightValue = Tools::SquareMagnitude(rightValue);
+	}
+	TankDrive(leftValue, rightValue);
 }
 
 void SimpleDrive::ArcadeDrive(float moveValue, float rotateValue) {
-	m_robotDrive->ArcadeDrive(moveValue, rotateValue);
+	// empty
 }
 
 void SimpleDrive::ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs) {
-	m_robotDrive->ArcadeDrive(moveValue, rotateValue, squaredInputs);
+	// empty
 }
 
 void SimpleDrive::ResetDistanceAndRotation() {
@@ -90,8 +95,7 @@ void SimpleDrive::Enable() {
  * SimpleDrive::StopMoving.
  */
 void SimpleDrive::Brake() {
-	float stopValue = 0.0;
-	m_robotDrive->TankDrive(stopValue, stopValue);
+	TankDrive(0.0, 0.0);
 }
 
 
@@ -166,36 +170,11 @@ void SmoothEncoder::Reset() {
 }
 
 
-Tread::Tread(SpeedController *front, SpeedController *back, Direction direction) :
-	m_last(0),
-	m_direction(direction) {
-	m_front = front;
-	m_back = back;
-}
-
-Tread::~Tread() {
-	// empty
-}
-
-void Tread::PIDWrite(float output) {
-	/*if (m_currentMode == kDistance) {
-		m_last = output;
-	} else {
-		m_last += output;
-	}*/
-	m_last = Tools::Limit(output, -1.0, 1.0);
-	m_front->PIDWrite(m_last * m_direction);
-	m_back->PIDWrite(m_last * m_direction);
-}
-
-
 
 
 PidSimpleDrive::PidSimpleDrive (
-		SpeedController *leftFront, 
-		SpeedController *leftBack, 
-		SpeedController *rightFront,
-		SpeedController *rightBack,
+		Tread *leftTread,
+		Tread *rightTread,
 		Encoder *leftEncoder,
 		Encoder *rightEncoder,
 		float leftRateDPP,
@@ -209,11 +188,11 @@ PidSimpleDrive::PidSimpleDrive (
 			m_rightRateDPP(rightRateDPP),
 			m_leftDistanceDPP(leftDistanceDPP),
 			m_rightDistanceDPP(rightDistanceDPP) {
-
-	m_leftFront = leftFront;
-	m_leftBack = leftBack;
-	m_rightFront = rightFront;
-	m_rightBack = rightBack;
+	
+	m_leftTread = leftTread;
+	m_rightTread = rightTread;
+	m_rightTread->SetDirection(Tread::kReverse);
+	
 	m_leftEncoder = leftEncoder;
 	m_rightEncoder = rightEncoder;
 	
@@ -226,9 +205,6 @@ PidSimpleDrive::PidSimpleDrive (
 		1,
 		Encoder::kRate,
 		m_rightRateDPP);
-	
-	m_leftTread = new Tread(m_leftFront, m_leftBack, Tread::kForward);
-	m_rightTread = new Tread(m_rightFront, m_rightBack, Tread::kReversed);
 	
 	m_leftPidRate = new PIDController(
 			0.1, 0.2, 0,
@@ -260,7 +236,12 @@ PidSimpleDrive::PidSimpleDrive (
 }
 
 PidSimpleDrive::~PidSimpleDrive() {
-	// Empty
+	delete m_smoothLeftEncoder;
+	delete m_smoothRightEncoder;
+	delete m_leftPidRate;
+	delete m_rightPidRate;
+	delete m_leftPidDistance;
+	delete m_rightPidDistance;
 }
 	
 void PidSimpleDrive::Drive(float outputMagnitude, float curve) {
@@ -280,8 +261,8 @@ void PidSimpleDrive::TankDrive(float leftValue, float rightValue, bool squaredIn
 	}
 	m_leftPidRate->SetSetpoint(leftValue);
 	m_rightPidRate->SetSetpoint(rightValue);
-	SmartDashboard::PutNumber("Left Tread", m_leftTread->m_last);
-	SmartDashboard::PutNumber("Right Tread", m_rightTread->m_last);
+	SmartDashboard::PutNumber("Left Tread", m_leftTread->GetSpeed());
+	SmartDashboard::PutNumber("Right Tread", m_rightTread->GetSpeed());
 }
 
 /**

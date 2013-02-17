@@ -7,6 +7,7 @@
 #include "BaseRobotProfile.h"
 
 #include "../Subsystems/Drive/DriveSubsystem.h"
+#include "../Subsystems/Components/DriveComponents.h"
 #include "../Subsystems/Experimental.h"
 
 #include "../Commands/DriveCommands.h"
@@ -27,7 +28,8 @@ private:
 	SpeedController *m_leftBackMotor;
 	SpeedController *m_rightFrontMotor;
 	SpeedController *m_rightBackMotor;
-	RobotDrive *m_robotDrive;
+	Tread *m_leftTread;
+	Tread *m_rightTread;
 	XboxController *m_xbox;
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
