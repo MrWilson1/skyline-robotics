@@ -1,8 +1,8 @@
 #include "BaseCommand.h"
 
-SimpleCommand::SimpleCommand(const char *name, bool doesCommandRunEndlessly) :
+SimpleCommand::SimpleCommand(const char *name, bool valueToReturnForIsFinished) :
 		Command(name),
-		m_doesCommandRunEndlessly(doesCommandRunEndlessly) {
+		m_valueToReturnForIsFinished(valueToReturnForIsFinished) {
 	// empty
 }
 	
@@ -15,7 +15,7 @@ void SimpleCommand::Initialize() {
 }
 
 bool SimpleCommand::IsFinished() {
-	return !m_doesCommandRunEndlessly;
+	return m_valueToReturnForIsFinished;
 }
 
 void SimpleCommand::End() {

@@ -5,7 +5,7 @@
 
 class SimpleCommand : public Command {
 public:
-	SimpleCommand(const char *name, bool doesCommandRunEndlessly);
+	SimpleCommand(const char *name, bool valueToReturnForIsFinished);
 	virtual ~SimpleCommand();
 
 	virtual void Initialize();
@@ -15,7 +15,7 @@ public:
 	virtual void Interrupted();
 	
 protected:
-	bool m_doesCommandRunEndlessly;
+	bool m_valueToReturnForIsFinished;
 };
 
 #endif

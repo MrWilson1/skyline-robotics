@@ -43,38 +43,12 @@ private:
 	Axis *m_rotateAxis;
 };
 
-/**
- * An experimental command to make the wheels spin
- * in opposing directions.
- * 
- * This class is meant to test using commands.
- */
-class Spasm : public Command {
-public:
-	Spasm(BaseDrive *drive);
-	~Spasm();
-	
-	void Initialize();
-	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
-		
-private:
-	BaseDrive *m_drive;
-	int counter;
-};
 
-class TravelStraightManualCommand : public Command {
+class TravelStraightManualCommand : public SimpleCommand {
 public:
 	TravelStraightManualCommand(BaseDrive *drive, Axis *axis);
 	~TravelStraightManualCommand();
-	
-	void Initialize();
 	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
 	
 private:
 	BaseDrive *m_drive;

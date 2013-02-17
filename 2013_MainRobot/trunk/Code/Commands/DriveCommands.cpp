@@ -1,7 +1,7 @@
 #include "DriveCommands.h"
 
 TankDriveCommand::TankDriveCommand(BaseDrive *drive, Axis *leftAxis, Axis *rightAxis) :
-		SimpleCommand("TankDrive", true) {
+		SimpleCommand("TankDrive", false) {
 	m_drive = drive;
 	m_leftAxis = leftAxis;
 	m_rightAxis = rightAxis;
@@ -35,15 +35,34 @@ ArcadeDriveCommand::~ArcadeDriveCommand() {
 }
 
 void ArcadeDriveCommand::Execute() {
-	float magnitude = m_magnitudeAxis->Get();
-	float rotate = m_rotateAxis->Get();
-	m_drive->ArcadeDrive(magnitude, rotate, true);
+	double moveValue = m_magnitudeAxis->Get();
+	double rotateValue = m_rotateAxis->Get();
+	double leftMotorOutput;
+	double rightMotorOutput;
+	if (moveValue > 0.0) {
+		if (rotateValue > 0.0) {
+			leftMotorOutput = moveValue - rotateValue;
+			rightMotorOutput = max(moveValue, rotateValue);
+		} else {
+			leftMotorOutput = max(moveValue, -rotateValue);
+			rightMotorOutput = moveValue + rotateValue;
+		}
+	} else {
+		if (rotateValue > 0.0) {
+			leftMotorOutput = - max(-moveValue, rotateValue);
+			rightMotorOutput = moveValue + rotateValue;
+		} else {
+			leftMotorOutput = moveValue - rotateValue;
+			rightMotorOutput = - max(-moveValue, -rotateValue);
+		}
+	}
+	m_drive->TankDrive(leftMotorOutput, rightMotorOutput);
 }
 
 
 
 TravelStraightManualCommand::TravelStraightManualCommand(BaseDrive *drive, Axis *axis) :
-		Command("TravelStraightManualCommand") {
+		SimpleCommand("TravelStraightManualCommand", false) {
 	m_drive = drive;
 	m_axis = axis;
 	Requires(m_drive);
@@ -53,30 +72,16 @@ TravelStraightManualCommand::~TravelStraightManualCommand() {
 	// empty
 }
 
-void TravelStraightManualCommand::Initialize() {
-	// empty
-}
-
 void TravelStraightManualCommand::Execute() {
 	float magnitude = m_axis->Get();
 	m_drive->TankDrive(magnitude, magnitude);
 }
 
-bool TravelStraightManualCommand::IsFinished() {
-	return false;
-}
 
-void TravelStraightManualCommand::End() {
-	// empty
-}
-
-void TravelStraightManualCommand::Interrupted() {
-	// empty
-}
 
 
 RefreshPidCommand::RefreshPidCommand(IPidDrive *drive) :
-		SimpleCommand("RefreshPidCommand", false) {
+		SimpleCommand("RefreshPidCommand", true) {
 	m_drive = drive;
 }
 
@@ -95,53 +100,13 @@ void RefreshPidCommand::Execute() {
 }
 
 
-Spasm::Spasm(BaseDrive *drive) :
-		Command("Spasm"),
-		counter(0) {
-	m_drive = drive;
-	Requires(m_drive);
-}
-
-Spasm::~Spasm() {
-	// empty
-}
-
-void Spasm::Initialize() {
-	// empty
-}
-void Spasm::Execute() {
-	SmartDashboard::PutString("Spasm", "Spasming");
-	float value = 0.5;
-	counter += 1;
-	m_drive->TankDrive(-value, value);
-}
-
-bool Spasm::IsFinished() {
-	if (counter > 100) {
-		counter = 0;
-		return true;
-	} else {
-		return false;
-	}
-}
-
-void Spasm::End() {
-	SmartDashboard::PutString("Spasm", "Not Spasming");
-}
-
-void Spasm::Interrupted() {
-	SmartDashboard::PutString("Spasm", "Interrupted Spasming");
-	float value = 0.0;
-	counter = 103;
-	m_drive->TankDrive(value, value);
-}
-
 
 
 TravelDistanceCommand::TravelDistanceCommand(BaseDrive *drive, float distance, Tools::Units unit) :
 		Command("TravelDistanceCommand"),
 		m_distanceInInches(Tools::ConvertUnits(distance, unit, Tools::kInches)) {
 	m_drive = drive;
+	Requires(m_drive);
 }
 
 TravelDistanceCommand::TravelDistanceCommand(BaseDrive *drive, float distanceInInches) :
@@ -178,7 +143,7 @@ void TravelDistanceCommand::Interrupted() {
 
 
 ToggleTransmissionCommand::ToggleTransmissionCommand(BaseDriveTransmission *transmission) :
-		SimpleCommand("ToggleTransmissionCommand", false) {
+		SimpleCommand("ToggleTransmissionCommand", true) {
 	m_transmission = transmission;
 	Requires(m_transmission);
 }

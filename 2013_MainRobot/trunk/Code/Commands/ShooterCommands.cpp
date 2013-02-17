@@ -113,6 +113,7 @@ void AimTurretCommand::Interrupted() {
 	// empty
 }
 
+
 FireFrisbeeCommand::FireFrisbeeCommand(BaseFrisbeeShooter *shooter) :
 		Command("FireFrisbee") {
 	m_shooter = shooter;
@@ -143,35 +144,17 @@ void FireFrisbeeCommand::Interrupted() {
 	m_shooter->StopFrisbee();
 }
 
+
 EjectFrisbeeCommand::EjectFrisbeeCommand(BaseFrisbeeShooter *shooter) :
-		Command("EjectFrisbee") {
+		SimpleCommand("EjectFrisbee", true) {
 	m_shooter = shooter;
 	Requires(m_shooter);
-}
-
-EjectFrisbeeCommand::~EjectFrisbeeCommand() {
-	// empty
-}
-
-void EjectFrisbeeCommand::Initialize() {
-	// empty
 }
 
 void EjectFrisbeeCommand::Execute() {
 	m_shooter->EjectFrisbee();
 }
 
-bool EjectFrisbeeCommand::IsFinished() {
-	return true;
-}
-
-void EjectFrisbeeCommand::End() {
-	// empty
-}
-
-void EjectFrisbeeCommand::Interrupted() {
-	// empty
-}
 
 LoadAndFireCommand::LoadAndFireCommand(
 		BaseFrisbeeLoader *loader, 
@@ -192,68 +175,60 @@ LoadAndFireCommand::~LoadAndFireCommand() {
  * todo: Make two versions of this: one to manually go to some distance (replace Axis with doubles)
  * and another to control using Axis
  */
-ManuallyAdjustTurretCommand::ManuallyAdjustTurretCommand(
+AdjustTurretCommand::AdjustTurretCommand(
 		BaseFrisbeeTurret *turret,
-		Axis *verticalAxis, 
-		Axis *rotateAxis,
+		double rotateOffset,
+		double verticalOffset,
 		float allowedRange) :
-		Command("ManuallyAdjustTurretCommand"),
+		Command("AdjustTurretCommand"),
+		m_rotateOffset(rotateOffset),
+		m_verticalOffset(verticalOffset),
 		m_allowedRange(allowedRange),
 		m_isFinished(false) {
 	m_turret = turret;
-	m_verticalAxis = verticalAxis;
-	m_rotateAxis = rotateAxis;
+	
+	Requires(m_turret);
 }
 
-ManuallyAdjustTurretCommand::~ManuallyAdjustTurretCommand() {
+AdjustTurretCommand::~AdjustTurretCommand() {
 	// empty
 }
 
-void ManuallyAdjustTurretCommand::Initialize() {
-	SmartDashboard::PutString(GetName(), "init");
+void AdjustTurretCommand::Initialize() {
+	// empty
 }
 
-void ManuallyAdjustTurretCommand::Execute() {
-	SmartDashboard::PutString(GetName(), "execute");
-	float rawVertical = Tools::Deadband(m_verticalAxis->Get(), 0.1);
-	float rawRotate = Tools::Deadband(m_rotateAxis->Get(), 0.1);
+void AdjustTurretCommand::Execute() {
+	Tracking::Offset desired = m_turret->GetCurrentOffset();
+	desired.XOffset += m_rotateOffset - desired.XOffset;
+	desired.YOffset += m_verticalOffset - desired.YOffset;
 	
-	// This might not be a good idead
-	/*if (rawVertical == 0 and rawRotate == 0) {
+	bool isXClose = Tools::IsWithinRange(desired.XOffset, 0, m_allowedRange);
+	bool isYClose = Tools::IsWithinRange(desired.YOffset, 0, m_allowedRange);
+	
+	if (isXClose && isYClose) {
 		m_isFinished = true;
-		return;
-	}*/
+	}
 	
-	/*Tracking::Offset desired = m_turret->GetCurrentOffset();
-	desired.YOffset += Tools::Scale(rawVertical, -1.0, 1.0, -5.0, 5.0);
-	desired.XOffset += Tools::Scale(rawRotate, -1.0, 1.0, -5.0, 5.0);
-	
-	m_turret->TurnGivenOffset(desired);*/
-	Tracking::Offset desired;
-	desired.XOffset = rawVertical;
-	desired.YOffset = rawRotate;
 	m_turret->TurnGivenOffset(desired);
 }
 
-bool ManuallyAdjustTurretCommand::IsFinished() {
-	//return m_isFinished;
-	return false;
+bool AdjustTurretCommand::IsFinished() {
+	return m_isFinished;
 }
 
-void ManuallyAdjustTurretCommand::End() {
-	SmartDashboard::PutString(GetName(), "end");
+void AdjustTurretCommand::End() {
 	// empty
 }
 
-void ManuallyAdjustTurretCommand::Interrupted() {
-	SmartDashboard::PutString(GetName(), "interrupt");
+void AdjustTurretCommand::Interrupted() {
 	// empty
 }
 
 
 
 ManuallyControlTurretCommand::ManuallyControlTurretCommand(BaseFrisbeeTurret *turret, Axis *verticalAxis, Axis *rotateAxis) :
-			Command("ManuallyControlTurretCommand") {
+			SimpleCommand("ManuallyControlTurretCommand", false) {
 	m_turret = turret;
 	m_verticalAxis = verticalAxis;
 	m_rotateAxis = rotateAxis;
@@ -264,24 +239,8 @@ ManuallyControlTurretCommand::~ManuallyControlTurretCommand() {
 	// empty
 }
 
-void ManuallyControlTurretCommand::Initialize() {
-	// empty
-}
-
 void ManuallyControlTurretCommand::Execute() {
 	m_turret->TurnHorizontal(m_rotateAxis->Get());
 	m_turret->TurnVertical(m_verticalAxis->Get());
-}
-
-bool ManuallyControlTurretCommand::IsFinished() {
-	return false;
-}
-
-void ManuallyControlTurretCommand::End() {
-	// empty
-}
-
-void ManuallyControlTurretCommand::Interrupted() {
-	// empty
 }
 

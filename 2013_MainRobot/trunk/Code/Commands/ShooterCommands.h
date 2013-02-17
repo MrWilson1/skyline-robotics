@@ -3,7 +3,7 @@
 
 #include "WPILib.h"
 #include "../Misc/Tools.h"
-#include "../OperatorInterfaces\BaseOI.h"
+#include "BaseCommand.h"
 
 #include "../Subsystems/Shooter/FrisbeeAimer.h"
 #include "../Subsystems/Shooter/FrisbeeLoader.h"
@@ -86,15 +86,11 @@ private:
 /**
  * \brief Lightly ejects frisbee.
  */
-class EjectFrisbeeCommand : public Command {
+class EjectFrisbeeCommand : public SimpleCommand {
 public:
 	EjectFrisbeeCommand(BaseFrisbeeShooter *shooter);
 	~EjectFrisbeeCommand();
-	void Initialize();
 	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
 		
 private:
 	BaseFrisbeeShooter *m_shooter;
@@ -116,11 +112,14 @@ public:
 /**
  * \brief Manually adjusts where the turret is pointing using two joystick axis
  */
-class ManuallyAdjustTurretCommand : public Command {
+class AdjustTurretCommand : public Command {
 public:
-	ManuallyAdjustTurretCommand(BaseFrisbeeTurret *turret,  
-								Axis *verticalAxis, Axis *rotateAxis, float allowedRange);
-	~ManuallyAdjustTurretCommand();
+	AdjustTurretCommand(
+			BaseFrisbeeTurret *turret,
+			double rotateOffset,
+			double verticalOffset, 
+			float allowedRange);
+	~AdjustTurretCommand();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -129,22 +128,18 @@ public:
 	
 private:
 	BaseFrisbeeTurret *m_turret;
-	Axis *m_verticalAxis;
-	Axis *m_rotateAxis;
+	double m_rotateOffset;
+	double m_verticalOffset;
 	float m_allowedRange;
 	bool m_isFinished;
 };
 
 
-class ManuallyControlTurretCommand : public Command {
+class ManuallyControlTurretCommand : public SimpleCommand {
 public:
 	ManuallyControlTurretCommand(BaseFrisbeeTurret *turret, Axis *verticalAxis, Axis *rotateAxis);
 	~ManuallyControlTurretCommand();
-	void Initialize();
 	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
 	
 private:
 	BaseFrisbeeTurret *m_turret;

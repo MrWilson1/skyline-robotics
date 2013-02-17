@@ -1,14 +1,34 @@
 #ifndef CLIMBER_COMMANDS_H
 #define CLIMBER_COMMANDS_H
 
-#include "WPILib.h"
+#include "BasicArmCommands.h"
+
 #include "..\Misc\Tools.h"
-#include "..\OperatorInterfaces\BaseOI.h"
+#include "math.h"
+
+#include "WPILib.h"
+
 #include "BaseCommand.h"
 #include "..\subsystems\Climber\ClimberExtender.h"
-#include "math.h"
 #include "..\Subsystems\Controllers\Axis.h"
-#include "BasicArmCommands.h"
+
+
+class ExtendArmCommand : public SimpleCommand {
+public:
+	ExtendArmCommand(BaseClimberExtender *climberExtender);
+	~ExtendArmCommand();
+	
+	void Execute();
+	
+private:
+	BaseClimberExtender *m_climberExtender;
+};
+
+class HookOnToRungCommand : public CommandGroup {
+public:
+	HookOnToRungCommand (ArmData arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	~HookOnToRungCommand(); 
+};
 
 /**
  * \brief Command to pull robot up.
@@ -20,22 +40,6 @@ public:
 	~PullRobotUpCommand();
 };
 
-class ExtendArmCommand : public Command {
-public:
-	ExtendArmCommand(BaseClimberExtender *climberExtender);
-
-	~ExtendArmCommand();
-	
-	void Initialize();
-	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
-	
-private:
-	BaseClimberExtender *m_climberExtender;
-};
-
 class DisengageArmCommand : public CommandGroup {
 public:
 	DisengageArmCommand(ArmData arm);
@@ -45,16 +49,10 @@ private:
 	double m_yDisplacement;
 };
 
-class HookAndDisengageCommand : public CommandGroup {
+class ClimbLevelCommand : public CommandGroup {
 public:
-	HookAndDisengageCommand(ArmData arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
-	~HookAndDisengageCommand();
-};
-
-class HookOnToRungCommand : public CommandGroup {
-public:
-	HookOnToRungCommand (ArmData arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
-	~HookOnToRungCommand(); 
+	ClimbLevelCommand(ArmData arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	~ClimbLevelCommand();
 };
 
 class ClimbPyramidCommand : public CommandGroup {
@@ -63,22 +61,13 @@ public:
 	~ClimbPyramidCommand();
 };
 
-class ClimbLevelCommand : public CommandGroup {
-public:
-	ClimbLevelCommand(ArmData arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
-	~ClimbLevelCommand();
-};
-
-class ControlArmManuallyCommand : public Command {
+class ControlArmManuallyCommand : public SimpleCommand {
 public:
 	ControlArmManuallyCommand(BaseJoint *elbow, BaseJoint *shoulder, Axis *elbowAxis, Axis *shoulderAxis);
 	~ControlArmManuallyCommand();
 	
-	void Initialize();
 	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
+	
 private:
 	BaseJoint *m_elbow;
 	BaseJoint *m_shoulder; 
