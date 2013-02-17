@@ -38,3 +38,35 @@ bool PlaceholderFrisbeeLoader::IsFrisbeePrepared() {
 void PlaceholderFrisbeeLoader::LoadFrisbee() {
 	// empty
 }
+
+PistonFrisbeeLoader::PistonFrisbeeLoader(Solenoid *piston) :
+		BaseFrisbeeLoader("PistonFrisbeeLoader") {
+	m_piston = piston;
+	
+	AddActuatorToLiveWindow("Piston", m_piston);
+}
+
+PistonFrisbeeLoader::~PistonFrisbeeLoader() {
+	//
+}
+
+int PistonFrisbeeLoader::GetNumberOfFrisbeesLoaded() {
+	return 4;
+}
+
+void PistonFrisbeeLoader::UnloadFrisbee() {
+	// empty
+}
+
+void PistonFrisbeeLoader::PrepareFrisbee() {
+	// empty
+}
+
+bool PistonFrisbeeLoader::IsFrisbeePrepared() {
+	return true;
+}
+
+void PistonFrisbeeLoader::LoadFrisbee() {
+	m_piston->Set(true); // out
+	m_piston->Set(false); // in
+}

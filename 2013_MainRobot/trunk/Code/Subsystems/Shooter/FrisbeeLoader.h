@@ -50,4 +50,18 @@ public:
 	void LoadFrisbee();
 };
 
+class PistonFrisbeeLoader : public BaseFrisbeeLoader {
+public:
+	PistonFrisbeeLoader(Solenoid *piston);
+	~PistonFrisbeeLoader();
+	
+	int GetNumberOfFrisbeesLoaded();
+	void UnloadFrisbee();
+	void PrepareFrisbee();
+	bool IsFrisbeePrepared();
+	void LoadFrisbee();
+private:
+	Solenoid *m_piston;
+};
+
 #endif

@@ -21,6 +21,7 @@ BaseSmartJoint::~BaseSmartJoint() {
 BasicWinchClimberJoint::BasicWinchClimberJoint(SpeedController *motor) :
 		BaseJoint("BaseWinchClimberJoint") {
 	m_motor = motor;
+	AddActuatorToLiveWindow("Joint Motor", m_motor);
 }
 
 BasicWinchClimberJoint::~BasicWinchClimberJoint() {

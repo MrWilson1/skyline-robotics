@@ -17,6 +17,7 @@ PullRobotUpCommand::~PullRobotUpCommand() {
 ExtendArmCommand::ExtendArmCommand(BaseClimberExtender *climberExtender) :
 		Command("ExtendArm") {
 	m_climberExtender = climberExtender;
+	Requires(climberExtender);
 }
 
 ExtendArmCommand::~ExtendArmCommand() {
@@ -83,6 +84,8 @@ ControlArmManuallyCommand::ControlArmManuallyCommand(BaseJoint *elbow, BaseJoint
 	m_shoulder = shoulder;
 	m_elbowAxis = elbowAxis;
 	m_shoulderAxis = shoulderAxis;
+	Requires(elbow);
+	Requires(shoulder);
 }
 
 ControlArmManuallyCommand::~ControlArmManuallyCommand() {

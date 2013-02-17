@@ -15,6 +15,9 @@ GuardedFrisbeeRaiser::GuardedFrisbeeRaiser(SpeedController *raiserMotor, Digital
 	m_raiserMotor = raiserMotor;
 	m_topLimitSwitch = topLimitSwitch;
 	m_bottomLimitSwitch = bottomLimitSwitch;
+	AddActuatorToLiveWindow("Motor", m_raiserMotor);
+	AddSensorToLiveWindow("Top Limit Switch", m_topLimitSwitch);
+	AddSensorToLiveWindow("Bottom Limit Switch", m_bottomLimitSwitch);
 }
 
 GuardedFrisbeeRaiser::~GuardedFrisbeeRaiser() {

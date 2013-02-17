@@ -9,7 +9,6 @@ BaseFrisbeeTurret::~BaseFrisbeeTurret() {
 	// Empty
 }
 
-
 SimpleFrisbeeTurret::SimpleFrisbeeTurret(
 			SpeedController *horizontalMotor, 
 			SpeedController *verticalMotor,

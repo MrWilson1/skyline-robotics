@@ -13,6 +13,8 @@ PneumaticClimberExtender::PneumaticClimberExtender(Solenoid *rightSolenoid, Sole
 	    BaseClimberExtender("PneumaticClimberExtender") {
 	m_rightSolenoid = rightSolenoid;
 	m_leftSolenoid = leftSolenoid;
+	AddActuatorToLiveWindow("Right Solenoid", m_rightSolenoid);
+	AddActuatorToLiveWindow("Left Solenoid", m_leftSolenoid);
 }
 
 PneumaticClimberExtender::~PneumaticClimberExtender() {
