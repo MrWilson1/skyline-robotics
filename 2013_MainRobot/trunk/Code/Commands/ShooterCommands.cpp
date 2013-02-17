@@ -198,8 +198,7 @@ LoadAndFireCommand::~LoadAndFireCommand() {
 
 
 ManuallyAdjustTurretCommand::ManuallyAdjustTurretCommand(
-		BaseFrisbeeTurret *turret, 
-		BaseOI *oi,
+		BaseFrisbeeTurret *turret,
 		Axis *verticalAxis, 
 		Axis *rotateAxis,
 		float allowedRange) :
@@ -209,7 +208,6 @@ ManuallyAdjustTurretCommand::ManuallyAdjustTurretCommand(
 		m_allowedRange(allowedRange),
 		m_isFinished(false) {
 	m_turret = turret;
-	m_oi = oi;
 }
 
 ManuallyAdjustTurretCommand::~ManuallyAdjustTurretCommand() {

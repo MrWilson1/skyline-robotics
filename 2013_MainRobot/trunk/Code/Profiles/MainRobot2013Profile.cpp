@@ -67,6 +67,10 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 	
 	m_xbox = new XboxController(
 			Ports::Computer::Usb1);
+	m_leftStick = new Joystick(
+			Ports::Computer::Usb2);
+	m_rightStick = new Joystick(
+			Ports::Computer::Usb3);
 }
 
 void MainRobot2013Profile::CreateSubsystems() {
@@ -95,7 +99,7 @@ void MainRobot2013Profile::CreateSubsystems() {
 }
 
 void MainRobot2013Profile::CreateOI() {
-	m_oi = new CompetitionOI(m_xbox);
+	m_oi = new XboxTwoJoysticksOI(m_xbox, m_leftStick, m_rightStick);
 }
 
 void MainRobot2013Profile::RobotInit() {
@@ -107,19 +111,27 @@ void MainRobot2013Profile::AutonomousInit() {
 }
 
 void MainRobot2013Profile::TeleopInit() {
-	m_oi->FireFrisbeeButton->WhenPressed(new LoadAndFireCommand(
-			m_loader, 
-			m_aimer, 
-			m_turret, 
-			m_shooter));
 	m_drive->SetDefaultCommand(new TankDriveCommand(
 			m_drive, 
 			m_oi->TankLeftAxis,
 			m_oi->TankRightAxis));
-	m_turret->SetDefaultCommand(new AimTurretCommand(
+	m_oi->DriveStraightButton->WhileHeld(new TravelStraightManualCommand(
+			m_drive,
+			m_oi->DriveStraightAxis));
+	
+	m_turret->SetDefaultCommand(new ManuallyAdjustTurretCommand(
+			m_turret,
+			m_oi->RotateTurretAxis,
+			m_oi->LiftTurretAxis,
+			3.0));
+	m_oi->FireFrisbeeButton->WhenPressed(new FireFrisbeeCommand( 
+			m_shooter));
+	
+	/*m_turret->SetDefaultCommand(new AimTurretCommand(
 			m_aimer, 
 			m_turret, 
 			Tracking::ClosestOffset, 
-			3.0));
+			3.0));*/
+	
 	// Will stop if the shooter is within 3 degrees of the centerpoint of the target
 }

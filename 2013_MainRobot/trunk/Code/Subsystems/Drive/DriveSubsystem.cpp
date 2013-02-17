@@ -172,22 +172,7 @@ void Tread::PIDWrite(float output) {
 	m_front->PIDWrite(m_last * m_direction);
 	m_back->PIDWrite(m_last * m_direction);
 }
-/*
-Tread::TreadPidMode Tread::GetMode() {
-	return m_currentMode;
-}
 
-void Tread::SetMode(Tread::TreadPidMode mode) {
-	m_currentMode = mode;
-}*/
-
-struct PidState {
-	Encoder::PIDSourceParameter PidSourceParameter;
-	double DistancePerPulse;
-	double P;
-	double I;
-	double D;
-};
 
 
 

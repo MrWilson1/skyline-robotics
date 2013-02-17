@@ -3,13 +3,14 @@
 
 #include "BaseCommand.h"
 #include "../Subsystems/Experimental.h"
+#include "../Subsystems/Controllers/Axis.h"
 
 /**
  * \brief An experimental 
  */
 class TestMotorCommand : public Command {
 public:
-	TestMotorCommand(TestMotor *testMotor, float speed);
+	TestMotorCommand(TestMotor *testMotor, Axis *axis);
 	~TestMotorCommand();
 
 	void Initialize();
@@ -20,7 +21,7 @@ public:
 
 private:
 	TestMotor *m_testMotor;
-	float m_speed;
+	Axis *m_axis;
 };
 
 

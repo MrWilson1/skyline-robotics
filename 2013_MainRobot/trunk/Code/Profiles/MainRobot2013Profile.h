@@ -43,8 +43,6 @@ private:
 	SpeedController *m_shooterMiddle;
 	SpeedController *m_shooterLast;
 	
-	XboxController *m_xbox;
-	
 	// Subsystems
 	BaseDrive *m_drive; 
 	BaseFrisbeeLoader *m_loader;
@@ -52,8 +50,11 @@ private:
 	BaseFrisbeeTurret *m_turret;
 	BaseFrisbeeShooter *m_shooter;
 	
-	// Commands and buttons
-	CompetitionOI *m_oi;
+	// OI
+	XboxController *m_xbox;
+	Joystick *m_leftStick;
+	Joystick *m_rightStick;
+	XboxTwoJoysticksOI *m_oi;
 	
 public:
 	MainRobot2013Profile();

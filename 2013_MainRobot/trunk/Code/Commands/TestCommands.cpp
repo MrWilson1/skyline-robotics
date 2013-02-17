@@ -1,9 +1,9 @@
 #include "TestCommands.h"
 
-TestMotorCommand::TestMotorCommand(TestMotor *testMotor, float speed) :
-		Command("TestMotorCommand1"),
-		m_speed(speed) {
+TestMotorCommand::TestMotorCommand(TestMotor *testMotor, Axis *axis) :
+		Command("TestMotorCommand1") {
 	m_testMotor = testMotor;
+	m_axis = axis;
 	
 	Requires(m_testMotor);
 }
@@ -17,7 +17,7 @@ void TestMotorCommand::Initialize() {
 }
 
 void TestMotorCommand::Execute() {
-	m_testMotor->SetSpeed(m_speed);
+	m_testMotor->SetSpeed(m_axis->Get());
 }
 
 bool TestMotorCommand::IsFinished() {

@@ -43,12 +43,20 @@ ExtendArmCommand::ExtendArmCommand(BaseClimberExtender *climberExtender) :
 	m_climberExtender = climberExtender;
 }
 
+ExtendArmCommand::~ExtendArmCommand() {
+	// empty
+}
+
 void ExtendArmCommand::Initialize() {
 	// empty
 }
 
 void ExtendArmCommand::Execute() {
 	m_climberExtender->PullPins();
+}
+
+bool ExtendArmCommand::IsFinished() {
+	return true;
 }
 
 void ExtendArmCommand::End() {
@@ -143,10 +151,18 @@ HookAndDisengageCommand::HookAndDisengageCommand(BaseClimberArm *arm, double hei
 	AddSequential(new DisengageArmCommand(arm));
 }
 
+HookAndDisengageCommand::~HookAndDisengageCommand() {
+	// empty
+}
+
 HookOnToRungCommand::HookOnToRungCommand (BaseClimberArm *arm, double heightOfRobot, double distanceBetweenShoulderAndRung) :
 		CommandGroup ("HookOnToRung"){
 	AddSequential(new MoveArmPolarCommand(arm, 0, heightOfRobot + distanceBetweenShoulderAndRung ));
 	AddSequential (new MoveArmCartesianCommand (arm, m_arm->GetX() - heightOfRobot, m_arm->GetY() - distanceBetweenShoulderAndRung)); // this doesn't work
+}
+
+HookOnToRungCommand::~HookOnToRungCommand() {
+	// empty
 }
 
 ControlArmManuallyCommand::ControlArmManuallyCommand(BaseClimberArm *arm, Axis *elbowAxis, Axis *shoulderAxis) :

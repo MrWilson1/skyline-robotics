@@ -120,7 +120,7 @@ public:
  */
 class ManuallyAdjustTurretCommand : public Command {
 public:
-	ManuallyAdjustTurretCommand(BaseFrisbeeTurret *turret, BaseOI *oi, 
+	ManuallyAdjustTurretCommand(BaseFrisbeeTurret *turret,  
 								Axis *verticalAxis, Axis *rotateAxis, float allowedRange);
 	~ManuallyAdjustTurretCommand();
 	void Initialize();
@@ -131,7 +131,6 @@ public:
 	
 private:
 	BaseFrisbeeTurret *m_turret;
-	BaseOI *m_oi;
 	Axis *m_verticalAxis;
 	Axis *m_rotateAxis;
 	float m_allowedRange;

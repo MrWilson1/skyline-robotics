@@ -25,6 +25,25 @@ public:
 	JoystickButton *ClimbRobotButton;
 };
 
+
+class XboxTwoJoysticksOI : public BaseOI{
+public:
+	XboxTwoJoysticksOI(XboxController *xbox, Joystick *leftStick, Joystick *rightStick);
+	~XboxTwoJoysticksOI();
+	
+	Axis *TankLeftAxis;
+	Axis *TankRightAxis;
+	Axis *DriveStraightAxis;
+	Axis *RotateTurretAxis;
+	Axis *LiftTurretAxis;
+	Axis *ShoulderAxis;
+	Axis *ElbowAxis;
+	
+	JoystickButton *DriveStraightButton;
+	JoystickButton *ToggleTransmissionButton;
+	JoystickButton *FireFrisbeeButton;
+};
+
 class CompetitionJoystickOI : public BaseOI {
 public:
 	CompetitionJoystickOI(Joystick *rightJoystick, Joystick *leftJoystick, Joystick *twistJoystick);

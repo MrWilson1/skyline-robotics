@@ -31,6 +31,37 @@ CompetitionOI::~CompetitionOI() {
 	delete ClimbRobotButton;
 }
 
+
+XboxTwoJoysticksOI::XboxTwoJoysticksOI(XboxController *xbox, Joystick *leftStick, Joystick *rightStick) :
+		BaseOI("XboxTwoJoysticksOI") {
+	TankLeftAxis = new Axis(xbox, xbox->LeftY);
+	TankRightAxis = new Axis(xbox, xbox->RightY);
+	DriveStraightAxis = new Axis(xbox, xbox->LeftY);
+	RotateTurretAxis = new Axis(leftStick, 1);
+	LiftTurretAxis = new Axis(leftStick, 2);
+	ShoulderAxis = new Axis(rightStick, 1);
+	ElbowAxis = new Axis(rightStick, 2);
+	
+	DriveStraightButton = new JoystickButton(xbox, xbox->LeftBumper);
+	ToggleTransmissionButton = new JoystickButton(xbox, xbox->RightBumper);
+	FireFrisbeeButton = new JoystickButton(xbox, xbox->A);
+}
+
+XboxTwoJoysticksOI::~XboxTwoJoysticksOI() {
+	delete TankLeftAxis;
+	delete TankRightAxis;
+	delete DriveStraightAxis;
+	delete RotateTurretAxis;
+	delete LiftTurretAxis;
+	delete ShoulderAxis;
+	delete ElbowAxis;
+	
+	delete DriveStraightButton;
+	delete ToggleTransmissionButton;
+	delete FireFrisbeeButton;
+}
+
+
 CompetitionJoystickOI::CompetitionJoystickOI(Joystick *rightJoystick, Joystick *leftJoystick, Joystick *twistJoystick) :
 		BaseOI("CompetitionJoystickOI") {
 	TankLeftAxis = new Axis(leftJoystick, Joystick::kDefaultYAxis);

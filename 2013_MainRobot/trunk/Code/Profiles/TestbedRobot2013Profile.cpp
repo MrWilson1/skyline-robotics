@@ -66,7 +66,7 @@ void TestbedRobot2013Profile::CreateOI() {
 }
 
 void TestbedRobot2013Profile::RobotInit() {
-	m_compressor->Start();
+	//m_compressor->Start();
 }
 
 void TestbedRobot2013Profile::AutonomousInit() {

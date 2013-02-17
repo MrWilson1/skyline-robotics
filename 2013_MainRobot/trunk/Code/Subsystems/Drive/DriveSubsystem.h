@@ -178,6 +178,23 @@ private:
 };
 
 
+
+
+struct PidState {
+	Encoder::PIDSourceParameter PidSourceParameter;
+	double DistancePerPulse;
+	double P;
+	double I;
+	double D;
+	double InputScale;
+};
+
+struct PidDriveState {
+	PidState Left;
+	PidState Right;
+};
+
+
 /**
  * \brief A drive system using PID controllers.
  * 
