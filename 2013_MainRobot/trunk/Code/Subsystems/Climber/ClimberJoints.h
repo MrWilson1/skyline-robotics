@@ -3,55 +3,47 @@
 
 #include "WPILib.h"
 #include "../BaseSubsystem.h"
+#include"../../Misc/Tools.h"
 
-/**
- * \brief Base class for all climber joints.
- */
-class BaseClimberJoint : public BaseSubsystem {
+class BaseJoint : public BaseSubsystem {
 public:
-	BaseClimberJoint(const char *name);
-	virtual ~BaseClimberJoint();
+	BaseJoint(const char *name);
+	~BaseJoint();
 	
-	/**
-	 * \brief Sets angle of joint in degrees.
-	 */
-	virtual void SetAngle(float degrees) = 0;
-	/**
-	 * \brief Gets angle of joint in degrees.
-	 */
-	virtual float GetAngle() = 0;
+	virtual void SetSpeed(double speed) = 0;
+	virtual double GetSpeed() = 0;
+};
+
+class BaseSmartJoint : public BaseJoint {
+public:
+	BaseSmartJoint(const char *name);
+	~BaseSmartJoint();
+	
+	virtual void SetAngle(double angle) = 0;
+	virtual double GetAngle() = 0;
 };
 
 /**
- * \brief Joint for climber that uses motors.
+ * \brief Joint for climber that uses winch and motor.
  */
-class MotorClimberJoint : public BaseClimberJoint {
+class BasicWinchClimberJoint : public BaseJoint {
 public:
-	MotorClimberJoint(SpeedController *motor, Encoder *encoder);
-	~MotorClimberJoint();
+	BasicWinchClimberJoint(SpeedController *motor);
+	~BasicWinchClimberJoint();
 	
-	/**
-	 * \brief Sets angle of joint in degrees.
-	 */
-	void SetAngle(float degrees);
-	/**
-	 * \brief Gets angle of joint in degrees.
-	 */
-	float GetAngle();
-	
+	void SetSpeed(double speed);
+	double GetSpeed();
 private:
 	SpeedController *m_motor;
-	Encoder *m_encoder;
-	PIDController *m_pid;
 };
 
 /**
- * \brief Joint for climber that uses a winch.
+ * \brief Joint for climber that uses a PID controller, encoders and a winch.
  */
-class WinchClimberJoint : public BaseClimberJoint {
+class PidWinchClimberJoint : public BaseSmartJoint {
 public:
-	WinchClimberJoint(SpeedController *motor, Encoder *encoder);
-	~WinchClimberJoint();
+	PidWinchClimberJoint(SpeedController *motor, Encoder *encoder);
+	~PidWinchClimberJoint();
 	
 	/**
 	 * \brief Sets angle of joint in degrees.
@@ -60,7 +52,10 @@ public:
 	/**
 	 * \brief Gets angle of joint in degrees.
 	 */
-	float GetAngle();
+	double GetAngle();
+	void SetSpeed(double speed);
+	double GetSpeed();
+	
 private:
 	SpeedController *m_motor;
 	Encoder *m_encoder;	
