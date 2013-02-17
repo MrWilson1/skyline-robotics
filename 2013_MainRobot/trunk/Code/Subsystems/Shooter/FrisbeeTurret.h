@@ -31,18 +31,20 @@ public:
 		};
 		
 	SimpleFrisbeeTurret(SpeedController *horizontalMotor, SpeedController *lateralMotor, 
-						Direction leftRightDirection, Direction upDownDirection );
+						Direction leftRightDirection, Direction upDownDirection);
 	~SimpleFrisbeeTurret();
 	
-	void TurnHorizontal(float degrees);
-	void TurnVertical(float degrees);
+	void TurnHorizontal(float speed);
+	void TurnVertical(float speed);
+	void TurnGivenOffset(Tracking::Offset offset);
+	Tracking::Offset GetCurrentOffset();
 
 private: 
-	SpeedController *m_horizontleMotor; 
+	SpeedController *m_horizontalMotor; 
 	SpeedController *m_lateralMotor;
 	Direction m_leftRightDirection;
 	Direction m_upDownDirection;
-	
+	Tracking::Offset m_offset;
 };
 
 /**

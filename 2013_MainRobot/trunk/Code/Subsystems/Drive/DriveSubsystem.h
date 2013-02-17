@@ -66,6 +66,7 @@ public:
  */
 class SimpleDrive : public BaseDrive {
 public:
+	SimpleDrive(SpeedController *left, SpeedController *right);
 	SimpleDrive(RobotDrive *robotDrive);
 	~SimpleDrive();
 	
@@ -83,6 +84,7 @@ public:
 	
 private:
 	RobotDrive *m_robotDrive;
+	bool m_passedDrive;
 };
 
 

@@ -12,6 +12,7 @@
 #include "../Subsystems/Shooter/FrisbeeLoader.h"
 #include "../Subsystems/Shooter/FrisbeeShooter.h"
 #include "../Subsystems/Shooter/FrisbeeAimer.h"
+#include "../Subsystems/Climber/ClimberJoints.h"
 
 #include "../Commands/DriveCommands.h"
 #include "../Commands/ShooterCommands.h"
@@ -27,10 +28,8 @@
 class MainRobot2013Profile : public BaseRobotProfile {
 private:
 	// Basic Hardware Objects
-	SpeedController *m_leftFront; 
-	SpeedController *m_leftBack;
-	SpeedController *m_rightFront;
-	SpeedController *m_rightBack;
+	SpeedController *m_left;
+	SpeedController *m_right;
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
 	
@@ -42,6 +41,8 @@ private:
 	SpeedController *m_shooterFront;
 	SpeedController *m_shooterMiddle;
 	SpeedController *m_shooterLast;
+	
+	SpeedController *m_shoulder;
 	
 	// Subsystems
 	BaseDrive *m_drive; 

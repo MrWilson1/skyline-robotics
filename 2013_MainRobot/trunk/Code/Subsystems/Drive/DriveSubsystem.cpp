@@ -18,13 +18,28 @@ IPidDrive::~IPidDrive() {
 }
 
 
+SimpleDrive::SimpleDrive(
+		SpeedController *left, 
+		SpeedController *right) :
+		BaseDrive("SimpleDrive"),
+		m_passedDrive(false) {
+	m_robotDrive = new RobotDrive(
+		left,
+		right);
+	AddActuatorToLiveWindow("Left", left);
+	AddActuatorToLiveWindow("Right", right);
+}
+
 SimpleDrive::SimpleDrive(RobotDrive *robotDrive) :
-		BaseDrive("SimpleDrive") {
+		BaseDrive("SimpleDrive"),
+		m_passedDrive(true) {
 	m_robotDrive = robotDrive;
 }
 
 SimpleDrive::~SimpleDrive() {
-	// empty
+	if (!m_passedDrive) {
+		delete m_robotDrive;
+	}
 }
 
 void SimpleDrive::Drive(float outputMagnitude, float curve) {

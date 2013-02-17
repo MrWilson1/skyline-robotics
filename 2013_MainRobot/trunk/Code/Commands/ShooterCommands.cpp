@@ -114,16 +114,8 @@ void AimTurretCommand::Interrupted() {
 }
 
 FireFrisbeeCommand::FireFrisbeeCommand(BaseFrisbeeShooter *shooter) :
-		Command("FireFrisbee"),
-		m_distanceInInches(1.0) {
-	m_shooter = shooter;
-	Requires(m_shooter);
-}
-
-FireFrisbeeCommand::FireFrisbeeCommand(BaseFrisbeeShooter *shooter, double distanceInInches) :
 		Command("FireFrisbee") {
 	m_shooter = shooter;
-	m_distanceInInches = distanceInInches;
 	Requires(m_shooter);
 }
 
@@ -136,19 +128,19 @@ void FireFrisbeeCommand::Initialize() {
 }
 
 void FireFrisbeeCommand::Execute() {
-	m_shooter->ShootFrisbee(m_distanceInInches);
+	m_shooter->ShootFrisbee();
 }
 
 bool FireFrisbeeCommand::IsFinished() {
-	return true;
+	return false;
 }
 
 void FireFrisbeeCommand::End() {
-	// empty
+	m_shooter->StopFrisbee();
 }
 
 void FireFrisbeeCommand::Interrupted() {
-	// empty
+	m_shooter->StopFrisbee();
 }
 
 EjectFrisbeeCommand::EjectFrisbeeCommand(BaseFrisbeeShooter *shooter) :
@@ -189,25 +181,28 @@ LoadAndFireCommand::LoadAndFireCommand(
 		CommandGroup("LoadAndFireCommand") {
 	AddSequential(new LoadFrisbeeCommand(loader));
 	AddSequential(new AimTurretCommand(aimer, turret, Tracking::ClosestOffset, 5));
-	AddSequential(new FireFrisbeeCommand(shooter));
+	AddSequential(new FireFrisbeeCommand(shooter), 5.0);
 }
 
 LoadAndFireCommand::~LoadAndFireCommand() {
 	// empty
 }
 
-
+/**
+ * todo: Make two versions of this: one to manually go to some distance (replace Axis with doubles)
+ * and another to control using Axis
+ */
 ManuallyAdjustTurretCommand::ManuallyAdjustTurretCommand(
 		BaseFrisbeeTurret *turret,
 		Axis *verticalAxis, 
 		Axis *rotateAxis,
 		float allowedRange) :
 		Command("ManuallyAdjustTurretCommand"),
-		m_verticalAxis(verticalAxis), 
-		m_rotateAxis(rotateAxis),
 		m_allowedRange(allowedRange),
 		m_isFinished(false) {
 	m_turret = turret;
+	m_verticalAxis = verticalAxis;
+	m_rotateAxis = rotateAxis;
 }
 
 ManuallyAdjustTurretCommand::~ManuallyAdjustTurretCommand() {
@@ -215,36 +210,78 @@ ManuallyAdjustTurretCommand::~ManuallyAdjustTurretCommand() {
 }
 
 void ManuallyAdjustTurretCommand::Initialize() {
-	// empty
+	SmartDashboard::PutString(GetName(), "init");
 }
 
 void ManuallyAdjustTurretCommand::Execute() {
+	SmartDashboard::PutString(GetName(), "execute");
 	float rawVertical = Tools::Deadband(m_verticalAxis->Get(), 0.1);
 	float rawRotate = Tools::Deadband(m_rotateAxis->Get(), 0.1);
 	
 	// This might not be a good idead
-	if (rawVertical == 0 and rawRotate == 0) {
+	/*if (rawVertical == 0 and rawRotate == 0) {
 		m_isFinished = true;
 		return;
-	}
+	}*/
 	
-	Tracking::Offset desired = m_turret->GetCurrentOffset();
+	/*Tracking::Offset desired = m_turret->GetCurrentOffset();
 	desired.YOffset += Tools::Scale(rawVertical, -1.0, 1.0, -5.0, 5.0);
 	desired.XOffset += Tools::Scale(rawRotate, -1.0, 1.0, -5.0, 5.0);
 	
+	m_turret->TurnGivenOffset(desired);*/
+	Tracking::Offset desired;
+	desired.XOffset = rawVertical;
+	desired.YOffset = rawRotate;
 	m_turret->TurnGivenOffset(desired);
 }
 
 bool ManuallyAdjustTurretCommand::IsFinished() {
-	return m_isFinished;
+	//return m_isFinished;
+	return false;
 }
 
 void ManuallyAdjustTurretCommand::End() {
+	SmartDashboard::PutString(GetName(), "end");
 	// empty
 }
 
 void ManuallyAdjustTurretCommand::Interrupted() {
+	SmartDashboard::PutString(GetName(), "interrupt");
 	// empty
 }
 
+
+
+ManuallyControlTurretCommand::ManuallyControlTurretCommand(BaseFrisbeeTurret *turret, Axis *verticalAxis, Axis *rotateAxis) :
+			Command("ManuallyControlTurretCommand") {
+	m_turret = turret;
+	m_verticalAxis = verticalAxis;
+	m_rotateAxis = rotateAxis;
+	Requires(m_turret);
+}
+
+ManuallyControlTurretCommand::~ManuallyControlTurretCommand() {
+	// empty
+}
+
+void ManuallyControlTurretCommand::Initialize() {
+	// empty
+}
+
+void ManuallyControlTurretCommand::Execute() {
+	m_turret->TurnHorizontal(m_rotateAxis->Get());
+	m_turret->TurnVertical(m_verticalAxis->Get());
+}
+
+bool ManuallyControlTurretCommand::IsFinished() {
+	return false;
+}
+
+void ManuallyControlTurretCommand::End() {
+	// empty
+}
+
+void ManuallyControlTurretCommand::Interrupted() {
+	// empty
+}
 

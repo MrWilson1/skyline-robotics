@@ -10,6 +10,46 @@ BaseFrisbeeTurret::~BaseFrisbeeTurret() {
 }
 
 
+SimpleFrisbeeTurret::SimpleFrisbeeTurret(
+			SpeedController *horizontalMotor, 
+			SpeedController *verticalMotor,
+			Direction leftRightDirection, 
+			Direction upDownDirection) : 
+			BaseFrisbeeTurret("SimpleFrisbeeTurret"),
+			m_leftRightDirection(leftRightDirection),
+			m_upDownDirection(upDownDirection), 
+			m_offset(0, 0) {
+	m_horizontalMotor = horizontalMotor;
+	m_lateralMotor = verticalMotor;
+	
+	AddActuatorToLiveWindow("Horizontal", m_horizontalMotor);
+	AddActuatorToLiveWindow("Vertical", m_lateralMotor);
+}
+
+SimpleFrisbeeTurret::~SimpleFrisbeeTurret() {
+	// empty
+}
+
+void SimpleFrisbeeTurret::TurnHorizontal(float speed) {
+	//m_offset.XOffset += speed;
+	SmartDashboard::PutNumber(GetName() + std::string(" Horizontal"), speed);
+	m_horizontalMotor->Set(speed);
+}
+
+void SimpleFrisbeeTurret::TurnVertical(float speed) {
+	//m_offset.YOffset += speed;
+	SmartDashboard::PutNumber(GetName() + std::string(" Vertical"), speed);
+	m_lateralMotor->Set(speed);
+}
+
+void SimpleFrisbeeTurret::TurnGivenOffset(Tracking::Offset offset) {
+	TurnHorizontal(offset.XOffset);
+	TurnVertical(offset.YOffset);
+}
+
+Tracking::Offset SimpleFrisbeeTurret::GetCurrentOffset() {
+	return m_offset;
+}
 
 PidFrisbeeTurret::PidFrisbeeTurret(
 			SpeedController *horizontalMotor, 

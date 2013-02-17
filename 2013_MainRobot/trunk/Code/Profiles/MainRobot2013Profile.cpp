@@ -13,18 +13,12 @@ MainRobot2013Profile::~MainRobot2013Profile() {
 
 void MainRobot2013Profile::CreateBasicHardwareObjects() {
 	// Drive
-	m_leftFront = new Talon(
+	m_left = new Talon(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm1);
-	m_leftBack = new Talon(
+	m_right = new Talon(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm2);
-	m_rightFront = new Talon(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm3);
-	m_rightBack = new Talon(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm4);
 	m_leftEncoder = new Encoder(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio1,
@@ -39,10 +33,10 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 	// Turret
 	m_turretHorizontal = new Talon(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm5);
+		Ports::DigitalSidecar::Pwm3);
 	m_turretVertical = new Talon(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm6);
+		Ports::DigitalSidecar::Pwm4);
 	m_turretHorizontalEncoder = new Encoder(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio5,
@@ -55,15 +49,20 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 		Ports::DigitalSidecar::Gpio8);
 	
 	// Shooter
-	m_shooterFront = new Talon(
+	m_shooterFront = new Jaguar(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Pwm5);
+	m_shooterMiddle = new Jaguar(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Pwm6);
+	m_shooterLast = new Jaguar(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm7);
-	m_shooterMiddle = new Talon(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm8);
-	m_shooterLast = new Talon(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm9);
+	
+	// Misc
+	m_shoulder = new Jaguar(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm8);
 	
 	m_xbox = new XboxController(
 			Ports::Computer::Usb1);
@@ -74,7 +73,7 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 }
 
 void MainRobot2013Profile::CreateSubsystems() {
-	m_drive = new PidSimpleDrive(
+	/*m_drive = new PidSimpleDrive(
 		m_leftFront, 
 		m_leftBack, 
 		m_rightFront,
@@ -84,14 +83,23 @@ void MainRobot2013Profile::CreateSubsystems() {
 		1.0f / 4134.0f,
 		1.0f / 4054.0f,
 		240.f / 4134.0f,
-		240.f / 4054.0f);
+		240.f / 4054.0f);*/
+	m_drive = new SimpleDrive(
+			m_left,
+			m_right);
 	m_loader = new PlaceholderFrisbeeLoader();
-	m_aimer = new VisionTablesFrisbeeAimer();
-	m_turret = new PidFrisbeeTurret(
+	//m_aimer = new VisionTablesFrisbeeAimer();
+	/*m_turret = new PidFrisbeeTurret(
 		m_turretHorizontal,
 		m_turretVertical,
 		m_turretHorizontalEncoder,
-		m_turretVerticalEncoder);
+		m_turretVerticalEncoder);*/
+	m_turret = new SimpleFrisbeeTurret(
+			m_turretHorizontal,
+			m_turretVertical,
+			SimpleFrisbeeTurret::Positive,
+			SimpleFrisbeeTurret::Positive);
+			
 	m_shooter = new ThreeWheelShooter(
 		m_shooterFront,
 		m_shooterMiddle,
@@ -119,13 +127,18 @@ void MainRobot2013Profile::TeleopInit() {
 			m_drive,
 			m_oi->DriveStraightAxis));
 	
-	m_turret->SetDefaultCommand(new ManuallyAdjustTurretCommand(
+	m_turret->SetDefaultCommand(new ManuallyControlTurretCommand(
 			m_turret,
 			m_oi->RotateTurretAxis,
-			m_oi->LiftTurretAxis,
-			3.0));
-	m_oi->FireFrisbeeButton->WhenPressed(new FireFrisbeeCommand( 
+			m_oi->LiftTurretAxis));
+	m_oi->FireFrisbeeButton->WhileHeld(new FireFrisbeeCommand( 
 			m_shooter));
+	
+	SmartDashboard::PutData(m_turret);
+	SmartDashboard::PutData(m_drive);
+	SmartDashboard::PutData(new TravelStraightManualCommand(
+			m_drive,
+			m_oi->DriveStraightAxis));
 	
 	/*m_turret->SetDefaultCommand(new AimTurretCommand(
 			m_aimer, 

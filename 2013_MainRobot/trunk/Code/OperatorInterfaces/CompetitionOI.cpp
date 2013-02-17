@@ -37,10 +37,10 @@ XboxTwoJoysticksOI::XboxTwoJoysticksOI(XboxController *xbox, Joystick *leftStick
 	TankLeftAxis = new Axis(xbox, xbox->LeftY);
 	TankRightAxis = new Axis(xbox, xbox->RightY);
 	DriveStraightAxis = new Axis(xbox, xbox->LeftY);
-	RotateTurretAxis = new Axis(leftStick, 1);
-	LiftTurretAxis = new Axis(leftStick, 2);
-	ShoulderAxis = new Axis(rightStick, 1);
-	ElbowAxis = new Axis(rightStick, 2);
+	RotateTurretAxis = new Axis(leftStick, Joystick::kDefaultXAxis);
+	LiftTurretAxis = new Axis(leftStick, Joystick::kDefaultYAxis);
+	ShoulderAxis = new Axis(rightStick, Joystick::kDefaultXAxis);
+	ElbowAxis = new Axis(rightStick, Joystick::kDefaultYAxis);
 	
 	DriveStraightButton = new JoystickButton(xbox, xbox->LeftBumper);
 	ToggleTransmissionButton = new JoystickButton(xbox, xbox->RightBumper);

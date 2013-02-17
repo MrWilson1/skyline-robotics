@@ -22,6 +22,8 @@ public:
 	
 	virtual void ShootFrisbee() = 0;
 	virtual void ShootFrisbee(float inchesPerSecond) = 0;
+	virtual void StopFrisbee() = 0;
+	virtual void SetFrisbeeSpeed(double speed) = 0;
 	virtual void EjectFrisbee() = 0;
 };
 
@@ -37,6 +39,8 @@ public:
 	
 	void ShootFrisbee();
 	void ShootFrisbee(float distanceInInches);
+	void StopFrisbee();
+	void SetFrisbeeSpeed(double speed);
 	void EjectFrisbee();
 	
 	void SetMaxDistance(float inches);
@@ -55,6 +59,8 @@ public:
 	
 	void ShootFrisbee();
 	void ShootFrisbee(float distanceInInches);
+	void StopFrisbee();
+	void SetFrisbeeSpeed(double speed);
 	void EjectFrisbee();
 	void SetMaxDistance(float inches);
 	float GetMaxdistance();

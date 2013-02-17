@@ -72,7 +72,6 @@ private:
 class FireFrisbeeCommand : public Command {
 public:
 	FireFrisbeeCommand(BaseFrisbeeShooter *shooter);
-	FireFrisbeeCommand(BaseFrisbeeShooter *shooter, double distanceInInches);
 	~FireFrisbeeCommand();
 	void Initialize();
 	void Execute();
@@ -82,7 +81,6 @@ public:
 		
 private:
 	BaseFrisbeeShooter *m_shooter;
-	double m_distanceInInches;
 };
 
 /**
@@ -135,6 +133,23 @@ private:
 	Axis *m_rotateAxis;
 	float m_allowedRange;
 	bool m_isFinished;
+};
+
+
+class ManuallyControlTurretCommand : public Command {
+public:
+	ManuallyControlTurretCommand(BaseFrisbeeTurret *turret, Axis *verticalAxis, Axis *rotateAxis);
+	~ManuallyControlTurretCommand();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+	
+private:
+	BaseFrisbeeTurret *m_turret;
+	Axis *m_verticalAxis;
+	Axis *m_rotateAxis;
 };
 
 #endif

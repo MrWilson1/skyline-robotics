@@ -35,6 +35,14 @@ void SimpleBeltShooter::ShootFrisbee(float distanceInInches) {
 	m_motor->Set(motorPercentage * m_forwardDirection);
 }
 
+void SimpleBeltShooter::StopFrisbee() {
+	m_motor->Set(0);
+}
+
+void SimpleBeltShooter::SetFrisbeeSpeed(double speed) {
+	m_motor->Set(speed);
+}
+
 void SimpleBeltShooter::EjectFrisbee() {
 	m_motor->Set(0.2);
 }
@@ -65,9 +73,7 @@ ThreeWheelShooter::~ThreeWheelShooter() {
 }
 
 void ThreeWheelShooter::ShootFrisbee() {
-	m_frontMotor->Set(1.0);
-	m_middleMotor->Set(1.0);
-	m_lastMotor->Set(1.0);
+	SetFrisbeeSpeed(1.0);
 }
 
 void ThreeWheelShooter::ShootFrisbee(float distanceInInches) {
@@ -75,10 +81,18 @@ void ThreeWheelShooter::ShootFrisbee(float distanceInInches) {
 	ShootFrisbee();
 }
 
+void ThreeWheelShooter::StopFrisbee() {
+	SetFrisbeeSpeed(0);
+}
+
+void ThreeWheelShooter::SetFrisbeeSpeed(double speed) {
+	m_frontMotor->Set(speed);
+	m_middleMotor->Set(speed);
+	m_lastMotor->Set(speed);
+}
+
 void ThreeWheelShooter::EjectFrisbee() {
-	m_frontMotor->Set(-0.1);
-	m_middleMotor->Set(-0.1);
-	m_lastMotor->Set(-0.1);
+	SetFrisbeeSpeed(-0.1);
 }
 
 void ThreeWheelShooter::SetMaxDistance(float inches) {
