@@ -24,7 +24,6 @@ public:
 	virtual void ShootFrisbee(float inchesPerSecond) = 0;
 	virtual void StopFrisbee() = 0;
 	virtual void SetFrisbeeSpeed(double speed) = 0;
-	virtual void EjectFrisbee() = 0;
 };
 
 class SimpleBeltShooter : public BaseFrisbeeShooter {
@@ -41,7 +40,6 @@ public:
 	void ShootFrisbee(float distanceInInches);
 	void StopFrisbee();
 	void SetFrisbeeSpeed(double speed);
-	void EjectFrisbee();
 	
 	void SetMaxDistance(float inches);
 	float GetMaxDistance();
@@ -61,7 +59,6 @@ public:
 	void ShootFrisbee(float distanceInInches);
 	void StopFrisbee();
 	void SetFrisbeeSpeed(double speed);
-	void EjectFrisbee();
 	void SetMaxDistance(float inches);
 	float GetMaxdistance();
 	

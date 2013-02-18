@@ -23,10 +23,6 @@ int PlaceholderFrisbeeLoader::GetNumberOfFrisbeesLoaded() {
 	return 1;
 }
 
-void PlaceholderFrisbeeLoader::UnloadFrisbee() {
-	// empty
-}
-
 void PlaceholderFrisbeeLoader::PrepareFrisbee() {
 	// empty
 }
@@ -52,10 +48,6 @@ PistonFrisbeeLoader::~PistonFrisbeeLoader() {
 
 int PistonFrisbeeLoader::GetNumberOfFrisbeesLoaded() {
 	return 4;
-}
-
-void PistonFrisbeeLoader::UnloadFrisbee() {
-	// empty
 }
 
 void PistonFrisbeeLoader::PrepareFrisbee() {

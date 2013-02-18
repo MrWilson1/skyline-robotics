@@ -72,20 +72,27 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 			Ports::Computer::Usb2);
 	m_rightStick = new Joystick(
 			Ports::Computer::Usb3);
+	
+	m_compressor = new Compressor(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio1,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Relay1);
 }
 
 void MainRobot2013Profile::CreateSubsystems() {
+	IntegratedPid leftRatePid(0.1, 0.2, 0.0, 1.0f/2.0f, Encoder::kRate, m_leftEncoder, m_leftTread);
+	IntegratedPid rightRatePid(0.1, 0.2, 0.0, 1.0f/2.0f, Encoder::kRate, m_rightEncoder, m_rightTread);
+	IntegratedPid leftDistancePid(0.1, 0.0, 0.0, 240.f / 2.0f, Encoder::kDistance, m_leftEncoder, m_leftTread);
+	IntegratedPid rightDistancePid(0.1, 0.0, 0.0, 240.f / 2.0f, Encoder::kDistance, m_rightEncoder, m_rightTread);
+	
+	// todo: validate the above.
+	
+	DrivePid rateDrivePid(leftRatePid, rightRatePid);
+	DrivePid distanceDrivePid(leftDistancePid, rightDistancePid);
 	/*m_drive = new PidSimpleDrive(
-		m_leftFront, 
-		m_leftBack, 
-		m_rightFront,
-		m_rightBack,
-		m_leftEncoder,
-		m_rightEncoder,
-		1.0f / 4134.0f,
-		1.0f / 4054.0f,
-		240.f / 4134.0f,
-		240.f / 4054.0f);*/
+		rateDrivePid,
+		distanceDrivePid);*/
 	m_drive = new SimpleDrive(
 			m_leftTread,
 			m_rightTread);
@@ -129,18 +136,17 @@ void MainRobot2013Profile::TeleopInit() {
 			m_drive,
 			m_oi->DriveStraightAxis));
 	
-	m_turret->SetDefaultCommand(new ManuallyControlTurretCommand(
+	/*m_turret->SetDefaultCommand(new ManuallyControlTurretCommand(
 			m_turret,
 			m_oi->RotateTurretAxis,
-			m_oi->LiftTurretAxis));
+			m_oi->LiftTurretAxis));*/
 	m_oi->FireFrisbeeButton->WhileHeld(new FireFrisbeeCommand( 
 			m_shooter));
 	
+	//m_compressor->Start();
+	
 	SmartDashboard::PutData(m_turret);
 	SmartDashboard::PutData(m_drive);
-	SmartDashboard::PutData(new TravelStraightManualCommand(
-			m_drive,
-			m_oi->DriveStraightAxis));
 	
 	/*m_turret->SetDefaultCommand(new AimTurretCommand(
 			m_aimer, 

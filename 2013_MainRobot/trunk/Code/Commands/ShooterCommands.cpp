@@ -145,30 +145,15 @@ void FireFrisbeeCommand::Interrupted() {
 }
 
 
-EjectFrisbeeCommand::EjectFrisbeeCommand(BaseFrisbeeShooter *shooter) :
-		SimpleCommand("EjectFrisbee", true) {
-	m_shooter = shooter;
-	Requires(m_shooter);
-}
-
-EjectFrisbeeCommand::~EjectFrisbeeCommand() {
-	// empty
-}
-
-void EjectFrisbeeCommand::Execute() {
-	m_shooter->EjectFrisbee();
-}
-
-
 LoadAndFireCommand::LoadAndFireCommand(
 		BaseFrisbeeLoader *loader, 
 		BaseFrisbeeAimer *aimer, 
 		BaseFrisbeeTurret *turret, 
 		BaseFrisbeeShooter *shooter) :
 		CommandGroup("LoadAndFireCommand") {
+	AddParallel(new FireFrisbeeCommand(shooter), 5.0);
 	AddSequential(new LoadFrisbeeCommand(loader));
 	AddSequential(new AimTurretCommand(aimer, turret, Tracking::ClosestOffset, 5));
-	AddSequential(new FireFrisbeeCommand(shooter), 5.0);
 }
 
 LoadAndFireCommand::~LoadAndFireCommand() {

@@ -43,10 +43,6 @@ void SimpleBeltShooter::SetFrisbeeSpeed(double speed) {
 	m_motor->Set(speed);
 }
 
-void SimpleBeltShooter::EjectFrisbee() {
-	m_motor->Set(0.2);
-}
-
 void SimpleBeltShooter::SetMaxDistance(float inches) {
 	m_maxDistance = inches;
 }
@@ -89,10 +85,6 @@ void ThreeWheelShooter::SetFrisbeeSpeed(double speed) {
 	m_frontMotor->Set(speed);
 	m_middleMotor->Set(speed);
 	m_lastMotor->Set(speed);
-}
-
-void ThreeWheelShooter::EjectFrisbee() {
-	SetFrisbeeSpeed(-0.1);
 }
 
 void ThreeWheelShooter::SetMaxDistance(float inches) {

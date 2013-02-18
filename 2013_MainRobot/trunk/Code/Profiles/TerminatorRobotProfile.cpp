@@ -30,6 +30,7 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 	m_rightTread = new Tread(
 			m_rightFrontMotor,
 			m_rightBackMotor);
+	m_rightTread->SetDirection(Tread::kReverse);
 	
 	m_leftEncoder = new Encoder(
 			Ports::Crio::Module1,
@@ -42,22 +43,26 @@ void TerminatorRobotProfile::CreateBasicHardwareObjects() {
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio9);
 	
+	m_leftEncoder->Start();
+	m_rightEncoder->Start();
+	
 	m_xbox = new XboxController(
 			Ports::Computer::Usb1);
 }
 
 void TerminatorRobotProfile::CreateSubsystems() {
 	// These currently have no effect on the robot whatsoever.
+	// 4134 and 4054
+	IntegratedPid leftRatePid(0.1, 0.2, 0.0, 3000.0f, Encoder::kRate, m_leftEncoder, m_leftTread);
+	IntegratedPid rightRatePid(0.1, 0.2, 0.0, 3000.0f, Encoder::kRate, m_rightEncoder, m_rightTread);
+	IntegratedPid leftDistancePid(0.015, 0.0, 0.0, 4134.0f, Encoder::kDistance, m_leftEncoder, m_leftTread);
+	IntegratedPid rightDistancePid(0.015, 0.0, 0.0, 4054.0f, Encoder::kDistance, m_rightEncoder, m_rightTread);
 	
-	m_drive = new PidSimpleDrive(
-		m_leftTread,
-		m_rightTread,
-		m_leftEncoder,
-		m_rightEncoder,
-		1.0f / 4134.0f,
-		1.0f / 4054.0f,
-		240.f / 4134.0f,
-		240.f / 4054.0f);
+	DrivePid rateDrivePid(leftRatePid, rightRatePid);
+	DrivePid distanceDrivePid(leftDistancePid, rightDistancePid);
+	
+	//m_drive = new PidSimpleDrive(rateDrivePid, distanceDrivePid, 34.0);
+	m_drive = new SimpleDrive(m_leftTread, m_rightTread);
 	m_leftTestEncoder = new TestEncoder(m_leftEncoder, "Left Encoder Test");
 	m_rightTestEncoder = new TestEncoder(m_rightEncoder, "Right Encoder Test");
 }
@@ -88,4 +93,6 @@ void TerminatorRobotProfile::TeleopInit() {
 	m_oi->DriveStraightButton->WhileHeld(new TravelStraightManualCommand(
 			m_drive, 
 			m_oi->DriveStraightAxis));
+	//SmartDashboard::PutData(new RefreshPidCommand(dynamic_cast<IPidDrive*>(m_drive), Encoder::kRate));
+	//SmartDashboard::PutData(new TravelDistanceCommand(m_drive, 0.0));
 }

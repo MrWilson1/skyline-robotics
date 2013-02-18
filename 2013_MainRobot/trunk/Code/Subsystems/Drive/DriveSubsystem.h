@@ -36,11 +36,8 @@ public:
 	BaseDrive(const char *name);
 	virtual ~BaseDrive();
 	
-	virtual void Drive(float outputMagnitude, float curve) = 0;
 	virtual void TankDrive(float leftValue, float rightValue) = 0;
 	virtual void TankDrive(float leftValue, float rightValue, bool squaredInputs) = 0;
-	virtual void ArcadeDrive(float moveValue, float rotateValue) = 0;
-	virtual void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs) = 0;
 	virtual void ResetDistanceAndRotation() = 0;
 	virtual void TravelDistance(float distanceInInches) = 0;
 	virtual void Rotate(float degrees) = 0;
@@ -48,6 +45,54 @@ public:
 	virtual void Enable() = 0;
 	virtual void Brake() = 0;
 };
+
+
+class IntegratedPid {
+public:
+	IntegratedPid(float p, float i, float d, float dpp, Encoder::PIDSourceParameter pidSource, 
+				Encoder *encoder, Tread *tread);
+	~IntegratedPid();
+	
+	void SetRaw(float speed);
+	void SetSetpoint(float setpoint);
+	void SetPid(float p, float i, float d);
+	void SetDistancePerPulse(float dpp);
+	float GetSpeed();
+	void Reset();
+	void Enable();
+	void Disable();
+	PIDController *GetController();
+	float GetP();
+	float GetI();
+	float GetD();
+	float GetDistancePerPulse();
+	float GetDistance();
+	
+private:
+	Encoder *m_encoder;
+	Tread *m_tread;
+	PIDController *m_pid;
+	float m_p;
+	float m_i;
+	float m_d;
+	float m_dpp;
+	Encoder::PIDSourceParameter m_pidSource;
+};
+
+class DrivePid {
+public:
+	DrivePid(IntegratedPid leftPid, IntegratedPid rightPid);
+	~DrivePid();
+	
+	void SetSetpoint(float left, float right);
+	void Reset();
+	void Enable();
+	void Disable();
+	
+	IntegratedPid Left;
+	IntegratedPid Right;
+};
+
 
 /**
  * \brief An interface for any PID-based drive.
@@ -59,6 +104,8 @@ public:
 	virtual void UpdatePidValues() = 0;
 	virtual void AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
 	virtual void AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
+	virtual DrivePid GetRatePid() = 0;
+	virtual DrivePid GetDistancePid() = 0;
 };
 
 /**
@@ -70,11 +117,8 @@ public:
 	SimpleDrive(Tread *left, Tread *right);
 	~SimpleDrive();
 	
-	void Drive(float outputMagnitude, float curve);
 	void TankDrive(float leftValue, float rightValue);
 	void TankDrive(float leftValue, float rightValue, bool squaredInputs);
-	void ArcadeDrive(float moveValue, float rotateValue);
-	void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
 	void ResetDistanceAndRotation();
 	void TravelDistance(float distanceInInches);
 	void Rotate(float degrees);
@@ -147,26 +191,6 @@ private:
 	float m_distancePerPulse;
 };
 
-/**
- * \brief Represents a single side of the robot drive
- * 
- * Forces the two wheels to spin at the same time.
- */
-
-
-struct PidState {
-	Encoder::PIDSourceParameter PidSourceParameter;
-	double DistancePerPulse;
-	double P;
-	double I;
-	double D;
-	double InputScale;
-};
-
-struct PidDriveState {
-	PidState Left;
-	PidState Right;
-};
 
 
 /**
@@ -183,21 +207,13 @@ struct PidDriveState {
 class PidSimpleDrive : public BaseDrive, public IPidDrive {
 public:
 	PidSimpleDrive(
-			Tread *left,
-			Tread *right,
-			Encoder *leftEncoder,
-			Encoder *rightEncoder,
-			float leftRateDPP,
-			float rightRateDPP,
-			float leftDistanceDPP,
-			float rightDistanceDPP);
+			DrivePid ratePid,
+			DrivePid distancePid,
+			double robotDiagonalLength);
 	~PidSimpleDrive();
 	
-	void Drive(float outputMagnitude, float curve);
 	void TankDrive(float leftValue, float rightValue);
 	void TankDrive(float leftValue, float rightValue, bool squaredInputs);
-	void ArcadeDrive(float moveValue, float rotateValue);
-	void ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs);
 	void ResetDistanceAndRotation();
 	void TravelDistance(float distanceInInches);
 	void Rotate(float degrees);
@@ -207,6 +223,8 @@ public:
 	void UpdatePidValues();
 	void AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd);
 	void AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd);
+	DrivePid GetRatePid();
+	DrivePid GetDistancePid();
 	
 private:
 	enum PidMode {
@@ -214,26 +232,12 @@ private:
 		Distance
 	};
 	void TryToggling(PidMode mode);
-	
-	Encoder *m_leftEncoder;
-	Encoder *m_rightEncoder;
-	
-	SmoothEncoder *m_smoothLeftEncoder;
-	SmoothEncoder *m_smoothRightEncoder;
-	Tread *m_leftTread;
-	Tread *m_rightTread;
-	
-	PIDController *m_leftPidRate;
-	PIDController *m_rightPidRate;
-	PIDController *m_leftPidDistance;
-	PIDController *m_rightPidDistance;
-	
 	PidMode m_currentMode;
+	DrivePid m_ratePid;
+	DrivePid m_distancePid;
+	double m_robotDiagonalLength;
 	
-	float m_leftRateDPP;
-	float m_rightRateDPP;
-	float m_leftDistanceDPP;
-	float m_rightDistanceDPP;
+	
 };
 
 /**

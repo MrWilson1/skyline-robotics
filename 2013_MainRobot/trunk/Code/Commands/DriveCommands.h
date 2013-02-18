@@ -57,11 +57,12 @@ private:
 
 class RefreshPidCommand : public SimpleCommand {
 public:
-	RefreshPidCommand(IPidDrive *drive);
+	RefreshPidCommand(IPidDrive *drive, Encoder::PIDSourceParameter pidSource);
 	~RefreshPidCommand();
 	void Execute();
 private:
 	IPidDrive *m_drive;
+	Encoder::PIDSourceParameter m_pidSource;
 };
 
 
@@ -83,24 +84,24 @@ private:
 	BaseDrive *m_drive;
 };
 
-/*
-class RotateRobot : public Command
+
+class RotateRobotCommand : public Command
 {
 public:
-	RotateRobot(BaseDrive *drive, float degrees);
-	virtual ~RotateRobot();
+	RotateRobotCommand(BaseDrive *drive, float degrees);
+	~RotateRobotCommand();
 	
-	virtual void Initialize();
-	virtual void Execute();
-	virtual bool IsFinished();
-	virtual void End();
-	virtual void Interrupted();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
 	
 private:
 	float m_degrees;
 	BaseDrive *m_drive;
 };
-*/
+
 
 class ToggleTransmissionCommand : public SimpleCommand {
 public:
@@ -111,4 +112,6 @@ public:
 private:
 	BaseDriveTransmission *m_transmission;
 };
+
+
 #endif

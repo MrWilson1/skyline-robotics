@@ -28,7 +28,6 @@ public:
 	virtual ~BaseFrisbeeLoader();
 	
 	virtual int GetNumberOfFrisbeesLoaded() = 0;
-	virtual void UnloadFrisbee() = 0;
 	virtual void PrepareFrisbee() = 0;
 	virtual bool IsFrisbeePrepared() = 0;
 	virtual void LoadFrisbee() = 0;
@@ -44,7 +43,6 @@ public:
 	~PlaceholderFrisbeeLoader();
 	
 	int GetNumberOfFrisbeesLoaded();
-	void UnloadFrisbee();
 	void PrepareFrisbee();
 	bool IsFrisbeePrepared();
 	void LoadFrisbee();
@@ -56,7 +54,6 @@ public:
 	~PistonFrisbeeLoader();
 	
 	int GetNumberOfFrisbeesLoaded();
-	void UnloadFrisbee();
 	void PrepareFrisbee();
 	bool IsFrisbeePrepared();
 	void LoadFrisbee();

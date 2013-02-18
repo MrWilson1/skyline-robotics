@@ -47,8 +47,8 @@
 // Modify these lines below:
 
 //#define ROBOT BLAND
-//#define ROBOT TERMINATOR
-#define ROBOT MAINROBOT2013
+#define ROBOT TERMINATOR
+//#define ROBOT MAINROBOT2013
 //#define ROBOT TESTBEDROBOT2013
 
 // DO NOT MODIFY BELOW

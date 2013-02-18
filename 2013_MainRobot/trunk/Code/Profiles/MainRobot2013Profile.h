@@ -48,6 +48,8 @@ private:
 	
 	SpeedController *m_shoulder;
 	
+	Compressor *m_compressor;
+	
 	// Subsystems
 	BaseDrive *m_drive; 
 	BaseFrisbeeLoader *m_loader;

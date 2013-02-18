@@ -84,19 +84,6 @@ private:
 };
 
 /**
- * \brief Lightly ejects frisbee.
- */
-class EjectFrisbeeCommand : public SimpleCommand {
-public:
-	EjectFrisbeeCommand(BaseFrisbeeShooter *shooter);
-	~EjectFrisbeeCommand();
-	void Execute();
-		
-private:
-	BaseFrisbeeShooter *m_shooter;
-};
-
-/**
  * \brief Loads a frisbee, aims the turret, and fires it.
  */
 class LoadAndFireCommand : public CommandGroup {
