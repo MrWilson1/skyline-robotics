@@ -114,15 +114,18 @@ void MainRobot2013Profile::CreateSubsystems() {
 			m_leftTread,
 			m_rightTread);
 	m_loader = new PlaceholderFrisbeeLoader();
-	m_aimer = new VisionTablesFrisbeeAimer();
-	m_turret = new GuardedFrisbeeTurret(
+	//m_aimer = new VisionTablesFrisbeeAimer();
+	/*m_turret = new GuardedFrisbeeTurret(
 			m_turretHorizontal,
 			m_turretVertical,
 			m_turretLeftSwitch,
 			m_turretRightSwitch,
 			m_turretTopSwitch,
 			m_turretBottomSwitch);
-			
+	*/
+	m_turret = new SimpleFrisbeeTurret(
+			m_turretHorizontal, 
+			m_turretVertical);
 	m_shooter = new ThreeWheelShooter(
 		m_shooterFront,
 		m_shooterMiddle,
@@ -152,6 +155,8 @@ void MainRobot2013Profile::TeleopInit() {
 	m_oi->DriveStraightButton->WhileHeld(new TravelStraightManualCommand(
 			m_drive,
 			m_oi->DriveStraightAxis));
+	m_oi->ToggleTransmissionButton->WhenPressed(new ToggleTransmissionCommand(
+			m_transmission));
 	
 	m_turret->SetDefaultCommand(new ManuallyControlTurretCommand(
 			m_turret,
