@@ -3,9 +3,11 @@
 
 #include "BaseCommand.h"
 #include "WPILib.h"
-#include "../Subsystems/Climber/\ClimberJoints.h"
+#include "../Subsystems/Climber/ClimberJoints.h"
 #include "math.h"
 #include "../Misc/Tools.h"
+#include "../Subsystems/Controllers/Axis.h"
+#include "../Subsystems/Climber/ClimberWinch.h"
 
 class Arm {
 public:
@@ -78,6 +80,17 @@ class SetYCommand : public CommandGroup {
 public:
 	SetYCommand(Arm arm, double y);
 	~SetYCommand();
+};
+
+class ControlWinchManualCommand : public SimpleCommand {
+public:
+	ControlWinchManualCommand(BaseWinch *winch, Axis *axis);
+	~ControlWinchManualCommand();
+	
+	void Execute();
+private:
+	BaseWinch *m_winch;
+	Axis *m_axis;
 };
 
 

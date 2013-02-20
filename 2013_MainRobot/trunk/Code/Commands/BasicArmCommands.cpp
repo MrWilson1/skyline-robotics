@@ -146,3 +146,17 @@ SetYCommand::SetYCommand(Arm arm, double y) :
 SetYCommand::~SetYCommand() {
 	//
 }
+
+ControlWinchManualCommand::ControlWinchManualCommand(BaseWinch *winch, Axis *axis) :
+		SimpleCommand("ControlWinch", false) {
+	m_winch = winch;
+	m_axis = axis;
+}
+
+ControlWinchManualCommand::~ControlWinchManualCommand() {
+	//
+}
+
+void ControlWinchManualCommand::Execute() {
+	m_winch->SetSpeed(m_axis->Get());
+}

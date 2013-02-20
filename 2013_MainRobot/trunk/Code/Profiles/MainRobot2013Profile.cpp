@@ -109,9 +109,7 @@ void MainRobot2013Profile::CreateSubsystems() {
 		m_turretVerticalEncoder);*/
 	m_turret = new SimpleFrisbeeTurret(
 			m_turretHorizontal,
-			m_turretVertical,
-			SimpleFrisbeeTurret::Positive,
-			SimpleFrisbeeTurret::Positive);
+			m_turretVertical);
 			
 	m_shooter = new ThreeWheelShooter(
 		m_shooterFront,

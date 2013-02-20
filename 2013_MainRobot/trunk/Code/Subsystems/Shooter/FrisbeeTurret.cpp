@@ -11,12 +11,8 @@ BaseFrisbeeTurret::~BaseFrisbeeTurret() {
 
 SimpleFrisbeeTurret::SimpleFrisbeeTurret(
 			SpeedController *horizontalMotor, 
-			SpeedController *verticalMotor,
-			Direction leftRightDirection, 
-			Direction upDownDirection) : 
+			SpeedController *verticalMotor) : 
 			BaseFrisbeeTurret("SimpleFrisbeeTurret"),
-			m_leftRightDirection(leftRightDirection),
-			m_upDownDirection(upDownDirection), 
 			m_offset(0, 0) {
 	m_horizontalMotor = horizontalMotor;
 	m_lateralMotor = verticalMotor;
@@ -47,6 +43,63 @@ void SimpleFrisbeeTurret::TurnGivenOffset(Tracking::Offset offset) {
 }
 
 Tracking::Offset SimpleFrisbeeTurret::GetCurrentOffset() {
+	return m_offset;
+}
+
+GuardedFrisbeeTurret::GuardedFrisbeeTurret(
+			SpeedController *horizontalMotor, 
+			SpeedController *verticalMotor,
+			DigitalInput *leftSwitch,
+			DigitalInput *rightSwitch,
+			DigitalInput *topSwitch,
+			DigitalInput *bottomSwitch) : 
+			BaseFrisbeeTurret("GuardedFrisbeeTurret"),
+			m_offset(0, 0) {
+	m_horizontalMotor = horizontalMotor;
+	m_lateralMotor = verticalMotor;
+	m_leftSwitch = leftSwitch;
+	m_rightSwitch = rightSwitch;
+	m_topSwitch = topSwitch;
+	m_bottomSwitch = bottomSwitch;
+	
+	AddActuatorToLiveWindow("Horizontal", m_horizontalMotor);
+	AddActuatorToLiveWindow("Vertical", m_lateralMotor);
+	AddSensorToLiveWindow("Left limit switch", m_leftSwitch);
+	AddSensorToLiveWindow("Right limit switch", m_rightSwitch);
+	AddSensorToLiveWindow("Top limit switch", m_topSwitch);
+	AddSensorToLiveWindow("Bottom limit switch", m_bottomSwitch);
+}
+
+GuardedFrisbeeTurret::~GuardedFrisbeeTurret() {
+	// empty
+}
+
+void GuardedFrisbeeTurret::TurnHorizontal(float speed) {
+	SmartDashboard::PutNumber(GetName() + std::string(" Horizontal"), speed);
+	// assuming that limit switch is "True" when hit
+	if (m_rightSwitch || m_leftSwitch) {
+		m_horizontalMotor->Set(0.0);
+	} else {
+		m_horizontalMotor->Set(speed);
+	}
+}
+
+void GuardedFrisbeeTurret::TurnVertical(float speed) {
+	//m_offset.YOffset += speed;
+	SmartDashboard::PutNumber(GetName() + std::string(" Vertical"), speed);
+	if (m_topSwitch || m_bottomSwitch) {
+		m_lateralMotor->Set(0.0);
+	} else {
+		m_lateralMotor->Set(speed);
+	}
+}
+
+void GuardedFrisbeeTurret::TurnGivenOffset(Tracking::Offset offset) {
+	TurnHorizontal(offset.XOffset);
+	TurnVertical(offset.YOffset);
+}
+
+Tracking::Offset GuardedFrisbeeTurret::GetCurrentOffset() {
 	return m_offset;
 }
 

@@ -25,13 +25,7 @@ public:
 
 class SimpleFrisbeeTurret : public BaseFrisbeeTurret {
 public:
-	enum Direction {
-			Positive = 1,
-			Negative = -1,
-		};
-		
-	SimpleFrisbeeTurret(SpeedController *horizontalMotor, SpeedController *lateralMotor, 
-						Direction leftRightDirection, Direction upDownDirection);
+	SimpleFrisbeeTurret(SpeedController *horizontalMotor, SpeedController *lateralMotor);
 	~SimpleFrisbeeTurret();
 	
 	void TurnHorizontal(float speed);
@@ -42,8 +36,34 @@ public:
 private: 
 	SpeedController *m_horizontalMotor; 
 	SpeedController *m_lateralMotor;
-	Direction m_leftRightDirection;
-	Direction m_upDownDirection;
+	Tracking::Offset m_offset;
+};
+
+/*
+ * Identical to SimpleFrisbeeTurret, but with limit switches.
+ */
+class GuardedFrisbeeTurret : public BaseFrisbeeTurret {
+public:
+	GuardedFrisbeeTurret(SpeedController *horizontalMotor, 
+						 SpeedController *lateralMotor, 
+						 DigitalInput *leftSwitch,
+						 DigitalInput *rightSwitch,
+						 DigitalInput *topSwitch,
+						 DigitalInput *bottomSwitch);
+	~GuardedFrisbeeTurret();
+	
+	void TurnHorizontal(float speed);
+	void TurnVertical(float speed);
+	void TurnGivenOffset(Tracking::Offset offset);
+	Tracking::Offset GetCurrentOffset();
+
+private: 
+	SpeedController *m_horizontalMotor; 
+	SpeedController *m_lateralMotor;
+	DigitalInput *m_leftSwitch;
+	DigitalInput *m_rightSwitch;
+	DigitalInput *m_topSwitch;
+	DigitalInput *m_bottomSwitch;
 	Tracking::Offset m_offset;
 };
 
@@ -79,6 +99,7 @@ private:
 	PIDController *m_horizontalPid;
 	PIDController *m_verticalPid;
 };
+
 
 
 #endif
