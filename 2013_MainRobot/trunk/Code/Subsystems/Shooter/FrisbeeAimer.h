@@ -19,8 +19,8 @@ namespace Tracking {
 		Unknown,
 		Test,
 		Low,
-		MediumLeft,
-		MediumRight,
+		MiddleLeft,
+		MiddleRight,
 		High,
 		Pyramid,
 		ClosestOffset,
@@ -76,16 +76,16 @@ public:
 	virtual Tracking::Target GetHighTarget() = 0;
 	
 	/**
-	 * Gets the target info for the medium target to the left
+	 * Gets the target info for the middle target to the left
 	 * when facing the goals
 	 */
-	virtual Tracking::Target GetMediumLeftTarget() = 0;
+	virtual Tracking::Target GetMiddleLeftTarget() = 0;
 	
 	/**
-	 * Gets the target info for the medium target tp tje rogjt
+	 * Gets the target info for the middle target tp tje rogjt
 	 * when facing the goals
 	 */
-	virtual Tracking::Target GetMediumRightTarget() = 0;
+	virtual Tracking::Target GetMiddleRightTarget() = 0;
 	
 	/**
 	 * Gets the target info for the low target
@@ -119,12 +119,12 @@ public:
  * -	high_offset_X
  * -	high_offset_y
  * -	high_distance
- * -	medium_left_offset_x
- * -	medium_left_offset_y
- * -	medium_left_distance
- * -	medium_right_offset_x
- * -	medium_right_offset_y
- * -	medium_left_distance
+ * -	middle_left_offset_x
+ * -	middle_left_offset_y
+ * -	middle_left_distance
+ * -	middle_right_offset_x
+ * -	middle_right_offset_y
+ * -	middle_left_distance
  * -	low_offset_x
  * -	low_offset_y
  * -	low_distance
@@ -141,8 +141,8 @@ public:
 	
 	Tracking::TargetMap GetAllTargets();
 	Tracking::Target GetHighTarget();
-	Tracking::Target GetMediumLeftTarget();
-	Tracking::Target GetMediumRightTarget();
+	Tracking::Target GetMiddleLeftTarget();
+	Tracking::Target GetMiddleRightTarget();
 	Tracking::Target GetLowTarget();
 	Tracking::Target GetClosestTargetByDistance();
 	Tracking::Target GetClosestTargetByOffset();

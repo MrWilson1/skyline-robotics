@@ -66,11 +66,11 @@ void AimTurretCommand::Execute() {
 	case (Tracking::Low) :
 		target = m_aimer->GetLowTarget();
 		break;
-	case (Tracking::MediumLeft) :
-		target = m_aimer->GetMediumLeftTarget();
+	case (Tracking::MiddleLeft) :
+		target = m_aimer->GetMiddleLeftTarget();
 		break;
-	case (Tracking::MediumRight) :
-		target = m_aimer->GetMediumRightTarget();
+	case (Tracking::MiddleRight) :
+		target = m_aimer->GetMiddleRightTarget();
 		break;
 	case (Tracking::High) :
 		target = m_aimer->GetHighTarget();

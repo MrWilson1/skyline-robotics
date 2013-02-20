@@ -61,8 +61,8 @@ VisionTablesFrisbeeAimer::~VisionTablesFrisbeeAimer() {
 Tracking::TargetMap VisionTablesFrisbeeAimer::GetAllTargets() {
 	Tracking::TargetMap targetMap;
 	targetMap[Tracking::High] = GetHighTarget();
-	targetMap[Tracking::MediumLeft] = GetMediumLeftTarget();
-	targetMap[Tracking::MediumRight] = GetMediumRightTarget();
+	targetMap[Tracking::MiddleLeft] = GetMiddleLeftTarget();
+	targetMap[Tracking::MiddleRight] = GetMiddleRightTarget();
 	targetMap[Tracking::Low] = GetLowTarget();
 	return targetMap;
 }
@@ -71,12 +71,12 @@ Tracking::Target VisionTablesFrisbeeAimer::GetHighTarget() {
 	return GetTarget("high");
 }
 
-Tracking::Target VisionTablesFrisbeeAimer::GetMediumLeftTarget() {
-	return GetTarget("medium_left");
+Tracking::Target VisionTablesFrisbeeAimer::GetMiddleLeftTarget() {
+	return GetTarget("middle_left");
 }
 
-Tracking::Target VisionTablesFrisbeeAimer::GetMediumRightTarget() {
-	return GetTarget("medium_right");
+Tracking::Target VisionTablesFrisbeeAimer::GetMiddleRightTarget() {
+	return GetTarget("middle_right");
 }
 
 Tracking::Target VisionTablesFrisbeeAimer::GetLowTarget() {
@@ -102,12 +102,12 @@ Tracking::Target VisionTablesFrisbeeAimer::GetTarget(std::string key) {
 		target.Type = Tracking::Unknown;
 	} else if (rectType == "test") {
 		target.Type = Tracking::Test;
-	} else if (rectType == "Low") {
+	} else if (rectType == "low") {
 		target.Type = Tracking::Low;
-	} else if (rectType == "medium_left") {
-		target.Type = Tracking::MediumLeft;
-	} else if (rectType == "medium_right") {
-		target.Type = Tracking::MediumRight;
+	} else if (rectType == "middle_left") {
+		target.Type = Tracking::MiddleLeft;
+	} else if (rectType == "middle_right") {
+		target.Type = Tracking::MiddleRight;
 	} else if (rectType == "high") {
 		target.Type = Tracking::High;
 	} else if (rectType == "pyramid") {

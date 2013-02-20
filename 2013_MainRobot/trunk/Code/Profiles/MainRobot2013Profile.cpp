@@ -33,12 +33,25 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 		Ports::DigitalSidecar::Gpio4);
 	
 	// Turret
-	m_turretHorizontal = new Talon(
+	m_turretVertical = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm3);
-	m_turretVertical = new Talon(
+	m_turretHorizontal = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm4);
+	
+	// Shooter
+	m_shooterFront = new Victor(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Pwm5);
+	m_shooterMiddle = new Victor(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Pwm6);
+	m_shooterLast = new Victor(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Pwm7);
+		
+	
 	m_turretHorizontalEncoder = new Encoder(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio5,
@@ -50,19 +63,10 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio8);
 	
-	// Shooter
-	m_shooterFront = new Jaguar(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm5);
-	m_shooterMiddle = new Jaguar(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm6);
-	m_shooterLast = new Jaguar(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm7);
+	
 	
 	// Misc
-	m_shoulder = new Jaguar(
+	m_shoulder = new Victor(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm8);
 	
@@ -147,6 +151,7 @@ void MainRobot2013Profile::TeleopInit() {
 	
 	SmartDashboard::PutData(m_turret);
 	SmartDashboard::PutData(m_drive);
+	SmartDashboard::PutData(m_shooter);
 	
 	/*m_turret->SetDefaultCommand(new AimTurretCommand(
 			m_aimer, 
