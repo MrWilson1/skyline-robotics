@@ -16,9 +16,9 @@ void TestbedRobot2013Profile::CreateBasicHardwareObjects() {
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm1);
 	m_rightMotor = new Talon(
-	Ports::Crio::Module1,
+			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm2);
-			m_leftTread = new Tread(m_leftMotor);
+	m_leftTread = new Tread(m_leftMotor);
 	m_rightTread = new Tread(m_rightMotor);
 	m_xbox = new XboxController(
 			Ports::Computer::Usb1);
@@ -39,15 +39,15 @@ void TestbedRobot2013Profile::CreateBasicHardwareObjects() {
 			Ports::DigitalSidecar::Gpio5);
 	m_leftEncoder->Start();
 	m_rightEncoder->Start();
-	m_leftTransmissionSolenoid = new DoubleSolenoid(
-			Ports::Crio::Module1,
-			Ports::Crio::AnalogChannel1,
-			Ports::Crio::AnalogChannel2
-	);
 	m_rightTransmissionSolenoid = new DoubleSolenoid(
+			Ports::Crio::Module1,
+			Ports::Crio::SolenoidBreakout1,
+			Ports::Crio::SolenoidBreakout2
+	);
+	m_leftTransmissionSolenoid = new DoubleSolenoid(
 		Ports::Crio::Module1,
-		Ports::Crio::AnalogChannel3,
-		Ports::Crio::AnalogChannel4
+		Ports::Crio::SolenoidBreakout3,
+		Ports::Crio::SolenoidBreakout4
 	);
 }
 

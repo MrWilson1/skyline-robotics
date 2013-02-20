@@ -7,8 +7,7 @@ CompetitionOI::CompetitionOI(XboxController *xbox) :
 	ArcadeMagnitudeAxis = new Axis(xbox, xbox->LeftY);
 	ArcadeRotationAxis = new Axis(xbox, xbox->RightX);
 	DriveStraightAxis = new Axis(xbox, xbox->LeftY);
-	ControlArmShoulderAxis = NULL; //new Axis(xbox, xbox->RightY);
-	ControlArmElbowAxis = NULL; //new Axis(xbox, xbox->);
+	ControlWinchAxis = NULL;
 	
 	DriveStraightButton = new JoystickButton(xbox, xbox->A);
 	ToggleTransmissionButton = new JoystickButton(xbox, xbox->B);
@@ -22,8 +21,7 @@ CompetitionOI::~CompetitionOI() {
 	delete ArcadeMagnitudeAxis;
 	delete ArcadeRotationAxis;
 	delete DriveStraightAxis;
-	delete ControlArmShoulderAxis;
-	delete ControlArmElbowAxis;
+	delete ControlWinchAxis;
 	
 	delete DriveStraightButton;
 	delete ToggleTransmissionButton;
@@ -39,8 +37,7 @@ XboxTwoJoysticksOI::XboxTwoJoysticksOI(XboxController *xbox, Joystick *leftStick
 	DriveStraightAxis = new Axis(xbox, xbox->LeftY);
 	RotateTurretAxis = new Axis(leftStick, Joystick::kDefaultXAxis);
 	LiftTurretAxis = new Axis(leftStick, Joystick::kDefaultYAxis);
-	ShoulderAxis = new Axis(rightStick, Joystick::kDefaultXAxis);
-	ElbowAxis = new Axis(rightStick, Joystick::kDefaultYAxis);
+	ControlWinchAxis = new Axis(rightStick, Joystick::kDefaultYAxis);
 	
 	DriveStraightButton = new JoystickButton(xbox, xbox->LeftBumper);
 	ToggleTransmissionButton = new JoystickButton(xbox, xbox->RightBumper);
@@ -53,8 +50,7 @@ XboxTwoJoysticksOI::~XboxTwoJoysticksOI() {
 	delete DriveStraightAxis;
 	delete RotateTurretAxis;
 	delete LiftTurretAxis;
-	delete ShoulderAxis;
-	delete ElbowAxis;
+	delete ControlWinchAxis;
 	
 	delete DriveStraightButton;
 	delete ToggleTransmissionButton;
@@ -69,8 +65,7 @@ CompetitionJoystickOI::CompetitionJoystickOI(Joystick *rightJoystick, Joystick *
 	ArcadeMagnitudeAxis = new Axis(twistJoystick, Joystick::kDefaultYAxis);
 	ArcadeRotationAxis = new Axis(twistJoystick, Joystick::kDefaultTwistAxis);
 	DriveStraightAxis = new Axis(leftJoystick, Joystick::kDefaultYAxis);
-	ControlArmShoulderAxis = NULL; // don't know yet
-	ControlArmElbowAxis = NULL; // don't know yet
+	ControlWinchAxis = new Axis(rightJoystick, Joystick::kDefaultXAxis);
 	
 	DriveStraightButton = new JoystickButton(leftJoystick, 3);
 	ToggleTransmissionButton = NULL; // don't know yet
@@ -84,8 +79,7 @@ CompetitionJoystickOI::~CompetitionJoystickOI() {
 	delete ArcadeMagnitudeAxis;
 	delete ArcadeRotationAxis;
 	delete DriveStraightAxis;
-	delete ControlArmShoulderAxis;
-	delete ControlArmElbowAxis;
+	delete ControlWinchAxis;
 	
 	delete DriveStraightButton;
 	delete ToggleTransmissionButton;

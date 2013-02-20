@@ -23,14 +23,24 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 	m_rightTread = new Tread(m_rightMotor);
 	m_leftEncoder = new Encoder(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio1,
+		Ports::DigitalSidecar::Gpio2,
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio2);
+		Ports::DigitalSidecar::Gpio3);
 	m_rightEncoder = new Encoder(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio3,
+		Ports::DigitalSidecar::Gpio4,
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio4);
+		Ports::DigitalSidecar::Gpio5);
+	
+	// Transmission
+	m_rightTransmissionSolenoid = new DoubleSolenoid(
+		Ports::Crio::Module1,
+		Ports::Crio::SolenoidBreakout1,
+		Ports::Crio::SolenoidBreakout2);
+	m_leftTransmissionSolenoid = new DoubleSolenoid(
+		Ports::Crio::Module1,
+		Ports::Crio::SolenoidBreakout3,
+		Ports::Crio::SolenoidBreakout4);
 	
 	// Turret
 	m_turretVertical = new Victor(
@@ -39,34 +49,37 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 	m_turretHorizontal = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm4);
+	m_turretRightSwitch = new DigitalInput(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Gpio8);
+	m_turretLeftSwitch = new DigitalInput(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Gpio9);
+	m_turretTopSwitch = new DigitalInput(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Gpio10);
+	m_turretBottomSwitch = new DigitalInput(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Gpio11);
 	
 	// Shooter
-	m_shooterFront = new Victor(
+	m_shooterBack = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm5);
 	m_shooterMiddle = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm6);
-	m_shooterLast = new Victor(
+	m_shooterFront = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm7);
-		
-	
-	m_turretHorizontalEncoder = new Encoder(
+	m_shooterEncoder = new Encoder(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio5,
+		Ports::DigitalSidecar::Gpio6,
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio6);
-	m_turretVerticalEncoder = new Encoder(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio7,
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio8);
-	
-	
+		Ports::DigitalSidecar::Gpio7);
 	
 	// Misc
-	m_shoulder = new Victor(
+	m_winch = new Victor(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm8);
 	
@@ -101,20 +114,22 @@ void MainRobot2013Profile::CreateSubsystems() {
 			m_leftTread,
 			m_rightTread);
 	m_loader = new PlaceholderFrisbeeLoader();
-	//m_aimer = new VisionTablesFrisbeeAimer();
-	/*m_turret = new PidFrisbeeTurret(
-		m_turretHorizontal,
-		m_turretVertical,
-		m_turretHorizontalEncoder,
-		m_turretVerticalEncoder);*/
-	m_turret = new SimpleFrisbeeTurret(
+	m_aimer = new VisionTablesFrisbeeAimer();
+	m_turret = new GuardedFrisbeeTurret(
 			m_turretHorizontal,
-			m_turretVertical);
+			m_turretVertical,
+			m_turretLeftSwitch,
+			m_turretRightSwitch,
+			m_turretTopSwitch,
+			m_turretBottomSwitch);
 			
 	m_shooter = new ThreeWheelShooter(
 		m_shooterFront,
 		m_shooterMiddle,
-		m_shooterLast);
+		m_shooterBack);
+	m_transmission = new SimpleDriveTransmission(
+		m_leftTransmissionSolenoid,
+		m_rightTransmissionSolenoid);
 }
 
 void MainRobot2013Profile::CreateOI() {
@@ -138,14 +153,14 @@ void MainRobot2013Profile::TeleopInit() {
 			m_drive,
 			m_oi->DriveStraightAxis));
 	
-	/*m_turret->SetDefaultCommand(new ManuallyControlTurretCommand(
+	m_turret->SetDefaultCommand(new ManuallyControlTurretCommand(
 			m_turret,
 			m_oi->RotateTurretAxis,
-			m_oi->LiftTurretAxis));*/
+			m_oi->LiftTurretAxis));
 	m_oi->FireFrisbeeButton->WhileHeld(new FireFrisbeeCommand( 
 			m_shooter));
 	
-	//m_compressor->Start();
+	m_compressor->Start();
 	
 	SmartDashboard::PutData(m_turret);
 	SmartDashboard::PutData(m_drive);

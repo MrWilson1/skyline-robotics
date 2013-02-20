@@ -16,8 +16,7 @@ public:
 	Axis *ArcadeMagnitudeAxis;
 	Axis *ArcadeRotationAxis;
 	Axis *DriveStraightAxis;
-	Axis *ControlArmShoulderAxis;
-	Axis *ControlArmElbowAxis;
+	Axis *ControlWinchAxis;
 	
 	JoystickButton *DriveStraightButton;
 	JoystickButton *ToggleTransmissionButton;
@@ -36,8 +35,7 @@ public:
 	Axis *DriveStraightAxis;
 	Axis *RotateTurretAxis;
 	Axis *LiftTurretAxis;
-	Axis *ShoulderAxis;
-	Axis *ElbowAxis;
+	Axis *ControlWinchAxis;
 	
 	JoystickButton *DriveStraightButton;
 	JoystickButton *ToggleTransmissionButton;
@@ -54,8 +52,7 @@ public:
 	Axis *ArcadeMagnitudeAxis;
 	Axis *ArcadeRotationAxis;
 	Axis *DriveStraightAxis;
-	Axis *ControlArmShoulderAxis;
-	Axis *ControlArmElbowAxis;
+	Axis *ControlWinchAxis;
 	
 	JoystickButton *DriveStraightButton;
 	JoystickButton *ToggleTransmissionButton;

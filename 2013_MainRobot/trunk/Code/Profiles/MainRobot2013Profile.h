@@ -37,16 +37,24 @@ private:
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
 	
+	DoubleSolenoid *m_leftTransmissionSolenoid;
+	DoubleSolenoid *m_rightTransmissionSolenoid;
+	
 	SpeedController *m_turretHorizontal;
 	SpeedController *m_turretVertical;
 	Encoder *m_turretHorizontalEncoder;
 	Encoder *m_turretVerticalEncoder;
+	DigitalInput *m_turretLeftSwitch;
+	DigitalInput *m_turretRightSwitch;
+	DigitalInput *m_turretTopSwitch;
+	DigitalInput *m_turretBottomSwitch;
 	
 	SpeedController *m_shooterFront;
 	SpeedController *m_shooterMiddle;
-	SpeedController *m_shooterLast;
+	SpeedController *m_shooterBack;
+	Encoder *m_shooterEncoder;
 	
-	SpeedController *m_shoulder;
+	SpeedController *m_winch;
 	
 	Compressor *m_compressor;
 	
@@ -56,6 +64,7 @@ private:
 	BaseFrisbeeAimer *m_aimer;
 	BaseFrisbeeTurret *m_turret;
 	BaseFrisbeeShooter *m_shooter;
+	BaseDriveTransmission *m_transmission;
 	
 	// OI
 	XboxController *m_xbox;
