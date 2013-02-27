@@ -27,7 +27,6 @@ public:
 	BaseFrisbeeLoader(const char *name);
 	virtual ~BaseFrisbeeLoader();
 	
-	virtual int GetNumberOfFrisbeesLoaded() = 0;
 	virtual void PrepareFrisbee() = 0;
 	virtual bool IsFrisbeePrepared() = 0;
 	virtual void LoadFrisbee() = 0;
@@ -42,7 +41,6 @@ public:
 	PlaceholderFrisbeeLoader();
 	~PlaceholderFrisbeeLoader();
 	
-	int GetNumberOfFrisbeesLoaded();
 	void PrepareFrisbee();
 	bool IsFrisbeePrepared();
 	void LoadFrisbee();
@@ -53,12 +51,26 @@ public:
 	PistonFrisbeeLoader(Solenoid *piston);
 	~PistonFrisbeeLoader();
 	
-	int GetNumberOfFrisbeesLoaded();
 	void PrepareFrisbee();
 	bool IsFrisbeePrepared();
 	void LoadFrisbee();
 private:
 	Solenoid *m_piston;
 };
+
+class ServoFrisbeeLoader : public BaseFrisbeeLoader {
+public:
+	ServoFrisbeeLoader(Servo *servo);
+	~ServoFrisbeeLoader();
+	
+	void PrepareFrisbee();
+	bool IsFrisbeePrepared();
+	void LoadFrisbee();
+	
+private:
+	Servo *m_servo;
+};
+
+
 
 #endif

@@ -41,6 +41,10 @@ private:
 
 /*
  * Identical to SimpleFrisbeeTurret, but with limit switches.
+ * 
+ * Assumes limit switches are normally open, so they return 'true' when
+ * the switches are not depressed. Assumes the switches return 'false'
+ * when depressed or disconnected.
  */
 class GuardedFrisbeeTurret : public BaseFrisbeeTurret {
 public:

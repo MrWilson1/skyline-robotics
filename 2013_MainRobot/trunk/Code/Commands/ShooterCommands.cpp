@@ -16,7 +16,6 @@ void LoadFrisbeeCommand::Initialize() {
 }
 
 void LoadFrisbeeCommand::Execute() {
-	SmartDashboard::PutNumber("Frisbees loaded", m_loader->GetNumberOfFrisbeesLoaded());
 	if (m_loader->IsFrisbeePrepared()) {
 		m_loader->LoadFrisbee();
 		m_isFinished = true;
