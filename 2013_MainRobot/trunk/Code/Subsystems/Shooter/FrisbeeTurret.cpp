@@ -1,5 +1,73 @@
 #include "FrisbeeTurret.h"
 
+
+BaseAxisFrisbeeTurret::BaseAxisFrisbeeTurret(const char *name) :
+		BaseSubsystem(name) {
+	// Empty
+}
+BaseAxisFrisbeeTurret::~BaseAxisFrisbeeTurret() {
+	// Empty
+}
+
+
+
+SimpleAxisFrisbeeTurret::SimpleAxisFrisbeeTurret(SpeedController *motor) :
+		BaseAxisFrisbeeTurret("BaseAxisFrisbeeTurret") {
+	m_motor = motor; 
+	AddActuatorToLiveWindow("Motor", m_motor);
+}
+
+SimpleAxisFrisbeeTurret::~SimpleAxisFrisbeeTurret() {
+	//empty
+}
+
+void SimpleAxisFrisbeeTurret::SetMotor(float speed){
+	m_motor->Set(speed); 
+}
+
+void SimpleAxisFrisbeeTurret::Stop(){
+	m_motor->Set(0);
+}
+
+bool SimpleAxisFrisbeeTurret::ShouldTurretStop(){
+	return false; 
+}
+
+
+
+GuardedAxisFrisbeeTurret::GuardedAxisFrisbeeTurret( SpeedController *motor, 
+		 DigitalInput *switch1,
+		 DigitalInput *switch2) :
+		BaseAxisFrisbeeTurret("GuardedAxisFrsibeeTurret") {
+	m_motor = motor;
+	m_switch1 = switch1;
+	m_switch2 = switch2;
+	AddActuatorToLiveWindow("Motor", m_motor);
+	AddSensorToLiveWindow("Switch 1", m_switch1);
+	AddSensorToLiveWindow("Switch 2", m_switch2);
+}
+
+GuardedAxisFrisbeeTurret::~GuardedAxisFrisbeeTurret() {
+	//empty
+}
+void GuardedAxisFrisbeeTurret::SetMotor(float speed){
+	if (ShouldTurretStop()){
+		Stop();
+	} else {
+		m_motor->Set(speed);
+	}
+}
+
+void GuardedAxisFrisbeeTurret::Stop(){
+	m_motor->Set(0);
+}
+
+bool GuardedAxisFrisbeeTurret::ShouldTurretStop(){
+	return !m_switch1->Get() || !m_switch2->Get(); 
+}
+
+////////////////////////////////
+
 BaseFrisbeeTurret::BaseFrisbeeTurret(const char *name) :
 		BaseSubsystem(name) {
 	// Empty

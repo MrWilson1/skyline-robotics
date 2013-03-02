@@ -6,7 +6,50 @@
 #include "../BaseSubsystem.h"
 #include "FrisbeeAimer.h"
 
-/**
+
+class BaseAxisFrisbeeTurret : public BaseSubsystem {
+public: 
+	BaseAxisFrisbeeTurret(const char *name);
+	virtual ~BaseAxisFrisbeeTurret();
+	
+	virtual void SetMotor(float speed) = 0;
+	virtual void Stop() = 0;
+	virtual bool ShouldTurretStop() = 0;
+};
+
+class SimpleAxisFrisbeeTurret : public BaseAxisFrisbeeTurret {
+public:
+	SimpleAxisFrisbeeTurret(SpeedController *motor);
+	~SimpleAxisFrisbeeTurret();
+	
+	void SetMotor(float speed);
+	void Stop();
+	bool ShouldTurretStop();
+	
+private: 
+	SpeedController *m_motor;
+};
+
+class GuardedAxisFrisbeeTurret : public BaseAxisFrisbeeTurret {
+public:
+	GuardedAxisFrisbeeTurret(SpeedController *motor,  
+							 DigitalInput *switch1,
+							 DigitalInput *switch2);
+	~GuardedAxisFrisbeeTurret();
+	
+	void SetMotor(float speed);
+	void Stop();
+	bool ShouldTurretStop();
+	
+private:
+	SpeedController *m_motor; 
+	DigitalInput *m_switch1;
+	DigitalInput *m_switch2;	
+};
+
+
+////////////////////////
+/*
  * Base class for a frisbee turret. Responsible for aiming the 
  * shooter at a certain angle.
  * 
@@ -39,13 +82,14 @@ private:
 	Tracking::Offset m_offset;
 };
 
-/*
+/**
  * Identical to SimpleFrisbeeTurret, but with limit switches.
  * 
  * Assumes limit switches are normally open, so they return 'true' when
  * the switches are not depressed. Assumes the switches return 'false'
  * when depressed or disconnected.
  */
+
 class GuardedFrisbeeTurret : public BaseFrisbeeTurret {
 public:
 	GuardedFrisbeeTurret(SpeedController *horizontalMotor, 
@@ -103,7 +147,6 @@ private:
 	PIDController *m_horizontalPid;
 	PIDController *m_verticalPid;
 };
-
 
 
 #endif
