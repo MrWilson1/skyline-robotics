@@ -34,7 +34,7 @@ ShootAndGoToCenterLine::ShootAndGoToCenterLine(
 			Autonomous::Positions position) :
 			CommandGroup("ShootAndGoToCenterLine") {
 	AddSequential(new AimTurretCommand(aimer, turret, target, 5.0), 5.0);
-	AddSequential(new LoadAndFireCommand(loader, aimer, turret, shooter));
+	AddSequential(new LoadAimAndFireCommand(loader, aimer, turret, shooter));
 	AddSequential(new MoveToCenterLine(drive, position));
 }
 

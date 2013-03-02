@@ -48,25 +48,30 @@
 
 //#define ROBOT BLAND
 //#define ROBOT TERMINATOR
-#define ROBOT MAINROBOT2013
+#define ROBOT AUGMENTED_TERMINATOR
+//#define ROBOT MAINROBOT2013
 //#define ROBOT TESTBEDROBOT2013
 
 // DO NOT MODIFY BELOW
 
 #include "Profiles/BlandRobotProfile.h"
 #include "Profiles/TerminatorRobotProfile.h"
+#include "Profiles/AugmentedTerminatorRobotProfile.h"
 #include "Profiles/MainRobot2013Profile.h"
 #include "Profiles/TestbedRobot2013Profile.h"
 
 #define BLAND 1
 #define TERMINATOR 2
-#define MAINROBOT2013 3
-#define TESTBEDROBOT2013 4
+#define AUGMENTED_TERMINATOR 3
+#define MAINROBOT2013 4
+#define TESTBEDROBOT2013 5
 
 #if ROBOT == BLAND
 	START_ROBOT_CLASS(BlandRobotProfile);
 #elif ROBOT == TERMINATOR
 	START_ROBOT_CLASS(TerminatorRobotProfile);
+#elif ROBOT == AUGMENTED_TERMINATOR
+	START_ROBOT_CLASS(AugmentedTerminatorRobotProfile);
 #elif ROBOT == MAINROBOT2013
 	START_ROBOT_CLASS(MainRobot2013Profile);
 #elif ROBOT == TESTBEDROBOT2013

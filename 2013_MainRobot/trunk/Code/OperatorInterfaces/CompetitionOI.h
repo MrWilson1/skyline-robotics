@@ -42,10 +42,29 @@ public:
 	JoystickButton *FireFrisbeeButton;
 };
 
-class CompetitionJoystickOI : public BaseOI {
+
+class XboxSingleJoystickOI : public BaseOI{
 public:
-	CompetitionJoystickOI(Joystick *rightJoystick, Joystick *leftJoystick, Joystick *twistJoystick);
-	~CompetitionJoystickOI();
+	XboxSingleJoystickOI(XboxController *xbox, Joystick *stick);
+	~XboxSingleJoystickOI();
+	
+	Axis *TankLeftAxis;
+	Axis *TankRightAxis;
+	Axis *DriveStraightAxis;
+	Axis *RotateTurretAxis;
+	Axis *LiftTurretAxis;
+	Axis *ControlWinchAxis;
+	
+	JoystickButton *DriveStraightButton;
+	JoystickButton *ToggleTransmissionButton;
+	JoystickButton *FireFrisbeeButton;
+};
+
+
+class ThreeJoystickOI : public BaseOI {
+public:
+	ThreeJoystickOI(Joystick *rightJoystick, Joystick *leftJoystick, Joystick *twistJoystick);
+	~ThreeJoystickOI();
 	
 	Axis *TankLeftAxis;
 	Axis *TankRightAxis;

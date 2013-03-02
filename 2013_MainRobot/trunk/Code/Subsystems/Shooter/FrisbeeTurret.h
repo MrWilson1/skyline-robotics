@@ -23,6 +23,16 @@ public:
 	virtual Tracking::Offset GetCurrentOffset() = 0;
 };
 
+class BaseAxisFrisbeeTurret : public BaseSubsystem {
+public:
+	BaseAxisFrisbeeTurret();
+	virtual ~BaseAxisFrisbeeTurret();
+	
+	virtual void SetMotor(float speed) = 0;
+	virtual void Stop() = 0;
+	virtual bool ShouldTurretStop() = 0;
+};
+
 class SimpleFrisbeeTurret : public BaseFrisbeeTurret {
 public:
 	SimpleFrisbeeTurret(SpeedController *horizontalMotor, SpeedController *lateralMotor);

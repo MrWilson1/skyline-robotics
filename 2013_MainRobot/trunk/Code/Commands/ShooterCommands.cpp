@@ -144,18 +144,32 @@ void FireFrisbeeCommand::Interrupted() {
 }
 
 
-LoadAndFireCommand::LoadAndFireCommand(
+
+LoadAndFireFrisbeeCommand::LoadAndFireFrisbeeCommand(
+		BaseFrisbeeLoader *loader,
+		BaseFrisbeeShooter *shooter) :
+		CommandGroup("LoadAndFireFrisbeeCommand") {
+	AddSequential(new LoadFrisbeeCommand(loader));
+	AddSequential(new FireFrisbeeCommand(shooter));
+}
+
+LoadAndFireFrisbeeCommand::~LoadAndFireFrisbeeCommand() {
+	// empty
+}
+
+
+LoadAimAndFireCommand::LoadAimAndFireCommand(
 		BaseFrisbeeLoader *loader, 
 		BaseFrisbeeAimer *aimer, 
 		BaseFrisbeeTurret *turret, 
 		BaseFrisbeeShooter *shooter) :
 		CommandGroup("LoadAndFireCommand") {
 	AddParallel(new FireFrisbeeCommand(shooter), 5.0);
-	AddSequential(new LoadFrisbeeCommand(loader));
 	AddSequential(new AimTurretCommand(aimer, turret, Tracking::ClosestOffset, 5));
+	AddSequential(new LoadFrisbeeCommand(loader));
 }
 
-LoadAndFireCommand::~LoadAndFireCommand() {
+LoadAimAndFireCommand::~LoadAimAndFireCommand() {
 	// empty
 }
 

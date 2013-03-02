@@ -83,17 +83,29 @@ private:
 	BaseFrisbeeShooter *m_shooter;
 };
 
+
+/**
+ * \brief Loads a frisbee, and just fires it without aiming
+ */
+class LoadAndFireFrisbeeCommand : public CommandGroup {
+public:
+	LoadAndFireFrisbeeCommand(
+		BaseFrisbeeLoader *loader,
+		BaseFrisbeeShooter *shooter);
+	~LoadAndFireFrisbeeCommand();
+};
+
 /**
  * \brief Loads a frisbee, aims the turret, and fires it.
  */
-class LoadAndFireCommand : public CommandGroup {
+class LoadAimAndFireCommand : public CommandGroup {
 public:
-	LoadAndFireCommand(
+	LoadAimAndFireCommand(
 		BaseFrisbeeLoader *loader, 
 		BaseFrisbeeAimer *aimer, 
 		BaseFrisbeeTurret *turret, 
 		BaseFrisbeeShooter *shooter);
-	~LoadAndFireCommand();
+	~LoadAimAndFireCommand();
 };
 
 /**
