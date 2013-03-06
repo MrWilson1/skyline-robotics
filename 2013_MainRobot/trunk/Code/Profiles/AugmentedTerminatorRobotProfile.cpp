@@ -35,14 +35,14 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 	
 	m_leftEncoder = new Encoder(
 			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio6,
+			Ports::DigitalSidecar::Gpio2,
 			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio7);
+			Ports::DigitalSidecar::Gpio3);
 	m_rightEncoder = new Encoder(
 			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio8,
+			Ports::DigitalSidecar::Gpio4,
 			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio9);
+			Ports::DigitalSidecar::Gpio5);
 	
 	m_leftEncoder->Start();
 	m_rightEncoder->Start();
@@ -50,7 +50,7 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 	// Turret
 	/*m_turretVertical = new Victor(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm5);
+		Ports::DigitalSidecar::Pwm5);*/
 	m_turretHorizontal = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm6);
@@ -60,6 +60,7 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 	m_turretLeftSwitch = new DigitalInput(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio9);
+	/*
 	m_turretTopSwitch = new DigitalInput(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio10);
