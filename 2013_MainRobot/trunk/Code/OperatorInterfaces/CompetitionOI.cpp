@@ -71,6 +71,7 @@ XboxSingleJoystickOI::XboxSingleJoystickOI(XboxController *xbox, Joystick *stick
 	DriveStraightButton = new JoystickButton(xbox, xbox->LeftBumper);
 	ToggleTransmissionButton = new JoystickButton(xbox, xbox->RightBumper);
 	FireFrisbeeButton = new JoystickButton(stick, Joystick::kDefaultTriggerButton);
+	LoadFrisbeeButton = new JoystickButton(xbox, xbox->B);
 }
 
 XboxSingleJoystickOI::~XboxSingleJoystickOI() {
@@ -84,6 +85,7 @@ XboxSingleJoystickOI::~XboxSingleJoystickOI() {
 	delete DriveStraightButton;
 	delete ToggleTransmissionButton;
 	delete FireFrisbeeButton;
+	delete LoadFrisbeeButton;
 }
 
 

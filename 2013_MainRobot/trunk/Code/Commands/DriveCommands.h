@@ -113,5 +113,21 @@ private:
 	BaseDriveTransmission *m_transmission;
 };
 
+class ToggleTransmissionSwapPidCommand : public SimpleCommand {
+public:
+	ToggleTransmissionSwapPidCommand(BaseDriveTransmission *transmission, IPidDrive *drive, 
+			DrivePid lowGearRate, DrivePid lowGearDistance,
+			DrivePid highGearRate, DrivePid highGearDistance);
+	~ToggleTransmissionSwapPidCommand();
+	void Execute();
+	
+private:
+	BaseDriveTransmission *m_transmission;
+	IPidDrive *m_drive;
+	DrivePid m_lowGearRate;
+	DrivePid m_lowGearDistance;
+	DrivePid m_highGearRate;
+	DrivePid m_highGearDistance;
+};
 
 #endif

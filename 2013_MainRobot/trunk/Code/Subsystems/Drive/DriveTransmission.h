@@ -76,6 +76,7 @@ private:
 	BaseDriveTransmission::TransmissionMode m_mode;
 };
 
+
 /**
  * \}
  * \}

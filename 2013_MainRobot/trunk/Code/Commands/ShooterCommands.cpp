@@ -16,12 +16,16 @@ void LoadFrisbeeCommand::Initialize() {
 }
 
 void LoadFrisbeeCommand::Execute() {
-	if (m_loader->IsFrisbeePrepared()) {
+	/*if (m_loader->IsFrisbeePrepared()) {
 		m_loader->LoadFrisbee();
 		m_isFinished = true;
+		SmartDashboard::PutString("LoadFrisbeeDebug", "load");
 	} else {
 		m_loader->PrepareFrisbee();
-	}
+		SmartDashboard::PutString("LoadFrisbeeDebug", "prepare");
+	}*/
+	m_loader->LoadFrisbee();
+	m_isFinished = true;
 }
 
 bool LoadFrisbeeCommand::IsFinished() {

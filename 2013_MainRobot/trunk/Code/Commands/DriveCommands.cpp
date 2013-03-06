@@ -208,3 +208,35 @@ ToggleTransmissionCommand::~ToggleTransmissionCommand() {
 void ToggleTransmissionCommand::Execute() {
 	m_transmission->ToggleGear();
 }
+
+
+ToggleTransmissionSwapPidCommand::ToggleTransmissionSwapPidCommand(BaseDriveTransmission *transmission, 
+		IPidDrive *drive, 
+		DrivePid lowGearRate, DrivePid lowGearDistance,
+		DrivePid highGearRate, DrivePid highGearDistance) :
+		SimpleCommand("ToggleTransmissionCommand", true),
+		m_lowGearRate(lowGearRate),
+		m_lowGearDistance(lowGearDistance),
+		m_highGearRate(highGearRate),
+		m_highGearDistance(highGearDistance) {
+	m_transmission = transmission;
+	m_drive = drive;
+	Requires(m_transmission);
+	Requires(dynamic_cast<BaseDrive *>(m_drive));
+}
+
+ToggleTransmissionSwapPidCommand::~ToggleTransmissionSwapPidCommand() {
+	// empty
+}
+
+void ToggleTransmissionSwapPidCommand::Execute() {
+	if (m_transmission->GetCurrentMode() == BaseDriveTransmission::kHighGear) {
+		m_drive->SetRatePid(m_highGearRate);
+		m_drive->SetDistancePid(m_highGearDistance);
+		m_transmission->SetHighGear();
+	} else if (m_transmission->GetCurrentMode() == BaseDriveTransmission::kLowGear) {
+		m_drive->SetRatePid(m_lowGearRate);
+		m_drive->SetDistancePid(m_lowGearDistance);
+		m_transmission->SetLowGear();
+	}
+}

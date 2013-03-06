@@ -53,8 +53,8 @@ bool PistonFrisbeeLoader::IsFrisbeePrepared() {
 }
 
 void PistonFrisbeeLoader::LoadFrisbee() {
-	m_piston->Set(true); // out
-	m_piston->Set(false); // in
+	m_piston->Set(false);
+	m_piston->Set(true);
 }
 
 

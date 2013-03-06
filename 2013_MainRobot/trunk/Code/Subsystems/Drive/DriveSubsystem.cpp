@@ -388,3 +388,19 @@ DrivePid PidSimpleDrive::GetRatePid() {
 DrivePid PidSimpleDrive::GetDistancePid() {
 	return m_distancePid;
 }
+
+void PidSimpleDrive::SetRatePid(DrivePid ratePid) {
+	if (m_currentMode == Rate) {
+		m_ratePid.Disable();
+	}
+	m_ratePid = ratePid;
+	m_ratePid.Enable();
+}
+
+void PidSimpleDrive::SetDistancePid(DrivePid distancePid) {
+	if (m_currentMode == Distance) {
+		m_distancePid.Disable();
+	}
+	m_distancePid = distancePid;
+	m_distancePid.Disable();
+}

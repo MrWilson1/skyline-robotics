@@ -46,7 +46,12 @@ public:
 	virtual void Brake() = 0;
 };
 
-
+/**
+ * \brief A class which represents a complete PID controller for one tread and one encoder.
+ * 
+ * It provides a bunch of convenience functions used to manipulate both the PID controller, the
+ * wheel, and the encoder.
+ */
 class IntegratedPid {
 public:
 	IntegratedPid(float p, float i, float d, float dpp, Encoder::PIDSourceParameter pidSource, 
@@ -79,6 +84,9 @@ private:
 	Encoder::PIDSourceParameter m_pidSource;
 };
 
+/**
+ * \brief A class representing one complete PID controller for both threads of the robot.
+ */
 class DrivePid {
 public:
 	DrivePid(IntegratedPid leftPid, IntegratedPid rightPid);
@@ -106,6 +114,8 @@ public:
 	virtual void AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
 	virtual DrivePid GetRatePid() = 0;
 	virtual DrivePid GetDistancePid() = 0;
+	virtual void SetRatePid(DrivePid ratePid) = 0;
+	virtual void SetDistancePid(DrivePid distancePid) = 0;
 };
 
 /**
@@ -225,6 +235,8 @@ public:
 	void AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd);
 	DrivePid GetRatePid();
 	DrivePid GetDistancePid();
+	void SetRatePid(DrivePid ratePid); // A hack, for the transmissions.
+	void SetDistancePid(DrivePid distancePid);
 	
 private:
 	enum PidMode {

@@ -58,6 +58,7 @@ public:
 	JoystickButton *DriveStraightButton;
 	JoystickButton *ToggleTransmissionButton;
 	JoystickButton *FireFrisbeeButton;
+	JoystickButton *LoadFrisbeeButton;
 };
 
 
