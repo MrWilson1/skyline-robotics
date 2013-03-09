@@ -113,7 +113,7 @@ void MainRobot2013Profile::CreateSubsystems() {
 	m_drive = new SimpleDrive(
 			m_leftTread,
 			m_rightTread);
-	m_loader = new PlaceholderFrisbeeLoader();
+	m_loader = new FrisbeeLoader::Placeholder();
 	//m_aimer = new VisionTablesFrisbeeAimer();
 	/*m_turret = new GuardedFrisbeeTurret(
 			m_turretHorizontal,

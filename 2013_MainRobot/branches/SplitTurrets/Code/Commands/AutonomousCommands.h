@@ -48,8 +48,8 @@ class ShootAndGoToCenterLine : public CommandGroup {
 public:
 	ShootAndGoToCenterLine(
 			BaseDrive *drive,
-			BaseFrisbeeLoader *loader, 
-			BaseFrisbeeAimer *aimer, 
+			FrisbeeLoader::Base *loader, 
+			FrisbeeAimer::Base *aimer, 
 			BaseAxisFrisbeeTurret *horizontalTurret, 
 			BaseAxisFrisbeeTurret *verticalTurret,
 			BaseFrisbeeShooter *shooter,

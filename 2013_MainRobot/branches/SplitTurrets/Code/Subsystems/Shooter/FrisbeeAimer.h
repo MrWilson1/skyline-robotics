@@ -10,6 +10,9 @@
 #include "../BaseSubsystem.h"
 #include "../../Misc/Tools.h"
 
+/**
+ * Namespace for tracking-related things.
+ */
 namespace Tracking {
 	/**
 	 * The different types of targets the robot can aim for.
@@ -56,14 +59,18 @@ namespace Tracking {
 }
 
 /**
+ * Namespace for FrisbeeAimer.
+ */
+namespace FrisbeeAimer {
+/**
  * A base class to find the targets to aim for.
  * 
  * Note: this interface may change substantially over time.
  */
-class BaseFrisbeeAimer : public BaseSubsystem {
+class Base : public BaseSubsystem {
 public:
-	BaseFrisbeeAimer(const char *name);
-	virtual ~BaseFrisbeeAimer();
+	Base(const char *name);
+	virtual ~Base();
 
 	/**
 	 * Return all targets in sight
@@ -133,11 +140,11 @@ public:
  * class simply recieves the values, repackages them, and makes
  * them available.
  */
-class VisionTablesFrisbeeAimer : public BaseFrisbeeAimer {
+class VisionTables : public Base {
 public:
-	VisionTablesFrisbeeAimer();
-	VisionTablesFrisbeeAimer(std::string tableName);
-	~VisionTablesFrisbeeAimer();
+	VisionTables();
+	VisionTables(std::string tableName);
+	~VisionTables();
 	
 	Tracking::TargetMap GetAllTargets();
 	Tracking::Target GetHighTarget();
@@ -153,12 +160,13 @@ private:
 	std::string m_tableName;
 };
 
-class TestAimer : public BaseSubsystem {
+class Test : public BaseSubsystem {
 public:
-	TestAimer(const char *name);
-	~TestAimer();
+	Test(const char *name);
+	~Test();
 	
 	void Run();
 };
+}
 
 #endif

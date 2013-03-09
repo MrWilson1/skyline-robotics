@@ -60,8 +60,8 @@ private:
 	
 	// Subsystems
 	BaseDrive *m_drive; 
-	BaseFrisbeeLoader *m_loader;
-	BaseFrisbeeAimer *m_aimer;
+	FrisbeeLoader::Base *m_loader;
+	FrisbeeAimer::Base *m_aimer;
 	BaseAxisFrisbeeTurret *m_horizontalTurret;
 	BaseAxisFrisbeeTurret *m_verticalTurret;
 	BaseFrisbeeShooter *m_shooter;

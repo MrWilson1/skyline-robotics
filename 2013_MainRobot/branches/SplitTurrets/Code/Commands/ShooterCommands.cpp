@@ -1,7 +1,7 @@
 #include "ShooterCommands.h"
 #include "math.h"
 
-ShooterCommand::LoadFrisbee::LoadFrisbee(BaseFrisbeeLoader *loader) :
+ShooterCommand::LoadFrisbee::LoadFrisbee(FrisbeeLoader::Base *loader) :
 		Command("LoadFrisbee"),
 		m_isFinished(false) {
 	m_loader = loader;
@@ -38,7 +38,7 @@ void ShooterCommand::LoadFrisbee::Interrupted() {
 }
 
 ShooterCommand::AimTurret::AimTurret(
-		BaseFrisbeeAimer *aimer, 
+		FrisbeeAimer::Base *aimer, 
 		BaseAxisFrisbeeTurret *horizontalTurret,
 		BaseAxisFrisbeeTurret *verticalTurret,
 		Tracking::TargetType desiredTarget,
@@ -59,7 +59,7 @@ ShooterCommand::AimTurret::AimTurret(
 }
 
 ShooterCommand::AimTurret::AimTurret(
-		BaseFrisbeeAimer *aimer, 
+		FrisbeeAimer::Base *aimer, 
 		BaseAxisFrisbeeTurret *horizontalTurret, 
 		BaseAxisFrisbeeTurret *verticalTurret,
 		Tracking::TargetType desiredTarget, 
@@ -187,8 +187,8 @@ void ShooterCommand::FireFrisbee::Interrupted() {
 
 
 ShooterCommand::LoadAndFire::LoadAndFire(
-		BaseFrisbeeLoader *loader, 
-		BaseFrisbeeAimer *aimer, 
+		FrisbeeLoader::Base *loader, 
+		FrisbeeAimer::Base *aimer, 
 		BaseAxisFrisbeeTurret *horizontalTurret, 
 		BaseAxisFrisbeeTurret *verticalTurret,
 		BaseFrisbeeShooter *shooter) :

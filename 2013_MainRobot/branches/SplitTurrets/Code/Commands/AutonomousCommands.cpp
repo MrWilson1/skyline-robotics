@@ -26,8 +26,8 @@ AutonomousCommand::MoveToCenterLine::~MoveToCenterLine() {
 
 AutonomousCommand::ShootAndGoToCenterLine::ShootAndGoToCenterLine(
 			BaseDrive *drive,
-			BaseFrisbeeLoader *loader, 
-			BaseFrisbeeAimer *aimer, 
+			FrisbeeLoader::Base *loader, 
+			FrisbeeAimer::Base *aimer, 
 			BaseAxisFrisbeeTurret *horizontalTurret, 
 			BaseAxisFrisbeeTurret *verticalTurret,
 			BaseFrisbeeShooter *shooter,

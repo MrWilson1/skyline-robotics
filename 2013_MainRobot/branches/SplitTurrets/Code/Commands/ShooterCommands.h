@@ -24,7 +24,7 @@ namespace ShooterCommand {
  */
 class LoadFrisbee : public Command {
 public:
-	LoadFrisbee(BaseFrisbeeLoader *loader);
+	LoadFrisbee(FrisbeeLoader::Base *loader);
 	~LoadFrisbee();
 	void Initialize();
 	void Execute();
@@ -33,7 +33,7 @@ public:
 	void Interrupted();
 	
 private:
-	BaseFrisbeeLoader *m_loader;
+	FrisbeeLoader::Base *m_loader;
 	bool m_isFinished;
 };
 
@@ -55,13 +55,13 @@ private:
 class AimTurret : public Command {
 public:
 	AimTurret(
-			BaseFrisbeeAimer *aimer, 
+			FrisbeeAimer::Base *aimer, 
 			BaseAxisFrisbeeTurret *horizontalTurret, 
 			BaseAxisFrisbeeTurret *verticalTurret,
 			Tracking::TargetType desiredTarget, 
 			double allowedRange);
 	AimTurret(
-			BaseFrisbeeAimer *aimer, 
+			FrisbeeAimer::Base *aimer, 
 			BaseAxisFrisbeeTurret *horizontalTurret,
 			BaseAxisFrisbeeTurret *verticalTurret, 
 			Tracking::TargetType desiredTarget, 
@@ -78,7 +78,7 @@ public:
 	void Interrupted();
 	
 private:
-	BaseFrisbeeAimer *m_aimer;
+	FrisbeeAimer::Base *m_aimer;
 	BaseAxisFrisbeeTurret *m_horizontalTurret;
 	BaseAxisFrisbeeTurret *m_verticalTurret;
 	bool m_isFinished;
@@ -114,8 +114,8 @@ private:
 class LoadAndFire : public CommandGroup {
 public:
 	LoadAndFire(
-		BaseFrisbeeLoader *loader, 
-		BaseFrisbeeAimer *aimer, 
+		FrisbeeLoader::Base *loader, 
+		FrisbeeAimer::Base *aimer, 
 		BaseAxisFrisbeeTurret *horizontalTurret, 
 		BaseAxisFrisbeeTurret *verticalTurret,
 		BaseFrisbeeShooter *shooter);

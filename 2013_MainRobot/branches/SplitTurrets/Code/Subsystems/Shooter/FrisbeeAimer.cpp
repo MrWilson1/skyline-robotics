@@ -1,12 +1,12 @@
 #include "FrisbeeAimer.h"
 
 
-BaseFrisbeeAimer::BaseFrisbeeAimer(const char *name) :
+FrisbeeAimer::Base::Base(const char *name) :
 		BaseSubsystem(name) {
 	// Empty
 }
 
-BaseFrisbeeAimer::~BaseFrisbeeAimer() {
+FrisbeeAimer::Base::~Base() {
 	// Empty
 }
 
@@ -42,23 +42,23 @@ float Tracking::FindTargetMagnitude(Target target) {
 	return Tools::FindMagnitude(x, y);
 }
 
-VisionTablesFrisbeeAimer::VisionTablesFrisbeeAimer() :
-		BaseFrisbeeAimer("VisionTablesFrisbeeAimer"),
+FrisbeeAimer::VisionTables::VisionTables() :
+		Base("VisionTables"),
 		m_tableName("VisionTable") {
 	m_visionTable = NetworkTable::GetTable(m_tableName);
 }
 
-VisionTablesFrisbeeAimer::VisionTablesFrisbeeAimer(std::string tableName) :
-		BaseFrisbeeAimer("VisionTablesFrisbeeAimer"),
+FrisbeeAimer::VisionTables::VisionTables(std::string tableName) :
+		Base("VisionTables"),
 		m_tableName(tableName) {
 	m_visionTable = NetworkTable::GetTable(m_tableName);
 }
 
-VisionTablesFrisbeeAimer::~VisionTablesFrisbeeAimer() {
+FrisbeeAimer::VisionTables::~VisionTables() {
 	// empty
 }
 	
-Tracking::TargetMap VisionTablesFrisbeeAimer::GetAllTargets() {
+Tracking::TargetMap FrisbeeAimer::VisionTables::GetAllTargets() {
 	Tracking::TargetMap targetMap;
 	targetMap[Tracking::High] = GetHighTarget();
 	targetMap[Tracking::MiddleLeft] = GetMiddleLeftTarget();
@@ -67,31 +67,31 @@ Tracking::TargetMap VisionTablesFrisbeeAimer::GetAllTargets() {
 	return targetMap;
 }
 
-Tracking::Target VisionTablesFrisbeeAimer::GetHighTarget() {
+Tracking::Target FrisbeeAimer::VisionTables::GetHighTarget() {
 	return GetTarget("high");
 }
 
-Tracking::Target VisionTablesFrisbeeAimer::GetMiddleLeftTarget() {
+Tracking::Target FrisbeeAimer::VisionTables::GetMiddleLeftTarget() {
 	return GetTarget("middle_left");
 }
 
-Tracking::Target VisionTablesFrisbeeAimer::GetMiddleRightTarget() {
+Tracking::Target FrisbeeAimer::VisionTables::GetMiddleRightTarget() {
 	return GetTarget("middle_right");
 }
 
-Tracking::Target VisionTablesFrisbeeAimer::GetLowTarget() {
+Tracking::Target FrisbeeAimer::VisionTables::GetLowTarget() {
 	return GetTarget("low");
 }
 
-Tracking::Target VisionTablesFrisbeeAimer::GetClosestTargetByDistance() {
+Tracking::Target FrisbeeAimer::VisionTables::GetClosestTargetByDistance() {
 	return GetTarget("best_distance");
 }
 
-Tracking::Target VisionTablesFrisbeeAimer::GetClosestTargetByOffset() {
+Tracking::Target FrisbeeAimer::VisionTables::GetClosestTargetByOffset() {
 	return GetTarget("best_offset");
 }
 	
-Tracking::Target VisionTablesFrisbeeAimer::GetTarget(std::string key) {
+Tracking::Target FrisbeeAimer::VisionTables::GetTarget(std::string key) {
 	Tracking::Target target;
 	std::string rectType = m_visionTable->GetString(key + "_rect_type");
 	
@@ -124,16 +124,16 @@ Tracking::Target VisionTablesFrisbeeAimer::GetTarget(std::string key) {
 
 
 
-TestAimer::TestAimer(const char *name) :
+FrisbeeAimer::Test::Test(const char *name) :
 		BaseSubsystem(name) {
 	// empty
 }
 
-TestAimer::~TestAimer() {
+FrisbeeAimer::Test::~Test() {
 	// empty
 }
 
-void TestAimer::Run() {
+void FrisbeeAimer::Test::Run() {
 	NetworkTable *table = NetworkTable::GetTable("VisionTable");
 	
 	float high = table->GetNumber("high_distance");
