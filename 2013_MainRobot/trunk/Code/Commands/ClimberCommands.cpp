@@ -1,6 +1,6 @@
 #include "ClimberCommands.h"
 
-ExtendArmCommand::ExtendArmCommand(BaseClimberExtender *climberExtender) :
+ExtendArmCommand::ExtendArmCommand(Extender::Base *climberExtender) :
 		SimpleCommand("ExtendArm", false) {
 	m_climberExtender = climberExtender;
 	Requires(m_climberExtender);
@@ -64,7 +64,7 @@ ClimbLevelCommand::~ClimbLevelCommand() {
 }
 
 
-ClimbPyramidCommand::ClimbPyramidCommand(Arm arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung) {
+ClimbPyramidCommand::ClimbPyramidCommand(Arm arm, Extender::Base *extender, double heightOfRobot, double distanceBetweenShoulderAndRung) {
 	AddSequential(new ExtendArmCommand(extender));
 	AddSequential(new ClimbLevelCommand(arm, heightOfRobot, distanceBetweenShoulderAndRung));
 	AddSequential(new ClimbLevelCommand(arm, heightOfRobot, distanceBetweenShoulderAndRung));

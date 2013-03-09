@@ -1,27 +1,27 @@
 #include "ClimberExtender.h"
 
-BaseClimberExtender::BaseClimberExtender(const char *name) :
+Extender::Base::Base(const char *name) :
 	    BaseSubsystem(name) {
 	// empty
 }
 
-BaseClimberExtender::~BaseClimberExtender() {
+Extender::Base::~Base() {
 	// empty
 }
 
-PneumaticClimberExtender::PneumaticClimberExtender(Solenoid *rightSolenoid, Solenoid *leftSolenoid) :
-	    BaseClimberExtender("PneumaticClimberExtender") {
+Extender::Pneumatic::Pneumatic(Solenoid *rightSolenoid, Solenoid *leftSolenoid) :
+	    Extender::Base("PneumaticClimberExtender") {
 	m_rightSolenoid = rightSolenoid;
 	m_leftSolenoid = leftSolenoid;
 	AddActuatorToLiveWindow("Right Solenoid", m_rightSolenoid);
 	AddActuatorToLiveWindow("Left Solenoid", m_leftSolenoid);
 }
 
-PneumaticClimberExtender::~PneumaticClimberExtender() {
+Extender::Pneumatic::~Pneumatic() {
 	// empty
 }
 
-void PneumaticClimberExtender::PullPins() {
+void Extender::Pneumatic::PullPins() {
 	/* Pins will be manually reset at the beginning of each match. Here,
 	 * setting the solenoids to the opposite state will pull the pins,
 	 * and we won't have to worry about testing whether "True" or "False"

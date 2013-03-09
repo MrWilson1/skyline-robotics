@@ -15,13 +15,13 @@
 
 class ExtendArmCommand : public SimpleCommand {
 public:
-	ExtendArmCommand(BaseClimberExtender *climberExtender);
+	ExtendArmCommand(Extender::Base *climberExtender);
 	~ExtendArmCommand();
 	
 	void Execute();
 	
 private:
-	BaseClimberExtender *m_climberExtender;
+	Extender::Base *m_climberExtender;
 };
 
 class HookOnToRungCommand : public CommandGroup {
@@ -57,7 +57,7 @@ public:
 
 class ClimbPyramidCommand : public CommandGroup {
 public:
-	ClimbPyramidCommand(Arm arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	ClimbPyramidCommand(Arm arm, Extender::Base *extender, double heightOfRobot, double distanceBetweenShoulderAndRung);
 	~ClimbPyramidCommand();
 };
 

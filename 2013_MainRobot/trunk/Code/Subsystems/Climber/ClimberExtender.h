@@ -1,32 +1,39 @@
 #ifndef CLIMBER_EXTENDER_H
 #define CLIMBER_EXTENDER_H
-
+/**
+ * \file ClimberExtender.h
+ * 
+ * \addtogroup subsystems
+ * \{
+ */
 #include "WPILib.h"
 #include "../BaseSubsystem.h"
 #include "../../Misc/Tools.h"
 #include"../../Misc/Ports.h"
 
+namespace Extender {
+
 /**
  * \brief Base class for climber extender.
  */
-class BaseClimberExtender : public BaseSubsystem {
+class Base : public BaseSubsystem {
 public:
-	BaseClimberExtender(const char *name);
-	virtual ~BaseClimberExtender();
+	Base(const char *name);
+	virtual ~Base();
 	virtual void PullPins() = 0;
 };
 
 /**
  * \brief Climber extender that uses pneumatics.
  */
-class PneumaticClimberExtender : public BaseClimberExtender {
+class Pneumatic : public Base {
 public:
 	/**
 	 * \param[in] rightSolenoid Pointer to solenoid on the right extender.
 	 * \param[in] leftSolenoid Pointer to the solenoid on the left extender.
 	 */
-	PneumaticClimberExtender(Solenoid *rightSolenoid, Solenoid *leftSolenoid);
-	~PneumaticClimberExtender();
+	Pneumatic(Solenoid *rightSolenoid, Solenoid *leftSolenoid);
+	~Pneumatic();
 	/**
 	 * \brief Pulls pins to extend the extenders.
 	 */
@@ -35,5 +42,11 @@ private:
 	Solenoid *m_rightSolenoid;
 	Solenoid *m_leftSolenoid;
 };
+
+}
+
+/**
+ * \}
+ */
 
 #endif
