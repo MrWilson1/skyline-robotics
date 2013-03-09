@@ -38,7 +38,7 @@ private:
 	BaseDrive *m_drive;
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
-	BaseDriveTransmission *m_transmission;
+	DriveTransmission::Base *m_transmission;
 	
 	CompetitionOI *m_oi;
 	

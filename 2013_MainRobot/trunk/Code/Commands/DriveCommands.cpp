@@ -195,7 +195,7 @@ void RotateRobotCommand::Interrupted() {
 }
 
 
-ToggleTransmissionCommand::ToggleTransmissionCommand(BaseDriveTransmission *transmission) :
+ToggleTransmissionCommand::ToggleTransmissionCommand(DriveTransmission::Base *transmission) :
 		SimpleCommand("ToggleTransmissionCommand", true) {
 	m_transmission = transmission;
 	Requires(m_transmission);
@@ -210,7 +210,7 @@ void ToggleTransmissionCommand::Execute() {
 }
 
 
-ToggleTransmissionSwapPidCommand::ToggleTransmissionSwapPidCommand(BaseDriveTransmission *transmission, 
+ToggleTransmissionSwapPidCommand::ToggleTransmissionSwapPidCommand(DriveTransmission::Base *transmission, 
 		IPidDrive *drive, 
 		DrivePid lowGearRate, DrivePid lowGearDistance,
 		DrivePid highGearRate, DrivePid highGearDistance) :
@@ -230,11 +230,11 @@ ToggleTransmissionSwapPidCommand::~ToggleTransmissionSwapPidCommand() {
 }
 
 void ToggleTransmissionSwapPidCommand::Execute() {
-	if (m_transmission->GetCurrentMode() == BaseDriveTransmission::kHighGear) {
+	if (m_transmission->GetCurrentMode() == DriveTransmission::kHighGear) {
 		m_drive->SetRatePid(m_highGearRate);
 		m_drive->SetDistancePid(m_highGearDistance);
 		m_transmission->SetHighGear();
-	} else if (m_transmission->GetCurrentMode() == BaseDriveTransmission::kLowGear) {
+	} else if (m_transmission->GetCurrentMode() == DriveTransmission::kLowGear) {
 		m_drive->SetRatePid(m_lowGearRate);
 		m_drive->SetDistancePid(m_lowGearDistance);
 		m_transmission->SetLowGear();

@@ -65,7 +65,7 @@ private:
 	FrisbeeTurret::Base *m_horizontalTurret;
 	FrisbeeTurret::Base *m_verticalTurret;
 	BaseFrisbeeShooter *m_shooter;
-	BaseDriveTransmission *m_transmission;
+	DriveTransmission::Base *m_transmission;
 	
 	// OI
 	XboxController *m_xbox;

@@ -122,7 +122,7 @@ void MainRobot2013Profile::CreateSubsystems() {
 		m_shooterFront,
 		m_shooterMiddle,
 		m_shooterBack);
-	m_transmission = new SimpleDriveTransmission(
+	m_transmission = new DriveTransmission::Simple(
 		m_leftTransmissionSolenoid,
 		m_rightTransmissionSolenoid);
 }

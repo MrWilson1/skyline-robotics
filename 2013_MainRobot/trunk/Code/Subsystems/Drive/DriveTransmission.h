@@ -3,37 +3,38 @@
 /**
  * \file DriveTransmission.h
  * 
- * \brief Subsystems for the drive transmission (two-speed drive, etc).
- * 
- * Any subsystems in here should theoretically be able to run independently
- * of whatever [Drive](\ref drive_subsystems) is currently being used.
- * 
- * If a transmission is used, it's an extra thrown on top of a Drive.
- * 
  * \addtogroup subsystems
- * \{
- * \defgroup drive_transmission_subsystems Drive Transmissions
  * \{
  */
 #include "WPILib.h"
 #include "../BaseSubsystem.h"
 
 /**
+ * \brief Subsystems for the drive transmission (two-speed drive, etc).
+ * 
+ * Any subsystems in here should theoretically be able to run independently
+ * of whatever [Drive](\ref drive_subsystems) is currently being used.
+ * 
+ * If a transmission is used, it's an extra thrown on top of a Drive.
+ */
+namespace DriveTransmission {
+
+// The names of these might need to be changed.
+enum Mode {
+	kError, // when the two sides have different modes
+	kHighGear,
+	kLowGear
+};
+
+/**
  * \brief A base class for any Drive Tranmission.
  * 
  * All transmissions should inherit from this.
  */
-class BaseDriveTransmission : public BaseSubsystem {
+class Base : public BaseSubsystem {
 public:
-	// The names of these might need to be changed.
-	enum TransmissionMode {
-		kError, // when the two sides have different modes
-		kHighGear,
-		kLowGear
-	};
-	
-	BaseDriveTransmission(const char *name);
-	virtual ~BaseDriveTransmission();
+	Base(const char *name);
+	virtual ~Base();
 	
 	/**
 	 * \brief Makes the robot have more maneuverability
@@ -53,32 +54,32 @@ public:
 	/**
 	 * \brief Gets the current transmission mode.
 	 */
-	virtual TransmissionMode GetCurrentMode() = 0;
+	virtual Mode GetCurrentMode() = 0;
 };
 
 /**
  * \brief A simple transmission, using solenoids to switch between the gearings 
  */
-class SimpleDriveTransmission : public BaseDriveTransmission {
+class Simple : public Base {
 public:
-	SimpleDriveTransmission(DoubleSolenoid *leftPiston, DoubleSolenoid *rightPiston);
-	~SimpleDriveTransmission();
+	Simple(DoubleSolenoid *leftPiston, DoubleSolenoid *rightPiston);
+	~Simple();
 	
 	void SetHighGear();
 	void SetLowGear();
 	void ToggleGear();
-	virtual TransmissionMode GetCurrentMode();
+	virtual Mode GetCurrentMode();
 	
 private:
 	void Set();
 	DoubleSolenoid *m_leftPiston;
 	DoubleSolenoid *m_rightPiston;
-	BaseDriveTransmission::TransmissionMode m_mode;
+	Mode m_mode;
 };
 
+}
 
 /**
- * \}
  * \}
  */
 #endif

@@ -105,24 +105,24 @@ private:
 
 class ToggleTransmissionCommand : public SimpleCommand {
 public:
-	ToggleTransmissionCommand(BaseDriveTransmission *transmission);
+	ToggleTransmissionCommand(DriveTransmission::Base *transmission);
 	~ToggleTransmissionCommand();
 	void Execute();
 	
 private:
-	BaseDriveTransmission *m_transmission;
+	DriveTransmission::Base *m_transmission;
 };
 
 class ToggleTransmissionSwapPidCommand : public SimpleCommand {
 public:
-	ToggleTransmissionSwapPidCommand(BaseDriveTransmission *transmission, IPidDrive *drive, 
+	ToggleTransmissionSwapPidCommand(DriveTransmission::Base *transmission, IPidDrive *drive, 
 			DrivePid lowGearRate, DrivePid lowGearDistance,
 			DrivePid highGearRate, DrivePid highGearDistance);
 	~ToggleTransmissionSwapPidCommand();
 	void Execute();
 	
 private:
-	BaseDriveTransmission *m_transmission;
+	DriveTransmission::Base *m_transmission;
 	IPidDrive *m_drive;
 	DrivePid m_lowGearRate;
 	DrivePid m_lowGearDistance;

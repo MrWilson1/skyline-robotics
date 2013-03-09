@@ -1,54 +1,54 @@
 #include "DriveTransmission.h"
 
-BaseDriveTransmission::BaseDriveTransmission(const char *name) :
+DriveTransmission::Base::Base(const char *name) :
 		BaseSubsystem(name) {
 	// empty
 }
 
-BaseDriveTransmission::~BaseDriveTransmission() {
+DriveTransmission::Base::~Base() {
 	// empty
 }
 
 
-SimpleDriveTransmission::SimpleDriveTransmission(DoubleSolenoid *leftPiston, DoubleSolenoid *rightPiston) :
-		BaseDriveTransmission("SimpleDriveTransmision"),
-		m_mode(BaseDriveTransmission::kHighGear){
+DriveTransmission::Simple::Simple(DoubleSolenoid *leftPiston, DoubleSolenoid *rightPiston) :
+		DriveTransmission::Base("DriveTransmision::Simple"),
+		m_mode(DriveTransmission::kHighGear){
 	m_leftPiston = leftPiston;
 	m_rightPiston = rightPiston;
 	AddActuatorToLiveWindow("Left Solenoid", m_leftPiston);
 	AddActuatorToLiveWindow("Right Solenoid", m_rightPiston);
 }
 
-SimpleDriveTransmission::~SimpleDriveTransmission() {
+DriveTransmission::Simple::~Simple() {
 	// empty
 }
 
-void SimpleDriveTransmission::SetHighGear() {
+void DriveTransmission::Simple::SetHighGear() {
 	m_leftPiston->Set(DoubleSolenoid::kForward);
 	m_rightPiston->Set(DoubleSolenoid::kForward);
-	m_mode = BaseDriveTransmission::kHighGear;
+	m_mode = DriveTransmission::kHighGear;
 }
 
-void SimpleDriveTransmission::SetLowGear() {
+void DriveTransmission::Simple::SetLowGear() {
 	m_leftPiston->Set(DoubleSolenoid::kReverse);
 	m_rightPiston->Set(DoubleSolenoid::kReverse);
-	m_mode = BaseDriveTransmission::kLowGear;
+	m_mode = DriveTransmission::kLowGear;
 }
 
-void SimpleDriveTransmission::ToggleGear() {
-	if (m_mode == BaseDriveTransmission::kHighGear) {
+void DriveTransmission::Simple::ToggleGear() {
+	if (m_mode == DriveTransmission::kHighGear) {
 		m_leftPiston->Set(DoubleSolenoid::kReverse);
 		m_rightPiston->Set(DoubleSolenoid::kReverse);
-		m_mode = BaseDriveTransmission::kLowGear;
-	} else if (m_mode == BaseDriveTransmission::kLowGear) {
+		m_mode = DriveTransmission::kLowGear;
+	} else if (m_mode == DriveTransmission::kLowGear) {
 		m_leftPiston->Set(DoubleSolenoid::kForward);
 		m_rightPiston->Set(DoubleSolenoid::kForward);
-		m_mode = BaseDriveTransmission::kHighGear;
+		m_mode = DriveTransmission::kHighGear;
 	} else {
 		SmartDashboard::PutString(GetName() + std::string(" Error"), "Unknown mode");
 	}
 }
 
-BaseDriveTransmission::TransmissionMode SimpleDriveTransmission::GetCurrentMode() {
+DriveTransmission::Mode DriveTransmission::Simple::GetCurrentMode() {
 	return m_mode;
 }

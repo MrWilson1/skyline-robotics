@@ -59,7 +59,7 @@ void TestbedRobot2013Profile::CreateSubsystems() {
 	m_rightTestEncoder = new TestEncoder(
 			m_rightEncoder, 
 			"Right Encoder");
-	m_transmission = new SimpleDriveTransmission(
+	m_transmission = new DriveTransmission::Simple(
 			m_leftTransmissionSolenoid,
 			m_rightTransmissionSolenoid);
 }
