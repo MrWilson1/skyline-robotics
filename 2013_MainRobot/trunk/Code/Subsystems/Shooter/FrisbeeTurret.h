@@ -6,54 +6,59 @@
 #include "../BaseSubsystem.h"
 #include "FrisbeeAimer.h"
 
+namespace FrisbeeTurret {
 
-class BaseAxisFrisbeeTurret : public BaseSubsystem {
+class Base : public BaseSubsystem {
 public: 
-	BaseAxisFrisbeeTurret(const char *name);
-	virtual ~BaseAxisFrisbeeTurret();
+	Base(const char *name);
+	virtual ~Base();
 	
-	virtual void SetMotor(float speed) = 0;
+	virtual void SetSpeed(float speed) = 0;
 	virtual void Stop() = 0;
-	virtual bool ShouldTurretStop() = 0;
-	virtual void TurnGivenOffset(Tracking::Offset offset, double direction, double upper, double middle, double lower) = 0;
 };
 
-class SimpleAxisFrisbeeTurret : public BaseAxisFrisbeeTurret {
+class Simple : public Base {
 public:
-	SimpleAxisFrisbeeTurret(SpeedController *motor);
-	~SimpleAxisFrisbeeTurret();
+	Simple(SpeedController *motor);
+	~Simple();
 	
-	void SetMotor(float speed);
+	void SetSpeed(float speed);
 	void Stop();
-	bool ShouldTurretStop();
-	void TurnGivenOffset(Tracking::Offset offset, double direction, double upper, double middle, double lower);
 	
 private: 
 	SpeedController *m_motor;
-	double k_highSpeed;
-	double k_mediumSpeed;
-	double k_lowSpeed;
 };
 
-class GuardedAxisFrisbeeTurret : public BaseAxisFrisbeeTurret {
+class Guarded : public Base {
 public:
-	GuardedAxisFrisbeeTurret(SpeedController *motor,  
+	Guarded(SpeedController *motor,  
 							 DigitalInput *switch1,
 							 DigitalInput *switch2);
-	~GuardedAxisFrisbeeTurret();
+	~Guarded();
 	
-	void SetMotor(float speed);
+	void SetSpeed(float speed);
 	void Stop();
-	bool ShouldTurretStop();
-	void TurnGivenOffset(Tracking::Offset offset, double direction, double upper, double middle, double lower);
 	
 private:
 	SpeedController *m_motor; 
 	DigitalInput *m_switch1;
 	DigitalInput *m_switch2;
-	double k_highSpeed;
-	double k_mediumSpeed;
-	double k_lowSpeed;
+};
+
+}
+
+
+class BaseTurretPositionDetector : public BaseSubsystem {
+public:
+	enum Position {
+		kLeft,
+		kCenter,
+		kRight
+	};
+	BaseTurretPositionDetector(const char *name);
+	~BaseTurretPositionDetector();
+	
+	virtual Position GetPosition() = 0;
 };
 
 

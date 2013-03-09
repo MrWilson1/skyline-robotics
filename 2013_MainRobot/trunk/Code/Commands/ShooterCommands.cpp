@@ -43,8 +43,8 @@ void LoadFrisbeeCommand::Interrupted() {
 
 AimTurretCommand::AimTurretCommand(
 		BaseFrisbeeAimer *aimer, 
-		BaseAxisFrisbeeTurret *horizontalTurret,
-		BaseAxisFrisbeeTurret *verticalTurret,
+		FrisbeeTurret::Base *horizontalTurret,
+		FrisbeeTurret::Base *verticalTurret,
 		Tracking::TargetType desiredTarget,
 		double allowedRange) :
 		Command("AimTurret"),
@@ -64,8 +64,8 @@ AimTurretCommand::AimTurretCommand(
 
 AimTurretCommand::AimTurretCommand(
 		BaseFrisbeeAimer *aimer, 
-		BaseAxisFrisbeeTurret *horizontalTurret, 
-		BaseAxisFrisbeeTurret *verticalTurret,
+		FrisbeeTurret::Base *horizontalTurret, 
+		FrisbeeTurret::Base *verticalTurret,
 		Tracking::TargetType desiredTarget, 
 		double allowedRange,
 		double lowSpeed,
@@ -126,24 +126,26 @@ void AimTurretCommand::Execute() {
 	}
 		
 	Tracking::Offset offset = target.ShooterOffset;
-	double xDirection = 1, yDirection = 1;
-	
-	if (offset.XOffset < 0) {
-		xDirection = -1;
-	}
-	
-	if (offset.YOffset < 0) {
-		yDirection = -1;
-	}
 	
 	bool isXDone = Tools::IsWithinRange(offset.XOffset, 0, m_allowedRange);
 	bool isYDone = Tools::IsWithinRange(offset.YOffset, 0, m_allowedRange);
-	m_isFinished = isXDone and isYDone;
 	
-	if (!m_isFinished) {
-		m_horizontalTurret->TurnGivenOffset(offset, xDirection, 57, 17, 8);
-		m_verticalTurret->TurnGivenOffset(offset, yDirection, 33, 22, 11);
+	if (!isXDone) {
+		if (offset.XOffset < 0) {
+			m_horizontalTurret->SetSpeed(-0.3);
+		} else if (offset.XOffset > 0){
+			m_horizontalTurret->SetSpeed(0.3);
+		}
 	}
+	if (!isYDone) {
+		if (offset.YOffset < 0) {
+			m_verticalTurret->SetSpeed(-0.3);
+		} else if (offset.YOffset > 0){
+			m_verticalTurret->SetSpeed(0.3);
+		}
+	}
+	
+	m_isFinished = isXDone and isYDone;
 }
 
 bool AimTurretCommand::IsFinished() {
@@ -207,8 +209,8 @@ LoadAndFireFrisbeeCommand::~LoadAndFireFrisbeeCommand() {
 LoadAimAndFireCommand::LoadAimAndFireCommand(
 		BaseFrisbeeLoader *loader, 
 		BaseFrisbeeAimer *aimer, 
-		BaseAxisFrisbeeTurret *horizontalTurret, 
-		BaseAxisFrisbeeTurret *verticalTurret,
+		FrisbeeTurret::Base *horizontalTurret, 
+		FrisbeeTurret::Base *verticalTurret,
 		BaseFrisbeeShooter *shooter) :
 		CommandGroup("LoadAndFireCommand") {
 	AddParallel(new FireFrisbeeCommand(shooter), 5.0);
@@ -225,8 +227,8 @@ LoadAimAndFireCommand::~LoadAimAndFireCommand() {
  * and another to control using Axis
  */
 AdjustTurretCommand::AdjustTurretCommand(
-		BaseAxisFrisbeeTurret *horizontalTurret,
-		BaseAxisFrisbeeTurret *verticalTurret,
+		FrisbeeTurret::Base *horizontalTurret,
+		FrisbeeTurret::Base *verticalTurret,
 		double rotateSpeed,
 		double verticalSpeed,
 		double allowedRange) :
@@ -245,11 +247,11 @@ AdjustTurretCommand::~AdjustTurretCommand() {
 }
 
 void AdjustTurretCommand::Execute() {
-	m_horizontalTurret->SetMotor(Tools::Limit(m_rotateSpeed, -1.0, 1.0));
-	m_verticalTurret->SetMotor(Tools::Limit(m_verticalSpeed, -1.0, 1.0));
+	m_horizontalTurret->SetSpeed(Tools::Limit(m_rotateSpeed, -1.0, 1.0));
+	m_verticalTurret->SetSpeed(Tools::Limit(m_verticalSpeed, -1.0, 1.0));
 }
 
-ManuallyControlTurretCommand::ManuallyControlTurretCommand(BaseAxisFrisbeeTurret *turretAxis, Axis *inputAxis, const char *name) :
+ManuallyControlTurretCommand::ManuallyControlTurretCommand(FrisbeeTurret::Base *turretAxis, Axis *inputAxis, const char *name) :
 			SimpleCommand(name, false) {
 	m_turret = turretAxis;
 	m_axis = inputAxis;
@@ -261,6 +263,6 @@ ManuallyControlTurretCommand::~ManuallyControlTurretCommand() {
 }
 
 void ManuallyControlTurretCommand::Execute() {
-	m_turret->SetMotor(m_axis->Get());
+	m_turret->SetSpeed(m_axis->Get());
 }
 

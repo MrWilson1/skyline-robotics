@@ -2,59 +2,41 @@
 
 
 
-BaseAxisFrisbeeTurret::BaseAxisFrisbeeTurret(const char *name) :
+FrisbeeTurret::Base::Base(const char *name) :
 		BaseSubsystem(name) {
 	// Empty
 }
-BaseAxisFrisbeeTurret::~BaseAxisFrisbeeTurret() {
+FrisbeeTurret::Base::~Base() {
 	// Empty
 }
 
 
 
-SimpleAxisFrisbeeTurret::SimpleAxisFrisbeeTurret(SpeedController *motor) :
-		BaseAxisFrisbeeTurret("BaseAxisFrisbeeTurret"),
-		k_highSpeed(0.8),
-		k_mediumSpeed(0.5),
-		k_lowSpeed(0.3) {
+FrisbeeTurret::Simple::Simple(SpeedController *motor) :
+		FrisbeeTurret::Base("BaseAxisFrisbeeTurret") {
 	m_motor = motor; 
 	AddActuatorToLiveWindow("Motor", m_motor);
 }
 
-SimpleAxisFrisbeeTurret::~SimpleAxisFrisbeeTurret() {
+FrisbeeTurret::Simple::~Simple() {
 	//empty
 }
 
-void SimpleAxisFrisbeeTurret::SetMotor(float speed){
+void FrisbeeTurret::Simple::SetSpeed(float speed){
 	m_motor->Set(speed); 
 }
 
-void SimpleAxisFrisbeeTurret::Stop(){
+void FrisbeeTurret::Simple::Stop(){
 	m_motor->Set(0);
 }
 
-bool SimpleAxisFrisbeeTurret::ShouldTurretStop(){
-	return false; 
-}
-
-void SimpleAxisFrisbeeTurret::TurnGivenOffset(Tracking::Offset offset, double direction, double upperBound, double middleBound, double lowerBound) {
-	if (Tools::IsWithinBounds(upperBound, middleBound, fabs(offset.XOffset))) {
-		SetMotor(direction * k_highSpeed);
-	} else if (Tools::IsWithinBounds(middleBound, lowerBound, fabs(offset.XOffset))) {
-		SetMotor(direction * k_mediumSpeed);
-	} else if (Tools::IsWithinBounds(lowerBound, 0, fabs(offset.XOffset))) {
-		SetMotor(direction * k_lowSpeed);
-	}
-}
 
 
-GuardedAxisFrisbeeTurret::GuardedAxisFrisbeeTurret( SpeedController *motor, 
-		 DigitalInput *switch1,
-		 DigitalInput *switch2) :
-		BaseAxisFrisbeeTurret("GuardedAxisFrsibeeTurret"),
-		k_highSpeed(0.8),
-		k_mediumSpeed(0.5),
-		k_lowSpeed(0.3) {
+FrisbeeTurret::Guarded::Guarded(
+		SpeedController *motor, 
+		DigitalInput *switch1,
+		DigitalInput *switch2) :
+		FrisbeeTurret::Base("GuardedAxisFrsibeeTurret") {
 	m_motor = motor;
 	m_switch1 = switch1;
 	m_switch2 = switch2;
@@ -63,10 +45,10 @@ GuardedAxisFrisbeeTurret::GuardedAxisFrisbeeTurret( SpeedController *motor,
 	AddSensorToLiveWindow("Switch 2", m_switch2);
 }
 
-GuardedAxisFrisbeeTurret::~GuardedAxisFrisbeeTurret() {
+FrisbeeTurret::Guarded::~Guarded() {
 	//empty
 }
-void GuardedAxisFrisbeeTurret::SetMotor(float speed){
+void FrisbeeTurret::Guarded::SetSpeed(float speed){
 	if (m_switch1->Get() && speed > 0.0) {
 		m_motor->Set(0.0);
 		return;
@@ -79,23 +61,9 @@ void GuardedAxisFrisbeeTurret::SetMotor(float speed){
 	m_motor->Set(speed);
 }
 
-void GuardedAxisFrisbeeTurret::Stop(){
+void FrisbeeTurret::Guarded::Stop(){
 	m_motor->Set(0);
 }
 
-bool GuardedAxisFrisbeeTurret::ShouldTurretStop(){
-	//return !m_switch1->Get() || !m_switch2->Get();
-	// todo: purge
-	return false;
-}
 
-void GuardedAxisFrisbeeTurret::TurnGivenOffset(Tracking::Offset offset, double direction, double upper, double middle, double lower) {
-	if (Tools::IsWithinBounds(upper, middle, fabs(offset.XOffset))) {
-		SetMotor(direction * k_highSpeed);
-	} else if (Tools::IsWithinBounds(middle, lower, fabs(offset.XOffset))) {
-		SetMotor(direction * k_mediumSpeed);
-	} else if (Tools::IsWithinBounds(lower, 0, fabs(offset.XOffset))) {
-		SetMotor(direction * k_lowSpeed);
-	}
-}
 

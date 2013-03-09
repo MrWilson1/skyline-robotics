@@ -48,14 +48,14 @@ class AimTurretCommand : public Command {
 public:
 	AimTurretCommand(
 			BaseFrisbeeAimer *aimer, 
-			BaseAxisFrisbeeTurret *horizontalTurret, 
-			BaseAxisFrisbeeTurret *verticalTurret,
+			FrisbeeTurret::Base *horizontalTurret, 
+			FrisbeeTurret::Base *verticalTurret,
 			Tracking::TargetType desiredTarget, 
 			double allowedRange);
 	AimTurretCommand(
 			BaseFrisbeeAimer *aimer, 
-			BaseAxisFrisbeeTurret *horizontalTurret,
-			BaseAxisFrisbeeTurret *verticalTurret, 
+			FrisbeeTurret::Base *horizontalTurret,
+			FrisbeeTurret::Base *verticalTurret, 
 			Tracking::TargetType desiredTarget, 
 			double allowedRange,
 			double lowSpeed,
@@ -71,8 +71,8 @@ public:
 	
 private:
 	BaseFrisbeeAimer *m_aimer;
-	BaseAxisFrisbeeTurret *m_horizontalTurret;
-	BaseAxisFrisbeeTurret *m_verticalTurret;
+	FrisbeeTurret::Base *m_horizontalTurret;
+	FrisbeeTurret::Base *m_verticalTurret;
 	bool m_isFinished;
 	Tracking::TargetType m_desiredTarget;
 	double m_allowedRange;
@@ -118,8 +118,8 @@ public:
 	LoadAimAndFireCommand(
 		BaseFrisbeeLoader *loader, 
 		BaseFrisbeeAimer *aimer, 
-		BaseAxisFrisbeeTurret *horizontalTurret, 
-		BaseAxisFrisbeeTurret *verticalTurret,
+		FrisbeeTurret::Base *horizontalTurret, 
+		FrisbeeTurret::Base *verticalTurret,
 		BaseFrisbeeShooter *shooter);
 	~LoadAimAndFireCommand();
 };
@@ -130,8 +130,8 @@ public:
 class AdjustTurretCommand : public SimpleCommand {
 public:
 	AdjustTurretCommand(
-		BaseAxisFrisbeeTurret *horizontalTurret,
-		BaseAxisFrisbeeTurret *verticalTurret,
+		FrisbeeTurret::Base *horizontalTurret,
+		FrisbeeTurret::Base *verticalTurret,
 		double rotateSpeed,
 		double verticalSpeed, 
 		double allowedRange);
@@ -139,8 +139,8 @@ public:
 	void Execute();
 	
 private:
-	BaseAxisFrisbeeTurret *m_horizontalTurret;
-	BaseAxisFrisbeeTurret *m_verticalTurret;
+	FrisbeeTurret::Base *m_horizontalTurret;
+	FrisbeeTurret::Base *m_verticalTurret;
 	double m_rotateSpeed;
 	double m_verticalSpeed;
 	bool m_isFinished;
@@ -149,12 +149,15 @@ private:
 
 class ManuallyControlTurretCommand : public SimpleCommand {
 public:
-	ManuallyControlTurretCommand(BaseAxisFrisbeeTurret *turretAxis, Axis *inputAxis, const char *name);
+	ManuallyControlTurretCommand(
+			FrisbeeTurret::Base *turretAxis, 
+			Axis *inputAxis, 
+			const char *name);
 	~ManuallyControlTurretCommand();
 	void Execute();
 	
 private:
-	BaseAxisFrisbeeTurret *m_turret;
+	FrisbeeTurret::Base *m_turret;
 	Axis *m_axis;
 };
 
