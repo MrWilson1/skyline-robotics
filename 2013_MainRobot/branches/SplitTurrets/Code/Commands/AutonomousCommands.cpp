@@ -34,8 +34,8 @@ AutonomousCommand::ShootAndGoToCenterLine::ShootAndGoToCenterLine(
 			Tracking::TargetType target,
 			AutonomousCommand::Positions position) :
 			CommandGroup("ShootAndGoToCenterLine") {
-	AddSequential(new AimTurretCommand(aimer, horizontalTurret, verticalTurret, target, 5.0), 5.0);
-	AddSequential(new LoadAndFireCommand(loader, aimer, horizontalTurret, verticalTurret, shooter));
+	AddSequential(new ShooterCommand::AimTurret(aimer, horizontalTurret, verticalTurret, target, 5.0), 5.0);
+	AddSequential(new ShooterCommand::LoadAndFire(loader, aimer, horizontalTurret, verticalTurret, shooter));
 	AddSequential(new MoveToCenterLine(drive, position));
 }
 

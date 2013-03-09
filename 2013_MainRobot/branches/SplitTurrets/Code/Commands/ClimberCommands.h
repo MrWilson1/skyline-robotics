@@ -18,13 +18,14 @@
 #include "../subsystems/Climber/ClimberExtender.h"
 #include "../Subsystems/Controllers/Axis.h"
 
+namespace ClimberCommand {
 /**
  * Command to extend the arm.
  */
-class ExtendArmCommand : public SimpleCommand {
+class ExtendArm :  public SimpleCommand {
 public:
-	ExtendArmCommand(BaseClimberExtender *climberExtender);
-	~ExtendArmCommand();
+	ExtendArm(BaseClimberExtender *climberExtender);
+	~ExtendArm();
 	
 	void Execute();
 	
@@ -35,29 +36,29 @@ private:
 /**
  * Command to hunk onto a rung.
  */
-class HookOnToRungCommand : public CommandGroup {
+class HookOnToRung :  public CommandGroup {
 public:
-	HookOnToRungCommand (BasicArmCommand::Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
-	~HookOnToRungCommand(); 
+	HookOnToRung(BasicArmCommand::Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	~HookOnToRung(); 
 };
 
 /**
  * \brief Command to pull robot up.
  */
-class PullRobotUpCommand : public CommandGroup {
+class PullRobotUp :  public CommandGroup {
 public:
-	PullRobotUpCommand(BasicArmCommand::Arm arm);
-	PullRobotUpCommand(BasicArmCommand::Arm arm, double magnitude);
-	~PullRobotUpCommand();
+	PullRobotUp(BasicArmCommand::Arm arm);
+	PullRobotUp(BasicArmCommand::Arm arm, double magnitude);
+	~PullRobotUp();
 };
 
 /**
  * Command to disengage the arm from a rung.
  */
-class DisengageArmCommand : public CommandGroup {
+class DisengageArm :  public CommandGroup {
 public:
-	DisengageArmCommand(BasicArmCommand::Arm arm);
-	~DisengageArmCommand();
+	DisengageArm(BasicArmCommand::Arm arm);
+	~DisengageArm();
 private:
 	double m_xDisplacement;
 	double m_yDisplacement;
@@ -66,28 +67,28 @@ private:
 /**
  * Command to climb a whole level of the pyramid.
  */
-class ClimbLevelCommand : public CommandGroup {
+class ClimbLevel :  public CommandGroup {
 public:
-	ClimbLevelCommand(BasicArmCommand::Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
-	~ClimbLevelCommand();
+	ClimbLevel(BasicArmCommand::Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	~ClimbLevel();
 };
 
 /**
  * Command to climb the entire pyramid.
  */
-class ClimbPyramidCommand : public CommandGroup {
+class ClimbPyramid :  public CommandGroup {
 public:
-	ClimbPyramidCommand(BasicArmCommand::Arm arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung);
-	~ClimbPyramidCommand();
+	ClimbPyramid(BasicArmCommand::Arm arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung);
+	~ClimbPyramid();
 };
 
 /**
  * Command to control the elbow and shoulder of the arm manually by passing in Axes.
  */
-class ControlArmManuallyCommand : public SimpleCommand {
+class ControlArmManually :  public SimpleCommand {
 public:
-	ControlArmManuallyCommand(BaseJoint *elbow, BaseJoint *shoulder, Axis *elbowAxis, Axis *shoulderAxis);
-	~ControlArmManuallyCommand();
+	ControlArmManually(BaseJoint *elbow, BaseJoint *shoulder, Axis *elbowAxis, Axis *shoulderAxis);
+	~ControlArmManually();
 	
 	void Execute();
 	
@@ -97,6 +98,7 @@ private:
 	Axis *m_elbowAxis;
 	Axis *m_shoulderAxis;
 };
+}
 
 /**
  * \}

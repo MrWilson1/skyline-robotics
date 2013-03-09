@@ -1,22 +1,22 @@
 #include "ShooterCommands.h"
 #include "math.h"
 
-LoadFrisbeeCommand::LoadFrisbeeCommand(BaseFrisbeeLoader *loader) :
+ShooterCommand::LoadFrisbee::LoadFrisbee(BaseFrisbeeLoader *loader) :
 		Command("LoadFrisbee"),
 		m_isFinished(false) {
 	m_loader = loader;
 	Requires(m_loader);
 }
 
-LoadFrisbeeCommand::~LoadFrisbeeCommand() {
+ShooterCommand::LoadFrisbee::~LoadFrisbee() {
 	// empty
 }
 
-void LoadFrisbeeCommand::Initialize() {
+void ShooterCommand::LoadFrisbee::Initialize() {
 	// empty
 }
 
-void LoadFrisbeeCommand::Execute() {
+void ShooterCommand::LoadFrisbee::Execute() {
 	if (m_loader->IsFrisbeePrepared()) {
 		m_loader->LoadFrisbee();
 		m_isFinished = true;
@@ -25,19 +25,19 @@ void LoadFrisbeeCommand::Execute() {
 	}
 }
 
-bool LoadFrisbeeCommand::IsFinished() {
+bool ShooterCommand::LoadFrisbee::IsFinished() {
 	return m_isFinished;
 }
 
-void LoadFrisbeeCommand::End() {
+void ShooterCommand::LoadFrisbee::End() {
 	// empty
 }
 
-void LoadFrisbeeCommand::Interrupted() {
+void ShooterCommand::LoadFrisbee::Interrupted() {
 	// empty
 }
 
-AimTurretCommand::AimTurretCommand(
+ShooterCommand::AimTurret::AimTurret(
 		BaseFrisbeeAimer *aimer, 
 		BaseAxisFrisbeeTurret *horizontalTurret,
 		BaseAxisFrisbeeTurret *verticalTurret,
@@ -58,7 +58,7 @@ AimTurretCommand::AimTurretCommand(
 	Requires(m_verticalTurret);
 }
 
-AimTurretCommand::AimTurretCommand(
+ShooterCommand::AimTurret::AimTurret(
 		BaseFrisbeeAimer *aimer, 
 		BaseAxisFrisbeeTurret *horizontalTurret, 
 		BaseAxisFrisbeeTurret *verticalTurret,
@@ -82,15 +82,15 @@ AimTurretCommand::AimTurretCommand(
 	Requires(m_verticalTurret);
 }
 
-AimTurretCommand::~AimTurretCommand() {
+ShooterCommand::AimTurret::~AimTurret() {
 	// empty
 }
 
-void AimTurretCommand::Initialize() {
+void ShooterCommand::AimTurret::Initialize() {
 	// empty
 }
 
-void AimTurretCommand::Execute() {
+void ShooterCommand::AimTurret::Execute() {
 	Tracking::Target target;
 	switch (m_desiredTarget) {
 	case (Tracking::Low) :
@@ -142,63 +142,63 @@ void AimTurretCommand::Execute() {
 	}
 }
 
-bool AimTurretCommand::IsFinished() {
+bool ShooterCommand::AimTurret::IsFinished() {
 	return m_isFinished;
 }
 
-void AimTurretCommand::End() {
+void ShooterCommand::AimTurret::End() {
 	// empty
 }
 
-void AimTurretCommand::Interrupted() {
+void ShooterCommand::AimTurret::Interrupted() {
 	// empty
 }
 
 
-FireFrisbeeCommand::FireFrisbeeCommand(BaseFrisbeeShooter *shooter) :
+ShooterCommand::FireFrisbee::FireFrisbee(BaseFrisbeeShooter *shooter) :
 		Command("FireFrisbee") {
 	m_shooter = shooter;
 	Requires(m_shooter);
 }
 
-FireFrisbeeCommand::~FireFrisbeeCommand() {
+ShooterCommand::FireFrisbee::~FireFrisbee() {
 	// empty
 }
 
-void FireFrisbeeCommand::Initialize() {
+void ShooterCommand::FireFrisbee::Initialize() {
 	// empty
 }
 
-void FireFrisbeeCommand::Execute() {
+void ShooterCommand::FireFrisbee::Execute() {
 	m_shooter->ShootFrisbee();
 }
 
-bool FireFrisbeeCommand::IsFinished() {
+bool ShooterCommand::FireFrisbee::IsFinished() {
 	return false;
 }
 
-void FireFrisbeeCommand::End() {
+void ShooterCommand::FireFrisbee::End() {
 	m_shooter->StopFrisbee();
 }
 
-void FireFrisbeeCommand::Interrupted() {
+void ShooterCommand::FireFrisbee::Interrupted() {
 	m_shooter->StopFrisbee();
 }
 
 
-LoadAndFireCommand::LoadAndFireCommand(
+ShooterCommand::LoadAndFire::LoadAndFire(
 		BaseFrisbeeLoader *loader, 
 		BaseFrisbeeAimer *aimer, 
 		BaseAxisFrisbeeTurret *horizontalTurret, 
 		BaseAxisFrisbeeTurret *verticalTurret,
 		BaseFrisbeeShooter *shooter) :
 		CommandGroup("LoadAndFireCommand") {
-	AddParallel(new FireFrisbeeCommand(shooter), 5.0);
-	AddSequential(new LoadFrisbeeCommand(loader));
-	AddSequential(new AimTurretCommand(aimer, horizontalTurret, verticalTurret, Tracking::ClosestOffset, 5));
+	AddParallel(new FireFrisbee(shooter), 5.0);
+	AddSequential(new LoadFrisbee(loader));
+	AddSequential(new AimTurret(aimer, horizontalTurret, verticalTurret, Tracking::ClosestOffset, 5));
 }
 
-LoadAndFireCommand::~LoadAndFireCommand() {
+ShooterCommand::LoadAndFire::~LoadAndFire() {
 	// empty
 }
 
@@ -206,7 +206,7 @@ LoadAndFireCommand::~LoadAndFireCommand() {
  * todo: Make two versions of this: one to manually go to some distance (replace Axis with doubles)
  * and another to control using Axis
  */
-AdjustTurretCommand::AdjustTurretCommand(
+ShooterCommand::AdjustTurret::AdjustTurret(
 		BaseAxisFrisbeeTurret *horizontalTurret,
 		BaseAxisFrisbeeTurret *verticalTurret,
 		double rotateSpeed,
@@ -222,16 +222,16 @@ AdjustTurretCommand::AdjustTurretCommand(
 	Requires(m_verticalTurret);
 }
 
-AdjustTurretCommand::~AdjustTurretCommand() {
+ShooterCommand::AdjustTurret::~AdjustTurret() {
 	// empty
 }
 
-void AdjustTurretCommand::Execute() {
+void ShooterCommand::AdjustTurret::Execute() {
 	m_horizontalTurret->SetMotor(Tools::Limit(m_rotateSpeed, -1.0, 1.0));
 	m_verticalTurret->SetMotor(Tools::Limit(m_verticalSpeed, -1.0, 1.0));
 }
 
-ManuallyControlTurretCommand::ManuallyControlTurretCommand(BaseAxisFrisbeeTurret *horizontalTurret, BaseAxisFrisbeeTurret *verticalTurret, Axis *verticalAxis, Axis *rotateAxis) :
+ShooterCommand::ManuallyControlTurret::ManuallyControlTurret(BaseAxisFrisbeeTurret *horizontalTurret, BaseAxisFrisbeeTurret *verticalTurret, Axis *verticalAxis, Axis *rotateAxis) :
 			SimpleCommand("ManuallyControlTurretCommand", false) {
 	m_horizontalTurret = horizontalTurret;
 	m_verticalTurret = verticalTurret;
@@ -240,11 +240,11 @@ ManuallyControlTurretCommand::ManuallyControlTurretCommand(BaseAxisFrisbeeTurret
 	Requires(m_verticalTurret);
 }
 
-ManuallyControlTurretCommand::~ManuallyControlTurretCommand() {
+ShooterCommand::ManuallyControlTurret::~ManuallyControlTurret() {
 	// empty
 }
 
-void ManuallyControlTurretCommand::Execute() {
+void ShooterCommand::ManuallyControlTurret::Execute() {
 	m_horizontalTurret->SetMotor(m_rotateAxis->Get());
 	m_verticalTurret->SetMotor(m_verticalAxis->Get());
 }

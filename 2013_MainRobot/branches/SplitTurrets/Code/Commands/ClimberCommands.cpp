@@ -1,81 +1,81 @@
 #include "ClimberCommands.h"
 
-ExtendArmCommand::ExtendArmCommand(BaseClimberExtender *climberExtender) :
+ClimberCommand::ExtendArm::ExtendArm(BaseClimberExtender *climberExtender) :
 		SimpleCommand("ExtendArm", false) {
 	m_climberExtender = climberExtender;
 	Requires(m_climberExtender);
 }
 
-ExtendArmCommand::~ExtendArmCommand() {
+ClimberCommand::ExtendArm::~ExtendArm() {
 	// empty
 }
 
-void ExtendArmCommand::Execute() {
+void ClimberCommand::ExtendArm::Execute() {
 	m_climberExtender->PullPins();
 }
 
 
-HookOnToRungCommand::HookOnToRungCommand (Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung) :
+ClimberCommand::HookOnToRung::HookOnToRung(BasicArmCommand::Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung) :
 		CommandGroup ("HookOnToRung"){
-	AddSequential(new SetPolarCommand(arm, 0, heightOfRobot + distanceBetweenShoulderAndRung ));
-	AddSequential (new SetCartesianCommand(arm, arm.GetX() - heightOfRobot, arm.GetY() - distanceBetweenShoulderAndRung)); // this doesn't work
+	AddSequential(new BasicArmCommand::SetPolar(arm, 0, heightOfRobot + distanceBetweenShoulderAndRung ));
+	AddSequential (new BasicArmCommand::SetCartesian(arm, arm.GetX() - heightOfRobot, arm.GetY() - distanceBetweenShoulderAndRung)); // this doesn't work
 }
 
-HookOnToRungCommand::~HookOnToRungCommand() {
+ClimberCommand::HookOnToRung::~HookOnToRung() {
 	// empty
 }
 
 
-PullRobotUpCommand::PullRobotUpCommand(Arm arm, double magnitude) : 
+ClimberCommand::PullRobotUp::PullRobotUp(BasicArmCommand::Arm arm, double magnitude) : 
 		CommandGroup("PullRobotUp") {
-	AddSequential(new SetMagnitudeCommand(arm, magnitude));
+	AddSequential(new BasicArmCommand::SetMagnitude(arm, magnitude));
 }
 
-PullRobotUpCommand::PullRobotUpCommand(Arm arm) : 
+ClimberCommand::PullRobotUp::PullRobotUp(BasicArmCommand::Arm arm) : 
 		CommandGroup("PullRobotUp") {
-	AddSequential(new SetMagnitudeCommand(arm, 5.0));
+	AddSequential(new BasicArmCommand::SetMagnitude(arm, 5.0));
 }
 
-PullRobotUpCommand::~PullRobotUpCommand() {
+ClimberCommand::PullRobotUp::~PullRobotUp() {
 	//empty
 }
 
 
-DisengageArmCommand::DisengageArmCommand(Arm arm) :
+ClimberCommand::DisengageArm::DisengageArm(BasicArmCommand::Arm arm) :
 		CommandGroup("DisengageArm"),
 		m_xDisplacement(-5.0),
 		m_yDisplacement(8.0) {
-	AddSequential(new SetCartesianCommand(arm, arm.GetX() + m_xDisplacement, arm.GetY() + m_yDisplacement));
+	AddSequential(new BasicArmCommand::SetCartesian(arm, arm.GetX() + m_xDisplacement, arm.GetY() + m_yDisplacement));
 }
 
-DisengageArmCommand::~DisengageArmCommand() {
+ClimberCommand::DisengageArm::~DisengageArm() {
 	// empty
 }
 
 
-ClimbLevelCommand::ClimbLevelCommand(Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung) {
-	AddSequential(new DisengageArmCommand(arm));
-	AddSequential(new HookOnToRungCommand(arm, heightOfRobot, distanceBetweenShoulderAndRung));
-	AddSequential(new PullRobotUpCommand(arm));
+ClimberCommand::ClimbLevel::ClimbLevel(BasicArmCommand::Arm arm, double heightOfRobot, double distanceBetweenShoulderAndRung) {
+	AddSequential(new DisengageArm(arm));
+	AddSequential(new HookOnToRung(arm, heightOfRobot, distanceBetweenShoulderAndRung));
+	AddSequential(new PullRobotUp(arm));
 }
 
-ClimbLevelCommand::~ClimbLevelCommand() {
+ClimberCommand::ClimbLevel::~ClimbLevel() {
 	// empty
 }
 
 
-ClimbPyramidCommand::ClimbPyramidCommand(Arm arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung) {
-	AddSequential(new ExtendArmCommand(extender));
-	AddSequential(new ClimbLevelCommand(arm, heightOfRobot, distanceBetweenShoulderAndRung));
-	AddSequential(new ClimbLevelCommand(arm, heightOfRobot, distanceBetweenShoulderAndRung));
+ClimberCommand::ClimbPyramid::ClimbPyramid(BasicArmCommand::Arm arm, BaseClimberExtender *extender, double heightOfRobot, double distanceBetweenShoulderAndRung) {
+	AddSequential(new ExtendArm(extender));
+	AddSequential(new ClimbLevel(arm, heightOfRobot, distanceBetweenShoulderAndRung));
+	AddSequential(new ClimbLevel(arm, heightOfRobot, distanceBetweenShoulderAndRung));
 }
 
-ClimbPyramidCommand::~ClimbPyramidCommand() {
+ClimberCommand::ClimbPyramid::~ClimbPyramid() {
 	// empty
 }
 
 
-ControlArmManuallyCommand::ControlArmManuallyCommand(BaseJoint *elbow, BaseJoint *shoulder, Axis *elbowAxis, Axis *shoulderAxis) :
+ClimberCommand::ControlArmManually::ControlArmManually(BaseJoint *elbow, BaseJoint *shoulder, Axis *elbowAxis, Axis *shoulderAxis) :
 		SimpleCommand("ControlArmManually", true) {
 	m_elbow = elbow;
 	m_shoulder = shoulder;
@@ -85,11 +85,11 @@ ControlArmManuallyCommand::ControlArmManuallyCommand(BaseJoint *elbow, BaseJoint
 	Requires(m_shoulder);
 }
 
-ControlArmManuallyCommand::~ControlArmManuallyCommand() {
+ClimberCommand::ControlArmManually::~ControlArmManually() {
 	// empty
 }
 
-void ControlArmManuallyCommand::Execute() {
+void ClimberCommand::ControlArmManually::Execute() {
 	m_elbow->SetSpeed(m_elbowAxis->Get());
 	m_shoulder->SetSpeed(m_shoulderAxis->Get());
 }

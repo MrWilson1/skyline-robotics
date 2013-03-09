@@ -164,7 +164,7 @@ void MainRobot2013Profile::TeleopInit() {
 			m_turret,
 			m_oi->RotateTurretAxis,
 			m_oi->LiftTurretAxis));*/
-	m_oi->FireFrisbeeButton->WhileHeld(new FireFrisbeeCommand( 
+	m_oi->FireFrisbeeButton->WhileHeld(new ShooterCommand::FireFrisbee( 
 			m_shooter));
 	
 	m_compressor->Start();
