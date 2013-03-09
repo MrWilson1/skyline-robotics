@@ -15,7 +15,7 @@
 
 #include "../Misc/Tools.h"
 
-namespace Autonomous {
+namespace AutonomousCommand {
 /*
  * The different positions the robot can be in during Autonomous mode.
  */
@@ -25,14 +25,13 @@ enum Positions{
 	kFarLeftCorner,
 	kFarRightCorner
 };
-}
 
 /*
  * Command to move the robot to the center line.
  */
 class MoveToCenterLine : public CommandGroup {
 public:
-	MoveToCenterLine(BaseDrive *drive, Autonomous::Positions positions);
+	MoveToCenterLine(BaseDrive *drive, AutonomousCommand::Positions positions);
 	~MoveToCenterLine();
 	
 private:
@@ -55,9 +54,10 @@ public:
 			BaseAxisFrisbeeTurret *verticalTurret,
 			BaseFrisbeeShooter *shooter,
 			Tracking::TargetType target,
-			Autonomous::Positions position);
+			AutonomousCommand::Positions position);
 	~ShootAndGoToCenterLine();
 };
+}
 
 /**
  * \}
