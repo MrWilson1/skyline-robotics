@@ -28,13 +28,14 @@ ShootAndGoToCenterLine::ShootAndGoToCenterLine(
 			BaseDrive *drive,
 			BaseFrisbeeLoader *loader, 
 			BaseFrisbeeAimer *aimer, 
-			BaseFrisbeeTurret *turret, 
+			BaseAxisFrisbeeTurret *horizontalTurret, 
+			BaseAxisFrisbeeTurret *verticalTurret,
 			BaseFrisbeeShooter *shooter,
 			Tracking::TargetType target,
 			Autonomous::Positions position) :
 			CommandGroup("ShootAndGoToCenterLine") {
-	AddSequential(new AimTurretCommand(aimer, turret, target, 5.0), 5.0);
-	AddSequential(new LoadAndFireCommand(loader, aimer, turret, shooter));
+	AddSequential(new AimTurretCommand(aimer, horizontalTurret, verticalTurret, target, 5.0), 5.0);
+	AddSequential(new LoadAndFireCommand(loader, aimer, horizontalTurret, verticalTurret, shooter));
 	AddSequential(new MoveToCenterLine(drive, position));
 }
 

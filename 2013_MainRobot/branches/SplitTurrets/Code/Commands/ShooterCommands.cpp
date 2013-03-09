@@ -1,4 +1,5 @@
 #include "ShooterCommands.h"
+#include "math.h"
 
 LoadFrisbeeCommand::LoadFrisbeeCommand(BaseFrisbeeLoader *loader) :
 		Command("LoadFrisbee"),
@@ -38,17 +39,47 @@ void LoadFrisbeeCommand::Interrupted() {
 
 AimTurretCommand::AimTurretCommand(
 		BaseFrisbeeAimer *aimer, 
-		BaseFrisbeeTurret *turret, 
+		BaseAxisFrisbeeTurret *horizontalTurret,
+		BaseAxisFrisbeeTurret *verticalTurret,
 		Tracking::TargetType desiredTarget,
-		float allowedRange) :
+		double allowedRange) :
 		Command("AimTurret"),
 		m_isFinished(false),
 		m_desiredTarget(desiredTarget),
-		m_allowedRange(allowedRange){
+		m_allowedRange(allowedRange),
+		k_lowSpeed(0.3),
+		k_mediumSpeed(0.6),
+		k_highSpeed(0.9) {
 	m_aimer = aimer;
-	m_turret = turret;
+	m_horizontalTurret = horizontalTurret;
+	m_verticalTurret = verticalTurret;
 	Requires(m_aimer);
-	Requires(m_turret);
+	Requires(m_horizontalTurret);
+	Requires(m_verticalTurret);
+}
+
+AimTurretCommand::AimTurretCommand(
+		BaseFrisbeeAimer *aimer, 
+		BaseAxisFrisbeeTurret *horizontalTurret, 
+		BaseAxisFrisbeeTurret *verticalTurret,
+		Tracking::TargetType desiredTarget, 
+		double allowedRange,
+		double lowSpeed,
+		double mediumSpeed,
+		double highSpeed) :
+		Command("AimTurret"),
+		m_isFinished(false),
+		m_desiredTarget(desiredTarget),
+		m_allowedRange(allowedRange),
+		k_lowSpeed(lowSpeed),
+		k_mediumSpeed(mediumSpeed),
+		k_highSpeed(highSpeed) {
+	m_aimer = aimer;
+	m_horizontalTurret = horizontalTurret;
+	m_verticalTurret = verticalTurret;
+	Requires(m_aimer);
+	Requires(m_horizontalTurret);
+	Requires(m_verticalTurret);
 }
 
 AimTurretCommand::~AimTurretCommand() {
@@ -90,13 +121,24 @@ void AimTurretCommand::Execute() {
 		return;
 	}
 		
-	Tracking::Offset desired = target.ShooterOffset;
-	Tracking::Offset current = m_turret->GetCurrentOffset();
-	bool isXDone = Tools::IsWithinRange(desired.XOffset, current.XOffset, m_allowedRange);
-	bool isYDone = Tools::IsWithinRange(desired.YOffset, current.YOffset, m_allowedRange);
+	Tracking::Offset offset = target.ShooterOffset;
+	double xDirection = 1, yDirection = 1;
+	
+	if (offset.XOffset < 0) {
+		xDirection = -1;
+	}
+	
+	if (offset.YOffset < 0) {
+		yDirection = -1;
+	}
+	
+	bool isXDone = Tools::IsWithinRange(offset.XOffset, 0, m_allowedRange);
+	bool isYDone = Tools::IsWithinRange(offset.YOffset, 0, m_allowedRange);
 	m_isFinished = isXDone and isYDone;
+	
 	if (!m_isFinished) {
-		m_turret->TurnGivenOffset(desired);
+		m_horizontalTurret->TurnGivenOffset(offset, xDirection, 57, 17, 8);
+		m_verticalTurret->TurnGivenOffset(offset, yDirection, 33, 22, 11);
 	}
 }
 
@@ -147,12 +189,13 @@ void FireFrisbeeCommand::Interrupted() {
 LoadAndFireCommand::LoadAndFireCommand(
 		BaseFrisbeeLoader *loader, 
 		BaseFrisbeeAimer *aimer, 
-		BaseFrisbeeTurret *turret, 
+		BaseAxisFrisbeeTurret *horizontalTurret, 
+		BaseAxisFrisbeeTurret *verticalTurret,
 		BaseFrisbeeShooter *shooter) :
 		CommandGroup("LoadAndFireCommand") {
 	AddParallel(new FireFrisbeeCommand(shooter), 5.0);
 	AddSequential(new LoadFrisbeeCommand(loader));
-	AddSequential(new AimTurretCommand(aimer, turret, Tracking::ClosestOffset, 5));
+	AddSequential(new AimTurretCommand(aimer, horizontalTurret, verticalTurret, Tracking::ClosestOffset, 5));
 }
 
 LoadAndFireCommand::~LoadAndFireCommand() {
@@ -164,63 +207,37 @@ LoadAndFireCommand::~LoadAndFireCommand() {
  * and another to control using Axis
  */
 AdjustTurretCommand::AdjustTurretCommand(
-		BaseFrisbeeTurret *turret,
-		double rotateOffset,
-		double verticalOffset,
-		float allowedRange) :
-		Command("AdjustTurretCommand"),
-		m_rotateOffset(rotateOffset),
-		m_verticalOffset(verticalOffset),
-		m_allowedRange(allowedRange),
-		m_isFinished(false) {
-	m_turret = turret;
+		BaseAxisFrisbeeTurret *horizontalTurret,
+		BaseAxisFrisbeeTurret *verticalTurret,
+		double rotateSpeed,
+		double verticalSpeed,
+		double allowedRange) :
+		SimpleCommand("AdjustTurretCommand", false),
+		m_rotateSpeed(rotateSpeed),
+		m_verticalSpeed(verticalSpeed) {
+	m_horizontalTurret = horizontalTurret;
+	m_verticalTurret = verticalTurret;
 	
-	Requires(m_turret);
+	Requires(m_horizontalTurret);
+	Requires(m_verticalTurret);
 }
 
 AdjustTurretCommand::~AdjustTurretCommand() {
 	// empty
 }
 
-void AdjustTurretCommand::Initialize() {
-	// empty
-}
-
 void AdjustTurretCommand::Execute() {
-	Tracking::Offset desired = m_turret->GetCurrentOffset();
-	desired.XOffset += m_rotateOffset - desired.XOffset;
-	desired.YOffset += m_verticalOffset - desired.YOffset;
-	
-	bool isXClose = Tools::IsWithinRange(desired.XOffset, 0, m_allowedRange);
-	bool isYClose = Tools::IsWithinRange(desired.YOffset, 0, m_allowedRange);
-	
-	if (isXClose && isYClose) {
-		m_isFinished = true;
-	}
-	
-	m_turret->TurnGivenOffset(desired);
+	m_horizontalTurret->SetMotor(Tools::Limit(m_rotateSpeed, -1.0, 1.0));
+	m_verticalTurret->SetMotor(Tools::Limit(m_verticalSpeed, -1.0, 1.0));
 }
 
-bool AdjustTurretCommand::IsFinished() {
-	return m_isFinished;
-}
-
-void AdjustTurretCommand::End() {
-	// empty
-}
-
-void AdjustTurretCommand::Interrupted() {
-	// empty
-}
-
-
-
-ManuallyControlTurretCommand::ManuallyControlTurretCommand(BaseFrisbeeTurret *turret, Axis *verticalAxis, Axis *rotateAxis) :
+ManuallyControlTurretCommand::ManuallyControlTurretCommand(BaseAxisFrisbeeTurret *horizontalTurret, BaseAxisFrisbeeTurret *verticalTurret, Axis *verticalAxis, Axis *rotateAxis) :
 			SimpleCommand("ManuallyControlTurretCommand", false) {
-	m_turret = turret;
-	m_verticalAxis = verticalAxis;
+	m_horizontalTurret = horizontalTurret;
+	m_verticalTurret = verticalTurret;
 	m_rotateAxis = rotateAxis;
-	Requires(m_turret);
+	Requires(m_horizontalTurret);
+	Requires(m_verticalTurret);
 }
 
 ManuallyControlTurretCommand::~ManuallyControlTurretCommand() {
@@ -228,7 +245,7 @@ ManuallyControlTurretCommand::~ManuallyControlTurretCommand() {
 }
 
 void ManuallyControlTurretCommand::Execute() {
-	m_turret->TurnHorizontal(m_rotateAxis->Get());
-	m_turret->TurnVertical(m_verticalAxis->Get());
+	m_horizontalTurret->SetMotor(m_rotateAxis->Get());
+	m_verticalTurret->SetMotor(m_verticalAxis->Get());
 }
 

@@ -48,9 +48,20 @@ class AimTurretCommand : public Command {
 public:
 	AimTurretCommand(
 			BaseFrisbeeAimer *aimer, 
-			BaseFrisbeeTurret *turret, 
+			BaseAxisFrisbeeTurret *horizontalTurret, 
+			BaseAxisFrisbeeTurret *verticalTurret,
 			Tracking::TargetType desiredTarget, 
-			float allowedRange);
+			double allowedRange);
+	AimTurretCommand(
+			BaseFrisbeeAimer *aimer, 
+			BaseAxisFrisbeeTurret *horizontalTurret,
+			BaseAxisFrisbeeTurret *verticalTurret, 
+			Tracking::TargetType desiredTarget, 
+			double allowedRange,
+			double lowSpeed,
+			double mediumSpeed,
+			double highSpeed);
+			
 	~AimTurretCommand();
 	void Initialize();
 	void Execute();
@@ -60,10 +71,14 @@ public:
 	
 private:
 	BaseFrisbeeAimer *m_aimer;
-	BaseFrisbeeTurret *m_turret;
+	BaseAxisFrisbeeTurret *m_horizontalTurret;
+	BaseAxisFrisbeeTurret *m_verticalTurret;
 	bool m_isFinished;
 	Tracking::TargetType m_desiredTarget;
-	float m_allowedRange;
+	double m_allowedRange;
+	double k_lowSpeed;
+	double k_mediumSpeed;
+	double k_highSpeed;
 };
 
 /**
@@ -91,45 +106,44 @@ public:
 	LoadAndFireCommand(
 		BaseFrisbeeLoader *loader, 
 		BaseFrisbeeAimer *aimer, 
-		BaseFrisbeeTurret *turret, 
+		BaseAxisFrisbeeTurret *horizontalTurret, 
+		BaseAxisFrisbeeTurret *verticalTurret,
 		BaseFrisbeeShooter *shooter);
 	~LoadAndFireCommand();
 };
 
 /**
- * \brief Manually adjusts where the turret is pointing using two joystick axis
+ * \brief Manually adjusts where the turret is pointing by plugging in raw axis speeds
  */
-class AdjustTurretCommand : public Command {
+class AdjustTurretCommand : public SimpleCommand {
 public:
 	AdjustTurretCommand(
-			BaseFrisbeeTurret *turret,
-			double rotateOffset,
-			double verticalOffset, 
-			float allowedRange);
+		BaseAxisFrisbeeTurret *horizontalTurret,
+		BaseAxisFrisbeeTurret *verticalTurret,
+		double rotateSpeed,
+		double verticalSpeed, 
+		double allowedRange);
 	~AdjustTurretCommand();
-	void Initialize();
 	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
 	
 private:
-	BaseFrisbeeTurret *m_turret;
-	double m_rotateOffset;
-	double m_verticalOffset;
-	float m_allowedRange;
+	BaseAxisFrisbeeTurret *m_horizontalTurret;
+	BaseAxisFrisbeeTurret *m_verticalTurret;
+	double m_rotateSpeed;
+	double m_verticalSpeed;
 	bool m_isFinished;
 };
 
 
 class ManuallyControlTurretCommand : public SimpleCommand {
 public:
-	ManuallyControlTurretCommand(BaseFrisbeeTurret *turret, Axis *verticalAxis, Axis *rotateAxis);
+	ManuallyControlTurretCommand(BaseAxisFrisbeeTurret *horizontalTurret, BaseAxisFrisbeeTurret *verticalTurret, Axis *verticalAxis, Axis *rotateAxis);
 	~ManuallyControlTurretCommand();
 	void Execute();
 	
 private:
-	BaseFrisbeeTurret *m_turret;
+	BaseAxisFrisbeeTurret *m_horizontalTurret;
+	BaseAxisFrisbeeTurret *m_verticalTurret;
 	Axis *m_verticalAxis;
 	Axis *m_rotateAxis;
 };

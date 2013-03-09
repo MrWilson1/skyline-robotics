@@ -62,7 +62,8 @@ private:
 	BaseDrive *m_drive; 
 	BaseFrisbeeLoader *m_loader;
 	BaseFrisbeeAimer *m_aimer;
-	BaseFrisbeeTurret *m_turret;
+	BaseAxisFrisbeeTurret *m_horizontalTurret;
+	BaseAxisFrisbeeTurret *m_verticalTurret;
 	BaseFrisbeeShooter *m_shooter;
 	BaseDriveTransmission *m_transmission;
 	
