@@ -1,55 +1,56 @@
 #include "BasicArmCommands.h"
 
-Arm::Arm(Joint::BaseSmart *elbow, Joint::BaseSmart *shoulder, double elbowLength, double shoulderLength) {
+BasicArmCommand::Arm::Arm(Joint::BaseSmart *elbow, Joint::BaseSmart *shoulder, double elbowLength, double shoulderLength) {
 	Elbow = elbow;
 	Shoulder = shoulder;
 	ElbowLength = elbowLength;
 	ShoulderLength = shoulderLength;
 }
 
-Arm::~Arm() {
+BasicArmCommand::Arm::~Arm() {
 	// empty
 }
 
-double Arm::GetX() {
+double BasicArmCommand::Arm::GetX() {
 	double elbow_x = ElbowLength * Tools::DegCos(Elbow->GetAngle());
 	double shoulder_x = ShoulderLength * Tools::DegCos(Shoulder->GetAngle());
 	return elbow_x + shoulder_x;
 }
 
-double Arm::GetY() {
+double BasicArmCommand::Arm::GetY() {
 	double elbow_y = ElbowLength * Tools::DegSin(Elbow->GetAngle());
 	double shoulder_y = ShoulderLength * Tools::DegSin(Shoulder->GetAngle());
 	return elbow_y + shoulder_y;
 }
 
-double Arm::GetAngle() {
+double BasicArmCommand::Arm::GetAngle() {
 	return Tools::DegAtan(GetY()/GetX());
 }
 
-double Arm::GetMagnitude() {
+double BasicArmCommand::Arm::GetMagnitude() {
 	return Tools::FindMagnitude(GetY(), GetX());    
 }
 
 
-SetJointSpeedCommand::SetJointSpeedCommand(Joint::Base *joint, double speed) :
+
+BasicArmCommand::SetJointSpeed::SetJointSpeed(Joint::Base *joint, double speed) :
 		SimpleCommand("SetJointSpeed", true),
 		m_speed(speed) {
 	m_joint = joint;
 	Requires(joint);
 }
 
-SetJointSpeedCommand::~SetJointSpeedCommand() {
+BasicArmCommand::SetJointSpeed::~SetJointSpeed() {
 	// empty
 }
 
-void SetJointSpeedCommand::Execute() {
+void BasicArmCommand::SetJointSpeed::Execute() {
 	m_joint->SetSpeed(m_speed);
 }
 
 
 
-SetPolarCommand::SetPolarCommand(Arm arm, double angle, double magnitude) :
+BasicArmCommand::SetPolar::SetPolar(Arm arm, double angle, double magnitude) :
 		Command("SetPolar"),
 		m_arm(arm),
 		m_angle(angle),
@@ -58,15 +59,15 @@ SetPolarCommand::SetPolarCommand(Arm arm, double angle, double magnitude) :
 		m_magnitudeRange(2.0) {
 }
 
-SetPolarCommand::~SetPolarCommand() {
+BasicArmCommand::SetPolar::~SetPolar() {
 	//
 }
 
-void SetPolarCommand::Initialize() {
+void BasicArmCommand::SetPolar::Initialize() {
 	//
 }
 
-void SetPolarCommand::Execute() {
+void BasicArmCommand::SetPolar::Execute() {
     double shoulder_angle = m_angle + Tools::FindAngleOnTriangle(
     		m_arm.ElbowLength, 
     		m_magnitude, 
@@ -80,83 +81,87 @@ void SetPolarCommand::Execute() {
     m_arm.Elbow->SetAngle(elbow_angle);
 }
 
-bool SetPolarCommand::IsFinished() {
+bool BasicArmCommand::SetPolar::IsFinished() {
 	bool isAngleWithinRange = Tools::IsWithinRange(m_arm.GetAngle(), m_angle, m_angleRange);
 	bool isMagnitudeWithinRange = Tools::IsWithinRange(m_arm.GetMagnitude(), m_magnitude, m_magnitudeRange); 
 	return isAngleWithinRange && isMagnitudeWithinRange; 
 }
 
-void SetPolarCommand::End() {
+void BasicArmCommand::SetPolar::End() {
 	// empty
 }
 
-void SetPolarCommand::Interrupted() {
+void BasicArmCommand::SetPolar::Interrupted() {
 	// empty
 }
 
 
-SetCartesianCommand::SetCartesianCommand(Arm arm, double x, double y) :
+BasicArmCommand::SetCartesian::SetCartesian(Arm arm, double x, double y) :
 		CommandGroup("SetCartesian") {
 	double magnitude = Tools::FindMagnitude(x, y);
 	double angle = Tools::DegAtan(y/x);
 	
-	AddSequential(new SetPolarCommand(arm, angle, magnitude));
+	AddSequential(new SetPolar(arm, angle, magnitude));
 }
 
-SetCartesianCommand::~SetCartesianCommand() {
+BasicArmCommand::SetCartesian::~SetCartesian() {
 	//
 }
 
 
-SetDegreesCommand::SetDegreesCommand(Arm arm, double degrees) :
+BasicArmCommand::SetDegrees::SetDegrees(Arm arm, double degrees) :
 		CommandGroup("SetDegrees") {
-	AddSequential(new SetPolarCommand(arm, degrees, arm.GetMagnitude()));
+	AddSequential(new SetPolar(arm, degrees, arm.GetMagnitude()));
 }
 
-SetDegreesCommand::~SetDegreesCommand() {
+BasicArmCommand::SetDegrees::~SetDegrees() {
 	//
 }
 
 
-SetMagnitudeCommand::SetMagnitudeCommand(Arm arm, double magnitude) :
+BasicArmCommand::SetMagnitude::SetMagnitude(Arm arm, double magnitude) :
 		CommandGroup("SetMagnitude") {
-	AddSequential(new SetPolarCommand(arm, arm.GetAngle(), magnitude));
+	AddSequential(new SetPolar(arm, arm.GetAngle(), magnitude));
 }
 
-SetMagnitudeCommand::~SetMagnitudeCommand() {
+BasicArmCommand::SetMagnitude::~SetMagnitude() {
 	//
 }
 
 
-SetXCommand::SetXCommand(Arm arm, double x) :
+BasicArmCommand::SetX::SetX(Arm arm, double x) :
 		CommandGroup("SetX") {
-	AddSequential(new SetCartesianCommand(arm, x, arm.GetY()));
+	AddSequential(new SetCartesian(arm, x, arm.GetY()));
 }
 
-SetXCommand::~SetXCommand() {
+BasicArmCommand::SetX::~SetX() {
 	//
 }
 
 
-SetYCommand::SetYCommand(Arm arm, double y) :
+BasicArmCommand::SetY::SetY(Arm arm, double y) :
 		CommandGroup("SetY") {
-	AddSequential(new SetCartesianCommand(arm, arm.GetX(), y));
+	AddSequential(new SetCartesian(arm, arm.GetX(), y));
 }
 
-SetYCommand::~SetYCommand() {
+BasicArmCommand::SetY::~SetY() {
 	//
 }
 
-ControlWinchManualCommand::ControlWinchManualCommand(Winch::Base *winch, Axis *axis) :
+
+
+BasicArmCommand::ControlWinchManual::ControlWinchManual(
+		Winch::Base *winch, 
+		Axis *axis) :
 		SimpleCommand("ControlWinch", false) {
 	m_winch = winch;
 	m_axis = axis;
 }
 
-ControlWinchManualCommand::~ControlWinchManualCommand() {
+BasicArmCommand::ControlWinchManual::~ControlWinchManual() {
 	//
 }
 
-void ControlWinchManualCommand::Execute() {
+void BasicArmCommand::ControlWinchManual::Execute() {
 	m_winch->SetSpeed(m_axis->Get());
 }

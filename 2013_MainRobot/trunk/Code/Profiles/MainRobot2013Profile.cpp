@@ -113,9 +113,8 @@ void MainRobot2013Profile::CreateSubsystems() {
 	m_drive = new Drive::Simple(
 			m_leftTread,
 			m_rightTread);
-	m_loader = new PlaceholderFrisbeeLoader();
-	//m_aimer = new VisionTablesFrisbeeAimer();
-	
+	m_loader = new FrisbeeLoader::Placeholder();
+	//m_aimer = new VisionTablesFrisbeeAimer();	
 	m_horizontalTurret = new FrisbeeTurret::Simple(m_turretHorizontal);
 	m_verticalTurret = new FrisbeeTurret::Simple(m_turretVertical);
 	m_shooter = new ThreeWheelShooter(
@@ -150,7 +149,7 @@ void MainRobot2013Profile::TeleopInit() {
 	m_oi->ToggleTransmissionButton->WhenPressed(new ToggleTransmissionCommand(
 			m_transmission));
 	
-	m_oi->FireFrisbeeButton->WhileHeld(new FireFrisbeeCommand( 
+	m_oi->FireFrisbeeButton->WhileHeld(new ShooterCommand::FireFrisbee( 
 			m_shooter));
 	
 	m_compressor->Start();

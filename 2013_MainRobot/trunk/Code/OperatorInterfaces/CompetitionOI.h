@@ -1,11 +1,20 @@
 #ifndef COMPETITION_OI_H
 #define COMPETITION_OI_H
+/**
+ * \file CompetitionOI.h
+ * 
+ * \addtogroup oi
+ * \{
+ */
 
 #include "WPILib.h"
 #include "BaseOI.h"
 #include "../Subsystems/Controllers/XboxController.h"
 #include "../Subsystems/Controllers/Axis.h"
 
+/**
+ * OI for the competition.
+ */
 class CompetitionOI : public BaseOI {
 public:
 	CompetitionOI(XboxController *xbox);
@@ -24,7 +33,9 @@ public:
 	JoystickButton *ClimbRobotButton;
 };
 
-
+/**
+ * OI using one Xbox controller and two joysticks.
+ */
 class XboxTwoJoysticksOI : public BaseOI{
 public:
 	XboxTwoJoysticksOI(XboxController *xbox, Joystick *leftStick, Joystick *rightStick);
@@ -41,6 +52,7 @@ public:
 	JoystickButton *ToggleTransmissionButton;
 	JoystickButton *FireFrisbeeButton;
 };
+
 
 
 class XboxSingleJoystickOI : public BaseOI{
@@ -79,5 +91,9 @@ public:
 	JoystickButton *FireFrisbeeButton;
 	JoystickButton *ClimbRobotButton;
 };
+
+/**
+ * \}
+ */
 
 #endif

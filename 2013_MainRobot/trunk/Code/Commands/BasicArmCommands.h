@@ -1,5 +1,11 @@
 #ifndef BASIC_ARM_COMMANDS_H
 #define BASIC_ARM_COMMANDS_H
+/**
+ * \file BasicArmCommands.h
+ * 
+ * \addtogroup commands
+ * \{
+ */
 
 #include "BaseCommand.h"
 #include "WPILib.h"
@@ -9,6 +15,11 @@
 #include "../Subsystems/Controllers/Axis.h"
 #include "../Subsystems/Climber/ClimberWinch.h"
 
+namespace BasicArmCommand {
+/**
+ * Arm class consisting of elbow and shoulder joints. Uses polar and Cartesian coordinate systems, 
+ * where the shoulder joint is at the origin.
+ */
 class Arm {
 public:
 	Arm(Joint::BaseSmart *elbow, Joint::BaseSmart *shoulder, double elbowLength, double shoulderLength);
@@ -18,26 +29,47 @@ public:
 	double ElbowLength;
 	double ShoulderLength;
 	
+	/**
+	 * Gets the x-coordinate of the arm hook.
+	 */
 	double GetX();
+	
+	/**
+	 * Gets the y-coordinate of the arm hook.
+	 */
 	double GetY();
+	
+	/**
+	 * Gets the angle measured counterclockwise from the x-axis of the vector from the shoulder joint to the arm hook.
+	 */
 	double GetAngle();
+	
+	/**
+	 * Gets the magnitude of the vector from the shoulder joint to the arm hook.
+	 */
 	double GetMagnitude();
 };
 
-class SetJointSpeedCommand : public SimpleCommand {
+/**
+ * Command to set the speed of one of the joints.
+ */
+class SetJointSpeed : public SimpleCommand {
 public:
-	SetJointSpeedCommand(Joint::Base *joint, double speed);
-	~SetJointSpeedCommand();
+	SetJointSpeed(Joint::Base *joint, double speed);
+	~SetJointSpeed();
 	void Execute();
 private:
 	Joint::Base *m_joint;
 	double m_speed;
 };
 
-class SetPolarCommand : public Command {
+/**
+ * Command to set the position of the arm hook using polar coordinates (angle and magnitude).
+ */
+class SetPolar : public Command {
 public:
-	SetPolarCommand(Arm arm, double angle, double magnitude);
-	~SetPolarCommand();
+	SetPolar(Arm arm, double angle, double magnitude);
+	~SetPolar();
 	
 	void Initialize();
 	void Execute();
@@ -52,46 +84,68 @@ private:
 	double m_magnitudeRange;
 };
 
-class SetCartesianCommand : public CommandGroup {
+/**
+ * Command to set the position of the arm hook using Cartesian coordinates.
+ */
+class SetCartesian :  public CommandGroup {
 public:
-	SetCartesianCommand(Arm arm, double x, double y);
-	~SetCartesianCommand();
+	SetCartesian(Arm arm, double x, double y);
+	~SetCartesian();
 };
 
-class SetDegreesCommand : public CommandGroup {
+/**
+ * Command to set the angle (measured counterclockwise from the x-axis) of the
+ * vector from the shoulder joint to the arm hook.
+ */
+class SetDegrees :  public CommandGroup {
 public:
-	SetDegreesCommand(Arm arm, double degrees);
-	~SetDegreesCommand();
+	SetDegrees(Arm arm, double degrees);
+	~SetDegrees();
 };
 
-class SetMagnitudeCommand : public CommandGroup {
+/**
+ * Command to set the magnitude of the vector from the shoulder joint to the arm hook.
+ */
+class SetMagnitude :  public CommandGroup {
 public:
-	SetMagnitudeCommand(Arm arm, double magnitude);
-	~SetMagnitudeCommand();
+	SetMagnitude(Arm arm, double magnitude);
+	~SetMagnitude();
 };
 
-class SetXCommand : public CommandGroup {
+/**
+ * Command to set the x-coordinate of the arm hook.
+ */
+class SetX :  public CommandGroup {
 public:
-	SetXCommand(Arm arm, double x);
-	~SetXCommand();
+	SetX(Arm arm, double x);
+	~SetX();
 };
 
-class SetYCommand : public CommandGroup {
+/**
+ * Command to set the y-coordinate of the arm hook.
+ */
+class SetY :  public CommandGroup {
 public:
-	SetYCommand(Arm arm, double y);
-	~SetYCommand();
+	SetY(Arm arm, double y);
+	~SetY();
 };
 
-class ControlWinchManualCommand : public SimpleCommand {
+/**
+ * Command to control the winch using an axis.
+ */
+class ControlWinchManual :  public SimpleCommand {
 public:
-	ControlWinchManualCommand(Winch::Base *winch, Axis *axis);
-	~ControlWinchManualCommand();
+	ControlWinchManual(Winch::Base *winch, Axis *axis);
+	~ControlWinchManual();
 	
 	void Execute();
 private:
 	Winch::Base *m_winch;
 	Axis *m_axis;
 };
+}
 
-
+/**
+ * \}
+ */
 #endif

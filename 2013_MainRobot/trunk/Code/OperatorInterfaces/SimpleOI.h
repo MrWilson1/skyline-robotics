@@ -1,5 +1,11 @@
 #ifndef SIMPLE_OI_H
 #define SIMPLE_OI_H
+/*
+ * \file SimpleOI.h
+ * 
+ * \addtogroup oi
+ * \{
+ */
 
 #include "WPILib.h"
 #include "BaseOI.h"
@@ -22,5 +28,9 @@ public:
 private:
 	XboxController *m_xbox;
 };
+
+/*
+ * \}
+ */
 
 #endif

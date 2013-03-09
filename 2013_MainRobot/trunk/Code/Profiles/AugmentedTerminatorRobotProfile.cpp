@@ -124,7 +124,7 @@ void AugmentedTerminatorRobotProfile::CreateSubsystems() {
 	m_leftTestEncoder = new TestEncoder(m_leftEncoder, "Left Encoder Test");
 	m_rightTestEncoder = new TestEncoder(m_rightEncoder, "Right Encoder Test");
 	
-	m_loader = new PistonFrisbeeLoader(m_loaderSolenoid);
+	m_loader = new FrisbeeLoader::Piston(m_loaderSolenoid);
 	/*
 	m_horizontalTurret = new GuardedAxisFrisbeeTurret(
 			m_horizontalTurretMotor,
@@ -182,7 +182,7 @@ void AugmentedTerminatorRobotProfile::TeleopInit() {
 			m_loader,
 			m_shooter));
 	*/
-	m_oi->LoadFrisbeeButton->WhenPressed(new LoadFrisbeeCommand(m_loader));
+	m_oi->LoadFrisbeeButton->WhenPressed(new ShooterCommand::LoadFrisbee(m_loader));
 	
 	m_compressor->Start();
 	

@@ -1,16 +1,16 @@
 #include "AutonomousCommands.h"
 
-MoveToCenterLine::MoveToCenterLine(Drive::Base *drive, Autonomous::Positions positions) : 
+AutonomousCommand::MoveToCenterLine::MoveToCenterLine(Drive::Base *drive, AutonomousCommand::Positions positions) : 
 		CommandGroup("MoveToCenterLine") {
 	float distance;
 	float rotation = 180;
 	switch (positions) {
-	case (Autonomous::kNearLeftCorner):
-	case (Autonomous::kNearRightCorner):
+	case (AutonomousCommand::kNearLeftCorner):
+	case (AutonomousCommand::kNearRightCorner):
 		distance = kGapFromPyramidToCenter;
 		break;
-	case (Autonomous::kFarLeftCorner):
-	case (Autonomous::kFarRightCorner):
+	case (AutonomousCommand::kFarLeftCorner):
+	case (AutonomousCommand::kFarRightCorner):
 		distance = kGapFromPyramidToCenter + kPyramidLength;
 		break;
 	default:
@@ -20,25 +20,25 @@ MoveToCenterLine::MoveToCenterLine(Drive::Base *drive, Autonomous::Positions pos
 	AddSequential(new TravelDistanceCommand(drive, distance - 50));
 }
 
-MoveToCenterLine::~MoveToCenterLine() {
+AutonomousCommand::MoveToCenterLine::~MoveToCenterLine() {
 	// empty
 }
 
-ShootAndGoToCenterLine::ShootAndGoToCenterLine(
+AutonomousCommand::ShootAndGoToCenterLine::ShootAndGoToCenterLine(
 			Drive::Base *drive,
-			BaseFrisbeeLoader *loader, 
-			BaseFrisbeeAimer *aimer, 
+			FrisbeeLoader::Base *loader, 
+			FrisbeeAimer::Base *aimer,
 			FrisbeeTurret::Base *horizontalTurret, 
 			FrisbeeTurret::Base *verticalTurret,
 			BaseFrisbeeShooter *shooter,
 			Tracking::TargetType target,
-			Autonomous::Positions position) :
+			AutonomousCommand::Positions position) :
 			CommandGroup("ShootAndGoToCenterLine") {
-	AddSequential(new AimTurretCommand(aimer, horizontalTurret, verticalTurret, target, 5.0), 5.0);
-	AddSequential(new LoadAndFireFrisbeeCommand(loader, shooter));
+	AddSequential(new ShooterCommand::AimTurret(aimer, horizontalTurret, verticalTurret, target, 5.0), 5.0);
+	AddSequential(new ShooterCommand::LoadAndFire(loader, shooter));
 	AddSequential(new MoveToCenterLine(drive, position));
 }
 
-ShootAndGoToCenterLine::~ShootAndGoToCenterLine() {
+AutonomousCommand::ShootAndGoToCenterLine::~ShootAndGoToCenterLine() {
 	// empty
 }

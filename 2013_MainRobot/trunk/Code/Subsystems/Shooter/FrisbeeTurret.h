@@ -27,6 +27,9 @@ public:
 	
 private: 
 	SpeedController *m_motor;
+	double k_highSpeed;
+	double k_mediumSpeed;
+	double k_lowSpeed;
 };
 
 class Guarded : public Base {

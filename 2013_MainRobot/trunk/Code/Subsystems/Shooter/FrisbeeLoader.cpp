@@ -1,58 +1,58 @@
 #include "FrisbeeLoader.h"
 
-BaseFrisbeeLoader::BaseFrisbeeLoader(const char *name) :
+FrisbeeLoader::Base::Base(const char *name) :
 		BaseSubsystem(name) {
 	// Empty
 }
 
-BaseFrisbeeLoader::~BaseFrisbeeLoader() {
+FrisbeeLoader::Base::~Base() {
 	// Empty
 }
 
 
-PlaceholderFrisbeeLoader::PlaceholderFrisbeeLoader() :
-		BaseFrisbeeLoader("PlaceholderFrisbeeLoader") {
+FrisbeeLoader::Placeholder::Placeholder() :
+		Base("Placeholder") {
 	// empty
 }
 
-PlaceholderFrisbeeLoader::~PlaceholderFrisbeeLoader() {
+FrisbeeLoader::Placeholder::~Placeholder() {
 	// empty
 }
 
-void PlaceholderFrisbeeLoader::PrepareFrisbee() {
+void FrisbeeLoader::Placeholder::PrepareFrisbee() {
 	// empty
 }
 
-bool PlaceholderFrisbeeLoader::IsFrisbeePrepared() {
+bool FrisbeeLoader::Placeholder::IsFrisbeePrepared() {
 	return true;
 }
 
-void PlaceholderFrisbeeLoader::LoadFrisbee() {
+void FrisbeeLoader::Placeholder::LoadFrisbee() {
 	// empty
 }
 
 
 
-PistonFrisbeeLoader::PistonFrisbeeLoader(Solenoid *piston) :
-		BaseFrisbeeLoader("PistonFrisbeeLoader") {
+FrisbeeLoader::Piston::Piston(Solenoid *piston) :
+		Base("Piston") {
 	m_piston = piston;
 	
 	AddActuatorToLiveWindow("Piston", m_piston);
 }
 
-PistonFrisbeeLoader::~PistonFrisbeeLoader() {
+FrisbeeLoader::Piston::~Piston() {
 	//
 }
 
-void PistonFrisbeeLoader::PrepareFrisbee() {
+void FrisbeeLoader::Piston::PrepareFrisbee() {
 	// empty
 }
 
-bool PistonFrisbeeLoader::IsFrisbeePrepared() {
+bool FrisbeeLoader::Piston::IsFrisbeePrepared() {
 	return true;
 }
 
-void PistonFrisbeeLoader::LoadFrisbee() {
+void FrisbeeLoader::Piston::LoadFrisbee() {
 	m_piston->Set(true);
 	Wait(0.01); // Otherwise, the piston doesn't move. 
 	m_piston->Set(false);
@@ -60,26 +60,26 @@ void PistonFrisbeeLoader::LoadFrisbee() {
 
 
 
-ServoFrisbeeLoader::ServoFrisbeeLoader(Servo *servo) :
-		BaseFrisbeeLoader("ServoFrisbeeLoader") {
+FrisbeeLoader::ServoLoader::ServoLoader(Servo *servo) :
+		Base("ServoLoader") {
 	m_servo = servo;
 	
 	AddActuatorToLiveWindow("Servo", m_servo);
 }
 
-ServoFrisbeeLoader::~ServoFrisbeeLoader() {
+FrisbeeLoader::ServoLoader::~ServoLoader() {
 	//
 }
 
-void ServoFrisbeeLoader::PrepareFrisbee() {
+void FrisbeeLoader::ServoLoader::PrepareFrisbee() {
 	// empty
 }
 
-bool ServoFrisbeeLoader::IsFrisbeePrepared() {
+bool FrisbeeLoader::ServoLoader::IsFrisbeePrepared() {
 	return true;
 }
 
-void ServoFrisbeeLoader::LoadFrisbee() {
+void FrisbeeLoader::ServoLoader::LoadFrisbee() {
 	SmartDashboard::PutString(GetName(), "Requires calibration");
 	// I'm just guessing values here.
 	m_servo->SetAngle(180);

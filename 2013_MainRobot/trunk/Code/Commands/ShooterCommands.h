@@ -1,5 +1,11 @@
 #ifndef SHOOTER_COMMANDS_H
 #define SHOOTER_COMMANDS_H
+/**
+ * \file ShooterCommands.h
+ * 
+ * \addtogroup commands
+ * \{
+ */
 
 #include "WPILib.h"
 #include "../Misc/Tools.h"
@@ -12,13 +18,14 @@
 
 #include "../Subsystems/Controllers/Axis.h"
 
+namespace ShooterCommand {
 /**
  * \brief Command for loading frisbees.
  */
-class LoadFrisbeeCommand : public Command {
+class LoadFrisbee : public Command {
 public:
-	LoadFrisbeeCommand(BaseFrisbeeLoader *loader);
-	~LoadFrisbeeCommand();
+	LoadFrisbee(FrisbeeLoader::Base *loader);
+	~LoadFrisbee();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -26,9 +33,10 @@ public:
 	void Interrupted();
 	
 private:
-	BaseFrisbeeLoader *m_loader;
+	FrisbeeLoader::Base *m_loader;
 	bool m_isFinished;
 };
+
 
 /**
  * \brief Aims the turret at the given target
@@ -44,25 +52,16 @@ private:
  * or issue a command to point it at the appropriate target and let
  * this take over once that command is finished.
  */
-class AimTurretCommand : public Command {
+class AimTurret : public Command {
 public:
-	AimTurretCommand(
-			BaseFrisbeeAimer *aimer, 
+	AimTurret(
+			FrisbeeAimer::Base *aimer, 
 			FrisbeeTurret::Base *horizontalTurret, 
 			FrisbeeTurret::Base *verticalTurret,
-			Tracking::TargetType desiredTarget, 
-			double allowedRange);
-	AimTurretCommand(
-			BaseFrisbeeAimer *aimer, 
-			FrisbeeTurret::Base *horizontalTurret,
-			FrisbeeTurret::Base *verticalTurret, 
-			Tracking::TargetType desiredTarget, 
-			double allowedRange,
-			double lowSpeed,
-			double mediumSpeed,
-			double highSpeed);
-			
-	~AimTurretCommand();
+			Tracking::TargetType desiredTarget,
+			double allowedRange);			
+	~AimTurret();
+
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -70,24 +69,22 @@ public:
 	void Interrupted();
 	
 private:
-	BaseFrisbeeAimer *m_aimer;
+	FrisbeeAimer::Base *m_aimer;
 	FrisbeeTurret::Base *m_horizontalTurret;
 	FrisbeeTurret::Base *m_verticalTurret;
 	bool m_isFinished;
 	Tracking::TargetType m_desiredTarget;
 	double m_allowedRange;
-	double k_lowSpeed;
-	double k_mediumSpeed;
-	double k_highSpeed;
 };
+
 
 /**
  * \brief Fires the frisbee at a default distance or a set distance.
  */
-class FireFrisbeeCommand : public Command {
+class FireFrisbee : public Command {
 public:
-	FireFrisbeeCommand(BaseFrisbeeShooter *shooter);
-	~FireFrisbeeCommand();
+	FireFrisbee(BaseFrisbeeShooter *shooter);
+	~FireFrisbee();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -100,42 +97,29 @@ private:
 
 
 /**
- * \brief Loads a frisbee, and just fires it without aiming
+ * \brief Loads a frisbee, and fires it.
  */
-class LoadAndFireFrisbeeCommand : public CommandGroup {
+class LoadAndFire : public CommandGroup {
 public:
-	LoadAndFireFrisbeeCommand(
-		BaseFrisbeeLoader *loader,
+	LoadAndFire(
+		FrisbeeLoader::Base *loader, 
 		BaseFrisbeeShooter *shooter);
-	~LoadAndFireFrisbeeCommand();
+	~LoadAndFire();
 };
 
-/**
- * \brief Loads a frisbee, aims the turret, and fires it.
- */
-class LoadAimAndFireCommand : public CommandGroup {
-public:
-	LoadAimAndFireCommand(
-		BaseFrisbeeLoader *loader, 
-		BaseFrisbeeAimer *aimer, 
-		FrisbeeTurret::Base *horizontalTurret, 
-		FrisbeeTurret::Base *verticalTurret,
-		BaseFrisbeeShooter *shooter);
-	~LoadAimAndFireCommand();
-};
 
 /**
  * \brief Manually adjusts where the turret is pointing by plugging in raw axis speeds
  */
-class AdjustTurretCommand : public SimpleCommand {
+class AdjustTurret : public SimpleCommand {
 public:
-	AdjustTurretCommand(
+	AdjustTurret(
 		FrisbeeTurret::Base *horizontalTurret,
 		FrisbeeTurret::Base *verticalTurret,
 		double rotateSpeed,
 		double verticalSpeed, 
 		double allowedRange);
-	~AdjustTurretCommand();
+	~AdjustTurret();
 	void Execute();
 	
 private:
@@ -147,13 +131,16 @@ private:
 };
 
 
-class ManuallyControlTurretCommand : public SimpleCommand {
+/**
+ * Command to manually move the horizontal and vertical turrets using Axes.
+ */
+class ManuallyControlTurret : public SimpleCommand {
 public:
-	ManuallyControlTurretCommand(
+	ManuallyControlTurret(
 			FrisbeeTurret::Base *turretAxis, 
 			Axis *inputAxis, 
 			const char *name);
-	~ManuallyControlTurretCommand();
+	~ManuallyControlTurret();
 	void Execute();
 	
 private:
@@ -161,4 +148,9 @@ private:
 	Axis *m_axis;
 };
 
+}
+
+/**
+ * \}
+ */
 #endif

@@ -5,30 +5,29 @@
 
 #include "../BaseSubsystem.h"
 
+namespace FrisbeeLoader {
 /**
  * A base class to load frisbees into the shooter.
- * 
- * Methods
- * - GetNumberOfFrisbeesLoaded()
- * 		Does the obvious
- * - UnloadFrisbees()
- * 		Sort of gently spits the Frisbees out (doesn't shoot)
- * 		in case we accidentally loaded a frisbee
- * - PrepareFrisbee()
- * 		Moves a frisbee in position so it's almost ready to shoot
- * - IsFrisbeePrepared()
- * 		Returns true if the loader is ready to inject a frisbee
- * 		into the shooter
- * - LoadFrisbee()
- * 		Loads a frisbee into the shooter
  */
-class BaseFrisbeeLoader : public BaseSubsystem {
+class Base : public BaseSubsystem {
 public:
-	BaseFrisbeeLoader(const char *name);
-	virtual ~BaseFrisbeeLoader();
+	Base(const char *name);
+	virtual ~Base();
 	
+	/**
+	 * Moves a frisbee in position so it's almost ready to shoot.
+	 */
 	virtual void PrepareFrisbee() = 0;
+	
+	/**
+	 * Returns true if the loader is ready to inject a frisbee
+	 * into the shooter.
+	 */
 	virtual bool IsFrisbeePrepared() = 0;
+	
+	/**
+	 * Loads a frisbee into the shooter.
+	 */
 	virtual void LoadFrisbee() = 0;
 };
 
@@ -36,20 +35,23 @@ public:
  * Doesn't actually do anything -- a placeholder until we can
  * actually code this.
  */
-class PlaceholderFrisbeeLoader : public BaseFrisbeeLoader {
+class Placeholder : public Base {
 public:
-	PlaceholderFrisbeeLoader();
-	~PlaceholderFrisbeeLoader();
+	Placeholder();
+	~Placeholder();
 	
 	void PrepareFrisbee();
 	bool IsFrisbeePrepared();
 	void LoadFrisbee();
 };
 
-class PistonFrisbeeLoader : public BaseFrisbeeLoader {
+/**
+ * FrisbeeLoader class that uses a piston to load frisbees.
+ */
+class Piston : public Base {
 public:
-	PistonFrisbeeLoader(Solenoid *piston);
-	~PistonFrisbeeLoader();
+	Piston(Solenoid *piston);
+	~Piston();
 	
 	void PrepareFrisbee();
 	bool IsFrisbeePrepared();
@@ -58,10 +60,13 @@ private:
 	Solenoid *m_piston;
 };
 
-class ServoFrisbeeLoader : public BaseFrisbeeLoader {
+/**
+ * FrisbeeLoader class that uses a servo motor to load frisbees.
+ */
+class ServoLoader : public Base {
 public:
-	ServoFrisbeeLoader(Servo *servo);
-	~ServoFrisbeeLoader();
+	ServoLoader(Servo *servo);
+	~ServoLoader();
 	
 	void PrepareFrisbee();
 	bool IsFrisbeePrepared();
@@ -70,6 +75,7 @@ public:
 private:
 	Servo *m_servo;
 };
+}
 
 
 

@@ -59,9 +59,9 @@ private:
 	Compressor *m_compressor;
 	
 	// Subsystems
-	Drive::Base *m_drive; 
-	BaseFrisbeeLoader *m_loader;
-	BaseFrisbeeAimer *m_aimer;
+	Drive::Base *m_drive;
+	FrisbeeLoader::Base *m_loader;
+	FrisbeeAimer::Base *m_aimer;
 	FrisbeeTurret::Base *m_horizontalTurret;
 	FrisbeeTurret::Base *m_verticalTurret;
 	BaseFrisbeeShooter *m_shooter;
