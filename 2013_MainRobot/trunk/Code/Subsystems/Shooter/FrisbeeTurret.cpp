@@ -77,21 +77,31 @@ GuardedFrisbeeTurret::~GuardedFrisbeeTurret() {
 void GuardedFrisbeeTurret::TurnHorizontal(float speed) {
 	SmartDashboard::PutNumber(GetName() + std::string(" Horizontal"), speed);
 	// assuming that limit switch is "True" when hit
-	if (!m_rightSwitch->Get() || !m_leftSwitch->Get()) {
+	if (m_rightSwitch->Get() && speed > 0.0) {
 		m_horizontalMotor->Set(0.0);
-	} else {
-		m_horizontalMotor->Set(speed);
+		return;
 	}
+	if (m_leftSwitch->Get() && speed < 0.0) {
+		m_horizontalMotor->Set(0.0);
+		return;
+	}
+	
+	m_horizontalMotor->Set(speed);
 }
 
 void GuardedFrisbeeTurret::TurnVertical(float speed) {
 	//m_offset.YOffset += speed;
 	SmartDashboard::PutNumber(GetName() + std::string(" Vertical"), speed);
-	if (!m_topSwitch->Get() || !m_bottomSwitch->Get()) {
+	if (m_topSwitch->Get() && speed > 0.0) {
 		m_lateralMotor->Set(0.0);
-	} else {
-		m_lateralMotor->Set(speed);
+		return;
 	}
+	if (m_bottomSwitch->Get() && speed < 0.0) {
+		m_lateralMotor->Set(0.0);
+		return;
+	}
+	
+	m_lateralMotor->Set(speed);
 }
 
 void GuardedFrisbeeTurret::TurnGivenOffset(Tracking::Offset offset) {

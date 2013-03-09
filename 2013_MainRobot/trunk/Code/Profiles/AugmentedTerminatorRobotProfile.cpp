@@ -84,6 +84,9 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio2);*/
 	
+	// On the solenoid...
+	// hole 4 goes nearest the piston head
+	// hole 2 goes furthest
 	m_loaderSolenoid = new Solenoid(
 			Ports::Crio::Module1,
 			Ports::Crio::SolenoidBreakout5);
