@@ -1,5 +1,11 @@
 #ifndef AUTONOMOUS_COMMANDS_H
 #define AUTONOMOUS_COMMANDS_H
+/**
+ * \file AutonomousCommands.h
+ * 
+ * \addtogroup commands
+ * \{
+ */
 
 #include "WPILib.h"
 #include "DriveCommands.h"
@@ -10,6 +16,9 @@
 #include "../Misc/Tools.h"
 
 namespace Autonomous {
+/*
+ * The different positions the robot can be in during Autonomous mode.
+ */
 enum Positions{
 	kNearLeftCorner,
 	kNearRightCorner,
@@ -18,6 +27,9 @@ enum Positions{
 };
 }
 
+/*
+ * Command to move the robot to the center line.
+ */
 class MoveToCenterLine : public CommandGroup {
 public:
 	MoveToCenterLine(BaseDrive *drive, Autonomous::Positions positions);
@@ -30,6 +42,9 @@ private:
 	static const float kGapFromPyramidToFront = 122;
 };
 
+/*
+ * Command to have the robot shoot and then move to the center line.
+ */
 class ShootAndGoToCenterLine : public CommandGroup {
 public:
 	ShootAndGoToCenterLine(
@@ -43,6 +58,10 @@ public:
 			Autonomous::Positions position);
 	~ShootAndGoToCenterLine();
 };
+
+/**
+ * \}
+ */
 
 
 #endif

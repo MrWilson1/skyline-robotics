@@ -138,6 +138,9 @@ namespace Tools {
 	void TrySaveBoolean (const char *key, bool value);
 	void TrySaveLong (const char *key, INT64 value);  
 	
+	/**
+	 * \brief Checks if a value is between two given values (a higher bound and a lower bound).
+	 */
 	bool IsWithinBounds(double higherBound, double lowerBound, double value);
 }
 

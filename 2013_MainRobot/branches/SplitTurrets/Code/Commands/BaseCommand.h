@@ -1,8 +1,17 @@
 #ifndef BASE_COMMAND_H
 #define BASE_COMMAND_H
+/**
+ * \file BaseCommands.h
+ * 
+ * \addtogroup commands
+ * \{
+ */
 
 #include "WPILib.h"
 
+/*
+ * Simple version of Command class that only requires child classes to define Execute() function.
+ */
 class SimpleCommand : public Command {
 public:
 	SimpleCommand(const char *name, bool valueToReturnForIsFinished);
@@ -18,4 +27,7 @@ protected:
 	bool m_valueToReturnForIsFinished;
 };
 
+/**
+ * \}
+ */
 #endif

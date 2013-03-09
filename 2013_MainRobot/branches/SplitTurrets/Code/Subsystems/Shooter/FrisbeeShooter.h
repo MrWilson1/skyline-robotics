@@ -20,8 +20,16 @@ public:
 	BaseFrisbeeShooter(const char *name);
 	virtual ~BaseFrisbeeShooter();
 	
+	/**
+	 * Shoots the frisbee at a preset speed.
+	 */
 	virtual void ShootFrisbee() = 0;
+	
+	/**
+	 * Shoots the frisbee at a specified speed.
+	 */
 	virtual void ShootFrisbee(float inchesPerSecond) = 0;
+	
 	virtual void StopFrisbee() = 0;
 	virtual void SetFrisbeeSpeed(double speed) = 0;
 };

@@ -7,28 +7,26 @@
 
 /**
  * A base class to load frisbees into the shooter.
- * 
- * Methods
- * - GetNumberOfFrisbeesLoaded()
- * 		Does the obvious
- * - UnloadFrisbees()
- * 		Sort of gently spits the Frisbees out (doesn't shoot)
- * 		in case we accidentally loaded a frisbee
- * - PrepareFrisbee()
- * 		Moves a frisbee in position so it's almost ready to shoot
- * - IsFrisbeePrepared()
- * 		Returns true if the loader is ready to inject a frisbee
- * 		into the shooter
- * - LoadFrisbee()
- * 		Loads a frisbee into the shooter
  */
 class BaseFrisbeeLoader : public BaseSubsystem {
 public:
 	BaseFrisbeeLoader(const char *name);
 	virtual ~BaseFrisbeeLoader();
 	
+	/**
+	 * Moves a frisbee in position so it's almost ready to shoot.
+	 */
 	virtual void PrepareFrisbee() = 0;
+	
+	/**
+	 * Returns true if the loader is ready to inject a frisbee
+	 * into the shooter.
+	 */
 	virtual bool IsFrisbeePrepared() = 0;
+	
+	/**
+	 * Loads a frisbee into the shooter.
+	 */
 	virtual void LoadFrisbee() = 0;
 };
 
@@ -46,6 +44,9 @@ public:
 	void LoadFrisbee();
 };
 
+/**
+ * FrisbeeLoader class that uses a piston to load frisbees.
+ */
 class PistonFrisbeeLoader : public BaseFrisbeeLoader {
 public:
 	PistonFrisbeeLoader(Solenoid *piston);
@@ -58,6 +59,9 @@ private:
 	Solenoid *m_piston;
 };
 
+/**
+ * FrisbeeLoader class that uses a servo motor to load frisbees.
+ */
 class ServoFrisbeeLoader : public BaseFrisbeeLoader {
 public:
 	ServoFrisbeeLoader(Servo *servo);

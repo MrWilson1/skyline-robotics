@@ -1,5 +1,11 @@
 #ifndef SHOOTER_COMMANDS_H
 #define SHOOTER_COMMANDS_H
+/**
+ * \file ShooterCommands.h
+ * 
+ * \addtogroup commands
+ * \{
+ */
 
 #include "WPILib.h"
 #include "../Misc/Tools.h"
@@ -29,6 +35,7 @@ private:
 	BaseFrisbeeLoader *m_loader;
 	bool m_isFinished;
 };
+
 
 /**
  * \brief Aims the turret at the given target
@@ -81,6 +88,7 @@ private:
 	double k_highSpeed;
 };
 
+
 /**
  * \brief Fires the frisbee at a default distance or a set distance.
  */
@@ -98,6 +106,7 @@ private:
 	BaseFrisbeeShooter *m_shooter;
 };
 
+
 /**
  * \brief Loads a frisbee, aims the turret, and fires it.
  */
@@ -111,6 +120,7 @@ public:
 		BaseFrisbeeShooter *shooter);
 	~LoadAndFireCommand();
 };
+
 
 /**
  * \brief Manually adjusts where the turret is pointing by plugging in raw axis speeds
@@ -135,6 +145,9 @@ private:
 };
 
 
+/**
+ * Command to manually move the horizontal and vertical turrets using Axes.
+ */
 class ManuallyControlTurretCommand : public SimpleCommand {
 public:
 	ManuallyControlTurretCommand(BaseAxisFrisbeeTurret *horizontalTurret, BaseAxisFrisbeeTurret *verticalTurret, Axis *verticalAxis, Axis *rotateAxis);
@@ -148,4 +161,7 @@ private:
 	Axis *m_rotateAxis;
 };
 
+/**
+ * \}
+ */
 #endif
