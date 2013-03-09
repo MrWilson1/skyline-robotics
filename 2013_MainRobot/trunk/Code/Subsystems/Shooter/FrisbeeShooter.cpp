@@ -1,19 +1,19 @@
 #include "FrisbeeShooter.h"
 
-BaseFrisbeeShooter::BaseFrisbeeShooter(const char *name) :
+FrisbeeShooter::Base::Base(const char *name) :
 		BaseSubsystem(name) {
 	// Empty
 }
 
-BaseFrisbeeShooter::~BaseFrisbeeShooter() {
+FrisbeeShooter::Base::~Base() {
 	// Empty
 }
 
 
 
 
-SimpleBeltShooter::SimpleBeltShooter(SpeedController *motor, Direction forwardDirection) :
-		BaseFrisbeeShooter("SimpleBeltShooter"),
+FrisbeeShooter::SimpleBelt::SimpleBelt(SpeedController *motor, Direction forwardDirection) :
+		FrisbeeShooter::Base("FrisbeeShooter::SimpleBelt"),
 		m_forwardDirection(forwardDirection),
 		m_maxDistance(120) {
 	m_motor = motor;
@@ -21,40 +21,40 @@ SimpleBeltShooter::SimpleBeltShooter(SpeedController *motor, Direction forwardDi
 	AddActuatorToLiveWindow("Belt motor", m_motor);
 }
 
-SimpleBeltShooter::~SimpleBeltShooter() {
+FrisbeeShooter::SimpleBelt::~SimpleBelt() {
 	// Empty
 }
 
-void SimpleBeltShooter::ShootFrisbee() {
+void FrisbeeShooter::SimpleBelt::ShootFrisbee() {
 	m_motor->Set(1.0 * m_forwardDirection);
 }
 
-void SimpleBeltShooter::ShootFrisbee(float distanceInInches) {
+void FrisbeeShooter::SimpleBelt::ShootFrisbee(float distanceInInches) {
 	float reachableDistance = Tools::Limit(distanceInInches, 0, m_maxDistance);
 	float motorPercentage = Tools::Scale(reachableDistance, 0, m_maxDistance, 0, 1);
 	m_motor->Set(motorPercentage * m_forwardDirection);
 }
 
-void SimpleBeltShooter::StopFrisbee() {
+void FrisbeeShooter::SimpleBelt::StopFrisbee() {
 	m_motor->Set(0);
 }
 
-void SimpleBeltShooter::SetFrisbeeSpeed(double speed) {
+void FrisbeeShooter::SimpleBelt::SetFrisbeeSpeed(double speed) {
 	m_motor->Set(speed);
 }
 
-void SimpleBeltShooter::SetMaxDistance(float inches) {
+void FrisbeeShooter::SimpleBelt::SetMaxDistance(float inches) {
 	m_maxDistance = inches;
 }
 	
-float SimpleBeltShooter::GetMaxDistance() {
+float FrisbeeShooter::SimpleBelt::GetMaxDistance() {
 	return m_maxDistance;
 }
 
 
 
-ThreeWheelShooter::ThreeWheelShooter(SpeedController *frontMotor, SpeedController *middleMotor, SpeedController *lastMotor) :
-		BaseFrisbeeShooter("ThreeWheelShooter"),
+FrisbeeShooter::ThreeWheel::ThreeWheel(SpeedController *frontMotor, SpeedController *middleMotor, SpeedController *lastMotor) :
+		FrisbeeShooter::Base("FrisbeeShooter::ThreeWheel"),
 		m_maxDistance(120) {
 	m_frontMotor = frontMotor;
 	m_middleMotor = middleMotor;
@@ -64,33 +64,33 @@ ThreeWheelShooter::ThreeWheelShooter(SpeedController *frontMotor, SpeedControlle
 	AddActuatorToLiveWindow("Last Motor", m_lastMotor);
 }
 
-ThreeWheelShooter::~ThreeWheelShooter() {
+FrisbeeShooter::ThreeWheel::~ThreeWheel() {
 	// empty
 }
 
-void ThreeWheelShooter::ShootFrisbee() {
+void FrisbeeShooter::ThreeWheel::ShootFrisbee() {
 	SetFrisbeeSpeed(1.0);
 }
 
-void ThreeWheelShooter::ShootFrisbee(float distanceInInches) {
+void FrisbeeShooter::ThreeWheel::ShootFrisbee(float distanceInInches) {
 	// This needs calibration. For now, just do the default.
 	ShootFrisbee();
 }
 
-void ThreeWheelShooter::StopFrisbee() {
+void FrisbeeShooter::ThreeWheel::StopFrisbee() {
 	SetFrisbeeSpeed(0);
 }
 
-void ThreeWheelShooter::SetFrisbeeSpeed(double speed) {
+void FrisbeeShooter::ThreeWheel::SetFrisbeeSpeed(double speed) {
 	m_frontMotor->Set(speed);
 	m_middleMotor->Set(speed);
 	m_lastMotor->Set(speed);
 }
 
-void ThreeWheelShooter::SetMaxDistance(float inches) {
+void FrisbeeShooter::ThreeWheel::SetMaxDistance(float inches) {
 	m_maxDistance = inches;
 }
 
-float ThreeWheelShooter::GetMaxdistance() {
+float FrisbeeShooter::ThreeWheel::GetMaxdistance() {
 	return m_maxDistance;
 }

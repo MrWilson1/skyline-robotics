@@ -52,7 +52,7 @@ public:
 			FrisbeeAimer::Base *aimer,
 			FrisbeeTurret::Base *horizontalTurret, 
 			FrisbeeTurret::Base *verticalTurret,
-			BaseFrisbeeShooter *shooter,
+			FrisbeeShooter::Base *shooter,
 			Tracking::TargetType target,
 			AutonomousCommand::Positions position);
 	~ShootAndGoToCenterLine();

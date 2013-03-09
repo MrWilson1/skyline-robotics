@@ -137,7 +137,7 @@ void ShooterCommand::AimTurret::Interrupted() {
 
 
 
-ShooterCommand::FireFrisbee::FireFrisbee(BaseFrisbeeShooter *shooter) :
+ShooterCommand::FireFrisbee::FireFrisbee(FrisbeeShooter::Base *shooter) :
 		Command("FireFrisbee") {
 	m_shooter = shooter;
 	Requires(m_shooter);
@@ -170,7 +170,7 @@ void ShooterCommand::FireFrisbee::Interrupted() {
 
 ShooterCommand::LoadAndFire::LoadAndFire(
 		FrisbeeLoader::Base *loader,
-		BaseFrisbeeShooter *shooter) :
+		FrisbeeShooter::Base *shooter) :
 		CommandGroup("LoadAndFireCommand") {
 	AddParallel(new ShooterCommand::FireFrisbee(shooter), 5.0);
 	AddSequential(new ShooterCommand::LoadFrisbee(loader));

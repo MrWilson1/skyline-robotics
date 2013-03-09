@@ -77,7 +77,7 @@ void TestbedRobot2013Profile::AutonomousInit() {
 }
 
 void TestbedRobot2013Profile::TeleopInit() {
-	m_drive->SetDefaultCommand(new TankDriveCommand(
+	m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
 			m_drive,
 			m_oi->TankLeftAxis,
 			m_oi->TankRightAxis));
@@ -87,9 +87,9 @@ void TestbedRobot2013Profile::TeleopInit() {
 	m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_rightTestEncoder, 
 			"right Encoder"));
-	m_oi->ToggleTransmissionButton->WhenPressed(new ToggleTransmissionCommand(
+	m_oi->ToggleTransmissionButton->WhenPressed(new DriveCommand::ToggleTransmission(
 			m_transmission));
-	m_oi->DriveStraightButton->WhileHeld(new TravelStraightManualCommand(
+	m_oi->DriveStraightButton->WhileHeld(new DriveCommand::TravelStraightManual(
 			m_drive, 
 			m_oi->DriveStraightAxis));
 }

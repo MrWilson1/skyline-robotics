@@ -83,7 +83,7 @@ private:
  */
 class FireFrisbee : public Command {
 public:
-	FireFrisbee(BaseFrisbeeShooter *shooter);
+	FireFrisbee(FrisbeeShooter::Base *shooter);
 	~FireFrisbee();
 	void Initialize();
 	void Execute();
@@ -92,7 +92,7 @@ public:
 	void Interrupted();
 		
 private:
-	BaseFrisbeeShooter *m_shooter;
+	FrisbeeShooter::Base *m_shooter;
 };
 
 
@@ -103,7 +103,7 @@ class LoadAndFire : public CommandGroup {
 public:
 	LoadAndFire(
 		FrisbeeLoader::Base *loader, 
-		BaseFrisbeeShooter *shooter);
+		FrisbeeShooter::Base *shooter);
 	~LoadAndFire();
 };
 

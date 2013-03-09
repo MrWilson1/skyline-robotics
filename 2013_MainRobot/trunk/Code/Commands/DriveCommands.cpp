@@ -1,40 +1,40 @@
 #include "DriveCommands.h"
 
-TankDriveCommand::TankDriveCommand(Drive::Base *drive, Axis *leftAxis, Axis *rightAxis) :
-		SimpleCommand("TankDrive", false) {
+DriveCommand::TankDrive::TankDrive(Drive::Base *drive, Axis *leftAxis, Axis *rightAxis) :
+		SimpleCommand("DriveCommand::TankDrive", false) {
 	m_drive = drive;
 	m_leftAxis = leftAxis;
 	m_rightAxis = rightAxis;
 	Requires(m_drive);
 }
 
-TankDriveCommand::~TankDriveCommand() {
+DriveCommand::TankDrive::~TankDrive() {
 	// Empty
 }
 
-void TankDriveCommand::Execute() {
+void DriveCommand::TankDrive::Execute() {
 	float left = Tools::Deadband(m_leftAxis->Get(), 0.1);
 	float right = Tools::Deadband(m_rightAxis->Get(), 0.1);
-	SmartDashboard::PutNumber("TankDriveCommand Left", left);
-	SmartDashboard::PutNumber("TankDriveCommand Right", right);
+	SmartDashboard::PutNumber("DriveCommand::TankDrive Left", left);
+	SmartDashboard::PutNumber("DriveCommand::TankDrive Right", right);
 	m_drive->TankDrive(left, right, true);
 }
 
 
-ArcadeDriveCommand::ArcadeDriveCommand(Drive::Base *drive,  Axis *magnitudeAxis, Axis *rotateAxis) :
-		SimpleCommand("ArcadeDrive", true) {
+DriveCommand::ArcadeDrive::ArcadeDrive(Drive::Base *drive,  Axis *magnitudeAxis, Axis *rotateAxis) :
+		SimpleCommand("DriveCommand::ArcadeDrive", true) {
 	m_drive = drive;
 	m_magnitudeAxis = magnitudeAxis;
 	m_rotateAxis = rotateAxis;
 	Requires(m_drive);
 }
 
-ArcadeDriveCommand::~ArcadeDriveCommand() {
+DriveCommand::ArcadeDrive::~ArcadeDrive() {
 	// empty
 	
 }
 
-void ArcadeDriveCommand::Execute() {
+void DriveCommand::ArcadeDrive::Execute() {
 	double moveValue = m_magnitudeAxis->Get();
 	double rotateValue = m_rotateAxis->Get();
 	double leftMotorOutput;
@@ -61,18 +61,18 @@ void ArcadeDriveCommand::Execute() {
 
 
 
-TravelStraightManualCommand::TravelStraightManualCommand(Drive::Base *drive, Axis *axis) :
-		SimpleCommand("TravelStraightManualCommand", false) {
+DriveCommand::TravelStraightManual::TravelStraightManual(Drive::Base *drive, Axis *axis) :
+		SimpleCommand("DriveCommand::TravelStraightManual", false) {
 	m_drive = drive;
 	m_axis = axis;
 	Requires(m_drive);
 }
 
-TravelStraightManualCommand::~TravelStraightManualCommand() {
+DriveCommand::TravelStraightManual::~TravelStraightManual() {
 	// empty
 }
 
-void TravelStraightManualCommand::Execute() {
+void DriveCommand::TravelStraightManual::Execute() {
 	float magnitude = m_axis->Get();
 	m_drive->TankDrive(magnitude, magnitude);
 }
@@ -80,8 +80,8 @@ void TravelStraightManualCommand::Execute() {
 
 
 
-RefreshPidCommand::RefreshPidCommand(Drive::IPid *drive, Encoder::PIDSourceParameter pidSource) :
-		SimpleCommand("RefreshPidCommand", true),
+DriveCommand::RefreshPid::RefreshPid(Drive::IPid *drive, Encoder::PIDSourceParameter pidSource) :
+		SimpleCommand("DriveCommand::RefreshPid", true),
 		m_pidSource(pidSource) {
 	m_drive = drive;
 	Drive::DrivePid pid = m_drive->GetRatePid(); // placeholder until it needs to be replaced.
@@ -98,11 +98,11 @@ RefreshPidCommand::RefreshPidCommand(Drive::IPid *drive, Encoder::PIDSourceParam
 	SmartDashboard::PutNumber("Right Rate D", pid.Right.GetD());
 }
 
-RefreshPidCommand::~RefreshPidCommand() {
+DriveCommand::RefreshPid::~RefreshPid() {
 	// empty
 }
 
-void RefreshPidCommand::Execute() {
+void DriveCommand::RefreshPid::Execute() {
 	float lp = SmartDashboard::GetNumber("Left Rate P");
 	float li = SmartDashboard::GetNumber("Left Rate I");
 	float ld = SmartDashboard::GetNumber("Left Rate D");
@@ -119,102 +119,103 @@ void RefreshPidCommand::Execute() {
 
 
 
-TravelDistanceCommand::TravelDistanceCommand(Drive::Base *drive, float distance, Tools::Units unit) :
-		Command("TravelDistanceCommand"),
+DriveCommand::TravelDistance::TravelDistance(Drive::Base *drive, float distance, Tools::Units unit) :
+		Command("DriveCommand::TravelDistance"),
 		m_distanceInInches(Tools::ConvertUnits(distance, unit, Tools::kInches)) {
 	m_drive = drive;
 	Requires(m_drive);
 	SmartDashboard::PutNumber("Travel Distance:", 0.0);
 }
 
-TravelDistanceCommand::TravelDistanceCommand(Drive::Base *drive, float distanceInInches) :
-		Command("TravelDistanceCommand"),
+DriveCommand::TravelDistance::TravelDistance(Drive::Base *drive, float distanceInInches) :
+		Command("DriveCommand::TravelDistance"),
 		m_distanceInInches(distanceInInches) {
 	m_drive = drive;
 	Requires(m_drive);
 	SmartDashboard::PutNumber("Travel Distance:", 0.0);
 }
 
-TravelDistanceCommand::~TravelDistanceCommand() {
+DriveCommand::TravelDistance::~TravelDistance() {
 	//empty
 }
 	
-void TravelDistanceCommand::Initialize() {
+void DriveCommand::TravelDistance::Initialize() {
 	m_drive->ResetDistanceAndRotation();
 }
 
-void TravelDistanceCommand::Execute() {
+void DriveCommand::TravelDistance::Execute() {
 	//m_drive->TravelDistance(m_distanceInInches);
 	float m_distanceInInches = SmartDashboard::GetNumber("Travel Distance:");
 	m_drive->TravelDistance(m_distanceInInches);
 }
 
-bool TravelDistanceCommand::IsFinished() {
+bool DriveCommand::TravelDistance::IsFinished() {
 	//Drive::DrivePid pid = dynamic_cast<Drive::IPid*>(m_drive)->GetDistancePid(); 
 	//float distance = (pid.Left.GetDistance() + pid.Right.GetDistance()) / 2; // take the average
 	//return Tools::IsWithinRange(distance, m_distanceInInches, 1);
 	return false;
 }
 
-void TravelDistanceCommand::End() {
+void DriveCommand::TravelDistance::End() {
 	// empty
 }
 
-void TravelDistanceCommand::Interrupted() {
+void DriveCommand::TravelDistance::Interrupted() {
 	// empty
 }
 
-RotateRobotCommand::RotateRobotCommand(Drive::Base *drive, float degrees) :
-		Command("RotateRobotCommand"),
+DriveCommand::RotateRobot::RotateRobot(Drive::Base *drive, float degrees) :
+		Command("DriveCommand::RotateRobot"),
 		m_degrees(degrees) {
 	m_drive = drive;
 }
 
-RotateRobotCommand::~RotateRobotCommand() {
+DriveCommand::RotateRobot::~RotateRobot() {
 	// empty
 }
 	
-void RotateRobotCommand::Initialize() {
+void DriveCommand::RotateRobot::Initialize() {
 	// empty
 }
 
-void RotateRobotCommand::Execute() {
+void DriveCommand::RotateRobot::Execute() {
 	// todo
 }
 
-bool RotateRobotCommand::IsFinished() {
+bool DriveCommand::RotateRobot::IsFinished() {
 	return true;
 }
 
-void RotateRobotCommand::End() {
+void DriveCommand::RotateRobot::End() {
 	// empty
 }
 
-void RotateRobotCommand::Interrupted() {
+void DriveCommand::RotateRobot::Interrupted() {
 	// empty
 }
 
 
-ToggleTransmissionCommand::ToggleTransmissionCommand(DriveTransmission::Base *transmission) :
-		SimpleCommand("ToggleTransmissionCommand", true) {
+DriveCommand::ToggleTransmission::ToggleTransmission(DriveTransmission::Base *transmission) :
+		SimpleCommand("DriveCommand::ToggleTransmission", true) {
 	m_transmission = transmission;
 	Requires(m_transmission);
 }
 
-ToggleTransmissionCommand::~ToggleTransmissionCommand() {
+DriveCommand::ToggleTransmission::~ToggleTransmission() {
 	// empty
 }
 
-void ToggleTransmissionCommand::Execute() {
+void DriveCommand::ToggleTransmission::Execute() {
 	m_transmission->ToggleGear();
 }
 
 
-ToggleTransmissionSwapPidCommand::ToggleTransmissionSwapPidCommand(DriveTransmission::Base *transmission, 
+DriveCommand::ToggleTransmissionSwapPid::ToggleTransmissionSwapPid(
+		DriveTransmission::Base *transmission, 
 		Drive::IPid *drive, 
 		Drive::DrivePid lowGearRate, Drive::DrivePid lowGearDistance,
 		Drive::DrivePid highGearRate, Drive::DrivePid highGearDistance) :
-		SimpleCommand("ToggleTransmissionCommand", true),
+		SimpleCommand("DriveCommand::ToggleTransmission", true),
 		m_lowGearRate(lowGearRate),
 		m_lowGearDistance(lowGearDistance),
 		m_highGearRate(highGearRate),
@@ -225,11 +226,11 @@ ToggleTransmissionSwapPidCommand::ToggleTransmissionSwapPidCommand(DriveTransmis
 	Requires(dynamic_cast<Drive::Base *>(m_drive));
 }
 
-ToggleTransmissionSwapPidCommand::~ToggleTransmissionSwapPidCommand() {
+DriveCommand::ToggleTransmissionSwapPid::~ToggleTransmissionSwapPid() {
 	// empty
 }
 
-void ToggleTransmissionSwapPidCommand::Execute() {
+void DriveCommand::ToggleTransmissionSwapPid::Execute() {
 	if (m_transmission->GetCurrentMode() == DriveTransmission::kHighGear) {
 		m_drive->SetRatePid(m_highGearRate);
 		m_drive->SetDistancePid(m_highGearDistance);

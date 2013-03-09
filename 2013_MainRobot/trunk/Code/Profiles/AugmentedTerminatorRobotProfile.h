@@ -61,7 +61,7 @@ private:
 	FrisbeeAimer::Base *m_aimer;
 	FrisbeeTurret::Base *m_horizontalTurret;
 	FrisbeeTurret::Base *m_verticalTurret;
-	BaseFrisbeeShooter *m_shooter;
+	FrisbeeShooter::Base *m_shooter;
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
 	

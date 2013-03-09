@@ -51,18 +51,36 @@ private:
 }
 
 
-class BaseTurretPositionDetector : public BaseSubsystem {
-public:
-	enum Position {
-		kLeft,
-		kCenter,
-		kRight
-	};
-	BaseTurretPositionDetector(const char *name);
-	~BaseTurretPositionDetector();
+namespace TurretPosition {
+
+enum Position {
+	kError,
+	kLeft,
+	kCenter,
+	kRight
+};
+
+class Base : public BaseSubsystem {
+public:	
+	Base(const char *name);
+	~Base();
 	
 	virtual Position GetPosition() = 0;
 };
+
+class TwoLimitSwitches : public Base {
+public:
+	TwoLimitSwitches(DigitalInput *leftSwitch, DigitalInput *rightSwitch);
+	~TwoLimitSwitches();
+	
+	Position GetPosition();
+	
+private:
+	DigitalInput *m_leftSwitch;
+	DigitalInput *m_rightSwitch;
+};
+
+}
 
 
 

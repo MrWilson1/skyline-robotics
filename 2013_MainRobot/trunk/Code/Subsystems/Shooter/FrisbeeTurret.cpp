@@ -64,3 +64,36 @@ void FrisbeeTurret::Guarded::Stop(){
 }
 
 
+
+TurretPosition::Base::Base(const char *name) :
+	BaseSubsystem(name) {
+	// empty
+}
+
+TurretPosition::Base::~Base() {
+	// empty
+}
+
+
+
+TurretPosition::TwoLimitSwitches::TwoLimitSwitches(DigitalInput *leftSwitch, DigitalInput *rightSwitch) :
+		TurretPosition::Base("TurretPosition::TwoLimitSwitches") {
+	m_leftSwitch = leftSwitch;
+	m_rightSwitch = rightSwitch;
+}
+
+TurretPosition::TwoLimitSwitches::~TwoLimitSwitches() {
+	// empty
+}
+
+TurretPosition::Position TurretPosition::TwoLimitSwitches::GetPosition() {
+	if (m_leftSwitch->Get() and m_rightSwitch->Get()) {
+		return TurretPosition::kCenter;
+	} else if (m_leftSwitch->Get()) {
+		return TurretPosition::kLeft;
+	} else if (m_rightSwitch->Get()) {
+		return TurretPosition::kRight;
+	} else {
+		return TurretPosition::kError;
+	}
+}

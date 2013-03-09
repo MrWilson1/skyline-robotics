@@ -9,13 +9,15 @@
 #include "../Subsystems/Drive/DriveTransmission.h"
 #include "../Subsystems/Controllers/Axis.h"
 
+namespace DriveCommand {
+
 /**
  * \brief Issues a perpetually running command to drive in tank mode.
  */
-class TankDriveCommand : public SimpleCommand {
+class TankDrive : public SimpleCommand {
 public:
-	TankDriveCommand(Drive::Base *drive, Axis *leftAxis, Axis *rightAxis);
-	~TankDriveCommand();
+	TankDrive(Drive::Base *drive, Axis *leftAxis, Axis *rightAxis);
+	~TankDrive();
 	/**
 	 * Grabs the appropriate tank values from the OI and 
 	 * displays them on the SmartDashboard.
@@ -31,10 +33,10 @@ private:
 /**
  * Issues a perpetually running command to drive in arcade mode.
  */
-class ArcadeDriveCommand : public SimpleCommand {
+class ArcadeDrive : public SimpleCommand {
 public:
-	ArcadeDriveCommand(Drive::Base *drive, Axis *magnitudeAxis, Axis *rotateAxis);
-	~ArcadeDriveCommand();
+	ArcadeDrive(Drive::Base *drive, Axis *magnitudeAxis, Axis *rotateAxis);
+	~ArcadeDrive();
 	void Execute();
 	
 private:
@@ -44,10 +46,10 @@ private:
 };
 
 
-class TravelStraightManualCommand : public SimpleCommand {
+class TravelStraightManual : public SimpleCommand {
 public:
-	TravelStraightManualCommand(Drive::Base *drive, Axis *axis);
-	~TravelStraightManualCommand();
+	TravelStraightManual(Drive::Base *drive, Axis *axis);
+	~TravelStraightManual();
 	void Execute();
 	
 private:
@@ -55,10 +57,10 @@ private:
 	Axis *m_axis;
 };
 
-class RefreshPidCommand : public SimpleCommand {
+class RefreshPid : public SimpleCommand {
 public:
-	RefreshPidCommand(Drive::IPid *drive, Encoder::PIDSourceParameter pidSource);
-	~RefreshPidCommand();
+	RefreshPid(Drive::IPid *drive, Encoder::PIDSourceParameter pidSource);
+	~RefreshPid();
 	void Execute();
 private:
 	Drive::IPid *m_drive;
@@ -66,12 +68,12 @@ private:
 };
 
 
-class TravelDistanceCommand : public Command
+class TravelDistance : public Command
 {
 public:
-	TravelDistanceCommand(Drive::Base *drive, float distance, Tools::Units unit);
-	TravelDistanceCommand(Drive::Base *drive, float distanceInInches);
-	~TravelDistanceCommand();
+	TravelDistance(Drive::Base *drive, float distance, Tools::Units unit);
+	TravelDistance(Drive::Base *drive, float distanceInInches);
+	~TravelDistance();
 	
 	void Initialize();
 	void Execute();
@@ -85,11 +87,11 @@ private:
 };
 
 
-class RotateRobotCommand : public Command
+class RotateRobot : public Command
 {
 public:
-	RotateRobotCommand(Drive::Base *drive, float degrees);
-	~RotateRobotCommand();
+	RotateRobot(Drive::Base *drive, float degrees);
+	~RotateRobot();
 	
 	void Initialize();
 	void Execute();
@@ -103,22 +105,22 @@ private:
 };
 
 
-class ToggleTransmissionCommand : public SimpleCommand {
+class ToggleTransmission : public SimpleCommand {
 public:
-	ToggleTransmissionCommand(DriveTransmission::Base *transmission);
-	~ToggleTransmissionCommand();
+	ToggleTransmission(DriveTransmission::Base *transmission);
+	~ToggleTransmission();
 	void Execute();
 	
 private:
 	DriveTransmission::Base *m_transmission;
 };
 
-class ToggleTransmissionSwapPidCommand : public SimpleCommand {
+class ToggleTransmissionSwapPid : public SimpleCommand {
 public:
-	ToggleTransmissionSwapPidCommand(DriveTransmission::Base *transmission, Drive::IPid *drive, 
+	ToggleTransmissionSwapPid(DriveTransmission::Base *transmission, Drive::IPid *drive, 
 			Drive::DrivePid lowGearRate, Drive::DrivePid lowGearDistance,
 			Drive::DrivePid highGearRate, Drive::DrivePid highGearDistance);
-	~ToggleTransmissionSwapPidCommand();
+	~ToggleTransmissionSwapPid();
 	void Execute();
 	
 private:
@@ -129,5 +131,7 @@ private:
 	Drive::DrivePid m_highGearRate;
 	Drive::DrivePid m_highGearDistance;
 };
+
+}
 
 #endif

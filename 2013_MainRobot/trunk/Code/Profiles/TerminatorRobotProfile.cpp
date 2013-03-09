@@ -80,7 +80,7 @@ void TerminatorRobotProfile::AutonomousInit() {
 }
 
 void TerminatorRobotProfile::TeleopInit() {
-	m_drive->SetDefaultCommand(new TankDriveCommand(
+	m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
 			m_drive,
 			m_oi->TankLeftAxis,
 			m_oi->TankRightAxis));
@@ -90,7 +90,7 @@ void TerminatorRobotProfile::TeleopInit() {
 	m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_rightTestEncoder, 
 			"right Encoder"));
-	m_oi->DriveStraightButton->WhileHeld(new TravelStraightManualCommand(
+	m_oi->DriveStraightButton->WhileHeld(new DriveCommand::TravelStraightManual(
 			m_drive, 
 			m_oi->DriveStraightAxis));
 	//SmartDashboard::PutData(new RefreshPidCommand(dynamic_cast<IPidDrive*>(m_drive), Encoder::kRate));

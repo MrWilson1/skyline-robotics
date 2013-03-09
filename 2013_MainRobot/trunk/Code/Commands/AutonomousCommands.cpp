@@ -16,8 +16,8 @@ AutonomousCommand::MoveToCenterLine::MoveToCenterLine(Drive::Base *drive, Autono
 	default:
 		distance = kGapFromPyramidToCenter;
 	}
-	AddSequential(new RotateRobotCommand(drive, rotation));
-	AddSequential(new TravelDistanceCommand(drive, distance - 50));
+	AddSequential(new DriveCommand::RotateRobot(drive, rotation));
+	AddSequential(new DriveCommand::TravelDistance(drive, distance - 50));
 }
 
 AutonomousCommand::MoveToCenterLine::~MoveToCenterLine() {
@@ -30,7 +30,7 @@ AutonomousCommand::ShootAndGoToCenterLine::ShootAndGoToCenterLine(
 			FrisbeeAimer::Base *aimer,
 			FrisbeeTurret::Base *horizontalTurret, 
 			FrisbeeTurret::Base *verticalTurret,
-			BaseFrisbeeShooter *shooter,
+			FrisbeeShooter::Base *shooter,
 			Tracking::TargetType target,
 			AutonomousCommand::Positions position) :
 			CommandGroup("ShootAndGoToCenterLine") {

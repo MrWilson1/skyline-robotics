@@ -6,6 +6,8 @@
 #include "../BaseSubsystem.h"
 #include "../../Misc/Tools.h"
 
+namespace FrisbeeShooter {
+
 /**
  * Base class for a Frisbee shooter.
  * 
@@ -15,10 +17,10 @@
  * 
  * Note: this interface may change substantially over time.
  */
-class BaseFrisbeeShooter : public BaseSubsystem {
+class Base : public BaseSubsystem {
 public:
-	BaseFrisbeeShooter(const char *name);
-	virtual ~BaseFrisbeeShooter();
+	Base(const char *name);
+	virtual ~Base();
 	
 	/**
 	 * Shoots the frisbee at a preset speed.
@@ -34,15 +36,15 @@ public:
 	virtual void SetFrisbeeSpeed(double speed) = 0;
 };
 
-class SimpleBeltShooter : public BaseFrisbeeShooter {
+class SimpleBelt : public Base {
 public:
 	enum Direction {
 		Positive = 1,
 		Negative = -1,
 	};
 	
-	SimpleBeltShooter(SpeedController *motor, Direction forwardDirection);
-	~SimpleBeltShooter();
+	SimpleBelt(SpeedController *motor, Direction forwardDirection);
+	~SimpleBelt();
 	
 	void ShootFrisbee();
 	void ShootFrisbee(float distanceInInches);
@@ -58,10 +60,10 @@ private:
 	float m_maxDistance;
 };
 
-class ThreeWheelShooter : public BaseFrisbeeShooter {
+class ThreeWheel : public Base {
 public:
-	ThreeWheelShooter(SpeedController *frontMotor, SpeedController *middleMotor, SpeedController *lastMotor);
-	~ThreeWheelShooter();
+	ThreeWheel(SpeedController *frontMotor, SpeedController *middleMotor, SpeedController *lastMotor);
+	~ThreeWheel();
 	
 	void ShootFrisbee();
 	void ShootFrisbee(float distanceInInches);
@@ -76,5 +78,7 @@ private:
 	SpeedController *m_lastMotor;
 	float m_maxDistance;
 };
+
+}
 
 #endif

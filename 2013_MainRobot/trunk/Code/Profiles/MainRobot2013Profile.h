@@ -64,7 +64,7 @@ private:
 	FrisbeeAimer::Base *m_aimer;
 	FrisbeeTurret::Base *m_horizontalTurret;
 	FrisbeeTurret::Base *m_verticalTurret;
-	BaseFrisbeeShooter *m_shooter;
+	FrisbeeShooter::Base *m_shooter;
 	DriveTransmission::Base *m_transmission;
 	
 	// OI
