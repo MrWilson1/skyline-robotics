@@ -11,10 +11,10 @@
 
 class Arm {
 public:
-	Arm(BaseSmartJoint *elbow, BaseSmartJoint *shoulder, double elbowLength, double shoulderLength);
+	Arm(Joint::BaseSmart *elbow, Joint::BaseSmart *shoulder, double elbowLength, double shoulderLength);
 	~Arm();
-	BaseSmartJoint *Elbow;
-	BaseSmartJoint *Shoulder;
+	Joint::BaseSmart *Elbow;
+	Joint::BaseSmart *Shoulder;
 	double ElbowLength;
 	double ShoulderLength;
 	
@@ -26,11 +26,11 @@ public:
 
 class SetJointSpeedCommand : public SimpleCommand {
 public:
-	SetJointSpeedCommand(BaseJoint *joint, double speed);
+	SetJointSpeedCommand(Joint::Base *joint, double speed);
 	~SetJointSpeedCommand();
 	void Execute();
 private:
-	BaseJoint *m_joint;
+	Joint::Base *m_joint;
 	double m_speed;
 };
 

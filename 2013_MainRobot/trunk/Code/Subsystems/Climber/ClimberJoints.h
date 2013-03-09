@@ -1,23 +1,31 @@
 #ifndef CLIMBER_JOINTS_H
 #define CLIMBER_JOINTS_H
+/**
+ * \file ClimberJoints.h
+ * 
+ * \addtogroup subsystems
+ * \{
+ */
 
 #include "WPILib.h"
 #include "../BaseSubsystem.h"
 #include"../../Misc/Tools.h"
 
-class BaseJoint : public BaseSubsystem {
+namespace Joint {
+
+class Base : public BaseSubsystem {
 public:
-	BaseJoint(const char *name);
-	~BaseJoint();
+	Base(const char *name);
+	~Base();
 	
 	virtual void SetSpeed(double speed) = 0;
 	virtual double GetSpeed() = 0;
 };
 
-class BaseSmartJoint : public BaseJoint {
+class BaseSmart : public Base {
 public:
-	BaseSmartJoint(const char *name);
-	~BaseSmartJoint();
+	BaseSmart(const char *name);
+	~BaseSmart();
 	
 	virtual void SetAngle(double angle) = 0;
 	virtual double GetAngle() = 0;
@@ -26,10 +34,10 @@ public:
 /**
  * \brief Joint for climber that uses winch and motor.
  */
-class BasicWinchClimberJoint : public BaseJoint {
+class BasicWinch : public Base {
 public:
-	BasicWinchClimberJoint(SpeedController *motor);
-	~BasicWinchClimberJoint();
+	BasicWinch(SpeedController *motor);
+	~BasicWinch();
 	
 	void SetSpeed(double speed);
 	double GetSpeed();
@@ -40,10 +48,10 @@ private:
 /**
  * \brief Joint for climber that uses a PID controller, encoders and a winch.
  */
-class PidWinchClimberJoint : public BaseSmartJoint {
+class PidWinch : public BaseSmart {
 public:
-	PidWinchClimberJoint(SpeedController *motor, Encoder *encoder);
-	~PidWinchClimberJoint();
+	PidWinch(SpeedController *motor, Encoder *encoder);
+	~PidWinch();
 	
 	/**
 	 * \brief Sets angle of joint in degrees.
@@ -61,6 +69,12 @@ private:
 	Encoder *m_encoder;	
 	PIDController *m_pid;
 };
+
+}
+
+/**
+ * \}
+ */
 
 
 #endif

@@ -1,43 +1,43 @@
 #include "ClimberJoints.h"
 
-BaseJoint::BaseJoint(const char *name) :
+Joint::Base::Base(const char *name) :
 		BaseSubsystem(name){
 	//
 }
 
-BaseJoint::~BaseJoint() {
+Joint::Base::~Base() {
 	//
 }
 
-BaseSmartJoint::BaseSmartJoint(const char *name) :
-		BaseJoint(name) {
+Joint::BaseSmart::BaseSmart(const char *name) :
+		Base(name) {
 	//
 }
 
-BaseSmartJoint::~BaseSmartJoint() {
+Joint::BaseSmart::~BaseSmart() {
 	//
 }
 
-BasicWinchClimberJoint::BasicWinchClimberJoint(SpeedController *motor) :
-		BaseJoint("BaseWinchClimberJoint") {
+Joint::BasicWinch::BasicWinch(SpeedController *motor) :
+		Base("BaseWinchClimberJoint") {
 	m_motor = motor;
 	AddActuatorToLiveWindow("Joint Motor", m_motor);
 }
 
-BasicWinchClimberJoint::~BasicWinchClimberJoint() {
+Joint::BasicWinch::~BasicWinch() {
 	//
 }
 
-void BasicWinchClimberJoint::SetSpeed(double speed) {
+void Joint::BasicWinch::SetSpeed(double speed) {
 	m_motor->Set(Tools::Limit(speed, -1.0, 1.0));
 }
 
-double BasicWinchClimberJoint::GetSpeed() {
+double Joint::BasicWinch::GetSpeed() {
 	return m_motor->Get();
 }
 
-PidWinchClimberJoint::PidWinchClimberJoint(SpeedController *motor, Encoder *encoder) :
-		BaseSmartJoint("MotorClimberJoint") {
+Joint::PidWinch::PidWinch(SpeedController *motor, Encoder *encoder) :
+		Joint::BaseSmart("MotorClimberJoint") {
 	m_motor = motor;
 	m_encoder = encoder;
 	m_encoder->SetPIDSourceParameter(Encoder::kDistance);
@@ -48,22 +48,22 @@ PidWinchClimberJoint::PidWinchClimberJoint(SpeedController *motor, Encoder *enco
 	AddActuatorToLiveWindow("PID Controller", m_pid);
 }
 
-PidWinchClimberJoint::~PidWinchClimberJoint() {
+Joint::PidWinch::~PidWinch() {
 	delete m_pid;
 }
 
-void PidWinchClimberJoint::SetAngle(float degrees) {
+void Joint::PidWinch::SetAngle(float degrees) {
 	m_pid->SetSetpoint(degrees);
 }
 
-double PidWinchClimberJoint::GetAngle() {
+double Joint::PidWinch::GetAngle() {
 	return m_pid->Get();
 }
 
-void PidWinchClimberJoint::SetSpeed(double speed) {
+void Joint::PidWinch::SetSpeed(double speed) {
 	m_motor->Set(Tools::Limit(speed, -1.0, 1.0));
 }
 
-double PidWinchClimberJoint::GetSpeed() {
+double Joint::PidWinch::GetSpeed() {
 	return m_motor->Get();
 }

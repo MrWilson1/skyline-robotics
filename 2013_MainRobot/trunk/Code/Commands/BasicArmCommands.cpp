@@ -1,6 +1,6 @@
 #include "BasicArmCommands.h"
 
-Arm::Arm(BaseSmartJoint *elbow, BaseSmartJoint *shoulder, double elbowLength, double shoulderLength) {
+Arm::Arm(Joint::BaseSmart *elbow, Joint::BaseSmart *shoulder, double elbowLength, double shoulderLength) {
 	Elbow = elbow;
 	Shoulder = shoulder;
 	ElbowLength = elbowLength;
@@ -32,7 +32,7 @@ double Arm::GetMagnitude() {
 }
 
 
-SetJointSpeedCommand::SetJointSpeedCommand(BaseJoint *joint, double speed) :
+SetJointSpeedCommand::SetJointSpeedCommand(Joint::Base *joint, double speed) :
 		SimpleCommand("SetJointSpeed", true),
 		m_speed(speed) {
 	m_joint = joint;

@@ -63,14 +63,14 @@ public:
 
 class ControlArmManuallyCommand : public SimpleCommand {
 public:
-	ControlArmManuallyCommand(BaseJoint *elbow, BaseJoint *shoulder, Axis *elbowAxis, Axis *shoulderAxis);
+	ControlArmManuallyCommand(Joint::Base *elbow, Joint::Base *shoulder, Axis *elbowAxis, Axis *shoulderAxis);
 	~ControlArmManuallyCommand();
 	
 	void Execute();
 	
 private:
-	BaseJoint *m_elbow;
-	BaseJoint *m_shoulder; 
+	Joint::Base *m_elbow;
+	Joint::Base *m_shoulder; 
 	Axis *m_elbowAxis;
 	Axis *m_shoulderAxis;
 };

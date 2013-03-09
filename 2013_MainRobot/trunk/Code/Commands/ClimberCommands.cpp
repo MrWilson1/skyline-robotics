@@ -75,7 +75,7 @@ ClimbPyramidCommand::~ClimbPyramidCommand() {
 }
 
 
-ControlArmManuallyCommand::ControlArmManuallyCommand(BaseJoint *elbow, BaseJoint *shoulder, Axis *elbowAxis, Axis *shoulderAxis) :
+ControlArmManuallyCommand::ControlArmManuallyCommand(Joint::Base *elbow, Joint::Base *shoulder, Axis *elbowAxis, Axis *shoulderAxis) :
 		SimpleCommand("ControlArmManually", true) {
 	m_elbow = elbow;
 	m_shoulder = shoulder;
