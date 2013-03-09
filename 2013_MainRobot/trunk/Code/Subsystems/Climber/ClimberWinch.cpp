@@ -1,28 +1,28 @@
 #include "ClimberWinch.h"
 
-BaseWinch::BaseWinch(const char *name) :
+Winch::Base::Base(const char *name) :
 		BaseSubsystem(name) {
 	//
 }
 
-BaseWinch::~BaseWinch() {
+Winch::Base::~Base() {
 	//
 }
 
-SimpleWinch::SimpleWinch(SpeedController *motor) :
-		BaseWinch("SimpleWinch") {
+Winch::Simple::Simple(SpeedController *motor) :
+		Base("SimpleWinch") {
 	m_motor = motor;
 }
 
-SimpleWinch::~SimpleWinch() {
+Winch::Simple::~Simple() {
 	//
 }
 
-void SimpleWinch::SetSpeed(double speed) {
+void Winch::Simple::SetSpeed(double speed) {
 	m_motor->Set(Tools::Limit(speed, -1.0, 1.0));
 }
 
-double SimpleWinch::GetSpeed() {
+double Winch::Simple::GetSpeed() {
 	return m_motor->Get();
 }
 

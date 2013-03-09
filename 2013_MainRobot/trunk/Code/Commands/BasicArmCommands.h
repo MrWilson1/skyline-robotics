@@ -84,12 +84,12 @@ public:
 
 class ControlWinchManualCommand : public SimpleCommand {
 public:
-	ControlWinchManualCommand(BaseWinch *winch, Axis *axis);
+	ControlWinchManualCommand(Winch::Base *winch, Axis *axis);
 	~ControlWinchManualCommand();
 	
 	void Execute();
 private:
-	BaseWinch *m_winch;
+	Winch::Base *m_winch;
 	Axis *m_axis;
 };
 

@@ -147,7 +147,7 @@ SetYCommand::~SetYCommand() {
 	//
 }
 
-ControlWinchManualCommand::ControlWinchManualCommand(BaseWinch *winch, Axis *axis) :
+ControlWinchManualCommand::ControlWinchManualCommand(Winch::Base *winch, Axis *axis) :
 		SimpleCommand("ControlWinch", false) {
 	m_winch = winch;
 	m_axis = axis;
