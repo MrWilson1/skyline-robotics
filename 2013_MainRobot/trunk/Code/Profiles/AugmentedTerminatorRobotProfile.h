@@ -39,8 +39,8 @@ private:
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
 	
-	SpeedController *m_turretHorizontal;
-	SpeedController *m_turretVertical;
+	SpeedController *m_horizontalTurretMotor;
+	SpeedController *m_verticalTurretMotor;
 	DigitalInput *m_turretLeftSwitch;
 	DigitalInput *m_turretRightSwitch;
 	DigitalInput *m_turretTopSwitch;
@@ -59,7 +59,8 @@ private:
 	BaseDrive *m_drive;
 	BaseFrisbeeLoader *m_loader;
 	BaseFrisbeeAimer *m_aimer;
-	BaseFrisbeeTurret *m_turret;
+	BaseAxisFrisbeeTurret *m_horizontalTurret;
+	BaseAxisFrisbeeTurret *m_verticalTurret;
 	BaseFrisbeeShooter *m_shooter;
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;

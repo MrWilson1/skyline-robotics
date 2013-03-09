@@ -137,6 +137,8 @@ namespace Tools {
 	void TrySaveFloat (const char *key, float value);
 	void TrySaveBoolean (const char *key, bool value);
 	void TrySaveLong (const char *key, INT64 value);  
+	
+	bool IsWithinBounds(double higherBound, double lowerBound, double value);
 }
 
 /**

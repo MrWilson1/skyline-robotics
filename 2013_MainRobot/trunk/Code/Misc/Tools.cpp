@@ -157,3 +157,7 @@ void Tools::TrySaveLong (const char *key, INT64 value) {
 		p->PutLong(key, value);
 	}
 }
+
+bool Tools::IsWithinBounds(double higherBound, double lowerBound, double value) {
+	return value <= higherBound && value > lowerBound;
+}

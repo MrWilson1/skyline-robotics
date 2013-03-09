@@ -115,17 +115,9 @@ void MainRobot2013Profile::CreateSubsystems() {
 			m_rightTread);
 	m_loader = new PlaceholderFrisbeeLoader();
 	//m_aimer = new VisionTablesFrisbeeAimer();
-	/*m_turret = new GuardedFrisbeeTurret(
-			m_turretHorizontal,
-			m_turretVertical,
-			m_turretLeftSwitch,
-			m_turretRightSwitch,
-			m_turretTopSwitch,
-			m_turretBottomSwitch);
-	*/
-	m_turret = new SimpleFrisbeeTurret(
-			m_turretHorizontal, 
-			m_turretVertical);
+	
+	m_horizontalTurret = new SimpleAxisFrisbeeTurret(m_turretHorizontal);
+	m_verticalTurret = new SimpleAxisFrisbeeTurret(m_turretVertical);
 	m_shooter = new ThreeWheelShooter(
 		m_shooterFront,
 		m_shooterMiddle,
@@ -158,16 +150,13 @@ void MainRobot2013Profile::TeleopInit() {
 	m_oi->ToggleTransmissionButton->WhenPressed(new ToggleTransmissionCommand(
 			m_transmission));
 	
-	m_turret->SetDefaultCommand(new ManuallyControlTurretCommand(
-			m_turret,
-			m_oi->RotateTurretAxis,
-			m_oi->LiftTurretAxis));
 	m_oi->FireFrisbeeButton->WhileHeld(new FireFrisbeeCommand( 
 			m_shooter));
 	
 	m_compressor->Start();
 	
-	SmartDashboard::PutData(m_turret);
+	SmartDashboard::PutData(m_horizontalTurret);
+	SmartDashboard::PutData(m_verticalTurret);
 	SmartDashboard::PutData(m_drive);
 	SmartDashboard::PutData(m_shooter);
 	

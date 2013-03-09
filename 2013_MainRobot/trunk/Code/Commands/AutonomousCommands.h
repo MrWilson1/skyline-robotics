@@ -36,7 +36,8 @@ public:
 			BaseDrive *drive,
 			BaseFrisbeeLoader *loader, 
 			BaseFrisbeeAimer *aimer, 
-			BaseFrisbeeTurret *turret, 
+			BaseAxisFrisbeeTurret *horizontalTurret, 
+			BaseAxisFrisbeeTurret *verticalTurret,
 			BaseFrisbeeShooter *shooter,
 			Tracking::TargetType target,
 			Autonomous::Positions position);

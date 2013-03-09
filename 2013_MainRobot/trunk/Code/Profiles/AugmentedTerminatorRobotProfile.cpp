@@ -48,10 +48,19 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 	m_rightEncoder->Start();
 		
 	// Turret
-	/*m_turretVertical = new Victor(
+	/*
+	m_verticalTurretMotor = new Victor(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm5);*/
-	m_turretHorizontal = new Victor(
+		Ports::DigitalSidecar::Pwm5);
+	m_turretTopSwitch = new DigitalInput(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Gpio10);
+	m_turretBottomSwitch = new DigitalInput(
+		Ports::Crio::Module1,
+		Ports::DigitalSidecar::Gpio11);
+	*/
+	/*
+	m_horizontalTurretMotor = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm6);
 	m_turretRightSwitch = new DigitalInput(
@@ -60,16 +69,11 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 	m_turretLeftSwitch = new DigitalInput(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio9);
-	/*
-	m_turretTopSwitch = new DigitalInput(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio10);
-	m_turretBottomSwitch = new DigitalInput(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio11);*/
+	*/
 	
 	// Shooter
-	/*m_shooterBack = new Victor(
+	/*
+	m_shooterBack = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm5);
 	m_shooterMiddle = new Victor(
@@ -82,7 +86,8 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio1,
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio2);*/
+		Ports::DigitalSidecar::Gpio2);
+	*/
 	
 	// On the solenoid...
 	// hole 4 goes nearest the piston head
@@ -120,22 +125,21 @@ void AugmentedTerminatorRobotProfile::CreateSubsystems() {
 	m_rightTestEncoder = new TestEncoder(m_rightEncoder, "Right Encoder Test");
 	
 	m_loader = new PistonFrisbeeLoader(m_loaderSolenoid);
-	//m_aimer = new VisionTablesFrisbeeAimer();
-	/*m_turret = new GuardedFrisbeeTurret(
-			m_turretHorizontal,
-			m_turretVertical,
+	/*
+	m_horizontalTurret = new GuardedAxisFrisbeeTurret(
+			m_horizontalTurretMotor,
 			m_turretLeftSwitch,
-			m_turretRightSwitch,
-			m_turretTopSwitch,
-			m_turretBottomSwitch);
+			m_turretRightSwitch);
+	m_verticalTurret = new SimpleAxisFrisbeeTurret(
+			m_verticalTurretMotor);
 	*/
-	/*m_turret = new SimpleFrisbeeTurret(
-			m_turretHorizontal, 
-			m_turretVertical);
+	//m_aimer = new VisionTablesFrisbeeAimer();
+	/*
 	m_shooter = new ThreeWheelShooter(
 		m_shooterFront,
 		m_shooterMiddle,
-		m_shooterBack);*/
+		m_shooterBack);
+	*/
 }
 
 void AugmentedTerminatorRobotProfile::CreateOI() {
@@ -165,28 +169,22 @@ void AugmentedTerminatorRobotProfile::TeleopInit() {
 			m_drive,
 			m_oi->DriveStraightAxis));
 	
-	/**m_turret->SetDefaultCommand(new ManuallyControlTurretCommand(
-			m_turret,
+	/*
+	m_horizontalTurret->SetDefaultCommand(new ManuallyControlTurretCommand(
+			m_horizontalTurret, 
 			m_oi->RotateTurretAxis,
-			m_oi->LiftTurretAxis));*/
-	/*m_oi->FireFrisbeeButton->WhileHeld(new LoadAndFireFrisbeeCommand(
+			"ManuallyControlTurretCommand_Horizontal"));
+	m_verticalTurret->SetDefaultCommand(new ManuallyControlTurretCommand(
+			m_verticalTurret, 
+			m_oi->RotateTurretAxis,
+			"ManuallyControlTurretCommand_Vertical"));
+	m_oi->FireFrisbeeButton->WhileHeld(new LoadAndFireFrisbeeCommand(
 			m_loader,
-			m_shooter));*/
-	//m_oi->LoadFrisbeeButton->WhenPressed(new LoadFrisbeeCommand(m_loader));
+			m_shooter));
+	*/
+	m_oi->LoadFrisbeeButton->WhenPressed(new LoadFrisbeeCommand(m_loader));
 	
 	m_compressor->Start();
-	
-	//SmartDashboard::PutData(m_turret);
-	SmartDashboard::PutData(new LoadFrisbeeCommand(m_loader));
-	SmartDashboard::PutData(m_drive);
-	//SmartDashboard::PutData(m_shooter);
-	SmartDashboard::PutData(m_loader);
-	
-	/*m_turret->SetDefaultCommand(new AimTurretCommand(
-			m_aimer, 
-			m_turret, 
-			Tracking::ClosestOffset, 
-			3.0));*/
 	
 	// Will stop if the shooter is within 3 degrees of the centerpoint of the target
 }
