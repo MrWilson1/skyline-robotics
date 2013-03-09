@@ -52,7 +52,7 @@ void TestbedRobot2013Profile::CreateBasicHardwareObjects() {
 }
 
 void TestbedRobot2013Profile::CreateSubsystems() {
-	m_drive = new SimpleDrive(m_leftTread, m_rightTread);
+	m_drive = new Drive::Simple(m_leftTread, m_rightTread);
 	m_leftTestEncoder = new TestEncoder(
 			m_leftEncoder,
 			"Left Encoder");

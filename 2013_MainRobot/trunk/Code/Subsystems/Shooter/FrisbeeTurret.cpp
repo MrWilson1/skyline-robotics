@@ -1,7 +1,5 @@
 #include "FrisbeeTurret.h"
 
-
-
 FrisbeeTurret::Base::Base(const char *name) :
 		BaseSubsystem(name) {
 	// Empty

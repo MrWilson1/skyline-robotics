@@ -1,27 +1,27 @@
 #include "DriveSubsystem.h"
 
-BaseDrive::BaseDrive(const char *name) :
+Drive::Base::Base(const char *name) :
 	BaseSubsystem(name) {
 	// empty
 }
 
-BaseDrive::~BaseDrive() {
+Drive::Base::~Base() {
 	// empty
 }
 
-IPidDrive::IPidDrive() {
+Drive::IPid::IPid() {
 	// empty
 }
 
-IPidDrive::~IPidDrive() {
+Drive::IPid::~IPid() {
 	// empty
 }
 
 
-SimpleDrive::SimpleDrive(
+Drive::Simple::Simple(
 		Tread *left, 
 		Tread *right) :
-		BaseDrive("SimpleDrive") {
+		Drive::Base("SimpleDrive") {
 	m_leftTread = left;
 	m_rightTread = right;
 	m_rightTread->SetDirection(Tread::kReverse);
@@ -29,11 +29,11 @@ SimpleDrive::SimpleDrive(
 	AddActuatorToLiveWindow("Right", m_rightTread);
 }
 
-SimpleDrive::~SimpleDrive() {
+Drive::Simple::~Simple() {
 	// empty
 }
 
-void SimpleDrive::TankDrive(float leftValue, float rightValue) {
+void Drive::Simple::TankDrive(float leftValue, float rightValue) {
 	if (m_leftTread == NULL) {
 		SmartDashboard::PutString(GetName(), "leftTread null");
 		return;
@@ -47,7 +47,7 @@ void SimpleDrive::TankDrive(float leftValue, float rightValue) {
 	m_rightTread->SetSpeed(rightValue);
 }
 
-void SimpleDrive::TankDrive(float leftValue, float rightValue, bool squaredInputs) {
+void Drive::Simple::TankDrive(float leftValue, float rightValue, bool squaredInputs) {
 	if (squaredInputs) {
 		leftValue = Tools::SquareMagnitude(leftValue);
 		rightValue = Tools::SquareMagnitude(rightValue);
@@ -55,23 +55,23 @@ void SimpleDrive::TankDrive(float leftValue, float rightValue, bool squaredInput
 	TankDrive(leftValue, rightValue);
 }
 
-void SimpleDrive::ResetDistanceAndRotation() {
+void Drive::Simple::ResetDistanceAndRotation() {
 	// do nothing
 }
 
-void SimpleDrive::TravelDistance(float distanceInInches) {
+void Drive::Simple::TravelDistance(float distanceInInches) {
 	// do nothing
 }
 
-void SimpleDrive::Rotate(float degrees) {
+void Drive::Simple::Rotate(float degrees) {
 	// do nothing
 }
 
-void SimpleDrive::Disable() {
+void Drive::Simple::Disable() {
 	Brake();
 }
 
-void SimpleDrive::Enable() {
+void Drive::Simple::Enable() {
 	// empty
 }
 
@@ -80,15 +80,15 @@ void SimpleDrive::Enable() {
  * slipping and sliding.
  * 
  * On the SimpleDrive, this is equivalent to calling 
- * SimpleDrive::StopMoving.
+ * Drive::Simple::StopMoving.
  */
-void SimpleDrive::Brake() {
+void Drive::Simple::Brake() {
 	TankDrive(0.0, 0.0);
 }
 
 
 
-SmoothEncoder::SmoothEncoder(
+Drive::SmoothEncoder::SmoothEncoder(
 	Encoder *encoder, 
 	unsigned int maxSize,
 	Encoder::PIDSourceParameter pidSourceParameter,
@@ -102,11 +102,11 @@ SmoothEncoder::SmoothEncoder(
 	m_encoder->SetDistancePerPulse(m_distancePerPulse);
 }
 
-SmoothEncoder::~SmoothEncoder() {
+Drive::SmoothEncoder::~SmoothEncoder() {
 	// Empty
 }
 
-double SmoothEncoder::PIDGet() {
+double Drive::SmoothEncoder::PIDGet() {
 	double newValue = m_encoder->PIDGet();
 	m_history.push_front(newValue);
 	if (m_history.size() > m_maxSize) {
@@ -120,46 +120,46 @@ double SmoothEncoder::PIDGet() {
 	return average;
 }
 
-Encoder * SmoothEncoder::GetEncoder() {
+Encoder * Drive::SmoothEncoder::GetEncoder() {
 	return m_encoder;
 }
 
-void SmoothEncoder::SetMaxSize(unsigned int maxSize) {
+void Drive::SmoothEncoder::SetMaxSize(unsigned int maxSize) {
 	m_maxSize = maxSize;
 	while (m_history.size() > m_maxSize) {
 		m_history.pop_back();
 	}
 }
 
-unsigned int SmoothEncoder::GetMaxSize() {
+unsigned int Drive::SmoothEncoder::GetMaxSize() {
 	return m_maxSize;
 }
 	
-void SmoothEncoder::SetPIDSourceParameter(Encoder::PIDSourceParameter pidSourceParameter) {
+void Drive::SmoothEncoder::SetPIDSourceParameter(Encoder::PIDSourceParameter pidSourceParameter) {
 	m_pidSourceParameter = pidSourceParameter;
 	m_encoder->SetPIDSourceParameter(m_pidSourceParameter);
 }
 
-Encoder::PIDSourceParameter SmoothEncoder::GetPIDSourceParameter() {
+Encoder::PIDSourceParameter Drive::SmoothEncoder::GetPIDSourceParameter() {
 	return m_pidSourceParameter;
 }
 
-void SmoothEncoder::SetDistancePerPulse(float distancePerPulse) {
+void Drive::SmoothEncoder::SetDistancePerPulse(float distancePerPulse) {
 	m_distancePerPulse = distancePerPulse;
 	m_encoder->SetDistancePerPulse(m_distancePerPulse);
 }
 
-float SmoothEncoder::GetDistancePerPulse() {
+float Drive::SmoothEncoder::GetDistancePerPulse() {
 	return m_distancePerPulse;
 }
 
-void SmoothEncoder::Reset() {
+void Drive::SmoothEncoder::Reset() {
 	m_encoder->Reset();
 }
 
 
 
-IntegratedPid::IntegratedPid(float p, float i, float d, float dpp, 
+Drive::TreadPid::TreadPid(float p, float i, float d, float dpp, 
 		Encoder::PIDSourceParameter pidSource, Encoder *encoder, Tread *tread) :
 		m_p(p),
 		m_i(i),
@@ -173,103 +173,103 @@ IntegratedPid::IntegratedPid(float p, float i, float d, float dpp,
 	m_pid->Disable();
 }
 
-IntegratedPid::~IntegratedPid() {
+Drive::TreadPid::~TreadPid() {
 	// empty
 }
 	
-void IntegratedPid::SetRaw(float speed) {
+void Drive::TreadPid::SetRaw(float speed) {
 	m_tread->SetSpeed(speed);
 }
 
-void IntegratedPid::SetSetpoint(float setpoint) {
+void Drive::TreadPid::SetSetpoint(float setpoint) {
 	//setpoint *= m_dpp;
 	m_pid->SetSetpoint(setpoint);
 }
 
-void IntegratedPid::SetPid(float p, float i, float d) {
+void Drive::TreadPid::SetPid(float p, float i, float d) {
 	m_p = p;
 	m_i = i;
 	m_d = d;
 	m_pid->SetPID(p, i, d);
 }
 
-void IntegratedPid::SetDistancePerPulse(float dpp) {
+void Drive::TreadPid::SetDistancePerPulse(float dpp) {
 	m_dpp = dpp;
 	m_encoder->SetDistancePerPulse(1.0f/dpp);
 }
 
-float IntegratedPid::GetSpeed() {
+float Drive::TreadPid::GetSpeed() {
 	return m_tread->GetSpeed();
 }
 
-void IntegratedPid::Reset() {
+void Drive::TreadPid::Reset() {
 	m_encoder->Reset();
 }
 
-void IntegratedPid::Enable() {
+void Drive::TreadPid::Enable() {
 	m_encoder->SetDistancePerPulse(1.0f/m_dpp);
 	m_encoder->SetPIDSourceParameter(m_pidSource);
 	m_encoder->Start();
 	m_pid->Enable();
 }
 
-void IntegratedPid::Disable() {
+void Drive::TreadPid::Disable() {
 	m_encoder->Reset();
 	//m_encoder->Stop();
 	m_pid->Disable();
 }
 
-PIDController* IntegratedPid::GetController() {
+PIDController* Drive::TreadPid::GetController() {
 	return m_pid;
 }
 
-float IntegratedPid::GetP() {
+float Drive::TreadPid::GetP() {
 	return m_p;
 }
 	
-float IntegratedPid::GetI() {
+float Drive::TreadPid::GetI() {
 	return m_i;
 }
 
-float IntegratedPid::GetD() {
+float Drive::TreadPid::GetD() {
 	return m_d;
 }
 
-float IntegratedPid::GetDistancePerPulse() {
+float Drive::TreadPid::GetDistancePerPulse() {
 	return m_dpp;
 }
 
-float IntegratedPid::GetDistance() {
+float Drive::TreadPid::GetDistance() {
 	return m_encoder->GetDistance();
 }
 
 
-DrivePid::DrivePid(IntegratedPid leftPid, IntegratedPid rightPid) :
+Drive::DrivePid::DrivePid(Drive::TreadPid leftPid, Drive::TreadPid rightPid) :
 		Left(leftPid),
 		Right(rightPid) {
 	// empty
 }
 
-DrivePid::~DrivePid() {
+Drive::DrivePid::~DrivePid() {
 	// empty
 }
 
-void DrivePid::SetSetpoint(float left, float right) {
+void Drive::DrivePid::SetSetpoint(float left, float right) {
 	Left.SetSetpoint(left);
 	Right.SetSetpoint(right);
 }
 
-void DrivePid::Reset() {
+void Drive::DrivePid::Reset() {
 	Left.Reset();
 	Right.Reset();
 }
 
-void DrivePid::Enable() {
+void Drive::DrivePid::Enable() {
 	Left.Enable();
 	Right.Enable();
 }
 
-void DrivePid::Disable() {
+void Drive::DrivePid::Disable() {
 	Left.Disable();
 	Right.Disable();
 }
@@ -277,10 +277,10 @@ void DrivePid::Disable() {
 
 
 
-PidSimpleDrive::PidSimpleDrive(DrivePid ratePid, DrivePid distancePid, double robotDiagonalLength) :
-			BaseDrive("PidSimpleDrive"),
-			IPidDrive(),
-			m_currentMode(Rate),
+Drive::SimplePid::SimplePid(DrivePid ratePid, DrivePid distancePid, double robotDiagonalLength) :
+			Drive::Base("PidSimpleDrive"),
+			Drive::IPid(),
+			m_currentMode(kRate),
 			m_ratePid(ratePid),
 			m_distancePid(distancePid),
 			m_robotDiagonalLength(robotDiagonalLength){
@@ -294,17 +294,17 @@ PidSimpleDrive::PidSimpleDrive(DrivePid ratePid, DrivePid distancePid, double ro
 	AddActuatorToLiveWindow("Right PID Distance", m_distancePid.Right.GetController());
 }
 
-PidSimpleDrive::~PidSimpleDrive() {
+Drive::SimplePid::~SimplePid() {
 	// empty
 }
 
-void PidSimpleDrive::TankDrive(float leftValue, float rightValue) {
-	TryToggling(Rate);
+void Drive::SimplePid::TankDrive(float leftValue, float rightValue) {
+	TryToggling(kRate);
 	TankDrive(leftValue, rightValue, false);
 }
 
-void PidSimpleDrive::TankDrive(float leftValue, float rightValue, bool squaredInputs) {
-	TryToggling(Rate);
+void Drive::SimplePid::TankDrive(float leftValue, float rightValue, bool squaredInputs) {
+	TryToggling(kRate);
 	if (squaredInputs) {
 		leftValue = Tools::SquareMagnitude(leftValue);
 		rightValue = Tools::SquareMagnitude(rightValue);
@@ -314,91 +314,91 @@ void PidSimpleDrive::TankDrive(float leftValue, float rightValue, bool squaredIn
 	SmartDashboard::PutNumber("Right Tread", m_ratePid.Right.GetSpeed());
 }
 
-void PidSimpleDrive::ResetDistanceAndRotation() {
+void Drive::SimplePid::ResetDistanceAndRotation() {
 	m_ratePid.Reset();
 	m_distancePid.Reset();
 }
 
-void PidSimpleDrive::TravelDistance(float distanceInInches) {
-	TryToggling(Distance);
+void Drive::SimplePid::TravelDistance(float distanceInInches) {
+	TryToggling(kDistance);
 	m_distancePid.SetSetpoint(distanceInInches, distanceInInches);
 }
 
-void PidSimpleDrive::Rotate(float degrees) {
-	TryToggling(Distance);
+void Drive::SimplePid::Rotate(float degrees) {
+	TryToggling(kDistance);
 	double radius = m_robotDiagonalLength / 2;
 	double circumference = Tools::PI * radius * radius;
 	double arcLength = circumference * (degrees / 360);
 	m_distancePid.SetSetpoint(arcLength, -arcLength);
 }
 
-void PidSimpleDrive::Disable() {
+void Drive::SimplePid::Disable() {
 	m_ratePid.Left.SetRaw(0);
 	m_ratePid.Right.SetRaw(0);
 	m_ratePid.Disable();
 	m_distancePid.Disable();
 }
 
-void PidSimpleDrive::Enable() {
+void Drive::SimplePid::Enable() {
 	m_ratePid.Enable();
 }
 
-void PidSimpleDrive::Brake() {
+void Drive::SimplePid::Brake() {
 	TankDrive(0.0, 0.0);
 }
 
-void PidSimpleDrive::TryToggling(PidMode mode) {
+void Drive::SimplePid::TryToggling(PidMode mode) {
 	if (mode == m_currentMode) {
 		return;
 	}
 	switch (mode) {
-	case Rate:
+	case kRate:
 		m_distancePid.Disable();
 		m_ratePid.Enable();
-		m_currentMode = Rate;
+		m_currentMode = kRate;
 		break;
-	case Distance:
+	case kDistance:
 		m_ratePid.Disable();
 		m_distancePid.Enable();
-		m_currentMode = Distance;
+		m_currentMode = kDistance;
 		break;
 	default:
 		SmartDashboard::PutString("PidSimpleDrive Toggling error", "Unknown option");
 	}
 }
 
-void PidSimpleDrive::UpdatePidValues() {
+void Drive::SimplePid::UpdatePidValues() {
 	// currently not implemented.
 }
 
-void PidSimpleDrive::AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd) {
+void Drive::SimplePid::AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd) {
 	m_ratePid.Left.SetPid(lp, li, ld);
 	m_ratePid.Right.SetPid(rp, ri, rd);
 }
 	
-void PidSimpleDrive::AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd) {
+void Drive::SimplePid::AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd) {
 	m_distancePid.Left.SetPid(lp, li, ld);
 	m_distancePid.Right.SetPid(rp, ri, rd);
 }
 
-DrivePid PidSimpleDrive::GetRatePid() {
+Drive::DrivePid Drive::SimplePid::GetRatePid() {
 	return m_ratePid;
 }
 
-DrivePid PidSimpleDrive::GetDistancePid() {
+Drive::DrivePid Drive::SimplePid::GetDistancePid() {
 	return m_distancePid;
 }
 
-void PidSimpleDrive::SetRatePid(DrivePid ratePid) {
-	if (m_currentMode == Rate) {
+void Drive::SimplePid::SetRatePid(DrivePid ratePid) {
+	if (m_currentMode == kRate) {
 		m_ratePid.Disable();
 	}
 	m_ratePid = ratePid;
 	m_ratePid.Enable();
 }
 
-void PidSimpleDrive::SetDistancePid(DrivePid distancePid) {
-	if (m_currentMode == Distance) {
+void Drive::SimplePid::SetDistancePid(DrivePid distancePid) {
+	if (m_currentMode == kDistance) {
 		m_distancePid.Disable();
 	}
 	m_distancePid = distancePid;

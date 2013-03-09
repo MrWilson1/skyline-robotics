@@ -20,7 +20,7 @@ enum Positions{
 
 class MoveToCenterLine : public CommandGroup {
 public:
-	MoveToCenterLine(BaseDrive *drive, Autonomous::Positions positions);
+	MoveToCenterLine(Drive::Base *drive, Autonomous::Positions positions);
 	~MoveToCenterLine();
 	
 private:
@@ -33,7 +33,7 @@ private:
 class ShootAndGoToCenterLine : public CommandGroup {
 public:
 	ShootAndGoToCenterLine(
-			BaseDrive *drive,
+			Drive::Base *drive,
 			BaseFrisbeeLoader *loader, 
 			BaseFrisbeeAimer *aimer, 
 			FrisbeeTurret::Base *horizontalTurret, 

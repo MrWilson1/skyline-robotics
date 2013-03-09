@@ -35,7 +35,7 @@ private:
 	DoubleSolenoid *m_rightTransmissionSolenoid;
 	
 	// Subsystems
-	BaseDrive *m_drive;
+	Drive::Base *m_drive;
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
 	DriveTransmission::Base *m_transmission;

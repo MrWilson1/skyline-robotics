@@ -3,11 +3,7 @@
 /**
  * \file DriveSubsystem.h
  * 
- * Implements various subsystems related to the drive.
- * 
  * \addtogroup subsystems
- * \{
- * \defgroup drive_subsystems Drive
  * \{
  */
 
@@ -18,6 +14,11 @@
 #include "../BaseSubsystem.h"
 #include "../Components/DriveComponents.h"
 #include "../../Misc/Tools.h"
+
+/**
+ * \brief Implements various subsystems related to the drive.
+ */
+namespace Drive {
 
 /**
  * \brief A base drive. All drives must be a subclass of this class.
@@ -31,10 +32,10 @@
  * 
  * Note that all drive systems are enabled upon instantiation.
  */
-class BaseDrive : public BaseSubsystem {
+class Base : public BaseSubsystem {
 public:
-	BaseDrive(const char *name);
-	virtual ~BaseDrive();
+	Base(const char *name);
+	virtual ~Base();
 	
 	virtual void TankDrive(float leftValue, float rightValue) = 0;
 	virtual void TankDrive(float leftValue, float rightValue, bool squaredInputs) = 0;
@@ -52,11 +53,11 @@ public:
  * It provides a bunch of convenience functions used to manipulate both the PID controller, the
  * wheel, and the encoder.
  */
-class IntegratedPid {
+class TreadPid {
 public:
-	IntegratedPid(float p, float i, float d, float dpp, Encoder::PIDSourceParameter pidSource, 
+	TreadPid(float p, float i, float d, float dpp, Encoder::PIDSourceParameter pidSource, 
 				Encoder *encoder, Tread *tread);
-	~IntegratedPid();
+	~TreadPid();
 	
 	void SetRaw(float speed);
 	void SetSetpoint(float setpoint);
@@ -89,7 +90,7 @@ private:
  */
 class DrivePid {
 public:
-	DrivePid(IntegratedPid leftPid, IntegratedPid rightPid);
+	DrivePid(TreadPid leftPid, TreadPid rightPid);
 	~DrivePid();
 	
 	void SetSetpoint(float left, float right);
@@ -97,18 +98,18 @@ public:
 	void Enable();
 	void Disable();
 	
-	IntegratedPid Left;
-	IntegratedPid Right;
+	TreadPid Left;
+	TreadPid Right;
 };
 
 
 /**
  * \brief An interface for any PID-based drive.
  */
-class IPidDrive {
+class IPid {
 public:
-	IPidDrive();
-	virtual ~IPidDrive();
+	IPid();
+	virtual ~IPid();
 	virtual void UpdatePidValues() = 0;
 	virtual void AdjustRatePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
 	virtual void AdjustDistancePid(float lp, float li, float ld, float rp, float ri, float rd) = 0;
@@ -122,10 +123,10 @@ public:
  * \brief The absolute simplest drive possible. Contains
  * no PID loops or other forms of feedback systems.
  */
-class SimpleDrive : public BaseDrive {
+class Simple : public Base {
 public:
-	SimpleDrive(Tread *left, Tread *right);
-	~SimpleDrive();
+	Simple(Tread *left, Tread *right);
+	~Simple();
 	
 	void TankDrive(float leftValue, float rightValue);
 	void TankDrive(float leftValue, float rightValue, bool squaredInputs);
@@ -214,13 +215,13 @@ private:
  * 
  * \warning Only the rate PID loops have been calibrated
  */
-class PidSimpleDrive : public BaseDrive, public IPidDrive {
+class SimplePid : public Base, public IPid {
 public:
-	PidSimpleDrive(
+	SimplePid(
 			DrivePid ratePid,
 			DrivePid distancePid,
 			double robotDiagonalLength);
-	~PidSimpleDrive();
+	~SimplePid();
 	
 	void TankDrive(float leftValue, float rightValue);
 	void TankDrive(float leftValue, float rightValue, bool squaredInputs);
@@ -240,20 +241,19 @@ public:
 	
 private:
 	enum PidMode {
-		Rate,
-		Distance
+		kRate,
+		kDistance
 	};
 	void TryToggling(PidMode mode);
 	PidMode m_currentMode;
 	DrivePid m_ratePid;
 	DrivePid m_distancePid;
 	double m_robotDiagonalLength;
-	
-	
 };
 
+}
+
 /**
- * \}
  * \}
  */
 #endif

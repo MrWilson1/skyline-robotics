@@ -35,7 +35,7 @@ void BlandRobotProfile::CreateBasicHardwareObjects() {
 }
 
 void BlandRobotProfile::CreateSubsystems() {
-	m_drive = new SimpleDrive(m_leftTread, m_rightTread);
+	m_drive = new Drive::Simple(m_leftTread, m_rightTread);
 }
 
 void BlandRobotProfile::CreateOI() {

@@ -32,7 +32,7 @@ private:
 	XboxController *m_xbox;
 	
 	// Subsystems
-	BaseDrive *m_drive;
+	Drive::Base *m_drive;
 	
 	SimpleOI *m_oi;
 	

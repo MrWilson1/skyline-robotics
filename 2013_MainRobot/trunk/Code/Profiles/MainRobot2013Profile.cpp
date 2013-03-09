@@ -98,19 +98,19 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 }
 
 void MainRobot2013Profile::CreateSubsystems() {
-	IntegratedPid leftRatePid(0.1, 0.2, 0.0, 1.0f/2.0f, Encoder::kRate, m_leftEncoder, m_leftTread);
-	IntegratedPid rightRatePid(0.1, 0.2, 0.0, 1.0f/2.0f, Encoder::kRate, m_rightEncoder, m_rightTread);
-	IntegratedPid leftDistancePid(0.1, 0.0, 0.0, 240.f / 2.0f, Encoder::kDistance, m_leftEncoder, m_leftTread);
-	IntegratedPid rightDistancePid(0.1, 0.0, 0.0, 240.f / 2.0f, Encoder::kDistance, m_rightEncoder, m_rightTread);
+	Drive::TreadPid leftRatePid(0.1, 0.2, 0.0, 1.0f/2.0f, Encoder::kRate, m_leftEncoder, m_leftTread);
+	Drive::TreadPid rightRatePid(0.1, 0.2, 0.0, 1.0f/2.0f, Encoder::kRate, m_rightEncoder, m_rightTread);
+	Drive::TreadPid leftDistancePid(0.1, 0.0, 0.0, 240.f / 2.0f, Encoder::kDistance, m_leftEncoder, m_leftTread);
+	Drive::TreadPid rightDistancePid(0.1, 0.0, 0.0, 240.f / 2.0f, Encoder::kDistance, m_rightEncoder, m_rightTread);
 	
 	// todo: validate the above.
 	
-	DrivePid rateDrivePid(leftRatePid, rightRatePid);
-	DrivePid distanceDrivePid(leftDistancePid, rightDistancePid);
+	Drive::DrivePid rateDrivePid(leftRatePid, rightRatePid);
+	Drive::DrivePid distanceDrivePid(leftDistancePid, rightDistancePid);
 	/*m_drive = new PidSimpleDrive(
 		rateDrivePid,
 		distanceDrivePid);*/
-	m_drive = new SimpleDrive(
+	m_drive = new Drive::Simple(
 			m_leftTread,
 			m_rightTread);
 	m_loader = new PlaceholderFrisbeeLoader();

@@ -111,16 +111,16 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 void AugmentedTerminatorRobotProfile::CreateSubsystems() {
 	// These currently have no effect on the robot whatsoever.
 	// 4134 and 4054
-	IntegratedPid leftRatePid(0.1, 0.2, 0.0, 3000.0f, Encoder::kRate, m_leftEncoder, m_leftTread);
-	IntegratedPid rightRatePid(0.1, 0.2, 0.0, 3000.0f, Encoder::kRate, m_rightEncoder, m_rightTread);
-	IntegratedPid leftDistancePid(0.015, 0.0, 0.0, 4134.0f, Encoder::kDistance, m_leftEncoder, m_leftTread);
-	IntegratedPid rightDistancePid(0.015, 0.0, 0.0, 4054.0f, Encoder::kDistance, m_rightEncoder, m_rightTread);
+	Drive::TreadPid leftRatePid(0.1, 0.2, 0.0, 3000.0f, Encoder::kRate, m_leftEncoder, m_leftTread);
+	Drive::TreadPid rightRatePid(0.1, 0.2, 0.0, 3000.0f, Encoder::kRate, m_rightEncoder, m_rightTread);
+	Drive::TreadPid leftDistancePid(0.015, 0.0, 0.0, 4134.0f, Encoder::kDistance, m_leftEncoder, m_leftTread);
+	Drive::TreadPid rightDistancePid(0.015, 0.0, 0.0, 4054.0f, Encoder::kDistance, m_rightEncoder, m_rightTread);
 	
-	DrivePid rateDrivePid(leftRatePid, rightRatePid);
-	DrivePid distanceDrivePid(leftDistancePid, rightDistancePid);
+	Drive::DrivePid rateDrivePid(leftRatePid, rightRatePid);
+	Drive::DrivePid distancePid(leftDistancePid, rightDistancePid);
 	
-	//m_drive = new PidSimpleDrive(rateDrivePid, distanceDrivePid, 34.0);
-	m_drive = new SimpleDrive(m_leftTread, m_rightTread);
+	//m_drive = new PidSimpleDrive(rateDrive::DrivePid, distanceDrive::DrivePid, 34.0);
+	m_drive = new Drive::Simple(m_leftTread, m_rightTread);
 	m_leftTestEncoder = new TestEncoder(m_leftEncoder, "Left Encoder Test");
 	m_rightTestEncoder = new TestEncoder(m_rightEncoder, "Right Encoder Test");
 	

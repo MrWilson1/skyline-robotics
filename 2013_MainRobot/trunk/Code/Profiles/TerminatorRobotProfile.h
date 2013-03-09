@@ -35,7 +35,7 @@ private:
 	Encoder *m_rightEncoder;
 	
 	// Subsystems
-	BaseDrive *m_drive; 
+	Drive::Base *m_drive; 
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
 	

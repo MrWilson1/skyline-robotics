@@ -1,6 +1,6 @@
 #include "DriveCommands.h"
 
-TankDriveCommand::TankDriveCommand(BaseDrive *drive, Axis *leftAxis, Axis *rightAxis) :
+TankDriveCommand::TankDriveCommand(Drive::Base *drive, Axis *leftAxis, Axis *rightAxis) :
 		SimpleCommand("TankDrive", false) {
 	m_drive = drive;
 	m_leftAxis = leftAxis;
@@ -21,7 +21,7 @@ void TankDriveCommand::Execute() {
 }
 
 
-ArcadeDriveCommand::ArcadeDriveCommand(BaseDrive *drive,  Axis *magnitudeAxis, Axis *rotateAxis) :
+ArcadeDriveCommand::ArcadeDriveCommand(Drive::Base *drive,  Axis *magnitudeAxis, Axis *rotateAxis) :
 		SimpleCommand("ArcadeDrive", true) {
 	m_drive = drive;
 	m_magnitudeAxis = magnitudeAxis;
@@ -61,7 +61,7 @@ void ArcadeDriveCommand::Execute() {
 
 
 
-TravelStraightManualCommand::TravelStraightManualCommand(BaseDrive *drive, Axis *axis) :
+TravelStraightManualCommand::TravelStraightManualCommand(Drive::Base *drive, Axis *axis) :
 		SimpleCommand("TravelStraightManualCommand", false) {
 	m_drive = drive;
 	m_axis = axis;
@@ -80,11 +80,11 @@ void TravelStraightManualCommand::Execute() {
 
 
 
-RefreshPidCommand::RefreshPidCommand(IPidDrive *drive, Encoder::PIDSourceParameter pidSource) :
+RefreshPidCommand::RefreshPidCommand(Drive::IPid *drive, Encoder::PIDSourceParameter pidSource) :
 		SimpleCommand("RefreshPidCommand", true),
 		m_pidSource(pidSource) {
 	m_drive = drive;
-	DrivePid pid = m_drive->GetRatePid(); // placeholder until it needs to be replaced.
+	Drive::DrivePid pid = m_drive->GetRatePid(); // placeholder until it needs to be replaced.
 	if (m_pidSource == Encoder::kRate) {
 		pid = m_drive->GetRatePid();
 	} else if (m_pidSource == Encoder::kDistance) {
@@ -119,7 +119,7 @@ void RefreshPidCommand::Execute() {
 
 
 
-TravelDistanceCommand::TravelDistanceCommand(BaseDrive *drive, float distance, Tools::Units unit) :
+TravelDistanceCommand::TravelDistanceCommand(Drive::Base *drive, float distance, Tools::Units unit) :
 		Command("TravelDistanceCommand"),
 		m_distanceInInches(Tools::ConvertUnits(distance, unit, Tools::kInches)) {
 	m_drive = drive;
@@ -127,7 +127,7 @@ TravelDistanceCommand::TravelDistanceCommand(BaseDrive *drive, float distance, T
 	SmartDashboard::PutNumber("Travel Distance:", 0.0);
 }
 
-TravelDistanceCommand::TravelDistanceCommand(BaseDrive *drive, float distanceInInches) :
+TravelDistanceCommand::TravelDistanceCommand(Drive::Base *drive, float distanceInInches) :
 		Command("TravelDistanceCommand"),
 		m_distanceInInches(distanceInInches) {
 	m_drive = drive;
@@ -150,7 +150,7 @@ void TravelDistanceCommand::Execute() {
 }
 
 bool TravelDistanceCommand::IsFinished() {
-	//DrivePid pid = dynamic_cast<IPidDrive*>(m_drive)->GetDistancePid(); 
+	//Drive::DrivePid pid = dynamic_cast<Drive::IPid*>(m_drive)->GetDistancePid(); 
 	//float distance = (pid.Left.GetDistance() + pid.Right.GetDistance()) / 2; // take the average
 	//return Tools::IsWithinRange(distance, m_distanceInInches, 1);
 	return false;
@@ -164,7 +164,7 @@ void TravelDistanceCommand::Interrupted() {
 	// empty
 }
 
-RotateRobotCommand::RotateRobotCommand(BaseDrive *drive, float degrees) :
+RotateRobotCommand::RotateRobotCommand(Drive::Base *drive, float degrees) :
 		Command("RotateRobotCommand"),
 		m_degrees(degrees) {
 	m_drive = drive;
@@ -211,9 +211,9 @@ void ToggleTransmissionCommand::Execute() {
 
 
 ToggleTransmissionSwapPidCommand::ToggleTransmissionSwapPidCommand(DriveTransmission::Base *transmission, 
-		IPidDrive *drive, 
-		DrivePid lowGearRate, DrivePid lowGearDistance,
-		DrivePid highGearRate, DrivePid highGearDistance) :
+		Drive::IPid *drive, 
+		Drive::DrivePid lowGearRate, Drive::DrivePid lowGearDistance,
+		Drive::DrivePid highGearRate, Drive::DrivePid highGearDistance) :
 		SimpleCommand("ToggleTransmissionCommand", true),
 		m_lowGearRate(lowGearRate),
 		m_lowGearDistance(lowGearDistance),
@@ -222,7 +222,7 @@ ToggleTransmissionSwapPidCommand::ToggleTransmissionSwapPidCommand(DriveTransmis
 	m_transmission = transmission;
 	m_drive = drive;
 	Requires(m_transmission);
-	Requires(dynamic_cast<BaseDrive *>(m_drive));
+	Requires(dynamic_cast<Drive::Base *>(m_drive));
 }
 
 ToggleTransmissionSwapPidCommand::~ToggleTransmissionSwapPidCommand() {

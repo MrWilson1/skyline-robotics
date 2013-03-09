@@ -1,6 +1,6 @@
 #include "AutonomousCommands.h"
 
-MoveToCenterLine::MoveToCenterLine(BaseDrive *drive, Autonomous::Positions positions) : 
+MoveToCenterLine::MoveToCenterLine(Drive::Base *drive, Autonomous::Positions positions) : 
 		CommandGroup("MoveToCenterLine") {
 	float distance;
 	float rotation = 180;
@@ -25,7 +25,7 @@ MoveToCenterLine::~MoveToCenterLine() {
 }
 
 ShootAndGoToCenterLine::ShootAndGoToCenterLine(
-			BaseDrive *drive,
+			Drive::Base *drive,
 			BaseFrisbeeLoader *loader, 
 			BaseFrisbeeAimer *aimer, 
 			FrisbeeTurret::Base *horizontalTurret, 

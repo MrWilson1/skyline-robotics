@@ -59,7 +59,7 @@ private:
 	Compressor *m_compressor;
 	
 	// Subsystems
-	BaseDrive *m_drive; 
+	Drive::Base *m_drive; 
 	BaseFrisbeeLoader *m_loader;
 	BaseFrisbeeAimer *m_aimer;
 	FrisbeeTurret::Base *m_horizontalTurret;
