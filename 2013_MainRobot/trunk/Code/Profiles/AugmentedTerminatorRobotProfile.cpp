@@ -72,16 +72,19 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 	*/
 	
 	// Shooter
-	/*
+	
 	m_shooterBack = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm5);
-	m_shooterMiddle = new Victor(
+	m_shooterMiddle = new ReversedVictor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm6);
-	m_shooterFront = new Victor(
+	m_shooterFront = new ReversedVictor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm7);
+	
+	
+	/*
 	m_shooterEncoder = new Encoder(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio1,
@@ -133,13 +136,14 @@ void AugmentedTerminatorRobotProfile::CreateSubsystems() {
 	m_verticalTurret = new SimpleAxisFrisbeeTurret(
 			m_verticalTurretMotor);
 	*/
-	//m_aimer = new VisionTablesFrisbeeAimer();
-	/*
-	m_shooter = new ThreeWheelShooter(
+	m_aimer = new FrisbeeAimer::VisionTables();
+	m_aimerTest = new FrisbeeAimer::Test("VisionTest");
+	
+	m_shooter = new FrisbeeShooter::ThreeWheel(
 		m_shooterFront,
 		m_shooterMiddle,
 		m_shooterBack);
-	*/
+	
 }
 
 void AugmentedTerminatorRobotProfile::CreateOI() {
@@ -183,8 +187,19 @@ void AugmentedTerminatorRobotProfile::TeleopInit() {
 			m_shooter));
 	*/
 	m_oi->LoadFrisbeeButton->WhenPressed(new ShooterCommand::LoadFrisbee(m_loader));
+	m_oi->FireFrisbeeButton->WhileHeld(new ShooterCommand::FireFrisbee(m_shooter));
+	SmartDashboard::PutData(
+			"SmartDashboardFireFrisbee", 
+			new ShooterCommand::SmartDashboardFireFrisbee(m_shooter));
 	
 	m_compressor->Start();
 	
+	SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
+	
 	// Will stop if the shooter is within 3 degrees of the centerpoint of the target
+}
+
+void AugmentedTerminatorRobotProfile::TeleopPeriodic() {
+	Scheduler::GetInstance()->Run();
+	m_aimerTest->Run();
 }

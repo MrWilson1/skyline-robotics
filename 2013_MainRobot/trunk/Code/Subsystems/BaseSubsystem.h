@@ -5,7 +5,7 @@
  * 
  * \defgroup subsystems Subsystems
  * 
- *  A class which controls a specific component on the robot.
+ *  \brief A class which controls a specific component on the robot.
  *  
  *  Each subsystem should inherit from some base, abstract class
  *  (which inherits from [BaseSubsystem](\ref BaseSubsystem).
@@ -24,7 +24,8 @@
  * \brief The abstract base class for all subsystems.
  * 
  * Provides additional functionality to automatically dynamically
- * cast arbitrary actuators and sensors and add them to the LiveWindow.
+ * cast arbitrary actuators and sensors and add them to the LiveWindow
+ * so they're visible during Test mode.
  * 
  * The [AddActuatorToLiveWindow](\ref AddActuatorToLiveWindow) and 
  * [AddSensorToLiveWindow](\ref AddSensorToLiveWindow) are equivalent
@@ -33,7 +34,7 @@
  *     LiveWindow::GetInstance()->AddActuator();
  *     LiveWindow::GetInstance()->AddSensor();
  *     
- * ...except it properly dynamically casts the objects and do some
+ * ...except it properly dynamically casts the objects and does some
  * basic error checking.
  * 
  * All objects are first dynamically cast to ErrorBase, since they
@@ -48,6 +49,9 @@ public:
 	BaseSubsystem(const char *name);
 	virtual ~BaseSubsystem();
 	
+	/**
+	 * \brief Adds an actuator (Jaguar, Solenoid, etc) to the LiveWindow
+	 */
 	template<class T>
 	void AddActuatorToLiveWindow(char *name, T *object) {
 		LiveWindow *lw = LiveWindow::GetInstance();
@@ -59,6 +63,9 @@ public:
 		}
 	}
 
+	/**
+	 * \brief Adds a sensor (DigitalInput, Encoders, etc) to the LiveWindow
+	 */
 	template<class T>
 	void AddSensorToLiveWindow(char *name, T *object) {
 		LiveWindow *lw = LiveWindow::GetInstance();

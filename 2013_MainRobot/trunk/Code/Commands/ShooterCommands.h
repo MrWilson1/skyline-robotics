@@ -18,9 +18,13 @@
 
 #include "../Subsystems/Controllers/Axis.h"
 
+/**
+ * \brief Contains commands related to loading, aiming, and shooting
+ * the frisbee.
+ */
 namespace ShooterCommand {
 /**
- * \brief Command for loading frisbees.
+ * \brief Loads the frisbee
  */
 class LoadFrisbee : public Command {
 public:
@@ -79,7 +83,7 @@ private:
 
 
 /**
- * \brief Fires the frisbee at a default distance or a set distance.
+ * \brief Fires the frisbee at max speed.
  */
 class FireFrisbee : public Command {
 public:
@@ -93,6 +97,17 @@ public:
 		
 private:
 	FrisbeeShooter::Base *m_shooter;
+};
+
+class SmartDashboardFireFrisbee : public SimpleCommand {
+public:
+	SmartDashboardFireFrisbee(FrisbeeShooter::Base *shooter);
+	SmartDashboardFireFrisbee(FrisbeeShooter::Base *shooter, double conversionFactor);
+	~SmartDashboardFireFrisbee();
+	void Execute();
+private:
+	FrisbeeShooter::Base *m_shooter;
+	double m_conversionFactor;
 };
 
 

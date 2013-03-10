@@ -99,3 +99,40 @@ void TestEncoder::Log(const char *key, double value) {
 void TestEncoder::LogBool(const char *key, bool value) {
 	SmartDashboard::PutBoolean(GetName() + std::string(" ") + std::string(key), value);
 }
+
+
+
+ReversedVictor::ReversedVictor(UINT32 channel) :
+		Victor(channel) {
+	// empty
+}
+
+ReversedVictor::ReversedVictor(UINT8 moduleNumber, UINT32 channel) :
+		Victor(moduleNumber, channel) {
+	// empty
+}
+
+ReversedVictor::~ReversedVictor() {
+	// empty
+}
+	
+void ReversedVictor::Set(float speed) {
+	Victor::Set(-speed);
+}
+
+void ReversedVictor::Set(float speed, UINT8 syncGroup) {
+	Victor::Set(-speed, syncGroup);
+}
+
+float ReversedVictor::Get() {
+	return -Victor::Get();
+}
+
+void ReversedVictor::Disable() {
+	Victor::Disable();
+}
+
+void ReversedVictor::PIDWrite(float output) {
+	Victor::PIDWrite(-output);
+}
+

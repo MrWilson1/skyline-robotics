@@ -54,7 +54,7 @@ bool FrisbeeLoader::Piston::IsFrisbeePrepared() {
 
 void FrisbeeLoader::Piston::LoadFrisbee() {
 	m_piston->Set(true);
-	Wait(0.01); // Otherwise, the piston doesn't move. 
+	Wait(0.1); // Otherwise, the piston doesn't move. 
 	m_piston->Set(false);
 }
 

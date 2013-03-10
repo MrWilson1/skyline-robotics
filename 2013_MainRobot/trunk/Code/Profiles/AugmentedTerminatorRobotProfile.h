@@ -65,6 +65,8 @@ private:
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
 	
+	FrisbeeAimer::Test *m_aimerTest;
+	
 	// Commands and buttons
 	XboxSingleJoystickOI *m_oi;
 	XboxController *m_xbox;
@@ -82,6 +84,7 @@ public:
 	void RobotInit();
 	void AutonomousInit();
 	void TeleopInit();
+	void TeleopPeriodic();
 };
 
 #endif

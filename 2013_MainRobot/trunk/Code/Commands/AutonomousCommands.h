@@ -15,9 +15,12 @@
 
 #include "../Misc/Tools.h"
 
+/**
+ * \brief Short, scripted commands meant to run during autonomous mode.
+ */
 namespace AutonomousCommand {
-/*
- * The different positions the robot can be in during Autonomous mode.
+/**
+ * \brief The different positions the robot can be in during Autonomous mode.
  */
 enum Positions{
 	kNearLeftCorner,
@@ -26,8 +29,8 @@ enum Positions{
 	kFarRightCorner
 };
 
-/*
- * Command to move the robot to the center line.
+/**
+ * \brief Command to move the robot to the center line.
  */
 class MoveToCenterLine : public CommandGroup {
 public:
@@ -41,8 +44,8 @@ private:
 	static const float kGapFromPyramidToFront = 122;
 };
 
-/*
- * Command to have the robot shoot and then move to the center line.
+/**
+ * \brief Command to have the robot shoot and then move to the center line.
  */
 class ShootAndGoToCenterLine : public CommandGroup {
 public:
@@ -62,6 +65,5 @@ public:
 /**
  * \}
  */
-
 
 #endif

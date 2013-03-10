@@ -9,19 +9,21 @@
 #include "../Subsystems/Drive/DriveTransmission.h"
 #include "../Subsystems/Controllers/Axis.h"
 
+/**
+ * \brief Contains commands related to driving the robot, and its position on the field.
+ */
 namespace DriveCommand {
 
 /**
  * \brief Issues a perpetually running command to drive in tank mode.
+ * 
+ * Also grabs the appropriate tank values from the OI and displays them
+ * on the SmartDashboard.
  */
 class TankDrive : public SimpleCommand {
 public:
 	TankDrive(Drive::Base *drive, Axis *leftAxis, Axis *rightAxis);
 	~TankDrive();
-	/**
-	 * Grabs the appropriate tank values from the OI and 
-	 * displays them on the SmartDashboard.
-	 */
 	void Execute();
 	
 private:
@@ -31,7 +33,7 @@ private:
 };
 
 /**
- * Issues a perpetually running command to drive in arcade mode.
+ * \brief Issues a perpetually running command to drive in arcade mode.
  */
 class ArcadeDrive : public SimpleCommand {
 public:
@@ -45,7 +47,9 @@ private:
 	Axis *m_rotateAxis;
 };
 
-
+/**
+ * \brief Tells the robot to travel straight given input from an axis.
+ */
 class TravelStraightManual : public SimpleCommand {
 public:
 	TravelStraightManual(Drive::Base *drive, Axis *axis);
@@ -57,6 +61,9 @@ private:
 	Axis *m_axis;
 };
 
+/**
+ * \brief Given the PID source, 
+ */
 class RefreshPid : public SimpleCommand {
 public:
 	RefreshPid(Drive::IPid *drive, Encoder::PIDSourceParameter pidSource);

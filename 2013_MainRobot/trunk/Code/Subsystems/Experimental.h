@@ -115,6 +115,19 @@ private:
 };
 
 
+class ReversedVictor : public Victor {
+public:
+	ReversedVictor(UINT32 channel);
+	ReversedVictor(UINT8 moduleNumber, UINT32 channel);
+	~ReversedVictor();
+	void Set(float speed);
+	void Set(float speed, UINT8 syncGroup);
+	float Get();
+	void PIDWrite(float output);
+	void Disable();
+};
+
+
 /** 
  * \} 
  * \} 

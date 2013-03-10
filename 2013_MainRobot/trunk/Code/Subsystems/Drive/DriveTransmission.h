@@ -13,7 +13,7 @@
  * \brief Subsystems for the drive transmission (two-speed drive, etc).
  * 
  * Any subsystems in here should theoretically be able to run independently
- * of whatever [Drive](\ref drive_subsystems) is currently being used.
+ * of whatever [Drive](\ref Drive) is currently being used.
  * 
  * If a transmission is used, it's an extra thrown on top of a Drive.
  */

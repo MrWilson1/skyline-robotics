@@ -19,7 +19,7 @@
  * 
  * -   [Subsystems](\ref subsystems)
  *     -   Corresponds to physical components on the robot (arm, drive, etc)
- * -   Commands
+ * -   [Commands](\ref commands)
  *     -   Corresponds to robot behavior. Commands use subsystems or other
  *         commands to script out complex behavior.
  * -   Operator Interface (OI)

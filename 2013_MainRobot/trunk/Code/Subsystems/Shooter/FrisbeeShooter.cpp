@@ -94,3 +94,5 @@ void FrisbeeShooter::ThreeWheel::SetMaxDistance(float inches) {
 float FrisbeeShooter::ThreeWheel::GetMaxdistance() {
 	return m_maxDistance;
 }
+
+

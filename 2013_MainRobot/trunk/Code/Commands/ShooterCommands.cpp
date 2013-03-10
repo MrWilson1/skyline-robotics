@@ -70,6 +70,7 @@ void ShooterCommand::AimTurret::Initialize() {
 }
 
 void ShooterCommand::AimTurret::Execute() {
+	// Stage 1: Gets the tracking information of the desired target.
 	Tracking::Target target;
 	switch (m_desiredTarget) {
 	case (Tracking::Low) :
@@ -102,9 +103,11 @@ void ShooterCommand::AimTurret::Execute() {
 		
 	Tracking::Offset offset = target.ShooterOffset;
 	
+	// Stage 2: determines if the shooter is pointing at the target.
 	bool isXDone = Tools::IsWithinRange(offset.XOffset, 0, m_allowedRange);
 	bool isYDone = Tools::IsWithinRange(offset.YOffset, 0, m_allowedRange);
 	
+	// Stage 3: adjusts the turret as appropriate
 	if (!isXDone) {
 		if (offset.XOffset < 0) {
 			m_horizontalTurret->SetSpeed(-0.3);
@@ -165,6 +168,32 @@ void ShooterCommand::FireFrisbee::End() {
 
 void ShooterCommand::FireFrisbee::Interrupted() {
 	m_shooter->StopFrisbee();
+}
+
+
+ShooterCommand::SmartDashboardFireFrisbee::SmartDashboardFireFrisbee(FrisbeeShooter::Base *shooter) :
+		SimpleCommand("ShooterCommand::SmartDashboardFireFrisbee", false),
+		m_conversionFactor(1.0){
+	m_shooter = shooter;
+	SmartDashboard::PutNumber("ShooterSpeed", 0.0);
+}
+
+ShooterCommand::SmartDashboardFireFrisbee::SmartDashboardFireFrisbee(FrisbeeShooter::Base *shooter, double conversionFactor) :
+		SimpleCommand("ShooterCommand::SmartDashboardFireFrisbee", false),
+		m_conversionFactor(conversionFactor) {
+	m_shooter = shooter;
+	SmartDashboard::PutNumber("ShooterSpeed", 0.0);
+	SmartDashboard::PutNumber("ShooterConversionFactor", m_conversionFactor);
+}
+
+ShooterCommand::SmartDashboardFireFrisbee::~SmartDashboardFireFrisbee() {
+	// empty
+}
+
+void ShooterCommand::SmartDashboardFireFrisbee::Execute() {
+	float speed = SmartDashboard::GetNumber("ShooterSpeed");
+	m_conversionFactor = SmartDashboard::GetNumber("ShooterConversionFactor");
+	m_shooter->SetFrisbeeSpeed(speed / m_conversionFactor);
 }
 
 
