@@ -51,35 +51,40 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 	/*
 	m_verticalTurretMotor = new Victor(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm5);
+		Ports::DigitalSidecar::Pwm9);
 	m_turretTopSwitch = new DigitalInput(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio10);
+		Ports::DigitalSidecar::Gpio12);
 	m_turretBottomSwitch = new DigitalInput(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio11);
+		Ports::DigitalSidecar::Gpio13);
 	*/
-	/*
 	m_horizontalTurretMotor = new Victor(
 		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm6);
+		Ports::DigitalSidecar::Pwm8);
 	m_turretRightSwitch = new DigitalInput(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio8);
 	m_turretLeftSwitch = new DigitalInput(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Gpio9);
-	*/
-	
+	m_horizontalTurretEncoder = new Encoder(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio10,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio11);
+	m_horizontalTurretEncoder->Start();
+			
+		
 	// Shooter
 	
 	m_shooterBack = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm5);
-	m_shooterMiddle = new ReversedVictor(
+	m_shooterMiddle = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm6);
-	m_shooterFront = new ReversedVictor(
+	m_shooterFront = new Victor(
 		Ports::Crio::Module1,
 		Ports::DigitalSidecar::Pwm7);
 	
@@ -128,16 +133,19 @@ void AugmentedTerminatorRobotProfile::CreateSubsystems() {
 	m_rightTestEncoder = new TestEncoder(m_rightEncoder, "Right Encoder Test");
 	
 	m_loader = new FrisbeeLoader::Piston(m_loaderSolenoid);
+	
+	m_horizontalTurret = new FrisbeeTurret::Simple(
+			m_horizontalTurretMotor);
 	/*
-	m_horizontalTurret = new GuardedAxisFrisbeeTurret(
-			m_horizontalTurretMotor,
 			m_turretLeftSwitch,
-			m_turretRightSwitch);
-	m_verticalTurret = new SimpleAxisFrisbeeTurret(
+			m_turretRightSwitch);*/
+	/*m_verticalTurret = new SimpleAxisFrisbeeTurret(
 			m_verticalTurretMotor);
 	*/
-	m_aimer = new FrisbeeAimer::VisionTables();
-	m_aimerTest = new FrisbeeAimer::Test("VisionTest");
+	//m_aimer = new FrisbeeAimer::VisionTables();
+	//m_aimerTest = new FrisbeeAimer::Test("VisionTest");
+	
+	m_horizontalTurretTestEncoder = new TestEncoder(m_horizontalTurretEncoder, "Turret Horizontal Test");
 	
 	m_shooter = new FrisbeeShooter::ThreeWheel(
 		m_shooterFront,
@@ -164,42 +172,43 @@ void AugmentedTerminatorRobotProfile::TeleopInit() {
 			m_oi->TankLeftAxis,
 			m_oi->TankRightAxis));
 	m_leftTestEncoder->SetDefaultCommand(new TestEncoderCommand(
-				m_leftTestEncoder, 
-				"left Encoder"));
+			m_leftTestEncoder,
+			"left Encoder"));
 	m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
-			m_rightTestEncoder, 
+			m_rightTestEncoder,
 			"right Encoder"));
 	m_oi->DriveStraightButton->WhileHeld(new DriveCommand::TravelStraightManual(
 			m_drive,
 			m_oi->DriveStraightAxis));
 	
-	/*
-	m_horizontalTurret->SetDefaultCommand(new ManuallyControlTurretCommand(
+	
+	m_horizontalTurret->SetDefaultCommand(new ShooterCommand::ManuallyControlTurret(
 			m_horizontalTurret, 
 			m_oi->RotateTurretAxis,
 			"ManuallyControlTurretCommand_Horizontal"));
-	m_verticalTurret->SetDefaultCommand(new ManuallyControlTurretCommand(
+	m_horizontalTurretTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_horizontalTurretTestEncoder, 
+			"turret horizontal Encoder"));
+	/*m_verticalTurret->SetDefaultCommand(new ManuallyControlTurretCommand(
 			m_verticalTurret, 
 			m_oi->RotateTurretAxis,
 			"ManuallyControlTurretCommand_Vertical"));
-	m_oi->FireFrisbeeButton->WhileHeld(new LoadAndFireFrisbeeCommand(
-			m_loader,
-			m_shooter));
 	*/
+	
 	m_oi->LoadFrisbeeButton->WhenPressed(new ShooterCommand::LoadFrisbee(m_loader));
 	m_oi->FireFrisbeeButton->WhileHeld(new ShooterCommand::FireFrisbee(m_shooter));
-	SmartDashboard::PutData(
+	/*SmartDashboard::PutData(
 			"SmartDashboardFireFrisbee", 
 			new ShooterCommand::SmartDashboardFireFrisbee(m_shooter));
-	
+	*/
 	m_compressor->Start();
 	
-	SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
+	//SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
 	
 	// Will stop if the shooter is within 3 degrees of the centerpoint of the target
 }
 
 void AugmentedTerminatorRobotProfile::TeleopPeriodic() {
 	Scheduler::GetInstance()->Run();
-	m_aimerTest->Run();
+	//m_aimerTest->Run();
 }

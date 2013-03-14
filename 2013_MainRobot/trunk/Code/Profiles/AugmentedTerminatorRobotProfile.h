@@ -40,16 +40,17 @@ private:
 	Encoder *m_rightEncoder;
 	
 	SpeedController *m_horizontalTurretMotor;
-	SpeedController *m_verticalTurretMotor;
+	//SpeedController *m_verticalTurretMotor;
 	DigitalInput *m_turretLeftSwitch;
 	DigitalInput *m_turretRightSwitch;
-	DigitalInput *m_turretTopSwitch;
-	DigitalInput *m_turretBottomSwitch;
+	//DigitalInput *m_turretTopSwitch;
+	//DigitalInput *m_turretBottomSwitch;
+	Encoder *m_horizontalTurretEncoder;
 	
 	SpeedController *m_shooterFront;
 	SpeedController *m_shooterMiddle;
 	SpeedController *m_shooterBack;
-	Encoder *m_shooterEncoder;
+	//Encoder *m_shooterEncoder;
 	
 	Solenoid *m_loaderSolenoid;
 	
@@ -60,12 +61,15 @@ private:
 	FrisbeeLoader::Base *m_loader;
 	FrisbeeAimer::Base *m_aimer;
 	FrisbeeTurret::Base *m_horizontalTurret;
-	FrisbeeTurret::Base *m_verticalTurret;
+	//FrisbeeTurret::Base *m_verticalTurret;
+	TestEncoder *m_horizontalTurretTestEncoder;
 	FrisbeeShooter::Base *m_shooter;
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
 	
-	FrisbeeAimer::Test *m_aimerTest;
+	
+	
+	//FrisbeeAimer::Test *m_aimerTest;
 	
 	// Commands and buttons
 	XboxSingleJoystickOI *m_oi;

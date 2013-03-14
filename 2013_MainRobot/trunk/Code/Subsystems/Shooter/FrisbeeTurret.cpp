@@ -38,6 +38,7 @@ FrisbeeTurret::Guarded::Guarded(
 	m_motor = motor;
 	m_switch1 = switch1;
 	m_switch2 = switch2;
+	
 	AddActuatorToLiveWindow("Motor", m_motor);
 	AddSensorToLiveWindow("Switch 1", m_switch1);
 	AddSensorToLiveWindow("Switch 2", m_switch2);
