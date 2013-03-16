@@ -1,6 +1,6 @@
 #include "DriveCommands.h"
 
-DriveCommand::TankDrive::TankDrive(Drive::Base *drive, Axis *leftAxis, Axis *rightAxis) :
+DriveCommand::TankDrive::TankDrive(Drive::Base *drive, BaseAxis *leftAxis, BaseAxis *rightAxis) :
 		SimpleCommand("DriveCommand::TankDrive", false) {
 	m_drive = drive;
 	m_leftAxis = leftAxis;
@@ -21,7 +21,7 @@ void DriveCommand::TankDrive::Execute() {
 }
 
 
-DriveCommand::ArcadeDrive::ArcadeDrive(Drive::Base *drive,  Axis *magnitudeAxis, Axis *rotateAxis) :
+DriveCommand::ArcadeDrive::ArcadeDrive(Drive::Base *drive,  BaseAxis *magnitudeAxis, BaseAxis *rotateAxis) :
 		SimpleCommand("DriveCommand::ArcadeDrive", true) {
 	m_drive = drive;
 	m_magnitudeAxis = magnitudeAxis;
@@ -61,7 +61,7 @@ void DriveCommand::ArcadeDrive::Execute() {
 
 
 
-DriveCommand::TravelStraightManual::TravelStraightManual(Drive::Base *drive, Axis *axis) :
+DriveCommand::TravelStraightManual::TravelStraightManual(Drive::Base *drive, BaseAxis *axis) :
 		SimpleCommand("DriveCommand::TravelStraightManual", false) {
 	m_drive = drive;
 	m_axis = axis;

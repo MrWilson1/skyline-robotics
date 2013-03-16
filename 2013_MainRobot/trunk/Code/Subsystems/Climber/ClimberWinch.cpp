@@ -12,6 +12,7 @@ Winch::Base::~Base() {
 Winch::Simple::Simple(SpeedController *motor) :
 		Base("SimpleWinch") {
 	m_motor = motor;
+	AddActuatorToLiveWindow("Motor", m_motor);
 }
 
 Winch::Simple::~Simple() {

@@ -1,6 +1,6 @@
 #include "TestCommands.h"
 
-TestMotorCommand::TestMotorCommand(TestMotor *testMotor, Axis *axis) :
+TestMotorCommand::TestMotorCommand(TestMotor *testMotor, BaseAxis *axis) :
 		Command("TestMotorCommand1") {
 	m_testMotor = testMotor;
 	m_axis = axis;

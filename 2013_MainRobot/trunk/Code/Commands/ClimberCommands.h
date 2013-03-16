@@ -100,16 +100,16 @@ public:
 	ControlArmManually(
 			Joint::Base *elbow, 
 			Joint::Base *shoulder, 
-			Axis *elbowAxis, 
-			Axis *shoulderAxis);
+			BaseAxis *elbowAxis, 
+			BaseAxis *shoulderAxis);
 	~ControlArmManually();
 	void Execute();
 	
 private:
 	Joint::Base *m_elbow;
 	Joint::Base *m_shoulder; 
-	Axis *m_elbowAxis;
-	Axis *m_shoulderAxis;
+	BaseAxis *m_elbowAxis;
+	BaseAxis *m_shoulderAxis;
 };
 }
 

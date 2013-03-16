@@ -11,6 +11,7 @@
 #include "BaseOI.h"
 #include "../Subsystems/Controllers/XboxController.h"
 #include "../Subsystems/Controllers/Axis.h"
+#include "../Subsystems/Controllers/CustomButtons.h"
 
 /**
  * OI for the competition.
@@ -20,17 +21,17 @@ public:
 	CompetitionOI(XboxController *xbox);
 	~CompetitionOI();
 	
-	Axis *TankLeftAxis;
-	Axis *TankRightAxis;
-	Axis *ArcadeMagnitudeAxis;
-	Axis *ArcadeRotationAxis;
-	Axis *DriveStraightAxis;
-	Axis *ControlWinchAxis;
+	BaseAxis *TankLeftAxis;
+	BaseAxis *TankRightAxis;
+	BaseAxis *ArcadeMagnitudeAxis;
+	BaseAxis *ArcadeRotationAxis;
+	BaseAxis *DriveStraightAxis;
+	BaseAxis *ControlWinchAxis;
 	
-	JoystickButton *DriveStraightButton;
-	JoystickButton *ToggleTransmissionButton;
-	JoystickButton *FireFrisbeeButton;
-	JoystickButton *ClimbRobotButton;
+	Button *DriveStraightButton;
+	Button *ToggleTransmissionButton;
+	Button *FireFrisbeeButton;
+	Button *ClimbRobotButton;
 };
 
 /**
@@ -41,16 +42,16 @@ public:
 	XboxTwoJoysticksOI(XboxController *xbox, Joystick *leftStick, Joystick *rightStick);
 	~XboxTwoJoysticksOI();
 	
-	Axis *TankLeftAxis;
-	Axis *TankRightAxis;
-	Axis *DriveStraightAxis;
-	Axis *RotateTurretAxis;
-	Axis *LiftTurretAxis;
-	Axis *ControlWinchAxis;
+	BaseAxis *TankLeftAxis;
+	BaseAxis *TankRightAxis;
+	BaseAxis *DriveStraightAxis;
+	BaseAxis *RotateTurretAxis;
+	BaseAxis *LiftTurretAxis;
+	BaseAxis *ControlWinchAxis;
 	
-	JoystickButton *DriveStraightButton;
-	JoystickButton *ToggleTransmissionButton;
-	JoystickButton *FireFrisbeeButton;
+	Button *DriveStraightButton;
+	Button *ToggleTransmissionButton;
+	Button *FireFrisbeeButton;
 };
 
 
@@ -60,17 +61,21 @@ public:
 	XboxSingleJoystickOI(XboxController *xbox, Joystick *stick);
 	~XboxSingleJoystickOI();
 	
-	Axis *TankLeftAxis;
-	Axis *TankRightAxis;
-	Axis *DriveStraightAxis;
-	Axis *RotateTurretAxis;
-	Axis *LiftTurretAxis;
-	Axis *ControlWinchAxis;
+	BaseAxis *TankLeftAxis;
+	BaseAxis *TankRightAxis;
+	BaseAxis *DriveStraightAxis;
+	BaseAxis *RotateTurretAxis;
+	BaseAxis *LiftTurretAxis;
 	
-	JoystickButton *DriveStraightButton;
-	JoystickButton *ToggleTransmissionButton;
-	JoystickButton *FireFrisbeeButton;
-	JoystickButton *LoadFrisbeeButton;
+	Button *DriveStraightButton;
+	Button *ToggleTransmissionButton;
+	Button *FireFrisbeeButton;
+	Button *LoadFrisbeeButton;
+	Button *ControlWinchButton;
+	
+private:
+	Button *Winch1Button;
+	Button *Winch2Button;
 };
 
 
@@ -79,17 +84,17 @@ public:
 	ThreeJoystickOI(Joystick *rightJoystick, Joystick *leftJoystick, Joystick *twistJoystick);
 	~ThreeJoystickOI();
 	
-	Axis *TankLeftAxis;
-	Axis *TankRightAxis;
-	Axis *ArcadeMagnitudeAxis;
-	Axis *ArcadeRotationAxis;
-	Axis *DriveStraightAxis;
-	Axis *ControlWinchAxis;
+	BaseAxis *TankLeftAxis;
+	BaseAxis *TankRightAxis;
+	BaseAxis *ArcadeMagnitudeAxis;
+	BaseAxis *ArcadeRotationAxis;
+	BaseAxis *DriveStraightAxis;
+	BaseAxis *ControlWinchAxis;
 	
-	JoystickButton *DriveStraightButton;
-	JoystickButton *ToggleTransmissionButton;
-	JoystickButton *FireFrisbeeButton;
-	JoystickButton *ClimbRobotButton;
+	Button *DriveStraightButton;
+	Button *ToggleTransmissionButton;
+	Button *FireFrisbeeButton;
+	Button *ClimbRobotButton;
 };
 
 /**

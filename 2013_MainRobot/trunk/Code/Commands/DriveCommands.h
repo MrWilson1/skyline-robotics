@@ -22,14 +22,14 @@ namespace DriveCommand {
  */
 class TankDrive : public SimpleCommand {
 public:
-	TankDrive(Drive::Base *drive, Axis *leftAxis, Axis *rightAxis);
+	TankDrive(Drive::Base *drive, BaseAxis *leftAxis, BaseAxis *rightAxis);
 	~TankDrive();
 	void Execute();
 	
 private:
 	Drive::Base *m_drive;
-	Axis *m_leftAxis;
-	Axis *m_rightAxis;
+	BaseAxis *m_leftAxis;
+	BaseAxis *m_rightAxis;
 };
 
 /**
@@ -37,14 +37,14 @@ private:
  */
 class ArcadeDrive : public SimpleCommand {
 public:
-	ArcadeDrive(Drive::Base *drive, Axis *magnitudeAxis, Axis *rotateAxis);
+	ArcadeDrive(Drive::Base *drive, BaseAxis *magnitudeAxis, BaseAxis *rotateAxis);
 	~ArcadeDrive();
 	void Execute();
 	
 private:
 	Drive::Base *m_drive;
-	Axis *m_magnitudeAxis;
-	Axis *m_rotateAxis;
+	BaseAxis *m_magnitudeAxis;
+	BaseAxis *m_rotateAxis;
 };
 
 /**
@@ -52,13 +52,13 @@ private:
  */
 class TravelStraightManual : public SimpleCommand {
 public:
-	TravelStraightManual(Drive::Base *drive, Axis *axis);
+	TravelStraightManual(Drive::Base *drive, BaseAxis *axis);
 	~TravelStraightManual();
 	void Execute();
 	
 private:
 	Drive::Base *m_drive;
-	Axis *m_axis;
+	BaseAxis *m_axis;
 };
 
 /**

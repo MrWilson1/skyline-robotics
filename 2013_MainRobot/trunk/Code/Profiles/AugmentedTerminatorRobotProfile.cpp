@@ -12,6 +12,12 @@ AugmentedTerminatorRobotProfile::~AugmentedTerminatorRobotProfile() {
 }
 
 void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
+	m_compressor = new Compressor(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio1,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Relay1);
+	
 	// Drive
 	m_leftFrontMotor = new Jaguar(
 			Ports::Crio::Module1,
@@ -46,56 +52,54 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 	
 	m_leftEncoder->Start();
 	m_rightEncoder->Start();
+	
+	// Shooter
+	m_shooterBack = new Victor(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm5);
+	m_shooterMiddle = new Victor(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm6);
+	m_shooterFront = new Victor(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm7);
+	m_shooterEncoder = new Encoder(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio6,
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio7);
 		
 	// Turret
-	/*
-	m_verticalTurretMotor = new Victor(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm9);
-	m_turretTopSwitch = new DigitalInput(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio12);
-	m_turretBottomSwitch = new DigitalInput(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio13);
-	*/
 	m_horizontalTurretMotor = new Victor(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm8);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm8);
 	m_turretRightSwitch = new DigitalInput(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio8);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio8);
 	m_turretLeftSwitch = new DigitalInput(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio9);
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio9);
 	m_horizontalTurretEncoder = new Encoder(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio10,
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio11);
 	m_horizontalTurretEncoder->Start();
-			
-		
-	// Shooter
-	
-	m_shooterBack = new Victor(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm5);
-	m_shooterMiddle = new Victor(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm6);
-	m_shooterFront = new Victor(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Pwm7);
-	
-	
 	/*
-	m_shooterEncoder = new Encoder(
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio1,
-		Ports::Crio::Module1,
-		Ports::DigitalSidecar::Gpio2);
-	*/
+	m_verticalTurretMotor = new Victor(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm9);
+	m_turretTopSwitch = new DigitalInput(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio12);
+	m_turretBottomSwitch = new DigitalInput(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Gpio13);
+	*/		
+		
+	m_winchMotor = new Victor(
+			Ports::Crio::Module1,
+			Ports::DigitalSidecar::Pwm10);
 	
 	// On the solenoid...
 	// hole 4 goes nearest the piston head
@@ -109,11 +113,7 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 	m_joystick = new Joystick(
 			Ports::Computer::Usb2);
 	
-	m_compressor = new Compressor(
-			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Gpio1,
-			Ports::Crio::Module1,
-			Ports::DigitalSidecar::Relay1);
+	
 }
 
 void AugmentedTerminatorRobotProfile::CreateSubsystems() {
@@ -136,22 +136,17 @@ void AugmentedTerminatorRobotProfile::CreateSubsystems() {
 	
 	m_horizontalTurret = new FrisbeeTurret::Simple(
 			m_horizontalTurretMotor);
-	/*
-			m_turretLeftSwitch,
-			m_turretRightSwitch);*/
-	/*m_verticalTurret = new SimpleAxisFrisbeeTurret(
-			m_verticalTurretMotor);
-	*/
+
 	//m_aimer = new FrisbeeAimer::VisionTables();
-	//m_aimerTest = new FrisbeeAimer::Test("VisionTest");
-	
+
 	m_horizontalTurretTestEncoder = new TestEncoder(m_horizontalTurretEncoder, "Turret Horizontal Test");
 	
 	m_shooter = new FrisbeeShooter::ThreeWheel(
 		m_shooterFront,
 		m_shooterMiddle,
-		m_shooterBack);
+		m_shooterBack);	
 	
+	m_winch = new Winch::Simple(m_winchMotor);
 }
 
 void AugmentedTerminatorRobotProfile::CreateOI() {
@@ -189,23 +184,19 @@ void AugmentedTerminatorRobotProfile::TeleopInit() {
 	m_horizontalTurretTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_horizontalTurretTestEncoder, 
 			"turret horizontal Encoder"));
-	/*m_verticalTurret->SetDefaultCommand(new ManuallyControlTurretCommand(
-			m_verticalTurret, 
-			m_oi->RotateTurretAxis,
-			"ManuallyControlTurretCommand_Vertical"));
-	*/
+	//m_verticalTurret->SetDefaultCommand(new ManuallyControlTurretCommand(
+	//		m_verticalTurret, 
+	//		m_oi->RotateTurretAxis,
+	//		"ManuallyControlTurretCommand_Vertical"));
 	
 	m_oi->LoadFrisbeeButton->WhenPressed(new ShooterCommand::LoadFrisbee(m_loader));
 	m_oi->FireFrisbeeButton->WhileHeld(new ShooterCommand::FireFrisbee(m_shooter));
-	/*SmartDashboard::PutData(
-			"SmartDashboardFireFrisbee", 
-			new ShooterCommand::SmartDashboardFireFrisbee(m_shooter));
-	*/
+	
 	m_compressor->Start();
 	
-	//SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
+	m_oi->ControlWinchButton->WhileHeld(new WinchCommand::SetSpeed(m_winch, 1.0));
 	
-	// Will stop if the shooter is within 3 degrees of the centerpoint of the target
+	SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
 }
 
 void AugmentedTerminatorRobotProfile::TeleopPeriodic() {

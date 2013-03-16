@@ -238,7 +238,7 @@ void ShooterCommand::AdjustTurret::Execute() {
 }
 
 
-ShooterCommand::ManuallyControlTurret::ManuallyControlTurret(FrisbeeTurret::Base *turretAxis, Axis *inputAxis, const char *name) :
+ShooterCommand::ManuallyControlTurret::ManuallyControlTurret(FrisbeeTurret::Base *turretAxis, BaseAxis *inputAxis, const char *name) :
 		SimpleCommand(name, false) {
 	m_turret = turretAxis;
 	m_axis = inputAxis;

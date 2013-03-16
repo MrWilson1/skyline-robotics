@@ -148,20 +148,3 @@ BasicArmCommand::SetY::~SetY() {
 	//
 }
 
-
-
-BasicArmCommand::ControlWinchManual::ControlWinchManual(
-		Winch::Base *winch, 
-		Axis *axis) :
-		SimpleCommand("ControlWinch", false) {
-	m_winch = winch;
-	m_axis = axis;
-}
-
-BasicArmCommand::ControlWinchManual::~ControlWinchManual() {
-	//
-}
-
-void BasicArmCommand::ControlWinchManual::Execute() {
-	m_winch->SetSpeed(m_axis->Get());
-}

@@ -2,8 +2,8 @@
 
 CompetitionOI::CompetitionOI(XboxController *xbox) :
 		BaseOI("CompetitionOI") {
-	TankLeftAxis = new Axis(xbox, xbox->LeftY);
-	TankRightAxis = new Axis(xbox, xbox->RightY);
+	TankLeftAxis = new TruncatedCurvedAxis(xbox, xbox->LeftY);
+	TankRightAxis = new TruncatedCurvedAxis(xbox, xbox->RightY);
 	ArcadeMagnitudeAxis = new Axis(xbox, xbox->LeftY);
 	ArcadeRotationAxis = new Axis(xbox, xbox->RightX);
 	DriveStraightAxis = new Axis(xbox, xbox->LeftY);
@@ -66,12 +66,15 @@ XboxSingleJoystickOI::XboxSingleJoystickOI(XboxController *xbox, Joystick *stick
 	DriveStraightAxis = new Axis(xbox, xbox->LeftY);
 	RotateTurretAxis = new Axis(stick, Joystick::kDefaultXAxis);
 	LiftTurretAxis = new Axis(stick, Joystick::kDefaultYAxis);
-	ControlWinchAxis = NULL;
 	
 	DriveStraightButton = new JoystickButton(xbox, xbox->LeftBumper);
 	ToggleTransmissionButton = new JoystickButton(xbox, xbox->RightBumper);
-	FireFrisbeeButton = new JoystickButton(stick, Joystick::kDefaultTriggerButton);
-	LoadFrisbeeButton = new JoystickButton(xbox, xbox->B);
+	FireFrisbeeButton = new JoystickButton(stick, 3);
+	LoadFrisbeeButton = new JoystickButton(stick, Joystick::kDefaultTriggerButton);
+	
+	Winch1Button = new JoystickButton(stick, 7);
+	Winch2Button = new JoystickButton(stick, 10);
+	ControlWinchButton = new CustomButton::PressTwo(Winch1Button, Winch2Button);
 }
 
 XboxSingleJoystickOI::~XboxSingleJoystickOI() {
@@ -80,12 +83,15 @@ XboxSingleJoystickOI::~XboxSingleJoystickOI() {
 	delete DriveStraightAxis;
 	delete RotateTurretAxis;
 	delete LiftTurretAxis;
-	delete ControlWinchAxis;
 	
 	delete DriveStraightButton;
 	delete ToggleTransmissionButton;
 	delete FireFrisbeeButton;
 	delete LoadFrisbeeButton;
+	
+	delete Winch1Button;
+	delete Winch2Button;
+	delete ControlWinchButton;
 }
 
 

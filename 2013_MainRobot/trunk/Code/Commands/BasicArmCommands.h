@@ -13,7 +13,6 @@
 #include "math.h"
 #include "../Misc/Tools.h"
 #include "../Subsystems/Controllers/Axis.h"
-#include "../Subsystems/Climber/ClimberWinch.h"
 
 namespace BasicArmCommand {
 /**
@@ -130,19 +129,7 @@ public:
 	~SetY();
 };
 
-/**
- * Command to control the winch using an axis.
- */
-class ControlWinchManual :  public SimpleCommand {
-public:
-	ControlWinchManual(Winch::Base *winch, Axis *axis);
-	~ControlWinchManual();
-	
-	void Execute();
-private:
-	Winch::Base *m_winch;
-	Axis *m_axis;
-};
+
 }
 
 /**

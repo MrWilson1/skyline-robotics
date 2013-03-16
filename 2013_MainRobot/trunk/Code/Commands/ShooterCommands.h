@@ -153,14 +153,14 @@ class ManuallyControlTurret : public SimpleCommand {
 public:
 	ManuallyControlTurret(
 			FrisbeeTurret::Base *turretAxis, 
-			Axis *inputAxis, 
+			BaseAxis *inputAxis, 
 			const char *name);
 	~ManuallyControlTurret();
 	void Execute();
 	
 private:
 	FrisbeeTurret::Base *m_turret;
-	Axis *m_axis;
+	BaseAxis *m_axis;
 };
 
 }

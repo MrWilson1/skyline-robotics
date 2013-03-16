@@ -10,7 +10,7 @@
  */
 class TestMotorCommand : public Command {
 public:
-	TestMotorCommand(TestMotor *testMotor, Axis *axis);
+	TestMotorCommand(TestMotor *testMotor, BaseAxis *axis);
 	~TestMotorCommand();
 
 	void Initialize();
@@ -21,7 +21,7 @@ public:
 
 private:
 	TestMotor *m_testMotor;
-	Axis *m_axis;
+	BaseAxis *m_axis;
 };
 
 

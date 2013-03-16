@@ -13,9 +13,11 @@
 #include "../Subsystems/Shooter/FrisbeeLoader.h"
 #include "../Subsystems/Shooter/FrisbeeShooter.h"
 #include "../Subsystems/Shooter/FrisbeeAimer.h"
+#include "../Subsystems/Climber/ClimberWinch.h"
 
 #include "../Commands/DriveCommands.h"
 #include "../Commands/ShooterCommands.h"
+#include "../Commands/WinchCommands.h"
 #include "../Commands/TestCommands.h"
 
 #include "../Subsystems/Controllers/Axis.h"
@@ -29,7 +31,8 @@
  */
 class AugmentedTerminatorRobotProfile : public BaseRobotProfile {
 private:
-	// Basic Hardware Objects
+	// ### Basic Hardware Objects
+	// Drive
 	SpeedController *m_leftFrontMotor;
 	SpeedController *m_leftBackMotor;
 	SpeedController *m_rightFrontMotor;
@@ -39,21 +42,28 @@ private:
 	Encoder *m_leftEncoder;
 	Encoder *m_rightEncoder;
 	
+	// Turret
 	SpeedController *m_horizontalTurretMotor;
-	//SpeedController *m_verticalTurretMotor;
+	SpeedController *m_verticalTurretMotor;
 	DigitalInput *m_turretLeftSwitch;
 	DigitalInput *m_turretRightSwitch;
-	//DigitalInput *m_turretTopSwitch;
-	//DigitalInput *m_turretBottomSwitch;
+	DigitalInput *m_turretTopSwitch;
+	DigitalInput *m_turretBottomSwitch;
 	Encoder *m_horizontalTurretEncoder;
 	
+	// Shooter
 	SpeedController *m_shooterFront;
 	SpeedController *m_shooterMiddle;
 	SpeedController *m_shooterBack;
-	//Encoder *m_shooterEncoder;
+	Encoder *m_shooterEncoder;
 	
+	// Winch
+	SpeedController *m_winchMotor;
+	
+	// Loader
 	Solenoid *m_loaderSolenoid;
 	
+	// Misc
 	Compressor *m_compressor;	
 	
 	// Subsystems
@@ -64,12 +74,9 @@ private:
 	//FrisbeeTurret::Base *m_verticalTurret;
 	TestEncoder *m_horizontalTurretTestEncoder;
 	FrisbeeShooter::Base *m_shooter;
+	Winch::Base *m_winch;
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
-	
-	
-	
-	//FrisbeeAimer::Test *m_aimerTest;
 	
 	// Commands and buttons
 	XboxSingleJoystickOI *m_oi;

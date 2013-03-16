@@ -18,11 +18,11 @@ public:
 	SimpleOI(XboxController *xbox);
 	~SimpleOI();
 	
-	Axis *TankLeftAxis;
-	Axis *TankRightAxis;
-	Axis *ArcadeMagnitudeAxis;
-	Axis *ArcadeRotationAxis;
-	Axis *DriveStraightAxis;
+	BaseAxis *TankLeftAxis;
+	BaseAxis *TankRightAxis;
+	BaseAxis *ArcadeMagnitudeAxis;
+	BaseAxis *ArcadeRotationAxis;
+	BaseAxis *DriveStraightAxis;
 	JoystickButton *DriveStraightButton;
 	
 private:
