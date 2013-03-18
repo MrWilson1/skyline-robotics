@@ -10,8 +10,8 @@ FrisbeeTurret::Base::~Base() {
 
 
 
-FrisbeeTurret::Simple::Simple(SpeedController *motor) :
-		FrisbeeTurret::Base("FrisbeeTurret::Simple") {
+FrisbeeTurret::Simple::Simple(SpeedController *motor, const char *name) :
+		FrisbeeTurret::Base(name) {
 	m_motor = motor; 
 	AddActuatorToLiveWindow("Motor", m_motor);
 }
@@ -33,8 +33,9 @@ void FrisbeeTurret::Simple::Stop(){
 FrisbeeTurret::Guarded::Guarded(
 		SpeedController *motor, 
 		DigitalInput *switch1,
-		DigitalInput *switch2) :
-		FrisbeeTurret::Base("FrisbeeTurret::Guarded") {
+		DigitalInput *switch2,
+		const char *name) :
+		FrisbeeTurret::Base(name) {
 	m_motor = motor;
 	m_switch1 = switch1;
 	m_switch2 = switch2;

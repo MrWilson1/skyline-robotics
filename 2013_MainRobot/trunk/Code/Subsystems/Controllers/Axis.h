@@ -15,7 +15,7 @@ public:
 
 class Axis : public BaseAxis{
 public:
-	Axis(Joystick *joystick, int axisNum);
+	Axis(Joystick *joystick, const int axisNum);
 	~Axis();
 	float Get();
 	Joystick *GetJoystick();
@@ -29,7 +29,7 @@ private:
 
 class TruncatedCurvedAxis : public BaseAxis {
 public:
-	TruncatedCurvedAxis(Joystick *joystick, int axisNum);
+	TruncatedCurvedAxis(Joystick *joystick, const int axisNum);
 	~TruncatedCurvedAxis();
 	float Get();
 	Joystick *GetJoystick();
@@ -38,6 +38,22 @@ public:
 private:
 	Joystick *m_joystick;
 	const int m_axisNum;
+};
+
+
+class CustomRangeAxis : public BaseAxis {
+public:
+	CustomRangeAxis(Joystick *joystick, const int axisNum, const float minRange, const float maxRange);
+	~CustomRangeAxis();
+	float Get();
+	Joystick *GetJoystick();
+	const int GetAxisNum();
+	
+private:
+	Joystick *m_joystick;
+	const int m_axisNum;
+	const float m_minRange;
+	const float m_maxRange;
 };
 
 

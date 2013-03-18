@@ -27,6 +27,7 @@
 #define EXPERIMENTAL_H
 
 #include "WPILib.h"
+#include "NetworkCommunication/UsageReporting.h"
 #include "BaseSubsystem.h"
 
 /**
@@ -115,16 +116,23 @@ private:
 };
 
 
-class ReversedVictor : public Victor {
+/**
+ * IFI Victor Speed Controller (reversed)
+ */
+class ReversedVictor : public SafePWM, public SpeedController
+{
 public:
-	ReversedVictor(UINT32 channel);
+	explicit ReversedVictor(UINT32 channel);
 	ReversedVictor(UINT8 moduleNumber, UINT32 channel);
-	~ReversedVictor();
-	void Set(float speed);
-	void Set(float speed, UINT8 syncGroup);
-	float Get();
-	void PIDWrite(float output);
-	void Disable();
+	virtual ~ReversedVictor();
+	virtual void Set(float value, UINT8 syncGroup=0);
+	virtual float Get();
+	virtual void Disable();
+
+	virtual void PIDWrite(float output);
+
+private:
+	void InitVictor();
 };
 
 

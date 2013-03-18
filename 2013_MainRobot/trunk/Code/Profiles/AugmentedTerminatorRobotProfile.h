@@ -71,12 +71,13 @@ private:
 	FrisbeeLoader::Base *m_loader;
 	FrisbeeAimer::Base *m_aimer;
 	FrisbeeTurret::Base *m_horizontalTurret;
-	//FrisbeeTurret::Base *m_verticalTurret;
+	FrisbeeTurret::Base *m_verticalTurret;
 	TestEncoder *m_horizontalTurretTestEncoder;
 	FrisbeeShooter::Base *m_shooter;
 	Winch::Base *m_winch;
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
+	TestEncoder *m_shooterTestEncoder;
 	
 	// Commands and buttons
 	XboxSingleJoystickOI *m_oi;
@@ -96,6 +97,7 @@ public:
 	void AutonomousInit();
 	void TeleopInit();
 	void TeleopPeriodic();
+	void DisabledInit();
 };
 
 #endif

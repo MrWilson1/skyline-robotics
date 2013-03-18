@@ -115,8 +115,8 @@ void MainRobot2013Profile::CreateSubsystems() {
 			m_rightTread);
 	m_loader = new FrisbeeLoader::Placeholder();
 	//m_aimer = new VisionTablesFrisbeeAimer();	
-	m_horizontalTurret = new FrisbeeTurret::Simple(m_turretHorizontal);
-	m_verticalTurret = new FrisbeeTurret::Simple(m_turretVertical);
+	m_horizontalTurret = new FrisbeeTurret::Simple(m_turretHorizontal, "FrisbeeTurret::Simple horizontal");
+	m_verticalTurret = new FrisbeeTurret::Simple(m_turretVertical, "FrisbeeTurret::Simple vertical");
 	m_shooter = new FrisbeeShooter::ThreeWheel(
 		m_shooterFront,
 		m_shooterMiddle,

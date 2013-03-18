@@ -141,7 +141,15 @@ void ShooterCommand::AimTurret::Interrupted() {
 
 
 ShooterCommand::FireFrisbee::FireFrisbee(FrisbeeShooter::Base *shooter) :
-		Command("FireFrisbee") {
+		Command("FireFrisbee"),
+		m_speed(1.0) {
+	m_shooter = shooter;
+	Requires(m_shooter);
+}
+
+ShooterCommand::FireFrisbee::FireFrisbee(FrisbeeShooter::Base *shooter, float speed) :
+		Command("FireFrisbee"),
+		m_speed(speed) {
 	m_shooter = shooter;
 	Requires(m_shooter);
 }
@@ -155,7 +163,7 @@ void ShooterCommand::FireFrisbee::Initialize() {
 }
 
 void ShooterCommand::FireFrisbee::Execute() {
-	m_shooter->ShootFrisbee();
+	m_shooter->SetFrisbeeSpeed(m_speed);
 }
 
 bool ShooterCommand::FireFrisbee::IsFinished() {
@@ -168,6 +176,35 @@ void ShooterCommand::FireFrisbee::End() {
 
 void ShooterCommand::FireFrisbee::Interrupted() {
 	m_shooter->StopFrisbee();
+}
+
+
+
+ShooterCommand::FireFrisbeeWithAdjustableSpeed::FireFrisbeeWithAdjustableSpeed(
+		FrisbeeShooter::Base *shooter,
+		BaseAxis *speedAxis) :
+		SimpleCommand("ShooterCommand::FireFrisbeeWithAdjustableSpeed", false) {
+	m_shooter = shooter;
+	m_speedAxis = speedAxis;
+	
+	Requires(m_shooter);
+}
+
+ShooterCommand::FireFrisbeeWithAdjustableSpeed::~FireFrisbeeWithAdjustableSpeed() {
+	// empty
+}
+
+void ShooterCommand::FireFrisbeeWithAdjustableSpeed::Execute() {
+	float speed = m_speedAxis->Get();
+	m_shooter->SetFrisbeeSpeed(speed);
+}
+
+void ShooterCommand::FireFrisbeeWithAdjustableSpeed::End() {
+	m_shooter->SetFrisbeeSpeed(0);
+}
+
+void ShooterCommand::FireFrisbeeWithAdjustableSpeed::Interrupted() {
+	m_shooter->SetFrisbeeSpeed(0);
 }
 
 
@@ -208,6 +245,11 @@ ShooterCommand::LoadAndFire::LoadAndFire(
 ShooterCommand::LoadAndFire::~LoadAndFire() {
 	// empty
 }
+
+
+
+
+
 
 /**
  * todo: Make two versions of this: one to manually go to some distance (replace Axis with doubles)

@@ -83,11 +83,12 @@ private:
 
 
 /**
- * \brief Fires the frisbee at max speed.
+ * \brief Fires the frisbee at a given speed.
  */
 class FireFrisbee : public Command {
 public:
 	FireFrisbee(FrisbeeShooter::Base *shooter);
+	FireFrisbee(FrisbeeShooter::Base *shooter, float speed);
 	~FireFrisbee();
 	void Initialize();
 	void Execute();
@@ -97,6 +98,20 @@ public:
 		
 private:
 	FrisbeeShooter::Base *m_shooter;
+	float m_speed;
+};
+
+class FireFrisbeeWithAdjustableSpeed : public SimpleCommand {
+public:
+	FireFrisbeeWithAdjustableSpeed(FrisbeeShooter::Base *shooter, BaseAxis *speedAxis);
+	~FireFrisbeeWithAdjustableSpeed();
+	void Execute();
+	void End();
+	void Interrupted();
+	
+private:
+	FrisbeeShooter::Base *m_shooter;
+	BaseAxis *m_speedAxis;
 };
 
 class SmartDashboardFireFrisbee : public SimpleCommand {

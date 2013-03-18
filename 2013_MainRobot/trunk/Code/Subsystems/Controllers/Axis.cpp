@@ -8,7 +8,7 @@ BaseAxis::~BaseAxis() {
 	// empty
 }
 
-Axis::Axis(Joystick *joystick, int axisNum) :
+Axis::Axis(Joystick *joystick, const int axisNum) :
 		BaseAxis(), 
 		m_axisNum(axisNum) {
 	m_joystick = joystick;
@@ -33,7 +33,7 @@ const int Axis::GetAxisNum() {
 
 
 
-TruncatedCurvedAxis::TruncatedCurvedAxis(Joystick *joystick, int axisNum) :
+TruncatedCurvedAxis::TruncatedCurvedAxis(Joystick *joystick, const int axisNum) :
 		BaseAxis(), 
 		m_axisNum(axisNum) {
 	m_joystick = joystick;
@@ -46,7 +46,11 @@ TruncatedCurvedAxis::~TruncatedCurvedAxis() {
 float TruncatedCurvedAxis::Get() {
 	float value = m_joystick->GetRawAxis(m_axisNum);
 	value = Tools::Deadband(value, 0.2);
-	value = value * value;
+	if (value < 0) {
+		value = -(value * value);
+	} else {
+		value = value * value;
+	}
 	return value;
 }
 
@@ -55,5 +59,34 @@ Joystick * TruncatedCurvedAxis::GetJoystick() {
 }
 
 const int TruncatedCurvedAxis::GetAxisNum() {
+	return m_axisNum;
+}
+
+
+
+
+CustomRangeAxis::CustomRangeAxis(Joystick *joystick, const int axisNum, 
+								 const float minRange, const float maxRange) :
+		BaseAxis(), 
+		m_axisNum(axisNum),
+		m_minRange(minRange), 
+		m_maxRange(maxRange) {
+	m_joystick = joystick;
+}
+
+CustomRangeAxis::~CustomRangeAxis() {
+	// empty
+}
+
+float CustomRangeAxis::Get() {
+	float raw = m_joystick->GetRawAxis(m_axisNum); 
+	return Tools::Scale(raw, -1.0, 1.0, m_minRange, m_maxRange);
+}
+
+Joystick * CustomRangeAxis::GetJoystick() {
+	return m_joystick;
+}
+
+const int CustomRangeAxis::GetAxisNum() {
 	return m_axisNum;
 }

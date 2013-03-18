@@ -61,11 +61,12 @@ XboxTwoJoysticksOI::~XboxTwoJoysticksOI() {
 
 XboxSingleJoystickOI::XboxSingleJoystickOI(XboxController *xbox, Joystick *stick) :
 		BaseOI("XboxSingleJoystickOI") {
-	TankLeftAxis = new Axis(xbox, xbox->LeftY);
-	TankRightAxis = new Axis(xbox, xbox->RightY);
+	TankLeftAxis = new TruncatedCurvedAxis(xbox, xbox->LeftY);
+	TankRightAxis = new TruncatedCurvedAxis(xbox, xbox->RightY);
 	DriveStraightAxis = new Axis(xbox, xbox->LeftY);
 	RotateTurretAxis = new Axis(stick, Joystick::kDefaultXAxis);
-	LiftTurretAxis = new Axis(stick, Joystick::kDefaultYAxis);
+	LiftTurretAxis = new CustomRangeAxis(stick, Joystick::kDefaultYAxis, -1.0, 1.0);
+	ShooterSpeedAxis = new CustomRangeAxis(stick, Joystick::kDefaultZAxis, 0.5, 1.0);
 	
 	DriveStraightButton = new JoystickButton(xbox, xbox->LeftBumper);
 	ToggleTransmissionButton = new JoystickButton(xbox, xbox->RightBumper);
@@ -83,6 +84,7 @@ XboxSingleJoystickOI::~XboxSingleJoystickOI() {
 	delete DriveStraightAxis;
 	delete RotateTurretAxis;
 	delete LiftTurretAxis;
+	delete ShooterSpeedAxis;
 	
 	delete DriveStraightButton;
 	delete ToggleTransmissionButton;

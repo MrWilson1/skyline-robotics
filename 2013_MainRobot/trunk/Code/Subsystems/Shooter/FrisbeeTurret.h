@@ -19,7 +19,7 @@ public:
 
 class Simple : public Base {
 public:
-	Simple(SpeedController *motor);
+	Simple(SpeedController *motor, const char *name);
 	~Simple();
 	
 	void SetSpeed(float speed);
@@ -34,9 +34,11 @@ private:
 
 class Guarded : public Base {
 public:
-	Guarded(SpeedController *motor,  
-							 DigitalInput *switch1,
-							 DigitalInput *switch2);
+	Guarded(
+		SpeedController *motor,  
+		DigitalInput *switch1,
+		DigitalInput *switch2,
+		const char *name);
 	~Guarded();
 	
 	void SetSpeed(float speed);

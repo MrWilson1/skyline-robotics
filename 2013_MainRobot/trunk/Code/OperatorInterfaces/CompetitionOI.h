@@ -66,6 +66,7 @@ public:
 	BaseAxis *DriveStraightAxis;
 	BaseAxis *RotateTurretAxis;
 	BaseAxis *LiftTurretAxis;
+	BaseAxis *ShooterSpeedAxis;
 	
 	Button *DriveStraightButton;
 	Button *ToggleTransmissionButton;

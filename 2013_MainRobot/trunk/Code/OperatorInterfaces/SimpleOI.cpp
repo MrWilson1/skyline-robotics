@@ -2,8 +2,8 @@
 
 SimpleOI::SimpleOI(XboxController *xbox) :
 		BaseOI("SimpleOI") {
-	TankLeftAxis = new Axis(xbox, xbox->LeftY);
-	TankRightAxis = new Axis(xbox, xbox->RightY);
+	TankLeftAxis = new TruncatedCurvedAxis(xbox, xbox->LeftY);
+	TankRightAxis = new TruncatedCurvedAxis(xbox, xbox->RightY);
 	ArcadeMagnitudeAxis = new Axis(xbox, xbox->LeftY);
 	ArcadeRotationAxis = new Axis(xbox, xbox->RightX);
 	DriveStraightAxis = new Axis(xbox, xbox->LeftY);

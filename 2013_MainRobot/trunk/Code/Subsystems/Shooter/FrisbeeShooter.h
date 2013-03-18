@@ -31,7 +31,6 @@ public:
 	 * Shoots the frisbee at a specified speed.
 	 */
 	virtual void ShootFrisbee(float inchesPerSecond) = 0;
-	
 	virtual void StopFrisbee() = 0;
 	virtual void SetFrisbeeSpeed(double speed) = 0;
 };
@@ -43,21 +42,16 @@ public:
 		Negative = -1,
 	};
 	
-	SimpleBelt(SpeedController *motor, Direction forwardDirection);
+	SimpleBelt(SpeedController *motor);
 	~SimpleBelt();
 	
 	void ShootFrisbee();
-	void ShootFrisbee(float distanceInInches);
+	void ShootFrisbee(float inchesPerSEcond);
 	void StopFrisbee();
 	void SetFrisbeeSpeed(double speed);
-	
-	void SetMaxDistance(float inches);
-	float GetMaxDistance();
 
 private:
 	SpeedController *m_motor;
-	Direction m_forwardDirection;
-	float m_maxDistance;
 };
 
 class ThreeWheel : public Base {
@@ -69,15 +63,41 @@ public:
 	void ShootFrisbee(float distanceInInches);
 	void StopFrisbee();
 	void SetFrisbeeSpeed(double speed);
-	void SetMaxDistance(float inches);
-	float GetMaxdistance();
 	
 private:
 	SpeedController *m_frontMotor;
 	SpeedController *m_middleMotor;
 	SpeedController *m_lastMotor;
-	float m_maxDistance;
 };
+
+
+class ThreeWheelSteady : public Base {
+public:
+	ThreeWheelSteady(
+			SpeedController *frontMotor, 
+			SpeedController *middleMotor, 
+			SpeedController *lastMotor,
+			Encoder *encoder,
+			float maxEncoderPulses,
+			float maxEncoderSpeed);
+	~ThreeWheelSteady();
+	
+	void ShootFrisbee();
+	void ShootFrisbee(float distanceInInches);
+	void StopFrisbee();
+	void SetFrisbeeSpeed(double speed);
+	
+private:
+	SpeedController *m_frontMotor;
+	SpeedController *m_middleMotor;
+	SpeedController *m_lastMotor;
+	Encoder *m_encoder;
+	const float m_maxEncoderPulses;
+	const float m_maxEncoderSpeed;
+	float m_targetSpeed;
+	float m_outputSpeed;
+};
+
 
 }
 
