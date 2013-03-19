@@ -43,7 +43,10 @@ void BlandRobotProfile::CreateOI() {
 }
 
 void BlandRobotProfile::RobotInit() {
-	// empty
+	m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
+			m_drive, 
+			m_oi->TankRightAxis,
+			m_oi->TankLeftAxis));
 }
 
 void BlandRobotProfile::AutonomousInit() {
@@ -51,9 +54,6 @@ void BlandRobotProfile::AutonomousInit() {
 }
 
 void BlandRobotProfile::TeleopInit() {
-	m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
-			m_drive, 
-			m_oi->TankRightAxis,
-			m_oi->TankLeftAxis));
+	
 }
 

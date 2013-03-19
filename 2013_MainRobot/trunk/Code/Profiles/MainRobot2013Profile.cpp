@@ -131,14 +131,6 @@ void MainRobot2013Profile::CreateOI() {
 }
 
 void MainRobot2013Profile::RobotInit() {
-	// empty
-}
-
-void MainRobot2013Profile::AutonomousInit() {
-	// empty
-}
-
-void MainRobot2013Profile::TeleopInit() {
 	m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
 			m_drive, 
 			m_oi->TankLeftAxis,
@@ -151,7 +143,13 @@ void MainRobot2013Profile::TeleopInit() {
 	
 	m_oi->FireFrisbeeButton->WhileHeld(new ShooterCommand::FireFrisbee( 
 			m_shooter));
-	
+}
+
+void MainRobot2013Profile::AutonomousInit() {
+	// empty
+}
+
+void MainRobot2013Profile::TeleopInit() {
 	m_compressor->Start();
 	
 	SmartDashboard::PutData(m_horizontalTurret);
