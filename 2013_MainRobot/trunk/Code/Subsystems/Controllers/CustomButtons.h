@@ -2,6 +2,7 @@
 #define CUSTOM_BUTTONS_H
 
 #include "WPILib.h"
+#include "axis.h"
 
 namespace CustomButton {
 
@@ -17,6 +18,17 @@ private:
 	Button *m_button2;
 };
 
+class XboxTrigger : public Button {
+public:
+	XboxTrigger(Joystick *joystick, int axis);
+	~XboxTrigger();
+	
+	bool Get();
+	
+private:
+	Joystick *m_joystick;
+	int m_axis;
+};
 }
 
 #endif

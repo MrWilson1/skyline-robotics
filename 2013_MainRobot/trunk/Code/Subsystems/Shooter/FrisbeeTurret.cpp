@@ -29,6 +29,8 @@ void FrisbeeTurret::Simple::Stop(){
 }
 
 
+	
+
 
 FrisbeeTurret::Guarded::Guarded(
 		SpeedController *motor, 

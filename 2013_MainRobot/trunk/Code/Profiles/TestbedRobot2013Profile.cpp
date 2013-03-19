@@ -65,7 +65,7 @@ void TestbedRobot2013Profile::CreateSubsystems() {
 }
 
 void TestbedRobot2013Profile::CreateOI() {
-	m_oi = new CompetitionOI(m_xbox);
+	//m_oi = new CompetitionOI(m_xbox);
 }
 
 void TestbedRobot2013Profile::RobotInit() {
@@ -77,7 +77,7 @@ void TestbedRobot2013Profile::AutonomousInit() {
 }
 
 void TestbedRobot2013Profile::TeleopInit() {
-	m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
+	/*m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
 			m_drive,
 			m_oi->TankLeftAxis,
 			m_oi->TankRightAxis));
@@ -92,5 +92,7 @@ void TestbedRobot2013Profile::TeleopInit() {
 	m_oi->DriveStraightButton->WhileHeld(new DriveCommand::TravelStraightManual(
 			m_drive, 
 			m_oi->DriveStraightAxis));
+*/
 }
+
 

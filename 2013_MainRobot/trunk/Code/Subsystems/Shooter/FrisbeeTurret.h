@@ -1,8 +1,17 @@
+/**
+ * \file FrisbeeTurret.h
+ * 
+ * \brief Allows the turret to move horizontally and vertically
+ * 
+ * This subsystem only takes into account one axis of control, such as horizontal or vertical.
+ * We took into account only one axis because   	
+ */
+
+
 #ifndef FRISBEE_TURRET_H
 #define FRISBEE_TURRET_H
 
 #include "WPILib.h"
-
 #include "../BaseSubsystem.h"
 #include "FrisbeeAimer.h"
 

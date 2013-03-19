@@ -18,20 +18,25 @@
  */
 class CompetitionOI : public BaseOI {
 public:
-	CompetitionOI(XboxController *xbox);
+	CompetitionOI(XboxController *xboxDrive, XboxController *xboxShooter);
 	~CompetitionOI();
 	
 	BaseAxis *TankLeftAxis;
-	BaseAxis *TankRightAxis;
-	BaseAxis *ArcadeMagnitudeAxis;
-	BaseAxis *ArcadeRotationAxis;
-	BaseAxis *DriveStraightAxis;
-	BaseAxis *ControlWinchAxis;
-	
-	Button *DriveStraightButton;
-	Button *ToggleTransmissionButton;
-	Button *FireFrisbeeButton;
-	Button *ClimbRobotButton;
+		BaseAxis *TankRightAxis;
+		BaseAxis *DriveStraightAxis;
+		BaseAxis *RotateTurretAxis;
+		BaseAxis *LiftTurretAxis;
+		BaseAxis *ShooterSpeedAxis;
+		
+		Button *DriveStraightButton;
+		Button *ToggleTransmissionButton;
+		Button *FireFrisbeeButton;
+		Button *LoadFrisbeeButton;
+		Button *ControlWinchButton;
+		
+private:
+	Button *Winch1Button;
+	Button *Winch2Button;
 };
 
 /**

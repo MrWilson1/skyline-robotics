@@ -18,3 +18,25 @@ bool CustomButton::PressTwo::Get() {
 	SmartDashboard::PutBoolean("PressTwo combined", a && b);
 	return a && b;
 }
+
+CustomButton::XboxTrigger::XboxTrigger(Joystick *joystick, int axis) :
+		Button(),
+		m_axis(axis){
+	m_joystick = joystick; 
+}
+
+CustomButton::XboxTrigger::~XboxTrigger() {
+	//empty
+}
+
+bool CustomButton::XboxTrigger::Get() {
+	float value = m_joystick->GetRawAxis(m_axis);
+	
+	if (value > 0.5){
+		return true; 
+	}
+	else{
+		return false; 
+	}
+			
+}

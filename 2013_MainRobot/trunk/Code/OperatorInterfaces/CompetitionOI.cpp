@@ -1,32 +1,40 @@
 #include "CompetitionOI.h"
 
-CompetitionOI::CompetitionOI(XboxController *xbox) :
+CompetitionOI::CompetitionOI(XboxController *xboxDrive, XboxController *xboxShooter) :
 		BaseOI("CompetitionOI") {
-	TankLeftAxis = new TruncatedCurvedAxis(xbox, xbox->LeftY);
-	TankRightAxis = new TruncatedCurvedAxis(xbox, xbox->RightY);
-	ArcadeMagnitudeAxis = new Axis(xbox, xbox->LeftY);
-	ArcadeRotationAxis = new Axis(xbox, xbox->RightX);
-	DriveStraightAxis = new Axis(xbox, xbox->LeftY);
-	ControlWinchAxis = NULL;
-	
-	DriveStraightButton = new JoystickButton(xbox, xbox->A);
-	ToggleTransmissionButton = new JoystickButton(xbox, xbox->B);
-	FireFrisbeeButton = new JoystickButton(xbox, xbox->X);
-	ClimbRobotButton = new JoystickButton(xbox, xbox->Y);
+		TankLeftAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->LeftY);
+		TankRightAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->RightY);
+		DriveStraightAxis = new Axis(xboxDrive, xboxDrive->LeftY);
+		RotateTurretAxis = new Axis(xboxShooter, XboxController::RightX);
+		LiftTurretAxis = new CustomRangeAxis(xboxShooter, XboxController::LeftY, -1.0, 1.0);
+		ShooterSpeedAxis = new CustomRangeAxis(xboxShooter, XboxController::kDefaultZAxis, 0.5, 1.0);
+		
+		DriveStraightButton = new JoystickButton(xboxDrive, xboxDrive->LeftBumper);
+		ToggleTransmissionButton = new JoystickButton(xboxDrive, xboxDrive->RightBumper);
+		FireFrisbeeButton = new JoystickButton(xboxShooter, 1);
+		LoadFrisbeeButton = new CustomButton::XboxTrigger(xboxShooter, xboxShooter->Bumper);
+		
+		Winch1Button = new JoystickButton(xboxShooter, 7);
+		Winch2Button = new JoystickButton(xboxShooter, 10);
+		ControlWinchButton = new CustomButton::PressTwo(Winch1Button, Winch2Button);
 }
 
 CompetitionOI::~CompetitionOI() {
 	delete TankLeftAxis;
 	delete TankRightAxis;
-	delete ArcadeMagnitudeAxis;
-	delete ArcadeRotationAxis;
 	delete DriveStraightAxis;
-	delete ControlWinchAxis;
+	delete RotateTurretAxis;
+	delete LiftTurretAxis;
+	delete ShooterSpeedAxis;
 	
 	delete DriveStraightButton;
 	delete ToggleTransmissionButton;
 	delete FireFrisbeeButton;
-	delete ClimbRobotButton;
+	delete LoadFrisbeeButton;
+	
+	delete Winch1Button;
+	delete Winch2Button;
+	delete ControlWinchButton;
 }
 
 
