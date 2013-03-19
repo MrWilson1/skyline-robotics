@@ -1,27 +1,31 @@
 #include "CompetitionOI.h"
 
-CompetitionOI::CompetitionOI(XboxController *xboxDrive, XboxController *xboxShooter) :
+CompetitionOI::CompetitionOI(XboxController *xboxDrive, XboxController *xboxShooter, Joystick *joystick) :
 		BaseOI("CompetitionOI") {
 		TankLeftAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->LeftY);
 		TankRightAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->RightY);
+		ArcadeMagAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->LeftY);
+		ArcadeRotateAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->RightX);
 		DriveStraightAxis = new Axis(xboxDrive, xboxDrive->LeftY);
-		RotateTurretAxis = new Axis(xboxShooter, XboxController::RightX);
-		LiftTurretAxis = new CustomRangeAxis(xboxShooter, XboxController::LeftY, -1.0, 1.0);
-		ShooterSpeedAxis = new CustomRangeAxis(xboxShooter, XboxController::kDefaultZAxis, 0.5, 1.0);
+		RotateTurretAxis = new Axis(xboxShooter, xboxShooter->RightX);
+		LiftTurretAxis = new CustomRangeAxis(xboxShooter, xboxShooter->LeftY, -1.0, 1.0);
+		ShooterSpeedAxis = new CustomRangeAxis(joystick, Joystick::kDefaultZAxis, 0.5, 1.0);
 		
 		DriveStraightButton = new JoystickButton(xboxDrive, xboxDrive->LeftBumper);
 		ToggleTransmissionButton = new JoystickButton(xboxDrive, xboxDrive->RightBumper);
-		FireFrisbeeButton = new JoystickButton(xboxShooter, 1);
-		LoadFrisbeeButton = new CustomButton::XboxTrigger(xboxShooter, xboxShooter->Bumper);
+		FireFrisbeeButton = new JoystickButton(xboxShooter, xboxShooter->A);
+		LoadFrisbeeButton = new JoystickButton(xboxShooter, xboxShooter->RightBumper); //CustomButton::XboxTrigger(xboxShooter, xboxShooter->Bumper);
 		
-		Winch1Button = new JoystickButton(xboxShooter, 7);
-		Winch2Button = new JoystickButton(xboxShooter, 10);
+		Winch1Button = new JoystickButton(joystick, 7);
+		Winch2Button = new JoystickButton(joystick, 10);
 		ControlWinchButton = new CustomButton::PressTwo(Winch1Button, Winch2Button);
 }
 
 CompetitionOI::~CompetitionOI() {
 	delete TankLeftAxis;
 	delete TankRightAxis;
+	delete ArcadeMagAxis;
+	delete ArcadeRotateAxis;
 	delete DriveStraightAxis;
 	delete RotateTurretAxis;
 	delete LiftTurretAxis;

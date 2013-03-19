@@ -109,10 +109,12 @@ void AugmentedTerminatorRobotProfile::CreateBasicHardwareObjects() {
 			Ports::Crio::Module1,
 			Ports::Crio::SolenoidBreakout5);
 	
-	m_xbox = new XboxController(
+	m_xboxDrive = new XboxController(
 			Ports::Computer::Usb1);
-	m_joystick = new Joystick(
+	m_xboxShooter = new XboxController(
 			Ports::Computer::Usb2);
+	m_joystick = new Joystick(
+			Ports::Computer::Usb3);
 	
 	
 }
@@ -145,7 +147,7 @@ void AugmentedTerminatorRobotProfile::CreateSubsystems() {
 			m_turretRightSwitch,
 			"FrisbeeTurret::Simple vertical");
 
-	//m_aimer = new FrisbeeAimer::VisionTables();
+	m_aimer = new FrisbeeAimer::VisionTables();
 
 	m_horizontalTurretTestEncoder = new TestEncoder(m_horizontalTurretEncoder, "Turret Horizontal Test");
 	
@@ -160,49 +162,53 @@ void AugmentedTerminatorRobotProfile::CreateSubsystems() {
 }
 
 void AugmentedTerminatorRobotProfile::CreateOI() {
-	m_oi = new XboxSingleJoystickOI(m_xbox, m_joystick);
+	m_oi = new CompetitionOI(m_xboxDrive, m_xboxShooter, m_joystick);
 }
 
 void AugmentedTerminatorRobotProfile::RobotInit() {
-	m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
-				m_drive, 
-				m_oi->TankLeftAxis,
-				m_oi->TankRightAxis));
-		m_leftTestEncoder->SetDefaultCommand(new TestEncoderCommand(
-				m_leftTestEncoder,
-				"left Encoder"));
-		m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
-				m_rightTestEncoder,
-				"right Encoder"));
-		m_oi->DriveStraightButton->WhileHeld(new DriveCommand::TravelStraightManual(
-				m_drive,
-				m_oi->DriveStraightAxis));
-		
-		
-		m_horizontalTurret->SetDefaultCommand(new ShooterCommand::ManuallyControlTurret(
-				m_horizontalTurret, 
-				m_oi->RotateTurretAxis,
-				"ManuallyControlTurretCommand_Horizontal"));
-		m_horizontalTurretTestEncoder->SetDefaultCommand(new TestEncoderCommand(
-				m_horizontalTurretTestEncoder, 
-				"turret horizontal Encoder"));
-		m_verticalTurret->SetDefaultCommand(new ShooterCommand::ManuallyControlTurret(
-				m_verticalTurret, 
-				m_oi->LiftTurretAxis,
-				"ManuallyControlTurretCommand_Vertical"));
-		
-		m_shooterTestEncoder->SetDefaultCommand(new TestEncoderCommand(
-				m_shooterTestEncoder,
-				"shooter Encoder"));
-		
-		m_oi->LoadFrisbeeButton->WhenPressed(new ShooterCommand::LoadFrisbee(m_loader));
-		m_oi->FireFrisbeeButton->WhileHeld(new ShooterCommand::FireFrisbeeWithAdjustableSpeed(
-				m_shooter, 
-				m_oi->ShooterSpeedAxis));
-		
-		m_oi->ControlWinchButton->WhileHeld(new WinchCommand::SetSpeed(m_winch, 1.0));
-		
-		SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
+	/*m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
+			m_drive, 
+			m_oi->TankLeftAxis,
+			m_oi->TankRightAxis));*/
+	m_drive->SetDefaultCommand(new DriveCommand::ArcadeDrive(
+			m_drive, 
+			m_oi->ArcadeMagAxis, 
+			m_oi->ArcadeRotateAxis));
+	m_leftTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_leftTestEncoder,
+			"left Encoder"));
+	m_rightTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_rightTestEncoder,
+			"right Encoder"));
+	m_oi->DriveStraightButton->WhileHeld(new DriveCommand::TravelStraightManual(
+			m_drive,
+			m_oi->DriveStraightAxis));
+	
+	
+	m_horizontalTurret->SetDefaultCommand(new ShooterCommand::ManuallyControlTurret(
+			m_horizontalTurret, 
+			m_oi->RotateTurretAxis,
+			"ManuallyControlTurretCommand_Horizontal"));
+	m_horizontalTurretTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_horizontalTurretTestEncoder, 
+			"turret horizontal Encoder"));
+	m_verticalTurret->SetDefaultCommand(new ShooterCommand::ManuallyControlTurret(
+			m_verticalTurret, 
+			m_oi->LiftTurretAxis,
+			"ManuallyControlTurretCommand_Vertical"));
+	
+	m_shooterTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_shooterTestEncoder,
+			"shooter Encoder"));
+	
+	m_oi->LoadFrisbeeButton->WhenPressed(new ShooterCommand::LoadFrisbee(m_loader));
+	m_oi->FireFrisbeeButton->WhileHeld(new ShooterCommand::FireFrisbeeWithAdjustableSpeed(
+			m_shooter, 
+			m_oi->ShooterSpeedAxis));
+	
+	m_oi->ControlWinchButton->WhileHeld(new WinchCommand::SetSpeed(m_winch, 1.0));
+	
+	SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
 }
 
 void AugmentedTerminatorRobotProfile::AutonomousInit() {

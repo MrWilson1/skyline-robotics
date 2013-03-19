@@ -80,8 +80,9 @@ private:
 	TestEncoder *m_shooterTestEncoder;
 	
 	// Commands and buttons
-	XboxSingleJoystickOI *m_oi;
-	XboxController *m_xbox;
+	CompetitionOI *m_oi;
+	XboxController *m_xboxDrive;
+	XboxController *m_xboxShooter;
 	Joystick *m_joystick;
 	
 	

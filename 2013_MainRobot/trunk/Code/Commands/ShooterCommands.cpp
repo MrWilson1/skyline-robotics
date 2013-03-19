@@ -100,27 +100,50 @@ void ShooterCommand::AimTurret::Execute() {
 		m_isFinished = true;
 		return;
 	}
+	
+	SmartDashboard::PutNumber("Aimer x offset", target.ShooterOffset.XOffset);
+	SmartDashboard::PutNumber("Aimer x offset", target.ShooterOffset.YOffset);
+	SmartDashboard::PutNumber("Aimer distance", target.DistanceInInches / 12.0);
+	
+	return;
+	
+	if (target.DistanceInInches == 0) {
+		// The Vision code sets the distance to 0 if the target type isn't found.
+		return;
+	}
 		
 	Tracking::Offset offset = target.ShooterOffset;
 	
+	float xCenter = 240;
+	float yCenter = 180;
+	
 	// Stage 2: determines if the shooter is pointing at the target.
-	bool isXDone = Tools::IsWithinRange(offset.XOffset, 0, m_allowedRange);
-	bool isYDone = Tools::IsWithinRange(offset.YOffset, 0, m_allowedRange);
+	bool isXDone = Tools::IsWithinRange(offset.XOffset, xCenter, m_allowedRange);
+	bool isYDone = Tools::IsWithinRange(offset.YOffset, yCenter, m_allowedRange);
 	
 	// Stage 3: adjusts the turret as appropriate
 	if (!isXDone) {
-		if (offset.XOffset < 0) {
-			m_horizontalTurret->SetSpeed(-0.3);
-		} else if (offset.XOffset > 0){
-			m_horizontalTurret->SetSpeed(0.3);
+		if (offset.XOffset < xCenter) {
+			SmartDashboard::PutString("Turret XOffset", "neg");
+			m_horizontalTurret->SetSpeed(-1.0);
+		} else if (offset.XOffset > xCenter){
+			m_horizontalTurret->SetSpeed(1.0);
+			SmartDashboard::PutString("Turret XOffset", "pos");
+		} else {
+			SmartDashboard::PutString("Turret XOffset", "none");
 		}
 	}
 	if (!isYDone) {
-		if (offset.YOffset < 0) {
-			m_verticalTurret->SetSpeed(-0.3);
-		} else if (offset.YOffset > 0){
-			m_verticalTurret->SetSpeed(0.3);
+		if (offset.YOffset < yCenter) {
+			m_verticalTurret->SetSpeed(-0.75);
+			SmartDashboard::PutString("Turret YOffset", "neg");
+		} else if (offset.YOffset > yCenter){
+			m_verticalTurret->SetSpeed(0.75);
+			SmartDashboard::PutString("Turret YOffset", "pos");
+		} else {
+			SmartDashboard::PutString("Turret YOffset", "none");
 		}
+		
 	}
 	
 	m_isFinished = isXDone and isYDone;

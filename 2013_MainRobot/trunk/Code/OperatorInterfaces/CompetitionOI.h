@@ -18,11 +18,13 @@
  */
 class CompetitionOI : public BaseOI {
 public:
-	CompetitionOI(XboxController *xboxDrive, XboxController *xboxShooter);
+	CompetitionOI(XboxController *xboxDrive, XboxController *xboxShooter, Joystick *joystick);
 	~CompetitionOI();
 	
 	BaseAxis *TankLeftAxis;
 		BaseAxis *TankRightAxis;
+		BaseAxis *ArcadeMagAxis;
+		BaseAxis *ArcadeRotateAxis;
 		BaseAxis *DriveStraightAxis;
 		BaseAxis *RotateTurretAxis;
 		BaseAxis *LiftTurretAxis;

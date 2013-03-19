@@ -18,6 +18,8 @@ private:
 	Button *m_button2;
 };
 
+
+
 class XboxTrigger : public Button {
 public:
 	XboxTrigger(Joystick *joystick, int axis);

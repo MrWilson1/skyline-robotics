@@ -19,6 +19,8 @@ bool CustomButton::PressTwo::Get() {
 	return a && b;
 }
 
+
+
 CustomButton::XboxTrigger::XboxTrigger(Joystick *joystick, int axis) :
 		Button(),
 		m_axis(axis){
@@ -31,12 +33,5 @@ CustomButton::XboxTrigger::~XboxTrigger() {
 
 bool CustomButton::XboxTrigger::Get() {
 	float value = m_joystick->GetRawAxis(m_axis);
-	
-	if (value > 0.5){
-		return true; 
-	}
-	else{
-		return false; 
-	}
-			
+	return (value > 0.5);
 }
