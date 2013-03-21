@@ -80,10 +80,47 @@ TurretPosition::Base::~Base() {
 
 
 
+TurretPosition::EncoderAngle::EncoderAngle(Encoder *encoder, float home, const char *name) :
+		Base(name),
+		m_home(home){
+	m_encoder = encoder;
+	AddSensorToLiveWindow("encoder", m_encoder);
+}
+
+TurretPosition::EncoderAngle::~EncoderAngle() {
+	// empty
+}
+
+TurretPosition::Position TurretPosition::EncoderAngle::GetPosition() {
+	float angle = m_encoder->Get();
+	if (Tools::IsWithinRange(angle, m_home, 4)) {
+		return TurretPosition::kCenter;
+	} else if (angle > (m_home + 4)) {
+		return TurretPosition::kRight;
+	} else if (angle < (m_home - 4)) {
+		return TurretPosition::kLeft;
+	} else {
+		return TurretPosition::kError;
+	}
+}
+
+float TurretPosition::EncoderAngle::GetAngle() {
+	return m_encoder->Get();
+}
+
+void TurretPosition::EncoderAngle::SetHome(float angle) {
+	m_home = angle;
+}
+
+
+
+
 TurretPosition::TwoLimitSwitches::TwoLimitSwitches(DigitalInput *leftSwitch, DigitalInput *rightSwitch) :
 		TurretPosition::Base("TurretPosition::TwoLimitSwitches") {
 	m_leftSwitch = leftSwitch;
 	m_rightSwitch = rightSwitch;
+	AddSensorToLiveWindow("left switch", m_leftSwitch);
+	AddSensorToLiveWindow("right switch", m_rightSwitch);
 }
 
 TurretPosition::TwoLimitSwitches::~TwoLimitSwitches() {
@@ -100,4 +137,12 @@ TurretPosition::Position TurretPosition::TwoLimitSwitches::GetPosition() {
 	} else {
 		return TurretPosition::kError;
 	}
+}
+
+float TurretPosition::TwoLimitSwitches::GetAngle() {
+	return 0;
+}
+
+void TurretPosition::TwoLimitSwitches::SetHome(float angle) {
+	// do nothing.
 }

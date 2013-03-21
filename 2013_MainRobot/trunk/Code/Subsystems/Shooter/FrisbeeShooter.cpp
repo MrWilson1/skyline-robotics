@@ -71,10 +71,10 @@ void FrisbeeShooter::ThreeWheel::StopFrisbee() {
 }
 
 void FrisbeeShooter::ThreeWheel::SetFrisbeeSpeed(double speed) {
+	SmartDashboard::PutNumber("ThreeWheel raw", speed);
 	m_frontMotor->Set(speed);
 	m_middleMotor->Set(speed);
 	m_lastMotor->Set(speed);
-	SmartDashboard::PutNumber("ThreeWheel raw", speed);
 }
 
 

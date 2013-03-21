@@ -77,6 +77,22 @@ public:
 	~Base();
 	
 	virtual Position GetPosition() = 0;
+	virtual float GetAngle() = 0;
+	virtual void SetHome(float angle) = 0;
+};
+
+class EncoderAngle : public Base {
+public:
+	EncoderAngle(Encoder *encoder, float home, const char *name);
+	~EncoderAngle();
+	
+	Position GetPosition();
+	float GetAngle();
+	void SetHome(float angle);
+	
+private:
+	Encoder *m_encoder;
+	float m_home;
 };
 
 class TwoLimitSwitches : public Base {
@@ -85,6 +101,8 @@ public:
 	~TwoLimitSwitches();
 	
 	Position GetPosition();
+	float GetAngle();
+	void SetHome(float angle);
 	
 private:
 	DigitalInput *m_leftSwitch;

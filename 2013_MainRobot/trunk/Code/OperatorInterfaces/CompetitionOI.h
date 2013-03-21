@@ -22,46 +22,26 @@ public:
 	~CompetitionOI();
 	
 	BaseAxis *TankLeftAxis;
-		BaseAxis *TankRightAxis;
-		BaseAxis *ArcadeMagAxis;
-		BaseAxis *ArcadeRotateAxis;
-		BaseAxis *DriveStraightAxis;
-		BaseAxis *RotateTurretAxis;
-		BaseAxis *LiftTurretAxis;
-		BaseAxis *ShooterSpeedAxis;
-		
-		Button *DriveStraightButton;
-		Button *ToggleTransmissionButton;
-		Button *FireFrisbeeButton;
-		Button *LoadFrisbeeButton;
-		Button *ControlWinchButton;
+	BaseAxis *TankRightAxis;
+	BaseAxis *ArcadeMagAxis;
+	BaseAxis *ArcadeRotateAxis;
+	BaseAxis *DriveStraightAxis;
+	BaseAxis *RotateTurretAxis;
+	BaseAxis *LiftTurretAxis;
+	BaseAxis *ShooterSpeedAxis;
+	
+	Button *DriveStraightButton;
+	Button *ToggleTransmissionButton;
+	Button *FireFrisbeeButton;
+	Button *LoadFrisbeeButton;
+	Button *ControlWinchButton;
+	Button *SetTurretHomeButton;
+	Button *GotoTurretHomeButton;
 		
 private:
 	Button *Winch1Button;
 	Button *Winch2Button;
 };
-
-/**
- * OI using one Xbox controller and two joysticks.
- */
-class XboxTwoJoysticksOI : public BaseOI{
-public:
-	XboxTwoJoysticksOI(XboxController *xbox, Joystick *leftStick, Joystick *rightStick);
-	~XboxTwoJoysticksOI();
-	
-	BaseAxis *TankLeftAxis;
-	BaseAxis *TankRightAxis;
-	BaseAxis *DriveStraightAxis;
-	BaseAxis *RotateTurretAxis;
-	BaseAxis *LiftTurretAxis;
-	BaseAxis *ControlWinchAxis;
-	
-	Button *DriveStraightButton;
-	Button *ToggleTransmissionButton;
-	Button *FireFrisbeeButton;
-};
-
-
 
 class XboxSingleJoystickOI : public BaseOI{
 public:
@@ -86,24 +66,6 @@ private:
 	Button *Winch2Button;
 };
 
-
-class ThreeJoystickOI : public BaseOI {
-public:
-	ThreeJoystickOI(Joystick *rightJoystick, Joystick *leftJoystick, Joystick *twistJoystick);
-	~ThreeJoystickOI();
-	
-	BaseAxis *TankLeftAxis;
-	BaseAxis *TankRightAxis;
-	BaseAxis *ArcadeMagnitudeAxis;
-	BaseAxis *ArcadeRotationAxis;
-	BaseAxis *DriveStraightAxis;
-	BaseAxis *ControlWinchAxis;
-	
-	Button *DriveStraightButton;
-	Button *ToggleTransmissionButton;
-	Button *FireFrisbeeButton;
-	Button *ClimbRobotButton;
-};
 
 /**
  * \}

@@ -50,6 +50,7 @@ private:
 	DigitalInput *m_turretTopSwitch;
 	DigitalInput *m_turretBottomSwitch;
 	Encoder *m_horizontalTurretEncoder;
+	Encoder *m_verticalTurretEncoder;
 	
 	// Shooter
 	SpeedController *m_shooterFront;
@@ -72,12 +73,16 @@ private:
 	FrisbeeAimer::Base *m_aimer;
 	FrisbeeTurret::Base *m_horizontalTurret;
 	FrisbeeTurret::Base *m_verticalTurret;
-	TestEncoder *m_horizontalTurretTestEncoder;
+	TurretPosition::Base *m_horizontalTurretPosition;
+	TurretPosition::Base *m_verticalTurretPosition;
 	FrisbeeShooter::Base *m_shooter;
 	Winch::Base *m_winch;
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
+	TestEncoder *m_horizontalTurretTestEncoder;
+	TestEncoder *m_verticalTurretTestEncoder;
 	TestEncoder *m_shooterTestEncoder;
+	
 	
 	// Commands and buttons
 	CompetitionOI *m_oi;
@@ -102,3 +107,4 @@ public:
 };
 
 #endif
+

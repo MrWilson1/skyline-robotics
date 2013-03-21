@@ -303,6 +303,46 @@ void ShooterCommand::AdjustTurret::Execute() {
 }
 
 
+ShooterCommand::AdjustTurretAngle::AdjustTurretAngle(
+		FrisbeeTurret::Base *turret,
+		TurretPosition::Base *position,
+		float angle) :
+		SimpleCommand("ShooterCommand::AdjustTurretAngle", false),
+		m_angle(angle)  {
+	m_turret = turret;
+	m_position = position;
+	Requires(m_turret);
+	Requires(m_position);
+}
+
+ShooterCommand::AdjustTurretAngle::~AdjustTurretAngle() {
+	// empty
+}
+	
+void ShooterCommand::AdjustTurretAngle::Execute() {
+	float current = m_position->GetAngle();
+	if (Tools::IsWithinRange(m_angle, current, 4)) {
+		return;
+	} else if (m_angle > (current + 4)) {
+		m_turret->SetSpeed(0.75);
+	} else if (m_angle < (current - 4)) {
+		m_turret->SetSpeed(-0.75);
+	} else {
+		return;
+	}
+}
+
+bool ShooterCommand::AdjustTurretAngle::IsFinished() {
+	return Tools::IsWithinRange(m_angle, m_position->GetAngle(), 4);
+}
+
+
+
+
+
+
+
+
 ShooterCommand::ManuallyControlTurret::ManuallyControlTurret(FrisbeeTurret::Base *turretAxis, BaseAxis *inputAxis, const char *name) :
 		SimpleCommand(name, false) {
 	m_turret = turretAxis;
@@ -318,3 +358,61 @@ void ShooterCommand::ManuallyControlTurret::Execute() {
 	m_turret->SetSpeed(m_axis->Get());
 }
 
+
+
+
+
+ShooterCommand::MoveTurretHome::MoveTurretHome(
+		FrisbeeTurret::Base *turretAxis,
+		TurretPosition::Base *position,
+		const char *name) :
+		SimpleCommand(name, false) {
+	m_turret = turretAxis;
+	m_position = position;
+	Requires(m_turret);
+	Requires(m_position);
+}
+
+ShooterCommand::MoveTurretHome::~MoveTurretHome() {
+	// empty
+}
+
+void ShooterCommand::MoveTurretHome::Execute() {
+	TurretPosition::Position position = m_position->GetPosition();
+	switch(position) {
+	case (TurretPosition::kCenter):
+		m_turret->SetSpeed(0);
+		break;
+	case (TurretPosition::kRight):
+		m_turret->SetSpeed(-0.75);
+		break;
+	case (TurretPosition::kLeft):
+		m_turret->SetSpeed(0.75);
+		break;
+	default:
+		m_turret->SetSpeed(0);
+	}
+}
+
+bool ShooterCommand::MoveTurretHome::IsFinished() {
+	TurretPosition::Position position = m_position->GetPosition();
+	return (position == TurretPosition::kCenter) || (position == TurretPosition::kError);
+}
+
+
+
+
+ShooterCommand::SetTurretHome::SetTurretHome(
+		TurretPosition::Base *position,
+		const char *name) :
+		SimpleCommand(name, true)  {
+	m_position = position;
+}
+
+ShooterCommand::SetTurretHome::~SetTurretHome() {
+	//empty
+}
+
+void ShooterCommand::SetTurretHome::Execute() {
+	m_position->SetHome(m_position->GetAngle());
+}

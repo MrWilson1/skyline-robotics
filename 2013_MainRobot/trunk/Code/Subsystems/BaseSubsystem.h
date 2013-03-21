@@ -54,6 +54,9 @@ public:
 	 */
 	template<class T>
 	void AddActuatorToLiveWindow(char *name, T *object) {
+		if (object == NULL) {
+			ReportLiveWindowError(name);
+		}
 		LiveWindow *lw = LiveWindow::GetInstance();
 		LiveWindowSendable *sendable = dynamic_cast<LiveWindowSendable *>(object);
 		if (sendable == NULL) {
@@ -82,6 +85,7 @@ protected:
 	 * \brief Reports an error to SmartDashboard
 	 */
 	void ReportLiveWindowError(char *name);
+	void ReportNullPointerError(char *name);
 };
 
 /** \} */

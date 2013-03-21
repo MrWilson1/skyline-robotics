@@ -136,6 +136,26 @@ private:
 };
 
 
+/**
+ * Luminary Micro ReversedJaguar Speed Control
+ */
+class ReversedJaguar : public SafePWM, public SpeedController
+{
+public:
+	explicit ReversedJaguar(UINT32 channel);
+	ReversedJaguar(UINT8 moduleNumber, UINT32 channel);
+	virtual ~ReversedJaguar();
+	virtual void Set(float value, UINT8 syncGroup=0);
+	virtual float Get();
+	virtual void Disable();
+
+	virtual void PIDWrite(float output);
+
+private:
+	void InitReversedJaguar();
+}; 
+
+
 /** 
  * \} 
  * \} 

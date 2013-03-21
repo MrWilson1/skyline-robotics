@@ -13,11 +13,12 @@
 #include "../Subsystems/Shooter/FrisbeeLoader.h"
 #include "../Subsystems/Shooter/FrisbeeShooter.h"
 #include "../Subsystems/Shooter/FrisbeeAimer.h"
-#include "../Subsystems/Climber/ClimberJoints.h"
-
+#include "../Subsystems/Experimental.h"
 
 #include "../Commands/DriveCommands.h"
 #include "../Commands/ShooterCommands.h"
+#include "../Commands/TestCommands.h"
+#include "../Commands/WinchCommands.h"
 
 #include "../Subsystems/Controllers/Axis.h"
 #include "../Subsystems/Controllers/XboxController.h"
@@ -39,39 +40,47 @@ private:
 	
 	DoubleSolenoid *m_leftTransmissionSolenoid;
 	DoubleSolenoid *m_rightTransmissionSolenoid;
-	
-	SpeedController *m_turretHorizontal;
-	SpeedController *m_turretVertical;
-	Encoder *m_turretHorizontalEncoder;
-	Encoder *m_turretVerticalEncoder;
-	DigitalInput *m_turretLeftSwitch;
-	DigitalInput *m_turretRightSwitch;
-	DigitalInput *m_turretTopSwitch;
-	DigitalInput *m_turretBottomSwitch;
-	
+
 	SpeedController *m_shooterFront;
 	SpeedController *m_shooterMiddle;
 	SpeedController *m_shooterBack;
 	Encoder *m_shooterEncoder;
+	Solenoid *m_loaderSolenoid;
 	
-	SpeedController *m_winch;
+	SpeedController *m_turretHorizontalMotor;
+	SpeedController *m_turretVerticalMotor;
+	Encoder *m_turretHorizontalEncoder;
+	Encoder *m_turretVerticalEncoder;
+	DigitalInput *m_turretTopSwitch;
+	DigitalInput *m_turretBottomSwitch;
+	
+	SpeedController *m_winchMotor;
 	
 	Compressor *m_compressor;
 	
 	// Subsystems
 	Drive::Base *m_drive;
-	FrisbeeLoader::Base *m_loader;
-	FrisbeeAimer::Base *m_aimer;
-	FrisbeeTurret::Base *m_horizontalTurret;
-	FrisbeeTurret::Base *m_verticalTurret;
-	FrisbeeShooter::Base *m_shooter;
 	DriveTransmission::Base *m_transmission;
 	
+	FrisbeeShooter::Base *m_shooter;
+	FrisbeeLoader::Base *m_loader;
+	FrisbeeAimer::Base *m_aimer;
+	
+	FrisbeeTurret::Base *m_horizontalTurret;
+	FrisbeeTurret::Base *m_verticalTurret;
+	
+	Winch::Base *m_winch;
+	
+	TestEncoder *m_leftTestEncoder;
+	TestEncoder *m_rightTestEncoder;
+	TestEncoder *m_horizontalTurretTestEncoder;
+	TestEncoder *m_shooterTestEncoder;
+	
 	// OI
-	XboxController *m_xbox;
-	Joystick *m_leftStick;
-	Joystick *m_rightStick;
-	XboxTwoJoysticksOI *m_oi;
+	XboxController *m_xboxDrive;
+	XboxController *m_xboxShooter;
+	Joystick *m_joystick;
+	CompetitionOI *m_oi;
 	
 public:
 	MainRobot2013Profile();

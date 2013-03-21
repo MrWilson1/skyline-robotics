@@ -160,6 +160,23 @@ private:
 	bool m_isFinished;
 };
 
+class AdjustTurretAngle : public SimpleCommand {
+public:
+	AdjustTurretAngle(
+			FrisbeeTurret::Base *turret,
+			TurretPosition::Base *position,
+			float angle);
+	~AdjustTurretAngle();
+	
+	void Execute();
+	bool IsFinished();
+	
+private:
+	FrisbeeTurret::Base *m_turret;
+	TurretPosition::Base *m_position;
+	float m_angle;
+};
+
 
 /**
  * Command to manually move the horizontal and vertical turrets using Axes.
@@ -177,6 +194,36 @@ private:
 	FrisbeeTurret::Base *m_turret;
 	BaseAxis *m_axis;
 };
+
+
+class MoveTurretHome : public SimpleCommand {
+public:
+	MoveTurretHome(
+			FrisbeeTurret::Base *turretAxis,
+			TurretPosition::Base *position,
+			const char*name);
+	~MoveTurretHome();
+	void Execute();
+	bool IsFinished();
+	
+private:
+	FrisbeeTurret::Base *m_turret;
+	TurretPosition::Base *m_position;
+};
+
+
+class SetTurretHome : public SimpleCommand {
+public:
+	SetTurretHome(
+			TurretPosition::Base *position,
+			const char *name);
+	~SetTurretHome();
+	void Execute();
+	
+private:
+	TurretPosition::Base *m_position;
+};
+
 
 }
 
