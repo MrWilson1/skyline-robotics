@@ -81,8 +81,7 @@ TurretPosition::Base::~Base() {
 
 
 TurretPosition::EncoderAngle::EncoderAngle(Encoder *encoder, float home, const char *name) :
-		Base(name),
-		m_home(home){
+		Base(name) {
 	m_encoder = encoder;
 	AddSensorToLiveWindow("encoder", m_encoder);
 }
@@ -93,11 +92,11 @@ TurretPosition::EncoderAngle::~EncoderAngle() {
 
 TurretPosition::Position TurretPosition::EncoderAngle::GetPosition() {
 	float angle = m_encoder->Get();
-	if (Tools::IsWithinRange(angle, m_home, 4)) {
+	if (Tools::IsWithinRange(angle, 0, 4)) {
 		return TurretPosition::kCenter;
-	} else if (angle > (m_home + 4)) {
+	} else if (angle > 4) {
 		return TurretPosition::kRight;
-	} else if (angle < (m_home - 4)) {
+	} else if (angle < -4) {
 		return TurretPosition::kLeft;
 	} else {
 		return TurretPosition::kError;
@@ -108,8 +107,8 @@ float TurretPosition::EncoderAngle::GetAngle() {
 	return m_encoder->Get();
 }
 
-void TurretPosition::EncoderAngle::SetHome(float angle) {
-	m_home = angle;
+void TurretPosition::EncoderAngle::SetHome() {
+	m_encoder->Reset();
 }
 
 
@@ -143,6 +142,6 @@ float TurretPosition::TwoLimitSwitches::GetAngle() {
 	return 0;
 }
 
-void TurretPosition::TwoLimitSwitches::SetHome(float angle) {
+void TurretPosition::TwoLimitSwitches::SetHome() {
 	// do nothing.
 }

@@ -200,14 +200,14 @@ void AugmentedTerminatorRobotProfile::RobotInit() {
 			m_drive,
 			m_oi->DriveStraightAxis));
 	
-	m_horizontalTurret->SetDefaultCommand(new ShooterCommand::ManuallyControlTurret(
+	m_horizontalTurret->SetDefaultCommand(new TurretCommand::ManuallyControlTurret(
 			m_horizontalTurret, 
 			m_oi->RotateTurretAxis,
 			"ManuallyControlTurretCommand_Horizontal"));
 	m_horizontalTurretTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_horizontalTurretTestEncoder, 
 			"turret horizontal Encoder"));
-	m_verticalTurret->SetDefaultCommand(new ShooterCommand::ManuallyControlTurret(
+	m_verticalTurret->SetDefaultCommand(new TurretCommand::ManuallyControlTurret(
 			m_verticalTurret, 
 			m_oi->LiftTurretAxis,
 			"ManuallyControlTurretCommand_Vertical"));
@@ -224,13 +224,13 @@ void AugmentedTerminatorRobotProfile::RobotInit() {
 			m_oi->ShooterSpeedAxis));
 	m_oi->LoadFrisbeeButton->WhileHeld(new ShooterCommand::LoadFrisbee(
 			m_loader));
-	m_oi->SetTurretHomeButton->WhileHeld(new ShooterCommand::SetTurretHome(
+	m_oi->SetTurretHomeButton->WhileHeld(new TurretCommand::SetTurretHome(
 			m_horizontalTurretPosition,
-			"ShooterCommand::SetTurretHome Horizontal"));
-	m_oi->GotoTurretHomeButton->WhileHeld(new ShooterCommand::MoveTurretHome(
+			"TurretCommand::SetTurretHome Horizontal"));
+	m_oi->GotoTurretHomeButton->WhileHeld(new TurretCommand::MoveTurretHome(
 			m_horizontalTurret,
 			m_horizontalTurretPosition,
-			"ShooterCommand::MoveTurretHome Horizontal"));
+			"TurretCommand::MoveTurretHome Horizontal"));
 	
 	m_oi->ControlWinchButton->WhileHeld(new WinchCommand::SetSpeed(m_winch, 1.0));
 	

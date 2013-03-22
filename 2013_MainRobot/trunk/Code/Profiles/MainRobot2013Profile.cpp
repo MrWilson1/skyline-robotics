@@ -62,7 +62,7 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 			Ports::Crio::SolenoidBreakout5);
 	
 	// Turret
-	m_turretVerticalMotor = new Victor(
+	m_turretVerticalMotor = new ReversedVictor(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm3);
 	m_turretHorizontalMotor = new Victor(
@@ -190,14 +190,14 @@ void MainRobot2013Profile::RobotInit() {
 			m_transmission));
 	
 	
-	m_horizontalTurret->SetDefaultCommand(new ShooterCommand::ManuallyControlTurret(
+	m_horizontalTurret->SetDefaultCommand(new TurretCommand::ManuallyControlTurret(
 			m_horizontalTurret, 
 			m_oi->RotateTurretAxis,
 			"ManuallyControlTurretCommand_Horizontal"));
 	m_horizontalTurretTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_horizontalTurretTestEncoder, 
 			"turret horizontal Encoder"));
-	m_verticalTurret->SetDefaultCommand(new ShooterCommand::ManuallyControlTurret(
+	m_verticalTurret->SetDefaultCommand(new TurretCommand::ManuallyControlTurret(
 			m_verticalTurret, 
 			m_oi->LiftTurretAxis,
 			"ManuallyControlTurretCommand_Vertical"));
@@ -221,5 +221,6 @@ void MainRobot2013Profile::AutonomousInit() {
 }
 
 void MainRobot2013Profile::TeleopInit() {
+	Scheduler::GetInstance()->Run();
 	m_compressor->Start();
 }

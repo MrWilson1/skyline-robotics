@@ -10,6 +10,8 @@
 #include "WPILib.h"
 #include "DriveCommands.h"
 #include "ShooterCommands.h"
+#include "TurretCommands.h"
+#include "../Subsystems/Shooter/FrisbeeLoader.h"
 #include "../Subsystems/Shooter/FrisbeeAimer.h"
 #include "../Subsystems/Drive/DriveSubsystem.h"
 
@@ -28,6 +30,31 @@ enum Positions{
 	kFarLeftCorner,
 	kFarRightCorner
 };
+
+
+class DoNothing : public SimpleCommand {
+public:
+	DoNothing();
+	~DoNothing();
+	void Execute();
+};
+
+
+class LoadNFrisbees : public CommandGroup {
+public:
+	LoadNFrisbees(FrisbeeLoader::Base *loader, unsigned int number);
+	~LoadNFrisbees();
+};
+
+
+
+class FireNFrisbees : public CommandGroup {
+public:
+	FireNFrisbees(FrisbeeLoader::Base *loader, FrisbeeShooter::Base *shooter, unsigned int number);
+	~FireNFrisbees();
+};
+
+
 
 /**
  * \brief Command to move the robot to the center line.

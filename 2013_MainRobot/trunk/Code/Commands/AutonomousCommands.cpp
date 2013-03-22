@@ -1,5 +1,65 @@
 #include "AutonomousCommands.h"
 
+
+
+AutonomousCommand::DoNothing::DoNothing() :
+		SimpleCommand("AutonomousCommand::DoNothing", true) {
+	// empty
+}
+
+
+AutonomousCommand::DoNothing::~DoNothing() {
+	// empty
+}
+
+void AutonomousCommand::DoNothing::Execute() {
+	// empty
+}
+
+
+
+AutonomousCommand::LoadNFrisbees::LoadNFrisbees(
+		FrisbeeLoader::Base *loader, 
+		unsigned int number) :
+		CommandGroup("AutonomousCommand::LoadNFrisbees") {
+	for (unsigned int i = 0; i < number; i++) {
+		Wait(2);
+		AddSequential(new ShooterCommand::LoadFrisbee(loader));
+	}
+}
+	
+AutonomousCommand::LoadNFrisbees::~LoadNFrisbees() {
+	// empty
+}
+
+
+
+
+AutonomousCommand::FireNFrisbees::FireNFrisbees(
+		FrisbeeLoader::Base *loader, 
+		FrisbeeShooter::Base *shooter, 
+		unsigned int number) :
+		CommandGroup("AutonomousCommand::FireNFrisbees") {
+	AddParallel(new ShooterCommand::FireFrisbee(shooter));
+	AddParallel(new AutonomousCommand::LoadNFrisbees(loader, 3));
+}
+
+AutonomousCommand::FireNFrisbees::~FireNFrisbees() {
+	// empty
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 AutonomousCommand::MoveToCenterLine::MoveToCenterLine(Drive::Base *drive, AutonomousCommand::Positions positions) : 
 		CommandGroup("MoveToCenterLine") {
 	float distance;
@@ -34,7 +94,7 @@ AutonomousCommand::ShootAndGoToCenterLine::ShootAndGoToCenterLine(
 			Tracking::TargetType target,
 			AutonomousCommand::Positions position) :
 			CommandGroup("ShootAndGoToCenterLine") {
-	AddSequential(new ShooterCommand::AimTurret(aimer, horizontalTurret, verticalTurret, target, 5.0), 5.0);
+	AddSequential(new TurretCommand::AimTurret(aimer, horizontalTurret, verticalTurret, target, 5.0), 5.0);
 	AddSequential(new ShooterCommand::LoadAndFire(loader, shooter));
 	AddSequential(new MoveToCenterLine(drive, position));
 }

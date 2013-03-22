@@ -19,6 +19,7 @@
 #include "../Commands/ShooterCommands.h"
 #include "../Commands/TestCommands.h"
 #include "../Commands/WinchCommands.h"
+#include "../Commands/TurretCommands.h"
 
 #include "../Subsystems/Controllers/Axis.h"
 #include "../Subsystems/Controllers/XboxController.h"
