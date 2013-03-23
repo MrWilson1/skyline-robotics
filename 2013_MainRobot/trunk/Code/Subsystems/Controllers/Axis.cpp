@@ -8,9 +8,10 @@ BaseAxis::~BaseAxis() {
 	// empty
 }
 
-Axis::Axis(Joystick *joystick, const int axisNum) :
+Axis::Axis(Joystick *joystick, const int axisNum, bool reversed) :
 		BaseAxis(), 
-		m_axisNum(axisNum) {
+		m_axisNum(axisNum),
+		m_isReversed(reversed) {
 	m_joystick = joystick;
 }
 
@@ -19,7 +20,11 @@ Axis::~Axis() {
 }
 
 float Axis::Get() {
-	return m_joystick->GetRawAxis(m_axisNum);
+	float value = m_joystick->GetRawAxis(m_axisNum);
+	if (m_isReversed) {
+		value = -value;
+	}
+	return value;
 }
 
 Joystick * Axis::GetJoystick() {
@@ -33,9 +38,10 @@ const int Axis::GetAxisNum() {
 
 
 
-TruncatedCurvedAxis::TruncatedCurvedAxis(Joystick *joystick, const int axisNum) :
+TruncatedCurvedAxis::TruncatedCurvedAxis(Joystick *joystick, const int axisNum, bool reversed) :
 		BaseAxis(), 
-		m_axisNum(axisNum) {
+		m_axisNum(axisNum),
+		m_isReversed(reversed) {
 	m_joystick = joystick;
 }
 
@@ -50,6 +56,9 @@ float TruncatedCurvedAxis::Get() {
 		value = -(value * value);
 	} else {
 		value = value * value;
+	}
+	if (m_isReversed) {
+		value = -value;
 	}
 	return value;
 }

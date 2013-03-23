@@ -78,6 +78,24 @@ private:
 	bool m_isFinished;
 };
 
+
+
+/**
+ * \brief Manually adjusts where the turret is pointing by plugging in raw axis speeds
+ */
+class AdjustSingleTurret : public SimpleCommand {
+public:
+	AdjustSingleTurret(
+		FrisbeeTurret::Base *turret,
+		double speed);
+	~AdjustSingleTurret();
+	void Execute();
+	
+private:
+	FrisbeeTurret::Base *m_turret;
+	double m_speed;
+};
+
 class AdjustTurretAngle : public SimpleCommand {
 public:
 	AdjustTurretAngle(

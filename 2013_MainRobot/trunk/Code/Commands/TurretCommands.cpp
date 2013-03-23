@@ -157,6 +157,35 @@ void TurretCommand::AdjustTurret::Execute() {
 }
 
 
+
+/**
+ * \brief Manually adjusts where the turret is pointing by plugging in raw axis speeds
+ */
+TurretCommand::AdjustSingleTurret::AdjustSingleTurret(
+		FrisbeeTurret::Base *turret,
+		double speed) :
+		SimpleCommand("TurretCommand::AdjustSingleTurret", true),
+		m_speed(speed){
+	m_turret = turret;
+	Requires(m_turret);
+}
+
+TurretCommand::AdjustSingleTurret::~AdjustSingleTurret() {
+	// empty
+}
+
+void TurretCommand::AdjustSingleTurret::Execute() {
+	m_turret->SetSpeed(m_speed);
+}
+	
+
+
+
+
+
+
+
+
 TurretCommand::AdjustTurretAngle::AdjustTurretAngle(
 		FrisbeeTurret::Base *turret,
 		TurretPosition::Base *position,
@@ -189,6 +218,12 @@ void TurretCommand::AdjustTurretAngle::Execute() {
 bool TurretCommand::AdjustTurretAngle::IsFinished() {
 	return Tools::IsWithinRange(m_angle, m_position->GetAngle(), 4);
 }
+
+
+
+
+
+
 
 
 

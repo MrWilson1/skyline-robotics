@@ -31,6 +31,8 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 			Ports::DigitalSidecar::Gpio4,
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio5);
+	m_leftEncoder->Start();
+	m_rightEncoder->Start();
 	
 	// Transmission
 	m_rightTransmissionSolenoid = new DoubleSolenoid(
@@ -43,10 +45,10 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 			Ports::Crio::SolenoidBreakout4);
 	
 	// Shooter
-	m_shooterBack = new Victor(
+	m_shooterBack = new ReversedVictor(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm5);
-	m_shooterMiddle = new Victor(
+	m_shooterMiddle = new ReversedVictor(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm6);
 	m_shooterFront = new Victor(
@@ -60,6 +62,7 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 	m_loaderSolenoid = new Solenoid(
 			Ports::Crio::Module1,
 			Ports::Crio::SolenoidBreakout5);
+	m_shooterEncoder->Start();
 	
 	// Turret
 	m_turretVerticalMotor = new ReversedVictor(
@@ -84,9 +87,11 @@ void MainRobot2013Profile::CreateBasicHardwareObjects() {
 			Ports::DigitalSidecar::Gpio12,
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Gpio13);
+	m_turretHorizontalEncoder->Start();
+	m_turretVerticalEncoder->Start();
 	
 	// Misc
-	m_winchMotor = new Victor(
+	m_winchMotor = new ReversedVictor(
 			Ports::Crio::Module1,
 			Ports::DigitalSidecar::Pwm8);
 
@@ -157,6 +162,9 @@ void MainRobot2013Profile::CreateSubsystems() {
 	m_horizontalTurretTestEncoder = new TestEncoder(
 			m_turretHorizontalEncoder, 
 			"TestEncoder Turret Horizontal");
+	m_verticalTurretTestEncoder = new TestEncoder(
+			m_turretVerticalEncoder, 
+			"TestEncoder Turret Vertical");
 	m_shooterTestEncoder = new TestEncoder(
 			m_shooterEncoder, 
 			"TestEncoder Shooter");
@@ -169,7 +177,25 @@ void MainRobot2013Profile::CreateOI() {
 }
 
 void MainRobot2013Profile::RobotInit() {
-	/*m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
+	
+	m_compressor->Start();
+	SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
+	/*
+	autoChooser = new SendableChooser();
+	autoChooser->AddObject("Shoot 3", new AutonomousCommand::FireNFrisbees(m_loader, m_shooter, 3));
+	autoChooser->AddDefault("Do nothing", new AutonomousCommand::DoNothing());
+	SmartDashboard::PutData("Autonomous Program:", autoChooser);*/
+}
+
+void MainRobot2013Profile::AutonomousInit() {
+	/*autoCommand = (Command *)(autoChooser->GetSelected());
+	autoCommand->Start();*/
+	// empty
+	m_compressor->Start();
+}
+
+void MainRobot2013Profile::TeleopInit() {
+/*m_drive->SetDefaultCommand(new DriveCommand::TankDrive(
 			m_drive, 
 			m_oi->TankLeftAxis,
 			m_oi->TankRightAxis));*/
@@ -201,6 +227,9 @@ void MainRobot2013Profile::RobotInit() {
 			m_verticalTurret, 
 			m_oi->LiftTurretAxis,
 			"ManuallyControlTurretCommand_Vertical"));
+	m_verticalTurretTestEncoder->SetDefaultCommand(new TestEncoderCommand(
+			m_verticalTurretTestEncoder, 
+			"turret vertical Encoder"));
 	
 	m_shooterTestEncoder->SetDefaultCommand(new TestEncoderCommand(
 			m_shooterTestEncoder,
@@ -212,15 +241,8 @@ void MainRobot2013Profile::RobotInit() {
 			m_oi->ShooterSpeedAxis));
 	
 	m_oi->ControlWinchButton->WhileHeld(new WinchCommand::SetSpeed(m_winch, 1.0));
+	//am_oi->ControlWinchBackButton->WhileHeld(new WinchCommand::SetSpeed(m_winch, -1.0));
+
 	
-	SmartDashboard::PutData("Scheduler", Scheduler::GetInstance());
-}
-
-void MainRobot2013Profile::AutonomousInit() {
-	// empty
-}
-
-void MainRobot2013Profile::TeleopInit() {
-	Scheduler::GetInstance()->Run();
 	m_compressor->Start();
 }

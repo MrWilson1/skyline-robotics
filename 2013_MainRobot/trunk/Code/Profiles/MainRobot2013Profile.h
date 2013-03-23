@@ -20,6 +20,7 @@
 #include "../Commands/TestCommands.h"
 #include "../Commands/WinchCommands.h"
 #include "../Commands/TurretCommands.h"
+#include "../Commands/AutonomousCommands.h"
 
 #include "../Subsystems/Controllers/Axis.h"
 #include "../Subsystems/Controllers/XboxController.h"
@@ -75,6 +76,7 @@ private:
 	TestEncoder *m_leftTestEncoder;
 	TestEncoder *m_rightTestEncoder;
 	TestEncoder *m_horizontalTurretTestEncoder;
+	TestEncoder *m_verticalTurretTestEncoder;
 	TestEncoder *m_shooterTestEncoder;
 	
 	// OI
@@ -82,6 +84,10 @@ private:
 	XboxController *m_xboxShooter;
 	Joystick *m_joystick;
 	CompetitionOI *m_oi;
+	
+	// Autonomous
+	SendableChooser *autoChooser;
+	Command *autoCommand;
 	
 public:
 	MainRobot2013Profile();

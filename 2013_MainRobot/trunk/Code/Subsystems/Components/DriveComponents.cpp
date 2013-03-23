@@ -37,7 +37,6 @@ Tread::~Tread() {
 }
 
 void Tread::SetSpeed(double speed) {
-	SmartDashboard::PutNumber("Tread", speed);
 	m_speed = Tools::Limit(speed, -1.0, 1.0);
 	std::vector<SpeedController*>::iterator it;
 	for (it = m_motors.begin(); it != m_motors.end(); ++it) {

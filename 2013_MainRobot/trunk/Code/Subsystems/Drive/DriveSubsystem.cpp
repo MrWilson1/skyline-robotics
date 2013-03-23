@@ -42,7 +42,6 @@ void Drive::Simple::TankDrive(float leftValue, float rightValue) {
 		SmartDashboard::PutString(GetName(), "rightTread null");
 		return;
 	}
-	SmartDashboard::PutString(GetName(), "safe?");
 	m_leftTread->SetSpeed(leftValue);
 	m_rightTread->SetSpeed(rightValue);
 }

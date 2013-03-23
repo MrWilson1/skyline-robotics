@@ -35,12 +35,16 @@ public:
 	Button *FireFrisbeeButton;
 	Button *LoadFrisbeeButton;
 	Button *ControlWinchButton;
+	Button *ControlWinchBackButton;
 	Button *SetTurretHomeButton;
 	Button *GotoTurretHomeButton;
 		
 private:
 	Button *Winch1Button;
 	Button *Winch2Button;
+	
+	Button *WinchBack1Button;
+	Button *WinchBack2Button;
 };
 
 class XboxSingleJoystickOI : public BaseOI{

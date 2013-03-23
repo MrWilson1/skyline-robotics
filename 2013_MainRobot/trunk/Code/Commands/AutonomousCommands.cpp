@@ -23,7 +23,7 @@ AutonomousCommand::LoadNFrisbees::LoadNFrisbees(
 		unsigned int number) :
 		CommandGroup("AutonomousCommand::LoadNFrisbees") {
 	for (unsigned int i = 0; i < number; i++) {
-		Wait(2);
+		AddSequential(new WaitCommand(2));
 		AddSequential(new ShooterCommand::LoadFrisbee(loader));
 	}
 }
@@ -31,7 +31,6 @@ AutonomousCommand::LoadNFrisbees::LoadNFrisbees(
 AutonomousCommand::LoadNFrisbees::~LoadNFrisbees() {
 	// empty
 }
-
 
 
 
@@ -47,6 +46,25 @@ AutonomousCommand::FireNFrisbees::FireNFrisbees(
 AutonomousCommand::FireNFrisbees::~FireNFrisbees() {
 	// empty
 }
+
+
+
+AutonomousCommand::AimTurretFireNFrisbees::AimTurretFireNFrisbees(
+			FrisbeeLoader::Base *loader, 
+			FrisbeeTurret::Base *turret,
+			TurretPosition::Base *position,
+			FrisbeeShooter::Base *shooter,
+			unsigned int number) :
+			CommandGroup("AutonomousCommand::FireNFrisbees") {
+	//AddSequential(new TurretCommand::AdjustSingleTurret(turret, 0.75), 0.4);
+	AddSequential(new AutonomousCommand::FireNFrisbees(loader, shooter, number));
+	AddSequential(new ShooterCommand::FireFrisbee(shooter, 0));
+}
+
+AutonomousCommand::AimTurretFireNFrisbees::~AimTurretFireNFrisbees() {
+	// empty
+}
+
 
 
 

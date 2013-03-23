@@ -15,7 +15,7 @@ public:
 
 class Axis : public BaseAxis{
 public:
-	Axis(Joystick *joystick, const int axisNum);
+	Axis(Joystick *joystick, const int axisNum, bool reversed=false);
 	~Axis();
 	float Get();
 	Joystick *GetJoystick();
@@ -24,12 +24,13 @@ public:
 private:
 	Joystick *m_joystick;
 	const int m_axisNum;
+	bool m_isReversed;
 };
 
 
 class TruncatedCurvedAxis : public BaseAxis {
 public:
-	TruncatedCurvedAxis(Joystick *joystick, const int axisNum);
+	TruncatedCurvedAxis(Joystick *joystick, const int axisNum, bool reversed=false);
 	~TruncatedCurvedAxis();
 	float Get();
 	Joystick *GetJoystick();
@@ -38,6 +39,7 @@ public:
 private:
 	Joystick *m_joystick;
 	const int m_axisNum;
+	bool m_isReversed;
 };
 
 

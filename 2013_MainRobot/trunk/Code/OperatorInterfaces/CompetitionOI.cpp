@@ -5,7 +5,7 @@ CompetitionOI::CompetitionOI(XboxController *xboxDrive, XboxController *xboxShoo
 		TankLeftAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->LeftY);
 		TankRightAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->RightY);
 		ArcadeMagAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->LeftY);
-		ArcadeRotateAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->RightX);
+		ArcadeRotateAxis = new TruncatedCurvedAxis(xboxDrive, xboxDrive->RightX, true);
 		DriveStraightAxis = new Axis(xboxDrive, xboxDrive->LeftY);
 
 		RotateTurretAxis = new Axis(xboxShooter, xboxShooter->RightX);
@@ -21,6 +21,12 @@ CompetitionOI::CompetitionOI(XboxController *xboxDrive, XboxController *xboxShoo
 		Winch1Button = new JoystickButton(joystick, 7);
 		Winch2Button = new JoystickButton(joystick, 10);
 		ControlWinchButton = new CustomButton::PressTwo(Winch1Button, Winch2Button);
+		
+		
+		WinchBack1Button = new JoystickButton(joystick, 6);
+		WinchBack2Button = new JoystickButton(joystick, 11);
+		ControlWinchBackButton = new CustomButton::PressTwo(WinchBack1Button, WinchBack2Button);
+		
 }
 
 CompetitionOI::~CompetitionOI() {
@@ -43,6 +49,11 @@ CompetitionOI::~CompetitionOI() {
 	delete Winch1Button;
 	delete Winch2Button;
 	delete ControlWinchButton;
+	
+
+	delete WinchBack1Button;
+	delete WinchBack2Button;
+	delete ControlWinchBackButton;
 }
 
 
@@ -65,6 +76,8 @@ XboxSingleJoystickOI::XboxSingleJoystickOI(XboxController *xbox, Joystick *stick
 	Winch1Button = new JoystickButton(stick, 7);
 	Winch2Button = new JoystickButton(stick, 10);
 	ControlWinchButton = new CustomButton::PressTwo(Winch1Button, Winch2Button);
+	
+	
 }
 
 XboxSingleJoystickOI::~XboxSingleJoystickOI() {
@@ -83,6 +96,7 @@ XboxSingleJoystickOI::~XboxSingleJoystickOI() {
 	delete Winch1Button;
 	delete Winch2Button;
 	delete ControlWinchButton;
+	
 }
 
 

@@ -55,6 +55,17 @@ public:
 };
 
 
+class AimTurretFireNFrisbees : public CommandGroup {
+public:
+	AimTurretFireNFrisbees(
+			FrisbeeLoader::Base *loader, 
+			FrisbeeTurret::Base *turret,
+			TurretPosition::Base *position,
+			FrisbeeShooter::Base *shooter,
+			unsigned int number);
+	~AimTurretFireNFrisbees();
+};
+
 
 /**
  * \brief Command to move the robot to the center line.
