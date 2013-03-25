@@ -18,6 +18,11 @@ CompetitionOI::CompetitionOI(XboxController *xboxDrive, XboxController *xboxShoo
 		GotoTurretHomeButton = new JoystickButton(xboxShooter, xboxShooter->Y);
 		
 		ShooterSpeedAxis = new CustomRangeAxis(joystick, Joystick::kDefaultZAxis, 0.5, 1.0);
+		
+		ControlWinchButton = new JoystickButton(joystick, 7);
+		ControlWinchBackButton = new JoystickButton(joystick, 10);
+		
+		/*
 		Winch1Button = new JoystickButton(joystick, 7);
 		Winch2Button = new JoystickButton(joystick, 10);
 		ControlWinchButton = new CustomButton::PressTwo(Winch1Button, Winch2Button);
@@ -26,7 +31,7 @@ CompetitionOI::CompetitionOI(XboxController *xboxDrive, XboxController *xboxShoo
 		WinchBack1Button = new JoystickButton(joystick, 6);
 		WinchBack2Button = new JoystickButton(joystick, 11);
 		ControlWinchBackButton = new CustomButton::PressTwo(WinchBack1Button, WinchBack2Button);
-		
+		*/
 }
 
 CompetitionOI::~CompetitionOI() {
@@ -46,13 +51,13 @@ CompetitionOI::~CompetitionOI() {
 	delete SetTurretHomeButton;
 	delete GotoTurretHomeButton;
 	
-	delete Winch1Button;
-	delete Winch2Button;
+	//delete Winch1Button;
+	//delete Winch2Button;
 	delete ControlWinchButton;
 	
 
-	delete WinchBack1Button;
-	delete WinchBack2Button;
+	//delete WinchBack1Button;
+	//delete WinchBack2Button;
 	delete ControlWinchBackButton;
 }
 

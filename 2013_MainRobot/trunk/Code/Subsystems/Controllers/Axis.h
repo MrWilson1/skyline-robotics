@@ -59,4 +59,18 @@ private:
 };
 
 
+class ButtonAxis : public BaseAxis {
+public:
+	ButtonAxis(Button *buttonUp, Button *buttonDown);
+	~ButtonAxis();
+	float Get();
+	Joystick *GetJoystick();
+	const int GetAxisNum();
+	
+private:
+	Button *m_buttonUp;
+	Button *m_buttonDown;
+};
+
+
 #endif

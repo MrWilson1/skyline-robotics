@@ -8,6 +8,10 @@ BaseAxis::~BaseAxis() {
 	// empty
 }
 
+
+
+
+
 Axis::Axis(Joystick *joystick, const int axisNum, bool reversed) :
 		BaseAxis(), 
 		m_axisNum(axisNum),
@@ -98,4 +102,39 @@ Joystick * CustomRangeAxis::GetJoystick() {
 
 const int CustomRangeAxis::GetAxisNum() {
 	return m_axisNum;
+}
+
+
+
+
+
+
+ButtonAxis::ButtonAxis(Button *buttonUp, Button *buttonDown) :
+		BaseAxis() {
+	m_buttonUp = buttonUp;
+	m_buttonDown = buttonDown;
+}
+
+ButtonAxis::~ButtonAxis() {
+	// empty
+}
+
+float ButtonAxis::Get() {
+	if (m_buttonUp->Get() && m_buttonDown->Get()) {
+		return 0.0;
+	} else if (m_buttonUp->Get()) {
+		return 1.0;
+	} else if (m_buttonDown->Get()) {
+		return -1.0;
+	} else {
+		return 0.0;
+	}
+}
+
+Joystick *ButtonAxis::GetJoystick() {
+	return NULL;
+}
+
+const int ButtonAxis::GetAxisNum() {
+	return 0;
 }
