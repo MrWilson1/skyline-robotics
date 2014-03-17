@@ -2,8 +2,9 @@
 
 /**
  * This is a demo program showing the use of the RobotBase class.
- * The SimpleRobot class is the base of a robot application that will automatically call your
- * Autonomous and OperatorControl methods at the right time as controlled by the switches on
+ * The SimpleRobot class is the base of a robot application that 
+ * will automatically call your Autonomous and OperatorControl 
+ * methods at the right time as controlled by the switches on
  * the driver station or the field controls.
  */ 
 class RobotDemo : public SimpleRobot
@@ -24,19 +25,19 @@ class RobotDemo : public SimpleRobot
 
 public:
 	RobotDemo(void):
-		myRobot(1, 2, 3, 4),	// these must be initialized in the same order
-		leftStick(1),
-		rightStick(2),
+		myRobot(8, 7, 10, 9),	// these must be initialized in the same order - Only PWM 8 & 10 Used
+		leftStick(1),			// USB 1
+		rightStick(2),			// USB 2
 		twistStick(3),
-		topLeftShooter(5),
-		topRightShooter(6),
-		bottomLeftShooter(7),
-		bottomRightShooter(8),
-		elevator(9),
-		arm(10),
-		elevatorBottomLimit(1),
-		topLimitSwitch(2),
-		bottomLimitSwitch(3)
+		topLeftShooter(5),		// PWM 5
+		topRightShooter(6),		// PWM 6
+		bottomLeftShooter(1),	// PWM 1
+		bottomRightShooter(2),	// PWM 2
+		elevator(3),			// PWM 3
+		arm(4),					// PWM 4
+		elevatorBottomLimit(1),	// GPIO 1
+		topLimitSwitch(2),		// GPIO 2
+		bottomLimitSwitch(3)	// GPIO 3
 	{
 		myRobot.SetExpiration(0.1);
 	}
