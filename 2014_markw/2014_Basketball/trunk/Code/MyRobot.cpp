@@ -25,7 +25,7 @@ class RobotDemo : public SimpleRobot
 
 public:
 	RobotDemo(void):
-		myRobot(8, 7, 10, 9),	// these must be initialized in the same order - Only PWM 8 & 10 Used
+		myRobot(8, 7, 10, 9),	// these must be initialized in the same order - Only PWM 8 & 10 Used - same as 2014 robot
 		leftStick(1),			// USB 1
 		rightStick(2),			// USB 2
 		twistStick(3),
@@ -33,8 +33,8 @@ public:
 		topRightShooter(6),		// PWM 6
 		bottomLeftShooter(1),	// PWM 1
 		bottomRightShooter(2),	// PWM 2
-		elevator(3),			// PWM 3
-		arm(4),					// PWM 4
+		elevator(4),			// PWM 4 - Same as 2014 Main Robot Shooter.  This is a safe port for both
+		arm(3),					// PWM 3
 		elevatorBottomLimit(1),	// GPIO 1
 		topLimitSwitch(2),		// GPIO 2
 		bottomLimitSwitch(3)	// GPIO 3
