@@ -28,7 +28,8 @@ private:
 	
 	//Victor *m_clawMotor;
 	
-	Talon *m_shooterMotors;
+	Talon *m_LeftshooterMotors;
+	Talon *m_RightshooterMotors;
 	DigitalInput *m_shooterLimitSwitch; 
 	DigitalInput *m_pistonLimitSwitch; 
 	

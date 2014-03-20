@@ -244,14 +244,9 @@
         </mapAttribute>
     </attributes>
     <buildtargets>
-        <buildtarget buildtool="Linker" name="CommandBasedRobotTemplate" passed="false" targetname="CommandBasedRobotTemplate">
+        <buildtarget buildtool="Linker" name="2014_ShooterSimulator" passed="false" targetname="2014_ShooterSimulator">
             <contents>
-                <buildtargetreference name="/2014_MainRobot/CommandBasedRobotTemplate_partialImage"/>
-            </contents>
-        </buildtarget>
-        <buildtarget buildtool="Partial Image Linker" name="CommandBasedRobotTemplate_partialImage" passed="true" targetname="CommandBasedRobotTemplate_partialImage">
-            <contents>
-                <folder name="/2014_MainRobot" recursive="true"/>
+                <folder name="/2014_ShooterSimulator" recursive="true"/>
             </contents>
         </buildtarget>
     </buildtargets>

@@ -11,9 +11,10 @@ double upDownArmTime = 0.25;
  */
 double shootTime = 0.22;
 
-Shooter::Shooter(Talon *motors, DigitalInput *limitSwitch, Collector *collector){
+Shooter::Shooter(Talon *Leftmotors, Talon *Rightmotors, DigitalInput *limitSwitch, Collector *collector){
 	m_collector = collector;
-	m_motors = motors;
+	m_Leftmotors = Leftmotors;
+	m_Rightmotors = Rightmotors;
 	/*m_motorLeft2 = motorLeft2;
 	m_motorRight1 = motorRight1;
 	m_motorRight2 = motorRight2;*/
@@ -26,11 +27,13 @@ Shooter::~Shooter (){
 }
 
 void Shooter::Set(double power) {
-	m_motors->Set(power);
+	m_Leftmotors->Set(power);
+	m_Rightmotors->Set(power);
 }
 
 void Shooter::Shoot (){
-	m_motors->Set(-shoot_power);
+	m_Leftmotors->Set(-shoot_power);
+	m_Rightmotors->Set(-shoot_power);
 	/* Commented out
 	if (m_limitSwitchTop->Get()){
 		m_motorLeft1->Set(0);
@@ -41,11 +44,13 @@ void Shooter::Shoot (){
 }
 
 void Shooter::Stop() {
-	m_motors->Set(0);
+	m_Leftmotors->Set(0);
+	m_Rightmotors->Set(0);
 }
 
 void Shooter::Reset() {
-	m_motors->Set(reset_power);
+	m_Leftmotors->Set(reset_power);
+	m_Rightmotors->Set(reset_power);
 	/*
 	Wait(shootTime*7.5);
 	m_motorLeft1->Set(0);
@@ -66,11 +71,12 @@ bool Shooter::BringArmDown() {
 	timer->Start();
 	while(true) {
 		RobotBase::getInstance().GetWatchdog().Feed();
-		if (m_limitSwitch->Get()) {
+/*		if (m_limitSwitch->Get()) {
 			Stop();
 			break;
 		}
-		if (timer->Get() > 4) {
+*/
+		if (timer->Get() > 1.5) {
 			Stop();
 			success = false;
 			break;
@@ -82,7 +88,7 @@ bool Shooter::BringArmDown() {
 }
 
 void Shooter::ShootWithArm() {
-	m_collector->BringArmDown();
+//	m_collector->BringArmDown();
 	BringArmDown();
 	
 	Shoot();

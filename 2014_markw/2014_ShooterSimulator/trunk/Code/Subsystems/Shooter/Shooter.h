@@ -6,7 +6,7 @@
 
 class Shooter {
 	public:
-		Shooter(Talon *motors, DigitalInput *limitSwitch, Collector *collector);
+		Shooter(Talon *Leftmotors, Talon *Rightmotors, DigitalInput *limitSwitch, Collector *collector);
 		~Shooter();
 		void Shoot();
 		void Set(double power);
@@ -19,7 +19,8 @@ class Shooter {
 		void WatchdogWait(double time);
 	private:
 		Collector *m_collector;
-		Talon *m_motors;
+		Talon *m_Leftmotors;
+		Talon *m_Rightmotors;
 		DigitalInput *m_limitSwitch;
 };
 #endif

@@ -33,11 +33,12 @@ void MainRobot::RobotInit() {
 // InitializeHardware: Objects for interacting with hardware are initialized here
 void MainRobot::InitializeHardware()
 {
-	m_drive = new RobotDrive(Ports::DigitalSidecar::Pwm8, 
+/*	m_drive = new RobotDrive(Ports::DigitalSidecar::Pwm8, 
 							 Ports::DigitalSidecar::Pwm7, 
 							 Ports::DigitalSidecar::Pwm10, 
 							 Ports::DigitalSidecar::Pwm9);
 	m_drive->SetSafetyEnabled(true);
+*/
 	if (CONTROLLER == XBOX) {
 		driveController = new XboxController(Ports::Computer::Usb1);
 		shootController = new XboxController(Ports::Computer::Usb2);
@@ -46,7 +47,7 @@ void MainRobot::InitializeHardware()
 		m_rightStick = new Joystick(Ports::Computer::Usb2);
 	}
 
-	m_compressor = new Compressor(Ports::DigitalSidecar::Gpio1,
+/*	m_compressor = new Compressor(Ports::DigitalSidecar::Gpio1,
 								  Ports::DigitalSidecar::Relay1);
 	m_compressor->Start();
 	
@@ -59,21 +60,24 @@ void MainRobot::InitializeHardware()
 	
 	m_collectorMotor = new Victor(Ports::DigitalSidecar::Pwm1);
 	m_collectorMotor->SetSafetyEnabled(true);
-	m_shooterMotors = new Talon(Ports::DigitalSidecar::Pwm4);   // This one Talon object powers
+*/
+	m_LeftshooterMotors = new Talon(Ports::Crio::Module2,Ports::DigitalSidecar::Pwm4);  
+	m_RightshooterMotors = new Talon(Ports::Crio::Module2,Ports::DigitalSidecar::Pwm5);// This one Talon object powers
 																// all four shooter motors
-	m_shooterMotors->SetSafetyEnabled(true);
+	m_LeftshooterMotors->SetSafetyEnabled(false);
+	m_RightshooterMotors->SetSafetyEnabled(false);
 	
-	m_pistonLimitSwitch = new DigitalInput(Ports::DigitalSidecar::Gpio11);
-	m_shooterLimitSwitch = new DigitalInput(Ports::DigitalSidecar::Gpio12);
+//	m_pistonLimitSwitch = new DigitalInput(Ports::DigitalSidecar::Gpio11);
+//	m_shooterLimitSwitch = new DigitalInput(Ports::DigitalSidecar::Gpio12);
 }
 
 // InitializeSoftware: Initialize subsystems
 void MainRobot::InitializeSoftware()
 {
 	//m_claw = new Claw(m_clawMotor);
-	m_collector = new Collector(m_collectorMotor, m_solenoid1, m_solenoid2,
-			m_solenoid3, m_solenoid4, m_compressor, m_pistonLimitSwitch);
-	m_shooter = new Shooter(m_shooterMotors, m_shooterLimitSwitch, m_collector);
+//	m_collector = new Collector(m_collectorMotor, m_solenoid1, m_solenoid2,
+//			m_solenoid3, m_solenoid4, m_compressor, m_pistonLimitSwitch);
+	m_shooter = new Shooter(m_LeftshooterMotors, m_RightshooterMotors, m_shooterLimitSwitch, m_collector);
 	//netTable = NetworkTable::GetTable("VisionTargetInfo");
 	//netTable->PutNumber("Driving", DRIVING);
 	m_timer = new Timer();
@@ -107,9 +111,9 @@ void MainRobot::Autonomous()
 	m_collector->SpinStop();
 	*/
 	//m_drive->SetSafetyEnabled(false);
-	m_drive->Drive(-0.8, 0.0);
-	WatchdogWait(0.7);
-	m_drive->Drive(0.0, 0.0); // Stop driving
+//	m_drive->Drive(-0.8, 0.0);
+//	WatchdogWait(0.7);
+//	m_drive->Drive(0.0, 0.0); // Stop driving
 	/*WatchdogWait(1.4);
 	m_shooter->ShootWithArm();*/
 	/*
@@ -156,7 +160,7 @@ void MainRobot::OperatorControl()
 	m_timer->Reset();
 	m_timer->Start();
 		
-	int operatorControlLifetime = 0;
+//	int operatorControlLifetime = 0;
 	//AxisCamera &camera = AxisCamera::GetInstance("10.29.76.11");
 	
 	while (IsOperatorControl()) {
@@ -164,10 +168,10 @@ void MainRobot::OperatorControl()
 		if (driving != DRIVING) {
 			DRIVING = driving;
 		}*/
-		SmartDashboard::PutNumber("Operator Lifetime", ++operatorControlLifetime);	
-		SmartDashboard::PutNumber("Countdown Timer", 140 - m_timer->Get());
-		if(130 - m_timer->Get() < 10)
-			SmartDashboard::PutString("Countdown Alert", "Raise arm");
+//		SmartDashboard::PutNumber("Operator Lifetime", ++operatorControlLifetime);	
+//		SmartDashboard::PutNumber("Countdown Timer", 140 - m_timer->Get());
+//		if(130 - m_timer->Get() < 10)
+//			SmartDashboard::PutString("Countdown Alert", "Raise arm");
 		/*
 		nextImageCheck++;
 		if (nextImageCheck >= 800) {
@@ -186,7 +190,7 @@ void MainRobot::OperatorControl()
 		if (CONTROLLER == XBOX) {
 			// DRIVING
 			// ----------------------------------------------------------------------
-			if (DRIVING == TANK) {
+/*			if (DRIVING == TANK) {
 				// (for the two code lines below) The minus in front makes the robot drive in the
 				// direction of the collector (when joysticks are forward)
 				float leftY = -Cutoff(driveController->GetAxis(driveController->LeftY));
@@ -227,10 +231,10 @@ void MainRobot::OperatorControl()
 				
 				m_drive->ArcadeDrive(arcadeY, arcadeX);
 			}
-				
+*/				
 			// PISTON BUTTONS (FOR COLLECTOR)
 			// ----------------------------------------------------------------------
-			if (shootController->GetLeftBumperButton()) {
+/*			if (shootController->GetLeftBumperButton()) {
 				SmartDashboard::PutBoolean("ShootController LB", true);
 				m_collector->PistonPull();
 			} else if (shootController->GetRightBumperButton()) {
@@ -262,7 +266,7 @@ void MainRobot::OperatorControl()
 			if(driveController->GetAButton()) {
 				m_shooter->ShooterPass();
 			}
-			
+*/			
 			// SHOOTING
 			// ----------------------------------------------------------------------
 			// The Set() values below (-.15 & .15) indicate the power
@@ -273,25 +277,25 @@ void MainRobot::OperatorControl()
 			// (or around the robot).
 			
 			if (shootController->GetAButton()) {
-				m_shooter->Set(-.15);
+				m_shooter->Set(-0.15);
 			} else if (shootController->GetBButton()) {
-				m_shooter->Set(.15);
+				m_shooter->Set(0.15);
 			} else {
 				m_shooter->Set(0);
 			}
-			/*			
+						
 			float trigger = shootController->GetTriggerAxis();
 			if (trigger <= -0.4){
 				if (!isShooting) {
-					m_compressor->Stop();
+//					m_compressor->Stop();
 					isShooting = true;
 					m_shooter->ShootWithArm();
-					m_compressor->Start();
+//					m_compressor->Start();
 				}
 			} else {
 				isShooting = false;
 			}
-			*/
+/*			
 			
 		} else if (CONTROLLER == JOYSTICKS) { // Xbox is a higher priority, do this later
 			if (DRIVING == TANK) {
@@ -310,10 +314,11 @@ void MainRobot::OperatorControl()
 				
 				m_drive->ArcadeDrive(arcadeY, arcadeX);
 			}
-			
+*/			
 		}
 
-		SmartDashboard::PutBoolean("shooter limit switch",m_shooter->GetLimitSwitch());
+
+//		SmartDashboard::PutBoolean("shooter limit switch",m_shooter->GetLimitSwitch());
 		Wait(0.005); // wait for a motor update time
 	}
 }
