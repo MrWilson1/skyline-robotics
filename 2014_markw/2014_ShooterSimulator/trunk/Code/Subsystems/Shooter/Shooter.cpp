@@ -1,6 +1,6 @@
 #include "Shooter.h"
 
-double shoot_power = 1;
+double shoot_power = 0.75;
 double reset_power = 0.2;
 double upDownArmTime = 0.25;
 
@@ -9,7 +9,7 @@ double upDownArmTime = 0.25;
  * If the value is too high, the arm will wrap around (and into) the
  * back of the robot. 
  */
-double shootTime = 0.22;
+double shootTime = 0.27;
 
 Shooter::Shooter(Talon *Leftmotors, Talon *Rightmotors, DigitalInput *limitSwitch, Collector *collector){
 	m_collector = collector;
@@ -76,7 +76,7 @@ bool Shooter::BringArmDown() {
 			break;
 		}
 */
-		if (timer->Get() > 1.5) {
+		if (timer->Get() > 1.0) {
 			Stop();
 			success = false;
 			break;
@@ -96,6 +96,8 @@ void Shooter::ShootWithArm() {
 	Stop();
 	WatchdogWait(1);
 	BringArmDown();
+	SmartDashboard::PutNumber("shootTime Value", shootTime);
+//	shootTime -= 0.01;
 }
 
 
