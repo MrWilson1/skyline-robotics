@@ -64,9 +64,9 @@ void MainRobot::InitializeHardware()
 	m_LeftshooterMotors = new Talon(Ports::Crio::Module2,Ports::DigitalSidecar::Pwm4);  
 	m_RightshooterMotors = new Talon(Ports::Crio::Module2,Ports::DigitalSidecar::Pwm5);// This one Talon object powers
 																// all four shooter motors
-	m_LeftshooterMotors->SetSafetyEnabled(false);
-	m_RightshooterMotors->SetSafetyEnabled(false);
-	
+//	m_LeftshooterMotors->SetSafetyEnabled(false);
+//	m_RightshooterMotors->SetSafetyEnabled(false);
+//	
 //	m_pistonLimitSwitch = new DigitalInput(Ports::DigitalSidecar::Gpio11);
 //	m_shooterLimitSwitch = new DigitalInput(Ports::DigitalSidecar::Gpio12);
 }
@@ -83,71 +83,9 @@ void MainRobot::InitializeSoftware()
 	m_timer = new Timer();
 }
 
-// state 1 = drive, wait 0.35
-// state 2 = drop collector and shooter
-// state 3 = drive forward, load ball
-// state 4 = drive backward to shooting distance
-// state 5 = shoot
-
 
 void MainRobot::Autonomous()
 {
-	/*m_drive->Drive(-0.5, 0.0);
-	WatchdogWait(.35);
-	m_drive->Drive(0.0, 0.0);
-	
-	if (!m_collector->BringArmDown()) {
-		return;
-	}
-	if (!m_shooter->BringArmDown()) {
-		return;
-	}
-	
-	m_collector->SpinInwards();
-	m_drive->Drive(0.5, 0.0);
-	WatchdogWait(.55); // drive backwards while spinning, collect ball
-	m_drive->Drive(0.0, 0.0);
-	WatchdogWait(1.5); // Wait 1.5 until stop spinning
-	m_collector->SpinStop();
-	*/
-	//m_drive->SetSafetyEnabled(false);
-//	m_drive->Drive(-0.8, 0.0);
-//	WatchdogWait(0.7);
-//	m_drive->Drive(0.0, 0.0); // Stop driving
-	/*WatchdogWait(1.4);
-	m_shooter->ShootWithArm();*/
-	/*
-	m_drive->Drive(-0.5, 0.0);
-	Wait(2.5);
-	m_drive->Drive(0.0, 0.0);*/
-	
-	/*AxisCamera &camera = AxisCamera::GetInstance("10.29.76.11");
-	
-	// Inside this while loop, the ribit will check if the best detected target is hot, if not then it
-	// will wait until it is hot, once it is hot, it will shoot. Once it shoots, it will not attempt
-	// to shoot again
-	int autonomousLifetime = 0;
-	bool autonomousDidShoot = false;
-	while (IsAutonomous() && IsEnabled()) {
-		ColorImage *image = camera.GetImage();
-		
-		if ((image == (void *) 0) || (image->GetWidth() == 0) || (image->GetHeight() == 0)) {
-			continue;
-		}
-		
-		SmartDashboard::PutNumber("Autonomous Lifetime", ++autonomousLifetime);
-		
-		TargetReport* report = Vision::process(image);
-		netTable->PutBoolean("Target Hot", report->Hot);
-		netTable->PutNumber("Target Distance", report->distance);
-		
-		if (!autonomousDidShoot && report->Hot) {
-			autonomousDidShoot = true;
-			m_shooter->ShootWithArm();
-		}
-		
-		Wait(0.5);
-	}*/
 }
 
 bool isShooting = false;
@@ -164,109 +102,8 @@ void MainRobot::OperatorControl()
 	//AxisCamera &camera = AxisCamera::GetInstance("10.29.76.11");
 	
 	while (IsOperatorControl()) {
-		/*int driving = (int) netTable->GetNumber("Driving");
-		if (driving != DRIVING) {
-			DRIVING = driving;
-		}*/
-//		SmartDashboard::PutNumber("Operator Lifetime", ++operatorControlLifetime);	
-//		SmartDashboard::PutNumber("Countdown Timer", 140 - m_timer->Get());
-//		if(130 - m_timer->Get() < 10)
-//			SmartDashboard::PutString("Countdown Alert", "Raise arm");
-		/*
-		nextImageCheck++;
-		if (nextImageCheck >= 800) {
-			nextImageCheck = 0;
-			ColorImage *image = camera.GetImage();
-					
-			if ((image == (void *) 0) || (image->GetWidth() == 0) || (image->GetHeight() == 0)) {
-				continue;
-			}
-			
-			TargetReport* report = Vision::process(image);
-			netTable->PutBoolean("Target Hot", report->Hot);
-			netTable->PutNumber("Target Distance", report->distance);
-		}*/
-		
+
 		if (CONTROLLER == XBOX) {
-			// DRIVING
-			// ----------------------------------------------------------------------
-/*			if (DRIVING == TANK) {
-				// (for the two code lines below) The minus in front makes the robot drive in the
-				// direction of the collector (when joysticks are forward)
-				float leftY = -Cutoff(driveController->GetAxis(driveController->LeftY));
-				float rightY = -Cutoff(driveController->GetAxis(driveController->RightY));
-				
-				// Drive reversal when left trigger down (go opposite direction)
-				if (driveController->GetTriggerAxis() >= 0.4) {
-					leftY = -leftY;
-					rightY = -rightY;
-				}
-				
-				m_drive->TankDrive(leftY, rightY);
-			} else if (DRIVING == ARCADE) {
-				float arcadeY = -Cutoff(driveController->GetLeftYAxis());
-				float arcadeX = -Cutoff(driveController->GetLeftXAxis());
-				
-				if (arcadeY == 0 && arcadeX == 0) {
-					arcadeY = -Cutoff(driveController->GetRightYAxis());
-					arcadeX = -Cutoff(driveController->GetRightXAxis());
-				}
-				
-				// Drive reversal when left trigger down (go opposite direction)
-				if (driveController->GetTriggerAxis() >= 0.4) {
-					arcadeY = -arcadeY;
-					arcadeX = -arcadeX;
-				}
-				
-				m_drive->ArcadeDrive(arcadeY, arcadeX);
-			} else if (DRIVING == ARCADE2) {
-				float arcadeY = -Cutoff(driveController->GetLeftYAxis());
-				float arcadeX = -Cutoff(driveController->GetRightXAxis());
-				
-				// Drive reversal when left trigger down (go opposite direction)
-				if (driveController->GetTriggerAxis() >= 0.4) {
-					arcadeY = -arcadeY;
-					arcadeX = -arcadeX;
-				}
-				
-				m_drive->ArcadeDrive(arcadeY, arcadeX);
-			}
-*/				
-			// PISTON BUTTONS (FOR COLLECTOR)
-			// ----------------------------------------------------------------------
-/*			if (shootController->GetLeftBumperButton()) {
-				SmartDashboard::PutBoolean("ShootController LB", true);
-				m_collector->PistonPull();
-			} else if (shootController->GetRightBumperButton()) {
-
-				SmartDashboard::PutBoolean("ShootController RB", true);
-				m_collector->BringArmDown();
-				if (m_shooter->GetLimitSwitch()) {
-					m_collector->BringArmDown();
-				}
-			} else {
-				SmartDashboard::PutBoolean("ShootController LB", false);
-				SmartDashboard::PutBoolean("ShootController RB", false);
-			}
-				
-			// SPIN BUTTONS (FOR COLLECTOR)
-			// ----------------------------------------------------------------------
-			if (shootController->GetXButton()){
-				m_collector->SpinInwards();
-			} else if (shootController->GetYButton()){
-				m_collector->SpinOutwards();
-			} else {
-				m_collector->SpinStop();
-			}
-			
-
-			
-			// PASSING
-			// ----------------------------------------------------------------------
-			if(driveController->GetAButton()) {
-				m_shooter->ShooterPass();
-			}
-*/			
 			// SHOOTING
 			// ----------------------------------------------------------------------
 			// The Set() values below (-.15 & .15) indicate the power
@@ -277,11 +114,11 @@ void MainRobot::OperatorControl()
 			// (or around the robot).
 			
 			if (shootController->GetAButton()) {
-				m_shooter->Set(-0.15);
+				m_shooter->Set(1);
 			} else if (shootController->GetBButton()) {
-				m_shooter->Set(0.15);
+				m_shooter->Set(-1);
 			} else {
-				m_shooter->Set(0);
+				m_shooter->Stop();
 			}
 						
 			float trigger = shootController->GetTriggerAxis();
@@ -295,28 +132,7 @@ void MainRobot::OperatorControl()
 			} else {
 				isShooting = false;
 			}
-/*			
-			
-		} else if (CONTROLLER == JOYSTICKS) { // Xbox is a higher priority, do this later
-			if (DRIVING == TANK) {
-				float leftY = -Cutoff(m_leftStick->GetY());
-				float rightY = -Cutoff(m_leftStick->GetX());
-				
-				m_drive->TankDrive(leftY, rightY);
-			} else if (DRIVING == ARCADE) {
-				float arcadeY = -Cutoff(m_leftStick->GetY());
-				float arcadeX = -Cutoff(m_leftStick->GetX());
-				
-				if (arcadeY == 0 && arcadeX == 0) {
-					arcadeY = -Cutoff(m_rightStick->GetY());
-					arcadeX = -Cutoff(m_rightStick->GetX());
-				}
-				
-				m_drive->ArcadeDrive(arcadeY, arcadeX);
-			}
-*/			
 		}
-
 
 //		SmartDashboard::PutBoolean("shooter limit switch",m_shooter->GetLimitSwitch());
 		Wait(0.005); // wait for a motor update time
