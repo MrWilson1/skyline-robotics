@@ -11,6 +11,7 @@ public class Ports {
      * Relay: Used mostly for pneumatics (Spikes, etc)
      */
     public static class DigitalSidecar {
+        public static final int Pwm0 = 0;
         public static final int Pwm1 = 1;
         public static final int Pwm2 = 2;
         public static final int Pwm3 = 3;
