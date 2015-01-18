@@ -1,4 +1,6 @@
-package org.spartabots.frc2015;
+package org.spartabots.frc2015.mode;
+
+import org.spartabots.frc2015.Robot;
 
 import edu.wpi.first.wpilibj.Timer;
 

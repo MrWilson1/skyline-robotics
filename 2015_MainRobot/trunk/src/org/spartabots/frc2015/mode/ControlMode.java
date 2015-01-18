@@ -1,4 +1,7 @@
-package org.spartabots.frc2015;
+package org.spartabots.frc2015.mode;
+
+import org.spartabots.frc2015.Robot;
+import org.spartabots.frc2015.Util;
 
 public class ControlMode extends Mode implements Runnable {
 	double prevLeftX = 0;
