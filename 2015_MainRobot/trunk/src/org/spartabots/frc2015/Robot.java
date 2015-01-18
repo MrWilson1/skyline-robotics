@@ -1,6 +1,8 @@
 package org.spartabots.frc2015;
 
 import org.spartabots.frc2015.controller.XboxController;
+import org.spartabots.frc2015.mode.AutoMode;
+import org.spartabots.frc2015.mode.ControlMode;
 import org.spartabots.frc2015.subsystem.Drive;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -8,7 +10,6 @@ import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Victor;
 
 /**
  * Main Robot class for initialization
@@ -17,25 +18,25 @@ public class Robot extends SampleRobot {
     private static Robot instance;
     
     // Drive
-    RobotDrive m_drive;
-    Drive drive;
+    public RobotDrive m_drive;
+    public Drive drive;
     
     // Misc Motors
-    Talon traverse;
-    Talon elevator1;
-    Talon elevator2;
+    public Talon traverse;
+    public Talon elevator1;
+    public Talon elevator2;
     
     // Pistons
-    Compressor compressor;
-    Solenoid eGrip1;
-    Solenoid eGrip2;
+    public Compressor compressor;
+    public Solenoid eGrip1;
+    public Solenoid eGrip2;
     
     // Modes
-    AutoMode autoMode;
-    ControlMode controlMode;
+    public AutoMode autoMode;
+    public ControlMode controlMode;
     
     // Controller
-    XboxController driveController;
+    public XboxController driveController;
     
     public Robot() {
     	super();
