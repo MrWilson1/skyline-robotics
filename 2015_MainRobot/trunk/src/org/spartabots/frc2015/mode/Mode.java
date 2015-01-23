@@ -4,7 +4,25 @@ import org.spartabots.frc2015.Robot;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public abstract class Mode implements Runnable {
+/*
+ *  SAFETY PIG HAS ARRIVED!
+ * 
+ *   _._ _..._ .-',     _.._(`))
+ *  '-. `     '  /-._.-'    ',/
+ *     )         \            '.
+ *    / _    _    |             \
+ *   |  a    a    /              |
+ *   \   .-.                     ;  
+ *    '-('' ).-'       ,'       ;
+ *       '-;           |      .'
+ *          \           \    /
+ *          | 7  .__  _.-\   \
+ *          | |  |  ``/  /`  /
+ *         /,_|  |   /,_/   /
+ *            /,_/      '`-'
+ * 
+ */
+public abstract class Mode {
 	Robot robot;
 	private int mode;
 	public static final int CONTROL = 0;
@@ -15,8 +33,7 @@ public abstract class Mode implements Runnable {
 		this.mode = mode;
 	}
 	
-	@Override
-	public void run() {
+	public final void run() {
 		if (mode == CONTROL) {
 			while (robot.isOperatorControl() && robot.isEnabled()) {
 				this.controlPeriodic();

@@ -6,6 +6,7 @@ import org.spartabots.frc2015.mode.ControlMode;
 import org.spartabots.frc2015.subsystem.Drive;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -38,6 +39,10 @@ public class Robot extends SampleRobot {
     // Controller
     public XboxController driveController;
     
+    // Gyro
+    Gyro gyro;
+    double kp = 0.03;
+    
     public Robot() {
     	super();
     	instance = this;
@@ -50,12 +55,13 @@ public class Robot extends SampleRobot {
     			Ports.DigitalSidecar.Pwm2, // Front Left
     			Ports.DigitalSidecar.Pwm3, // Rear Left
     			Ports.DigitalSidecar.Pwm0, // Front Right
-    			Ports.DigitalSidecar.Pwm1 // Rear Right
+    			Ports.DigitalSidecar.Pwm1  // Rear Right
     			);
         m_drive.setExpiration(0.1);
         traverse = new Talon(Ports.DigitalSidecar.Pwm4);
         elevator1 = new Talon(Ports.DigitalSidecar.Pwm5);
         elevator2 = new Talon(Ports.DigitalSidecar.Pwm6);
+        gyro = new Gyro(Ports.Crio.AnalogChannel11); // Dummy port
     }
 
     public void initSoftware() {
