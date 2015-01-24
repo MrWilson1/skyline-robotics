@@ -1,7 +1,7 @@
 package org.spartabots.frc2015.mode;
 
 import org.spartabots.frc2015.Robot;
-import org.spartabots.frc2015.subsystem.Drive;
+import org.spartabots.frc2015.util.Constants;
 
 public class AutoMode extends Mode {
 
@@ -17,7 +17,7 @@ public class AutoMode extends Mode {
 	@Override
 	public void autoPeriodic() {
 		double angle = robot.drive.getGyroAngle();
-		robot.drive.m_drive.arcadeDrive(robot.drive.curveDrive(1, 1, true, 3), -angle * Drive.kp);
+		robot.drive.m_drive.arcadeDrive(robot.drive.curveDrive(1, 1, true, 3), -angle * Constants.GYRO_KP);
 	}
 	
 	@Override

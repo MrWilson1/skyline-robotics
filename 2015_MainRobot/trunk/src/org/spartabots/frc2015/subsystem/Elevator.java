@@ -1,6 +1,6 @@
 package org.spartabots.frc2015.subsystem;
 
-import org.spartabots.frc2015.Ports;
+import org.spartabots.frc2015.util.Constants;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -21,9 +21,9 @@ public class Elevator extends Subsystem {
     }
     
 	protected void init() {
-        compressor = new Compressor(0);
+        compressor = new Compressor(Constants.COMPRESSOR_PORT);
         
-        elevator1 = new Talon(Ports.RoboRIO.Pwm3);
-        elevator2 = new Talon(Ports.RoboRIO.Pwm4);
+        elevator1 = new Talon(Constants.ELEVATOR1_PORT);
+        elevator2 = new Talon(Constants.ELEVATOR2_PORT);
 	}
 }
