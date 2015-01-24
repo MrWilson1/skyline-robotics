@@ -12,7 +12,7 @@ public class WaitAction extends Action {
 	}
 	
 	@Override
-	public boolean isRunning() {
+	public boolean running() {
 		return true; // time out handled by super class
 	}
 

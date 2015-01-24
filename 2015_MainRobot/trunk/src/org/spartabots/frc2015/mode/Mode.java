@@ -33,18 +33,30 @@ public abstract class Mode {
 		this.mode = mode;
 	}
 	
-	public final void run() {
+	public final void start() {
 		if (mode == CONTROL) {
+			init();
 			while (robot.isOperatorControl() && robot.isEnabled()) {
 				this.controlPeriodic();
 				Timer.delay(0.005);
 			}
+			done();
 		} else if (mode == AUTONOMOUS) {
+			init();
 			while (robot.isAutonomous() && robot.isEnabled()) {
 				this.autoPeriodic();
 				Timer.delay(0.005);
 			}
+			done();
 		}
+	}
+	
+	public void init() {
+		
+	}
+	
+	public void done() {
+		
 	}
 
 	public void controlPeriodic() {
