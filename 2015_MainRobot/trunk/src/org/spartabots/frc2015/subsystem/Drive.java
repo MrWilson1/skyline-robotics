@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class Drive extends Subsystem {
 	// Constants
-	public static final double LEFT_ENCODER_TO_DISTANCE_RATIO = 0.1524; // in meters (15.24 cm)
-	public static final double RIGHT_ENCODER_TO_DISTANCE_RATIO = 0.1524; // in meters (15.24 cm)
 	
     // Drive Motors
     public RobotDrive m_drive;
@@ -63,11 +61,11 @@ public class Drive extends Subsystem {
     /* ENCODERS
      * -------------------------------------------------------------------------------- */
     public double getLeftEncoderDistance() {
-    	return leftEc.get() * LEFT_ENCODER_TO_DISTANCE_RATIO;
+    	return leftEc.get() * Constants.LEFT_EC_TO_DISTANCE_RATIO;
     }
     
     public double getRightEncoderDistance() {
-    	return rightEc.get() * RIGHT_ENCODER_TO_DISTANCE_RATIO;
+    	return rightEc.get() * Constants.RIGHT_EC_TO_DISTANCE_RATIO;
     }
     
     public void resetEncoders() {
@@ -123,9 +121,9 @@ public class Drive extends Subsystem {
         value = Util.limit(value, -1, 1);
         
         if (speedMode)
-            return value / 1.25;
+            return value / Constants.DRIVE_FAST_REDUCTION_FACTOR;
         else
-            return value / 2.0;
+            return value / Constants.DRIVE_SLOW_REDUCTION_FACTOR;
     }
 
 	public void stop() {
