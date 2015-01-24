@@ -6,5 +6,5 @@ public abstract class Subsystem {
 		init();
 	}
 	
-	public abstract void init();
+	protected abstract void init();
 }

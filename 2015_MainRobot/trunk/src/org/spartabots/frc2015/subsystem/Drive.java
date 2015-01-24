@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 
-public class Drive {
+public class Drive extends Subsystem {
 	// Constants
 	public static final double LEFT_ENCODER_TO_DISTANCE_RATIO = 0.1524; // in meters (15.24 cm)
 	public static final double RIGHT_ENCODER_TO_DISTANCE_RATIO = 0.1524; // in meters (15.24 cm)
@@ -33,7 +33,7 @@ public class Drive {
     boolean speedMode = false;
     
     public Drive() {
-    	init();
+    	super();
     }
     
     protected void init() {

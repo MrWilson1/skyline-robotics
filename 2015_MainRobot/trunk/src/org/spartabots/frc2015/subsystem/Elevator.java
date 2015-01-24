@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
-public class Elevator {
+public class Elevator extends Subsystem {
 	// Elevator Motors
     public Talon elevator1;
     public Talon elevator2;
@@ -17,7 +17,7 @@ public class Elevator {
     public Solenoid eGrip2;
     
     public Elevator() {
-    	init();
+    	super();
     }
     
 	protected void init() {
