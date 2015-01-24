@@ -39,7 +39,7 @@ public class ControlMode extends Mode {
         
         // Speedmode (slow vs fast, caps max speed)
         if (driveController.getBButton()) {
-        	if (isBDown) {
+        	if (!isBDown) {
 	        	isBDown = true;
 	            robot.drive.toggleSpeedMode();
         	}
