@@ -1,6 +1,6 @@
 package org.spartabots.frc2015.subsystem;
 
-import org.spartabots.frc2015.Ports;
+import org.spartabots.frc2015.util.Constants;
 import org.spartabots.frc2015.util.Util;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -19,13 +19,12 @@ public class Drive extends Subsystem {
     public Talon traverse;
     
     // Encoders
-    Encoder leftEc = new Encoder(0, 1, false);
-    Encoder rightEc = new Encoder(2, 3, false);
-    Encoder traverseEc = new Encoder(4, 5, false);
+    Encoder leftEc = new Encoder(Constants.LEFT_EC_A, Constants.LEFT_EC_B, false);
+    Encoder rightEc = new Encoder(Constants.RIGHT_EC_A, Constants.RIGHT_EC_B, false);
+    Encoder traverseEc = new Encoder(Constants.TRAVERSE_EC_A, Constants.TRAVERSE_EC_B, false);
     
     // Gyro
     Gyro gyro;
-    public static final double kp = 0.03;
 	
     // Misc Variables
     double prevMove = 0;
@@ -38,14 +37,13 @@ public class Drive extends Subsystem {
     
     protected void init() {
     	m_drive = new RobotDrive(
-    			Ports.RoboRIO.Pwm1, // Left
-    			Ports.RoboRIO.Pwm0  // Right
+    			Constants.DRIVE_LEFT_PORT,
+    			Constants.DRIVE_RIGHT_PORT
     			);
         m_drive.setExpiration(0.1);
-        traverse = new Talon(Ports.RoboRIO.Pwm2);
+        traverse = new Talon(Constants.TRAVERSE_PORT);
         
-        gyro = new Gyro(1); // Dummy port
-        
+        gyro = new Gyro(Constants.GYRO_PORT); // Dummy port
     }
     
     /* GYRO
