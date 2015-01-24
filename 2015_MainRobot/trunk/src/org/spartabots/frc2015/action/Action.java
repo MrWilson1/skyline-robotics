@@ -1,5 +1,7 @@
 package org.spartabots.frc2015.action;
 
+import org.spartabots.frc2015.Robot;
+
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -14,6 +16,7 @@ public abstract class Action {
 	Timer timer = new Timer();
 	boolean done = false;
 	double timeout = 100; // in seconds
+	Robot robot = Robot.getInstance();
 	
 	public abstract void init();
 	/**
@@ -23,7 +26,7 @@ public abstract class Action {
 	 *  
 	 * @return running
 	 */
-	public abstract boolean isRunning();
+	public abstract boolean running();
 	public abstract void done();
 	
 	public void cancel() {
@@ -37,7 +40,7 @@ public abstract class Action {
 	protected void run(ActionThread actionThread) {
 		timer.start();
 		init();
-		while (!done && isRunning() && !isTimedOut()) {
+		while (!done && running() && !isTimedOut()) {
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
@@ -47,6 +50,7 @@ public abstract class Action {
 		}
 		timer.stop();
 		done();
+		this.robot = null;
 		if (actionThread != null)
 			actionThread.actionDone();
 	}

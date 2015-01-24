@@ -29,6 +29,22 @@ public class Actions {
 		return true;
 	}
 	
+	public static void driveDistance(double meters) {
+		new DriveAction(DriveAction.DISTANCE, meters).run();;
+	}
+
+	public static void driveTime(double millis) {
+		new DriveAction(DriveAction.TIME, millis).run();
+	}
+
+	public static void rotateDeg(double heading) {
+		new RotateAction(heading, RotateAction.DEGREES).run();
+	}
+	
+	public static void rotateRad(double heading) {
+		new RotateAction(heading, RotateAction.RADIANS).run();
+	}
+	
 	public static void waitAction(double millis) {
 		new WaitAction(millis).run();
 	}

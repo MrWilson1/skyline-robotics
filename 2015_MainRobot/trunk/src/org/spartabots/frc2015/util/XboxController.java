@@ -1,4 +1,4 @@
-package org.spartabots.frc2015.controller;
+package org.spartabots.frc2015.util;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -6,17 +6,25 @@ public class XboxController extends Joystick {
 
     public static class Axis {
 
-        public static final int LeftX = 1;
-        public static final int LeftY = 2;
-        public static final int Trigger = 3;
+        public static final int LeftX = 0;
+        public static final int LeftY = 1;
+        public static final int LeftTrigger = 2;
+        public static final int RightTrigger = 3;
         public static final int RightX = 4;
         public static final int RightY = 5;
     }
 
     public static class Dpad {
 
-        public static final int XDir = 6;
-        public static final int YDir = 7;
+        public static final int North = 0;
+        public static final int NorthEast = 45;
+        public static final int East = 90;
+        public static final int SouthEast = 135;
+        public static final int South = 180;
+        public static final int SouthWest = 225;
+        public static final int West = 270;
+        public static final int NorthWest = 315;
+        public static final int Center = -1;
     }
 
     public static class Button {
@@ -51,13 +59,13 @@ public class XboxController extends Joystick {
     }
 
     /**
-     * Gets the value of the dpad direction. Y-dir: - Top = 1 - Bottom = -1 X-dir: - Top = 1 - Bottom = -1
+     * Gets the value of the dpad
      * 
      * @param dpad dpad
      * @return dpad value
      */
-    public int getDpad(int dpad) {
-        return (int) getRawAxis(dpad);
+    public int getDpad() {
+    	return this.getPOV();
     }
 
     /**
@@ -77,16 +85,13 @@ public class XboxController extends Joystick {
     public double getLeftYAxis() {
         return getAxis(Axis.LeftY);
     }
+    
+    public double getLeftTriggerAxis() {
+        return getAxis(Axis.LeftTrigger);
+    }
 
-    /**
-     * Returns the trigger value. The triggers are the two trigger-like things.
-     * If the left one is fully pressed, this returns 1. If the right one is fully pressed,
-     * this returns -1. If both are pressed, the sum of both is the outputted value.
-     *
-     * @return trigger value
-     */
-    public double getTriggerAxis() {
-        return getAxis(Axis.Trigger);
+    public double getRightTriggerAxis() {
+        return getAxis(Axis.RightTrigger);
     }
 
     public double getRightXAxis() {
@@ -95,14 +100,6 @@ public class XboxController extends Joystick {
 
     public double getRightYAxis() {
         return getAxis(Axis.RightY);
-    }
-
-    public int getXDirDpad() {
-        return getDpad(Dpad.XDir);
-    }
-
-    public int getYDirDpad() {
-        return getDpad(Dpad.YDir);
     }
 
     public boolean getAButton() {
