@@ -12,9 +12,7 @@ public class Ports {
      * 
      * Analog: Used mostly for analog sensors
      * 
-     * Soleniod Breakout: Used mostly for pneumatics
-     * 
-     * Module: Sections of the cRIO
+     * Pcm: Used mostly for pneumatics
      */
     public static class RoboRIO {
         public static final int Pwm0 = 0;
@@ -38,15 +36,14 @@ public class Ports {
         public static final int AnalogChannel2 = 2;
         public static final int AnalogChannel3 = 3;
 
-        public static final int SoleniodBreakout0 = 0;
-        public static final int SoleniodBreakout1 = 1;
-        public static final int SoleniodBreakout2 = 2;
-        public static final int SoleniodBreakout3 = 3;
-        public static final int SoleniodBreakout4 = 4;
-        public static final int SoleniodBreakout5 = 5;
-        public static final int SoleniodBreakout6 = 6;
-        public static final int SoleniodBreakout7 = 7;
-        public static final int SoleniodBreakout8 = 8;
+        public static final int Pcm0 = 0;
+        public static final int Pcm1 = 1;
+        public static final int Pcm2 = 2;
+        public static final int Pcm3 = 3;
+        public static final int Pcm4 = 4;
+        public static final int Pcm5 = 5;
+        public static final int Pcm6 = 6;
+        public static final int Pcm7 = 7;
         
         public static final int Dio0 = 0;
         public static final int Dio1 = 1;

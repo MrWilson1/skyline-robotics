@@ -96,7 +96,7 @@ public class Drive extends Subsystem {
         	if (value < 0.5)
         		return 2 * value * value;
         	else
-        		return Math.squrt((value - 0.5) * 2) / 2 + 0.5;
+        		return Math.sqrt((value - 0.5) * 2) / 2 + 0.5;
         else
         	return -uCurve(-value);
     }
