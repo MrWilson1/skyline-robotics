@@ -78,11 +78,13 @@ public class Drive extends Subsystem {
      * -------------------------------------------------------------------------------- */
     
     public void drive(double move, double rotate){
-        m_drive.arcadeDrive(curveDrive(move, prevMove, true, 2), curveDrive(rotate, prevRotate, false, 3));
+    	double newMove = curveDrive(move, prevMove, true, 2);
+    	double newRotate = curveDrive(rotate, prevRotate, false, 3);
+        m_drive.arcadeDrive(newMove, newRotate);
             
         // Set previous values for next loop
-        prevRotate = rotate;
-        prevMove = move;
+        prevRotate = newRotate;
+        prevMove = newMove;
     }
     
     private double curve(double value, double prevValue, double accelCurve){
@@ -90,10 +92,13 @@ public class Drive extends Subsystem {
     }
     
     private double uCurve(double value){
-        if(value < 0)
-            return -(value * value);
+        if (value >= 0)
+        	if (value < 0.5)
+        		return 2 * value * value;
+        	else
+        		return Math.squrt((value - 0.5) * 2) / 2 + 0.5;
         else
-            return value * value;
+        	return -uCurve(-value);
     }
     
     public void resetPrev(){
