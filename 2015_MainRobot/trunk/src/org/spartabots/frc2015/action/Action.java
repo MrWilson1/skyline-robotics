@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
  * Action<br/></br>
  * 
  * The init() method is called once to perform the action. The action will continue
- * to be preformed until either the action times out or the action decidess it should
+ * to be performed until either the action times out or the action decides it should
  * stop running by the isRunning method. Once the action is complete, the done method
  * will be called stop and cleanup whatever needs to be stopped or cleaned up.
  */
