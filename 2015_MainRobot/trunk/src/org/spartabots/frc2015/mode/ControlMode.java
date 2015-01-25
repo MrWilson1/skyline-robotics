@@ -28,12 +28,12 @@ public class ControlMode extends Mode {
         SmartDashboard.putNumber("Teleop Alive", i);
         SmartDashboard.putNumber("Gyro Angle", robot.drive.getGyroAngle());
 		
-		double leftX = Util.cutoff(driveController.getLeftXAxis());
+		double traverseMove = -Util.cutoff(driveController.getLeftTriggerAxis()) + Util.cutoff(driveController.getRightTriggerAxis());
         double leftY = Util.cutoff(driveController.getLeftYAxis());
         double rightX = Util.cutoff(driveController.getRightXAxis());
         
         // Traversing wheel
-        double curve = robot.drive.curveDrive(leftX, prevLeftX, true, 3);
+        double curve = robot.drive.curveDrive(traverseMove, prevLeftX, true, 3);
         SmartDashboard.putNumber("Curve Drive", curve);
         robot.drive.traverse.set(curve);
         
@@ -50,7 +50,7 @@ public class ControlMode extends Mode {
         // Drives robot with curves
         robot.drive.drive(leftY, rightX);
         
-        prevLeftX = leftX;
+        prevLeftX = traverseMove;
 	}
 	
 	@Override
