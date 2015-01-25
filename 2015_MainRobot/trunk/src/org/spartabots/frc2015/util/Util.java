@@ -16,6 +16,43 @@ public class Util {
     }
     
     /**
+     * <style>
+	 * .eq {font-family: "Times New Roman","Symbola-mq",serif;}
+     * .i {font-style: italic;}
+     * .sym {margin: 0 4px;}
+     * </style>
+     * 
+     * Easing function using this piecewise function of two parameterized functions<br/>
+     * 
+     * <div><img src="http://www.spartabots.org/uploads/2015/01/easing-function.png" style="width:375px;margin-left:50px" /></div><br/>
+     * 
+     * As <span class="sym i eq">a</span> increases, the slope in the middle becomes greater (steeper) and
+     * the ends at <span class="eq"><span class="i">x</span><span class="sym">=</span>0</span> and
+     * <span class="eq"><span class="i">x</span><span class="sym">=</span>1</span> become flatter.<br/>
+     * As <span class="eq"><span class="i">a</span><span class="sym">&rarr;</span>&infin;</span>, the curve
+     * tends towards a step function.
+     * 
+     * <br/><br/>
+     * 
+     * <small>From http://math.stackexchange.com/questions/121720/ease-in-out-function</small><br/><br/>
+     * 
+     * @param x the x value for the ease function between -1 and 1
+     * @param a the a value for the ease function, must be equal to or greater than 0; 2 works well
+     * @return eased x
+     */
+    public static double ease(double x, double a) {
+    	if (x >= 0) {
+    		double pXA = Math.pow(x,a);
+    		return pXA/(pXA + Math.pow(1-x,a));
+    	} else if (x < 0) {
+    		double npXA = Math.pow(-x,a);
+    		return -(npXA/(npXA + Math.pow(1+x,a)));
+    	}
+    	
+    	return -1;
+    }
+    
+    /**
      * Limit between lower bound and higher bound
      * 
      * @param value

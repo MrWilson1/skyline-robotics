@@ -16,6 +16,8 @@ public class Constants {
 	public static final int ELEVATOR1_PORT 		= Ports.RoboRIO.Pwm3;
 	public static final int ELEVATOR2_PORT 		= Ports.RoboRIO.Pwm4;
 	
+	public static final int REGULAR_EASE_CONSTANT = 2;
+	
 	// GYRO
 	public static final int GYRO_PORT 			= Ports.RoboRIO.AnalogChannel1;
 	public static final double GYRO_KP 			= 0.03;
