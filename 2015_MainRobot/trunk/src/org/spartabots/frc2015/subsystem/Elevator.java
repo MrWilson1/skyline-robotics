@@ -26,4 +26,18 @@ public class Elevator extends Subsystem {
         elevator1 = new Talon(Constants.ELEVATOR1_PORT);
         elevator2 = new Talon(Constants.ELEVATOR2_PORT);
 	}
+	/* CLAMP
+	 * -------------------------------------------------------------------------------- */
+	
+	public void clampIn(){
+		
+	}
+	
+	public void clampOut(){
+		
+	}
+	
+	public void elevator(double move){
+		
+	}
 }

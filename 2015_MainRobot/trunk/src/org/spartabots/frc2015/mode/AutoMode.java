@@ -19,6 +19,7 @@ public class AutoMode extends Mode {
 		double angle = robot.drive.getGyroAngle();
 		robot.drive.m_drive.arcadeDrive(robot.drive.curveDrive(1, 1, true, 3), -angle * Constants.GYRO_KP);
 	}
+
 	
 	@Override
 	public void done() {
