@@ -1,20 +1,19 @@
-package org.spartabots.frc2015.mode;
+package org.spartabots.frc2015.profile;
 
 import org.spartabots.frc2015.Ports;
-import org.spartabots.frc2015.Robot;
 import org.spartabots.frc2015.util.Util;
 import org.spartabots.frc2015.util.XboxController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ControlMode extends Mode {
+public class ControlProfile extends Profile {
     public XboxController driveController = new XboxController(Ports.Computer.Usb0) ;
 	double prevLeftX = 0;
 	int i = 0;
 	boolean isBDown = false;
 	
-	public ControlMode(Robot robot) {
-		super(robot, Mode.CONTROL);
+	public ControlProfile() {
+		super(Profile.CONTROL);
 	}
 	
 	@Override

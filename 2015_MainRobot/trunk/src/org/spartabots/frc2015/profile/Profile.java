@@ -1,4 +1,4 @@
-package org.spartabots.frc2015.mode;
+package org.spartabots.frc2015.profile;
 
 import org.spartabots.frc2015.Robot;
 
@@ -22,14 +22,13 @@ import edu.wpi.first.wpilibj.Timer;
  *            /,_/      '`-'
  * 
  */
-public abstract class Mode {
-	Robot robot;
-	private int mode;
+public abstract class Profile {
 	public static final int CONTROL = 0;
 	public static final int AUTONOMOUS = 1;
+	private final int mode;
+	Robot robot = Robot.getInstance();
 	
-	public Mode(Robot robot, int mode) {
-		this.robot = robot;
+	public Profile(int mode) {
 		this.mode = mode;
 	}
 	
