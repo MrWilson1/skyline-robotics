@@ -1,12 +1,11 @@
-package org.spartabots.frc2015.mode;
+package org.spartabots.frc2015.profile;
 
-import org.spartabots.frc2015.Robot;
 import org.spartabots.frc2015.util.Constants;
 
-public class AutoMode extends Mode {
+public class AutoProfile1 extends Profile {
 
-	public AutoMode(Robot robot) {
-		super(robot, Mode.AUTONOMOUS);
+	public AutoProfile1() {
+		super(Profile.AUTONOMOUS);
 	}
 	
 	@Override

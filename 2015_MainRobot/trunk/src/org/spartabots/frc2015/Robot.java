@@ -1,7 +1,12 @@
 package org.spartabots.frc2015;
 
-import org.spartabots.frc2015.mode.AutoMode;
-import org.spartabots.frc2015.mode.ControlMode;
+import org.spartabots.frc2015.profile.AutoProfile1;
+import org.spartabots.frc2015.profile.AutoProfile2;
+import org.spartabots.frc2015.profile.AutoProfile3;
+import org.spartabots.frc2015.profile.AutoProfile4;
+import org.spartabots.frc2015.profile.AutoProfileDoNothing;
+import org.spartabots.frc2015.profile.ControlProfile;
+import org.spartabots.frc2015.profile.Profile;
 import org.spartabots.frc2015.subsystem.Drive;
 import org.spartabots.frc2015.subsystem.Elevator;
 
@@ -17,9 +22,14 @@ public class Robot extends SampleRobot {
     public Drive drive = new Drive();
     public Elevator elevator = new Elevator();
     
-    // Modes
-    public AutoMode autoMode = new AutoMode(this);
-    public ControlMode controlMode = new ControlMode(this);;
+    // Profiles
+    public Profile autoProfile1 = new AutoProfile1();
+    public Profile autoProfile2 = new AutoProfile2();
+    public Profile autoProfile3 = new AutoProfile3();
+    public Profile autoProfile4 = new AutoProfile4();
+    public Profile autoProfile5 = new AutoProfileDoNothing();
+    public Profile controlProfile = new ControlProfile();
+    public static int selectedAutoProfile = 1;
     
     public Robot() {
     	super();
@@ -28,12 +38,27 @@ public class Robot extends SampleRobot {
     
     @Override
     public void autonomous() {
-    	autoMode.start();
+    	switch (selectedAutoProfile) {
+    	case 1:
+        	autoProfile1.start();
+        	break;
+    	case 2:
+        	autoProfile2.start();
+        	break;
+    	case 3:
+        	autoProfile3.start();
+        	break;
+    	case 4:
+        	autoProfile4.start();
+        	break;
+        default:
+        	autoProfile5.start();
+    	}
     }
 
     @Override
     public void operatorControl() {
-    	controlMode.start();
+    	controlProfile.start();
     }
 
     @Override
