@@ -25,7 +25,13 @@ public class ControlProfile extends Profile {
 	public void controlPeriodic() {
         i++;
         SmartDashboard.putNumber("Teleop Alive", i);
+        
         SmartDashboard.putNumber("Gyro Angle", robot.drive.getGyroAngle());
+        SmartDashboard.putNumber("Acceleration X", robot.drive.getAccelX());
+        SmartDashboard.putNumber("Acceleration Y", robot.drive.getAccelY());
+        SmartDashboard.putNumber("Acceleration Z", robot.drive.getAccelZ());
+        SmartDashboard.putNumber("Right Encoder Distance", robot.drive.getRightEncoderDistance());
+        SmartDashboard.putNumber("Left Encoder Distance", robot.drive.getLeftEncoderDistance());
 		
 		double traverseMove = -Util.cutoff(driveController.getLeftTriggerAxis()) + Util.cutoff(driveController.getRightTriggerAxis());
         double leftY = Util.cutoff(driveController.getLeftYAxis());
