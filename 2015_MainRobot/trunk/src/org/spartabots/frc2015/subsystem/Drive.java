@@ -81,11 +81,11 @@ public class Drive extends Subsystem {
     /* ENCODERS
      * -------------------------------------------------------------------------------- */
     public double getLeftEncoderDistance() {
-    	return (leftEc.getRaw() / 250) * Constants.FEET_TO_METERS;
+    	return ((leftEc.getRaw() / 360) * (Constants.WHEEL_CIRCUMFERENCE/(26/15))) * Constants.FEET_TO_METERS;
     }
     
-    public double getRightEncoderDistance() {
-    	return (rightEc.getRaw() / 250) * Constants.FEET_TO_METERS;
+    public double  getRightEncoderDistance() {
+    	return ((leftEc.getRaw() / 360) * (Constants.WHEEL_CIRCUMFERENCE/(26/15))) * Constants.FEET_TO_METERS;
     }
     
     public void resetEncoders() {

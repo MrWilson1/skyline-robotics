@@ -35,8 +35,11 @@ public class Constants {
 	public static final int TRAVERSE_EC_A 		= Ports.RoboRIO.Dio4;
 	public static final int TRAVERSE_EC_B 		= Ports.RoboRIO.Dio5;
 	
-	public static final double LEFT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048; // in meters
-	public static final double RIGHT_EC_TO_DISTANCE_RATIO = 0.1524 * Math.PI; // in meters
+	public static final double WHEEL_DIAMETER = 0.1524;
+	public static final double WHEEL_RADIUS = WHEEL_DIAMETER/2;
+	public static final double WHEEL_CIRCUMFERENCE = 0.1524 * Math.PI;
 	public static final double FEET_TO_METERS = 0.3048;
-	
+
+	public static final double LEFT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
+	public static final double RIGHT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
 }

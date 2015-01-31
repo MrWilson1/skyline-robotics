@@ -16,11 +16,8 @@ public class Util {
     }
     
     /**
-     * <style>
-	 * .eq {font-family: "Times New Roman","Symbola-mq",serif;}
-     * .i {font-style: italic;}
-     * .sym {margin: 0 4px;}
-     * </style>
+     * <style>.eq {font-family: "Times New Roman","Symbola-mq",serif;}
+     * .i {font-style: italic;}.sym {margin: 0 4px;}</style>
      * 
      * Easing function using this piecewise function of two parameterized functions<br/>
      * 
