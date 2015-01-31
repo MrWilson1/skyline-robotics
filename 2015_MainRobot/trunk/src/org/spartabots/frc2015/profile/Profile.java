@@ -26,10 +26,11 @@ public abstract class Profile {
 	public static final int CONTROL = 0;
 	public static final int AUTONOMOUS = 1;
 	private final int mode;
-	Robot robot = Robot.getInstance();
+	Robot robot;
 	
-	public Profile(int mode) {
+	public Profile(int mode, Robot robot) {
 		this.mode = mode;
+		this.robot = robot;
 	}
 	
 	public final void start() {

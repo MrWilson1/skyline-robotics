@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 
 public class Drive extends Subsystem {
@@ -19,16 +20,15 @@ public class Drive extends Subsystem {
     public Talon traverse;
     
     // Encoders
-    Encoder leftEc = new Encoder(Constants.LEFT_EC_A, Constants.LEFT_EC_B, false);
-    Encoder rightEc = new Encoder(Constants.RIGHT_EC_A, Constants.RIGHT_EC_B, false);
-    Encoder traverseEc = new Encoder(Constants.TRAVERSE_EC_A, Constants.TRAVERSE_EC_B, false);
+    public Encoder leftEc = new Encoder(Constants.LEFT_EC_A, Constants.LEFT_EC_B, false, EncodingType.k1X);
+    public Encoder rightEc = new Encoder(Constants.RIGHT_EC_A, Constants.RIGHT_EC_B, false);
+    public Encoder traverseEc = new Encoder(Constants.TRAVERSE_EC_A, Constants.TRAVERSE_EC_B, false);
     
-
     // Built-in accelerometer
-    Accelerometer accel = new BuiltInAccelerometer(Accelerometer.Range.k4G); 
+    public Accelerometer accel = new BuiltInAccelerometer(Accelerometer.Range.k4G); 
     
     // Gyro
-    Gyro gyro;
+    public Gyro gyro;
 	
     // Misc Variables
     double prevMove = 0;
@@ -81,11 +81,11 @@ public class Drive extends Subsystem {
     /* ENCODERS
      * -------------------------------------------------------------------------------- */
     public double getLeftEncoderDistance() {
-    	return leftEc.get() * Constants.LEFT_EC_TO_DISTANCE_RATIO;
+    	return (leftEc.getRaw() / 250) * Constants.FEET_TO_METERS;
     }
     
     public double getRightEncoderDistance() {
-    	return rightEc.get() * Constants.RIGHT_EC_TO_DISTANCE_RATIO;
+    	return (rightEc.getRaw() / 250) * Constants.FEET_TO_METERS;
     }
     
     public void resetEncoders() {

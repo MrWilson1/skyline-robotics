@@ -1,9 +1,11 @@
 package org.spartabots.frc2015.profile;
 
+import org.spartabots.frc2015.Robot;
+
 public class AutoProfileDoNothing extends Profile {
 
-	public AutoProfileDoNothing() {
-		super(Profile.AUTONOMOUS);
+	public AutoProfileDoNothing(Robot robot) {
+		super(Profile.AUTONOMOUS, robot);
 	}
 
 	

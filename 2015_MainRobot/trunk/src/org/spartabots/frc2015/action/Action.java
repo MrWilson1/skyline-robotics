@@ -41,12 +41,7 @@ public abstract class Action {
 		timer.start();
 		init();
 		while (!done && running() && !isTimedOut()) {
-			try {
-				Thread.sleep(5);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				e.printStackTrace();
-			}
+			Timer.delay(0.005);
 		}
 		timer.stop();
 		done();
