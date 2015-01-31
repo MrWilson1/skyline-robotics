@@ -25,7 +25,9 @@ import edu.wpi.first.wpilibj.Timer;
 public abstract class Profile {
 	public static final int CONTROL = 0;
 	public static final int AUTONOMOUS = 1;
+	public static final int TEST = 2;
 	private final int mode;
+	private boolean skipPeriodic = false;
 	Robot robot;
 	
 	public Profile(int mode, Robot robot) {
@@ -33,7 +35,19 @@ public abstract class Profile {
 		this.robot = robot;
 	}
 	
+	public Profile(int mode, Robot robot, boolean skipPeriodic) {
+		this.mode = mode;
+		this.robot = robot;
+		this.skipPeriodic = skipPeriodic;
+	}
+	
 	public final void start() {
+		if (skipPeriodic) {
+			init();
+			done();
+			return;
+		}
+		
 		if (mode == CONTROL) {
 			init();
 			while (robot.isOperatorControl() && robot.isEnabled()) {
@@ -45,6 +59,13 @@ public abstract class Profile {
 			init();
 			while (robot.isAutonomous() && robot.isEnabled()) {
 				this.autoPeriodic();
+				Timer.delay(0.005);
+			}
+			done();
+		} else if (mode == TEST) {
+			init();
+			while (robot.isTest() && robot.isEnabled()) {
+				this.testPeriodic();
 				Timer.delay(0.005);
 			}
 			done();
@@ -63,5 +84,8 @@ public abstract class Profile {
 	}
 
 	public void autoPeriodic() {
+	}
+	
+	public void testPeriodic() {
 	}
 }

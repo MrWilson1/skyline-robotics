@@ -29,20 +29,20 @@ public class Actions {
 		return true;
 	}
 	
-	public static void driveDistance(double meters) {
-		new DriveAction(DriveAction.DISTANCE, meters).run();;
+	public static void driveDist(double meters, double speed) {
+		new DriveAction(DriveAction.DISTANCE, meters, speed).run();;
 	}
 
-	public static void driveTime(double millis) {
-		new DriveAction(DriveAction.TIME, millis).run();
+	public static void driveTime(double millis, double speed) {
+		new DriveAction(DriveAction.TIME, millis, speed).run();
 	}
 
-	public static void rotateDeg(double heading) {
-		new RotateAction(heading, RotateAction.DEGREES).run();
+	public static void rotateDeg(double heading, double speed) {
+		new RotateAction(heading, RotateAction.DEGREES, speed).run();
 	}
 	
-	public static void rotateRad(double heading) {
-		new RotateAction(heading, RotateAction.RADIANS).run();
+	public static void rotateRad(double heading, double speed) {
+		new RotateAction(heading, RotateAction.RADIANS, speed).run();
 	}
 	
 	public static void waitAction(double millis) {

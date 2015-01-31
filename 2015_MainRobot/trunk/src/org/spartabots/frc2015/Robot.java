@@ -19,17 +19,17 @@ public class Robot extends SampleRobot {
     private static Robot instance;
     
     // Subsystems
-    public Drive drive = new Drive();
-    public Elevator elevator = new Elevator();
+    public Drive drive 					= new Drive();
+    public Elevator elevator 			= new Elevator();
     
     // Profiles
-    public Profile autoProfile1 = new AutoProfile1(this);
-    public Profile autoProfile2 = new AutoProfile2(this);
-    public Profile autoProfile3 = new AutoProfile3(this);
-    public Profile autoProfile4 = new AutoProfile4(this);
-    public Profile autoProfile5 = new AutoProfileDoNothing(this);
-    public Profile controlProfile = new ControlProfile(this);
-    public static int selectedAutoProfile = 1;
+    public Profile autoProfile1 		= new AutoProfile1(this);
+    public Profile autoProfile2 		= new AutoProfile2(this);
+    public Profile autoProfile3 		= new AutoProfile3(this);
+    public Profile autoProfile4 		= new AutoProfile4(this);
+    public Profile autoProfile5 		= new AutoProfileDoNothing(this);
+    public Profile controlProfile	 	= new ControlProfile(this);
+    public int selAutoProfile		 	= 1;
     
     public Robot() {
     	super();
@@ -38,7 +38,7 @@ public class Robot extends SampleRobot {
     
     @Override
     public void autonomous() {
-    	switch (selectedAutoProfile) {
+    	switch (selAutoProfile) {
     	case 1:
         	autoProfile1.start();
         	break;

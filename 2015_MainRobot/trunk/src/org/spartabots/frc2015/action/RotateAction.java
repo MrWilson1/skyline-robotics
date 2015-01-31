@@ -6,14 +6,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RotateAction extends Action {
 	double heading;
-	double headingError = 3;
-	boolean headingCorrection = true;
+	double headingError = 10;
 	public static final int DEGREES = 0;
-	public static final int RADIANS = 0;
+	public static final int RADIANS = 1;
 	int unit = 0;
-	double dir = 0;
+	double speed = 0;
 	
-	public RotateAction(double heading, int unit) {
+	public RotateAction(double heading, int unit, double speed) {
+		if (unit != DEGREES || unit != RADIANS || speed > 1 || speed < 0)
+			throw new IllegalArgumentException();
 		this.heading = heading;
 		this.unit = unit;
 	}
@@ -23,21 +24,16 @@ public class RotateAction extends Action {
 		robot.drive.resetGyro();
 		
 		if (unit == DEGREES) {
-			SmartDashboard.putString("Rotate Init", robot.drive.getGyroAngle() + "; " + (heading-headingError) + ", " + (heading+headingError));
 			if (robot.drive.getGyroAngle() < (heading-headingError)) {
-				this.dir = 0.5;
-				SmartDashboard.putString("Rotate Init Dir", "Positive");
+				this.speed = +speed;
 			} else if (robot.drive.getGyroAngle() > (heading+headingError)) {
-				this.dir = -0.5;
-				SmartDashboard.putString("Rotate Init Dir", "Negative");
-			} else {
-				SmartDashboard.putString("Rotate Init Dir", "Not chosen");
+				this.speed = -speed;
 			}
 		} else {
 			if (robot.drive.getGyroAngleRad() < (heading-headingError)) {
-				robot.drive.m_drive.arcadeDrive(0, 0.5);
+				this.speed = +speed;
 			} else if (robot.drive.getGyroAngleRad() > (heading+headingError)) {
-				robot.drive.m_drive.arcadeDrive(0, -0.5);
+				this.speed = -speed;
 			}
 		}
 	}
@@ -51,7 +47,7 @@ public class RotateAction extends Action {
         SmartDashboard.putNumber("Right Encoder Distance", robot.drive.getRightEncoderDistance());
         SmartDashboard.putNumber("Left Encoder Distance", robot.drive.getLeftEncoderDistance());
 
-		robot.drive.m_drive.arcadeDrive(0.1, dir);
+		robot.drive.m_drive.arcadeDrive(0.1, speed);
 		
 		if (unit == DEGREES) {
 			if (Util.isWithinRange(robot.drive.getGyroAngle(), heading, headingError)) {
@@ -69,7 +65,6 @@ public class RotateAction extends Action {
 	public void done() {
 		robot.drive.stop();
 		robot.drive.resetGyro();
-        SmartDashboard.putNumber("Gyro Angle", robot.drive.getGyroAngle());
 	}
 	
 }
