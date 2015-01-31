@@ -1,9 +1,11 @@
 package org.spartabots.frc2015.profile;
 
+import org.spartabots.frc2015.Robot;
+
 public class AutoProfile4 extends Profile {
 
-	public AutoProfile4() {
-		super(Profile.AUTONOMOUS);
+	public AutoProfile4(Robot robot) {
+		super(Profile.AUTONOMOUS, robot);
 	}
 	
 	@Override

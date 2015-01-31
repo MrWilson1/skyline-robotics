@@ -23,12 +23,12 @@ public class Robot extends SampleRobot {
     public Elevator elevator = new Elevator();
     
     // Profiles
-    public Profile autoProfile1 = new AutoProfile1();
-    public Profile autoProfile2 = new AutoProfile2();
-    public Profile autoProfile3 = new AutoProfile3();
-    public Profile autoProfile4 = new AutoProfile4();
-    public Profile autoProfile5 = new AutoProfileDoNothing();
-    public Profile controlProfile = new ControlProfile();
+    public Profile autoProfile1 = new AutoProfile1(this);
+    public Profile autoProfile2 = new AutoProfile2(this);
+    public Profile autoProfile3 = new AutoProfile3(this);
+    public Profile autoProfile4 = new AutoProfile4(this);
+    public Profile autoProfile5 = new AutoProfileDoNothing(this);
+    public Profile controlProfile = new ControlProfile(this);
     public static int selectedAutoProfile = 1;
     
     public Robot() {

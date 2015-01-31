@@ -1,6 +1,7 @@
 package org.spartabots.frc2015.profile;
 
 import org.spartabots.frc2015.Ports;
+import org.spartabots.frc2015.Robot;
 import org.spartabots.frc2015.util.Util;
 import org.spartabots.frc2015.util.XboxController;
 
@@ -12,13 +13,14 @@ public class ControlProfile extends Profile {
 	int i = 0;
 	boolean isBDown = false;
 	
-	public ControlProfile() {
-		super(Profile.CONTROL);
+	public ControlProfile(Robot robot) {
+		super(Profile.CONTROL, robot);
 	}
 	
 	@Override
 	public void init() {
-		
+		robot.drive.resetGyro();
+		robot.drive.resetEncoders();
 	}
 	
 	@Override
@@ -30,6 +32,7 @@ public class ControlProfile extends Profile {
         SmartDashboard.putNumber("Acceleration X", robot.drive.getAccelX());
         SmartDashboard.putNumber("Acceleration Y", robot.drive.getAccelY());
         SmartDashboard.putNumber("Acceleration Z", robot.drive.getAccelZ());
+        SmartDashboard.putNumber("Left Encoder Raw", robot.drive.leftEc.getRaw());
         SmartDashboard.putNumber("Right Encoder Distance", robot.drive.getRightEncoderDistance());
         SmartDashboard.putNumber("Left Encoder Distance", robot.drive.getLeftEncoderDistance());
 		
