@@ -26,10 +26,10 @@ public class Constants {
 	public static final int COMPRESSOR_PORT 	= 0;
 	
 	// ENCODERS
-	public static final int LEFT_EC_A 			= Ports.RoboRIO.Dio0;
-	public static final int LEFT_EC_B 			= Ports.RoboRIO.Dio1;
+	public static final int LEFT_EC_A 			= Ports.RoboRIO.Dio1;
+	public static final int LEFT_EC_B 			= Ports.RoboRIO.Dio2;
 	
-	public static final int RIGHT_EC_A 			= Ports.RoboRIO.Dio2;
+	public static final int RIGHT_EC_A 			= Ports.RoboRIO.Dio0;
 	public static final int RIGHT_EC_B 			= Ports.RoboRIO.Dio3;
 	
 	public static final int TRAVERSE_EC_A 		= Ports.RoboRIO.Dio4;

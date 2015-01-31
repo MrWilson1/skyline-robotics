@@ -3,10 +3,12 @@ package org.spartabots.frc2015.subsystem;
 import org.spartabots.frc2015.util.Constants;
 import org.spartabots.frc2015.util.Util;
 
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 
 public class Drive extends Subsystem {
 	// Constants
@@ -20,6 +22,10 @@ public class Drive extends Subsystem {
     Encoder leftEc = new Encoder(Constants.LEFT_EC_A, Constants.LEFT_EC_B, false);
     Encoder rightEc = new Encoder(Constants.RIGHT_EC_A, Constants.RIGHT_EC_B, false);
     Encoder traverseEc = new Encoder(Constants.TRAVERSE_EC_A, Constants.TRAVERSE_EC_B, false);
+    
+
+    // Built-in accelerometer
+    Accelerometer accel = new BuiltInAccelerometer(Accelerometer.Range.k4G); 
     
     // Gyro
     Gyro gyro;
@@ -42,6 +48,20 @@ public class Drive extends Subsystem {
         traverse = new Talon(Constants.TRAVERSE_PORT);
         
         gyro = new Gyro(Constants.GYRO_PORT); // Dummy port
+    }
+
+    /* ACCELEROMETER
+     * -------------------------------------------------------------------------------- */
+    public double getAccelX() {
+    	return accel.getX();
+    }
+    
+    public double getAccelY() {
+    	return accel.getY();
+    }
+    
+    public double getAccelZ() {
+    	return accel.getZ();
     }
     
     /* GYRO
