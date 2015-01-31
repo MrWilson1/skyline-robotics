@@ -24,6 +24,8 @@ public class Constants {
 	
 	// COMPRESSOR AND SOLENOIDS
 	public static final int COMPRESSOR_PORT 	= 0;
+	public static final int SOLENOID_EGRIP1 	= 0;
+	public static final int SOLENOID_EGRIP2 	= 1;
 	
 	// ENCODERS
 	public static final int LEFT_EC_A 			= Ports.RoboRIO.Dio1;

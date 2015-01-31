@@ -26,6 +26,9 @@ public class Elevator extends Subsystem {
         
         e1 = new Talon(Constants.ELEVATOR1_PORT);
         e2 = new Talon(Constants.ELEVATOR2_PORT);
+	
+        eGrip1 = new Solenoid(Constants.SOLENOID_EGRIP1);
+        eGrip2 = new Solenoid(Constants.SOLENOID_EGRIP2);
 	}
 	
 	public void setE1(double value) {
@@ -39,15 +42,19 @@ public class Elevator extends Subsystem {
 	/* CLAMP
 	 * -------------------------------------------------------------------------------- */
 	
-	public void clampIn(){
-		
+	public void clampE1In(){
+		eGrip1.set(false);
 	}
 	
-	public void clampOut(){
-		
+	public void clampE1Out(){
+		eGrip1.set(true);
 	}
 	
-	public void elevator(double move){
-		
+	public void clampE2In(){
+		eGrip2.set(false);
+	}
+	
+	public void clampE2Out(){
+		eGrip2.set(true);
 	}
 }
