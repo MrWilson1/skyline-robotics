@@ -22,7 +22,12 @@ public class Robot extends SampleRobot {
     public Drive drive 					= new Drive();
     public Elevator elevator 			= new Elevator();
     
-    // Profiles
+    /* Profiles
+     * auto 1 is grab 1 tote and go accross
+     * auto 2 grab 2 totes and go across
+     * auto 3 is grab all 3 totes and go across
+     * auto 4 is grab a bin and go across
+     */
     public Profile autoProfile1 		= new AutoProfile1(this);
     public Profile autoProfile2 		= new AutoProfile2(this);
     public Profile autoProfile3 		= new AutoProfile3(this);
