@@ -14,7 +14,7 @@ public class AutoProfile1 extends Profile {
 		robot.drive.resetGyro();
 		robot.drive.resetEncoders();
 		
-		// grab tote here 
+		robot.elevator.clampE1In();
 		
 		Actions.rotateDeg(90, 0.6); 	// Rotate robot to point to center of field
 		Actions.driveTime(6000, 0.85); 	// Drive into auto zone
