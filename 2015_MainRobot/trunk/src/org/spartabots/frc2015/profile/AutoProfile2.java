@@ -1,6 +1,7 @@
 package org.spartabots.frc2015.profile;
 
 import org.spartabots.frc2015.Robot;
+import org.spartabots.frc2015.action.Actions;
 
 public class AutoProfile2 extends Profile {
 
@@ -12,7 +13,11 @@ public class AutoProfile2 extends Profile {
 	public void init() {
 		robot.drive.resetGyro();
 		robot.drive.resetEncoders();
+		
 		robot.elevator.clampE1In();
+		robot.elevator.clampE2In();
+		Actions.waitAction(25);
+
 		/*traverse robot 2 feet 
 		forward to position
 		traverse robot - 2 feet 
