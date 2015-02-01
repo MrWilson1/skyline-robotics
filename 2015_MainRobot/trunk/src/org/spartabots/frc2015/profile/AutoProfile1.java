@@ -15,6 +15,7 @@ public class AutoProfile1 extends Profile {
 		robot.drive.resetEncoders();
 		
 		robot.elevator.clampE1In();
+		robot.elevator.clampE2In();
 		
 		robot.elevator.setE1(0.85);		//elevator up
 		robot.elevator.setE2(0.85);
@@ -26,6 +27,9 @@ public class AutoProfile1 extends Profile {
 		robot.elevator.setE1(-0.45);	//elevator down
 		robot.elevator.setE2(-0.45);
 		Actions.waitAction(45);
+		
+		robot.elevator.clampE1Out();
+		robot.elevator.clampE2Out();
 	}
 
 	@Override
