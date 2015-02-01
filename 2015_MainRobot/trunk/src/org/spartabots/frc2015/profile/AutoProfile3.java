@@ -14,32 +14,35 @@ public class AutoProfile3 extends Profile {
 		robot.drive.resetGyro();
 		robot.drive.resetEncoders();
 		
-		robot.elevator.clampE1In();
-		robot.elevator.setE1(1);
-		robot.drive.traverse.set(-1);
-		Actions.driveTime(300, 0.85);
-		robot.drive.traverse.set(3);
-		robot.elevator.clampE1Out();
-		robot.elevator.setE1(-1);
+		//tote1
+		robot.elevator.clampE1In();		
+		robot.elevator.setE1(0.85);		//elevator up
+		traversedrive(200, 0.5);
+		Actions.driveTime(1000, 0.85);
+		traversedrive(200, -0.5);
 		
-		robot.elevator.clampE1In();
-		robot.elevator.setE1(1);
-		robot.drive.traverse.set(-1);
+		//tote2
+		robot.elevator.clampE2In();
+		robot.elevator.setE2(0.85);		//elevator up
+		traversedrive(200, 0.5);
 		Actions.driveTime(300, 0.85);
-		robot.drive.traverse.set(1);
-		robot.elevator.clampE1Out();
-		robot.elevator.setE1(-1);
+		traversedrive(200, -0.5);
 		
-		robot.elevator.clampE1In();
-		robot.elevator.setE1(1);
-		robot.drive.traverse.set(-1);
-		Actions.driveTime(300, 0.85);
-		robot.drive.traverse.set(1);
-		robot.elevator.clampE1Out();
-		robot.elevator.setE1(-1);
+		//tote3
+		Actions.driveTime(500,0.5);		//Drive to third tote
+		Actions.rotateDeg(-90, 0.6); 	// Rotate robot 
 		
-		Actions.rotateDeg(-90, 0.6); 	// Rotate robot to point to center of field
-		Actions.driveTime(6000, 0.85); 	// Drive into auto zone
+		Actions.driveTime(2000, 0.85); 	// Drive into auto zone
+		robot.elevator.clampE1Out();	//Let go of totes
+		robot.elevator.clampE2Out();
+		Actions.driveTime(1000, -0.25); //Back up
+	}
+	
+	public static void traversedrive (int time, double power)
+	{
+		robot.drive.traverse.set(power);
+		Actions.waitAction(time);
+		robot.drive.traverse.set(0); 
 	}
 
 	@Override
