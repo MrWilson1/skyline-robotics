@@ -18,20 +18,20 @@ public class AutoProfile3 extends Profile {
 		robot.elevator.clampE1In();		
 		robot.elevator.setE1(0.85);		//elevator up
 		traversedrive(200, 0.5);
-		encoderdrive (5, 0.85);
+		encoderdrive (2.75, 0.85);
 		traversedrive(200, -0.5);
 		
 		//tote2
 		robot.elevator.clampE2In();
 		robot.elevator.setE2(0.85);		//elevator up
 		traversedrive(200, 0.5);
-		encoderdrive (5, 0.85);
+		encoderdrive (1.5, 0.85);
 		traversedrive(200, -0.5);
 		
 		//tote3
-		encoderdrive (3,0.85);
-		Actions.rotateDeg(-90, 0.6); 	// Rotate robot 
-		encoderdrive (2,0.85);
+		encoderdrive (1.25,0.85);
+		Actions.rotateDeg(-90, 0.6); 	// Rotate robot to face auto zone
+		encoderdrive (8.5,0.85);		//Drive to auto zone
 		robot.elevator.clampE1Out();	//Let go of totes
 		robot.elevator.clampE2Out();
 		encoderdrive (-2,-0.85);
