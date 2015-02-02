@@ -18,31 +18,40 @@ public class AutoProfile3 extends Profile {
 		robot.elevator.clampE1In();		
 		robot.elevator.setE1(0.85);		//elevator up
 		traversedrive(200, 0.5);
-		Actions.driveTime(1000, 0.85);
+		encoderdrive (5, 0.85);
 		traversedrive(200, -0.5);
 		
 		//tote2
 		robot.elevator.clampE2In();
 		robot.elevator.setE2(0.85);		//elevator up
 		traversedrive(200, 0.5);
-		Actions.driveTime(300, 0.85);
+		encoderdrive (5, 0.85);
 		traversedrive(200, -0.5);
 		
 		//tote3
-		Actions.driveTime(500,0.5);		//Drive to third tote
+		encoderdrive (3,0.85);
 		Actions.rotateDeg(-90, 0.6); 	// Rotate robot 
-		
-		Actions.driveTime(2000, 0.85); 	// Drive into auto zone
+		encoderdrive (2,0.85);
 		robot.elevator.clampE1Out();	//Let go of totes
 		robot.elevator.clampE2Out();
-		Actions.driveTime(1000, -0.25); //Back up
+		encoderdrive (-2,-0.85);
 	}
 	
-	public static void traversedrive (int time, double power)
+	public  void traversedrive (int time, double power)
 	{
 		robot.drive.traverse.set(power);
 		Actions.waitAction(time);
 		robot.drive.traverse.set(0); 
+	}
+	
+	public  void encoderdrive (double distance, double power) 
+	{
+		robot.drive.resetEncoders(); 
+		
+		while (robot.drive.getLeftEncoderDistance()>=distance)
+		{
+			Actions.driveTime(1, power); //method for driving without time?
+		}
 	}
 
 	@Override
