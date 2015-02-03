@@ -33,6 +33,7 @@ public class Drive extends Subsystem {
     double prevMove = 0;
     double prevRotate = 0;
     boolean speedMode = false;
+	boolean isDrivingStraight = false;
     
     public Drive() {
     	super();
@@ -104,6 +105,18 @@ public class Drive extends Subsystem {
     public void drive(double move, double rotate){
     	double newMove = curveDrive(move, prevMove, true, 2);
     	double newRotate = curveDrive(rotate, prevRotate, false, 3);
+    	
+        if (rotate == 0 && !isDrivingStraight){
+        	isDrivingStraight = true;
+        	setZeroHeading();
+        }
+        else if (rotate != 0)
+        	isDrivingStraight = false;
+        
+        if (isDrivingStraight) {
+        	double angle = getGyroAngle();
+        	newRotate = -angle * Constants.GYRO_KP;
+        }
         m_drive.arcadeDrive(newMove, newRotate);
             
         // Set previous values for next loop
