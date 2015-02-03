@@ -27,6 +27,7 @@ public class Drive extends Subsystem {
     
     // Gyro
     public Gyro gyro;
+    private double gyroOffset = 0;
 	
     // Misc Variables
     double prevMove = 0;
@@ -68,8 +69,12 @@ public class Drive extends Subsystem {
     	gyro.reset();
     }
     
+    public void setZeroHeading() {
+    	this.gyroOffset = -gyro.getAngle();
+    }
+    
     public double getGyroAngle() {
-    	return gyro.getAngle();
+    	return gyro.getAngle() + gyroOffset;
     }
     
     public double getGyroAngleRad() {
@@ -79,12 +84,12 @@ public class Drive extends Subsystem {
     /* ENCODERS
      * -------------------------------------------------------------------------------- */
     public double getLeftEncoderDistance() {
-    	return leftEc.getRaw() * Constants.LEFT_EC_ENCODER_TO_FEET_RATIO;
-    	// (leftEc.getRaw() / 360) * (Constants.WHEEL_CIRCUMFERENCE/(26/15)); // * Constants.FEET_TO_METERS;
+    	return leftEc.getRaw() * Constants.LEFT_EC_ENCODER_TO_FEET_RATIO * Constants.FEET_TO_METERS;
+    	// (leftEc.getRaw() / 360) * (Constants.WHEEL_CIRCUMFERENCE/(26/15)) * Constants.FEET_TO_METERS;
     }
     
     public double  getRightEncoderDistance() {
-    	return rightEc.getRaw() * Constants.RIGHT_EC_ENCODER_TO_FEET_RATIO;
+    	return rightEc.getRaw() * Constants.RIGHT_EC_ENCODER_TO_FEET_RATIO * Constants.FEET_TO_METERS;
     }
     
     public void resetEncoders() {

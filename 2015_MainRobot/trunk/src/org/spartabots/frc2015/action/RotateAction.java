@@ -21,7 +21,7 @@ public class RotateAction extends Action {
 	
 	@Override
 	public void init() {
-		robot.drive.resetGyro();
+		robot.drive.setZeroHeading();
 		
 		if (unit == DEGREES) {
 			if (robot.drive.getGyroAngle() < (heading-headingError)) {
@@ -64,7 +64,7 @@ public class RotateAction extends Action {
 	@Override
 	public void done() {
 		robot.drive.stop();
-		robot.drive.resetGyro();
+		robot.drive.setZeroHeading();
 	}
 	
 }
