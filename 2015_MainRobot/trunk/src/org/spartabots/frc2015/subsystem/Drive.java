@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 
-public class Drive extends Subsystem {
-	// Constants
-	public static final double FEET_TO_ENCODER_RAW_RATIO = 15.0/6082;
+public class Drive extends Subsystem {	
     // Drive Motors
     public RobotDrive m_drive;
     public Drive drive;
@@ -81,11 +79,12 @@ public class Drive extends Subsystem {
     /* ENCODERS
      * -------------------------------------------------------------------------------- */
     public double getLeftEncoderDistance() {
-    	return leftEc.getRaw() * FEET_TO_ENCODER_RAW_RATIO;// * (Constants.WHEEL_CIRCUMFERENCE/(26/15)); // * Constants.FEET_TO_METERS;
+    	return leftEc.getRaw() * Constants.LEFT_EC_ENCODER_TO_FEET_RATIO;
+    	// (leftEc.getRaw() / 360) * (Constants.WHEEL_CIRCUMFERENCE/(26/15)); // * Constants.FEET_TO_METERS;
     }
     
     public double  getRightEncoderDistance() {
-    	return rightEc.getRaw() * FEET_TO_ENCODER_RAW_RATIO;//((leftEc.getRaw() / 360) * (Constants.WHEEL_CIRCUMFERENCE/(26/15))); //* Constants.FEET_TO_METERS;
+    	return rightEc.getRaw() * Constants.RIGHT_EC_ENCODER_TO_FEET_RATIO;
     }
     
     public void resetEncoders() {

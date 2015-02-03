@@ -41,7 +41,10 @@ public class Constants {
 	public static final double WHEEL_RADIUS = WHEEL_DIAMETER/2;
 	public static final double WHEEL_CIRCUMFERENCE = 0.5 * Math.PI;
 	public static final double FEET_TO_METERS = 0.3048;
-
-	public static final double LEFT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
-	public static final double RIGHT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
+	
+	public static final double LEFT_EC_ENCODER_TO_FEET_RATIO = 15.0/6082;
+	public static final double RIGHT_EC_ENCODER_TO_FEET_RATIO = 15.0/6082;
+	
+	//public static final double LEFT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
+	//public static final double RIGHT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
 }
