@@ -3,9 +3,9 @@ package org.spartabots.frc2015.profile;
 import org.spartabots.frc2015.Robot;
 import org.spartabots.frc2015.action.Actions;
 
-public class AutoProfile3 extends Profile {
+public class Auto3Tote extends Profile {
 
-	public AutoProfile3(Robot robot) {
+	public Auto3Tote(Robot robot) {
 		super(Profile.AUTONOMOUS, robot);
 	}
 	

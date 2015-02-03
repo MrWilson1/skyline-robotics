@@ -3,9 +3,9 @@ package org.spartabots.frc2015.profile;
 import org.spartabots.frc2015.Robot;
 import org.spartabots.frc2015.action.Actions;
 
-public class AutoProfile2 extends Profile {
+public class Auto1Bin extends Profile {
 
-	public AutoProfile2(Robot robot) {
+	public Auto1Bin(Robot robot) {
 		super(Profile.AUTONOMOUS, robot);
 	}
 	
@@ -15,18 +15,12 @@ public class AutoProfile2 extends Profile {
 		robot.drive.resetEncoders();
 		
 		robot.elevator.clampE1In();
-		robot.elevator.clampE2In();
-		Actions.waitAction(25);
-
-		/*traverse robot 2 feet 
-		forward to position
-		traverse robot - 2 feet 
-		elevator 1 up 
-		forward a little bit 
-		grip 2 
-		turn 
-		forward
-		*/
+		robot.elevator.setE1(1);
+		Actions.waitAction(100);
+		robot.elevator.setE1(0);
+		Actions.rotateDeg(-90, 0.6); 	// Rotate robot to point to center of field
+		Actions.driveTime(6000, 0.85); 	// Drive into auto zone
+	
 		
 	}
 
