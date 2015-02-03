@@ -12,6 +12,7 @@ public class ControlProfile extends Profile {
 	double prevLeftX = 0;
 	int i = 0;
 	boolean isBDown = false;
+	boolean isDrivingStraight = false;
 	
 	public ControlProfile(Robot robot) {
 		super(Profile.CONTROL, robot);
@@ -39,6 +40,13 @@ public class ControlProfile extends Profile {
 		double traverseMove = -Util.cutoff(driveController.getLeftTriggerAxis()) + Util.cutoff(driveController.getRightTriggerAxis());
         double leftY = Util.cutoff(driveController.getLeftYAxis());
         double rightX = Util.cutoff(driveController.getRightXAxis());
+        
+        if (rightX == 0 && !isDrivingStraight)
+        	isDrivingStraight = true;
+        
+        if (isDrivingStraight) {
+        	// Do gyro stuff here
+        }
         
         // Traversing wheel
         double curve = robot.drive.curveDrive(traverseMove, prevLeftX, true, 3);
