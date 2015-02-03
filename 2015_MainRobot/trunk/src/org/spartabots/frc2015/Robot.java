@@ -5,7 +5,6 @@ import org.spartabots.frc2015.subsystem.Drive;
 import org.spartabots.frc2015.subsystem.Elevator;
 
 import edu.wpi.first.wpilibj.SampleRobot;
-import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 /**
  * Main Robot class for initialization
@@ -22,7 +21,6 @@ public class Robot extends SampleRobot {
     public int selAutoProfile = 6;
     
     // Camera
-    AxisCamera cam;
     
     public Robot() {
     	super();
@@ -38,7 +36,6 @@ public class Robot extends SampleRobot {
         autoProfile5 	= new AutoDoNothing(this); 		// Do nothing
         autoProfile6 	= new AutoDriveCenter(this); 	// Only drive to center
         controlProfile	= new ControlProfile(this); 	// Teleop control
-        //cam 			= new AxisCamera("10.29.76.11");
     }
     
     @Override
