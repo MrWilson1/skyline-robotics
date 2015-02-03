@@ -2,6 +2,7 @@ package org.spartabots.frc2015.profile;
 
 import org.spartabots.frc2015.Ports;
 import org.spartabots.frc2015.Robot;
+import org.spartabots.frc2015.util.Constants;
 import org.spartabots.frc2015.util.Util;
 import org.spartabots.frc2015.util.XboxController;
 
@@ -38,14 +39,17 @@ public class ControlProfile extends Profile {
         SmartDashboard.putNumber("Left Encoder Distance", robot.drive.getLeftEncoderDistance());
 		
 		double traverseMove = -Util.cutoff(driveController.getLeftTriggerAxis()) + Util.cutoff(driveController.getRightTriggerAxis());
-        double leftY = Util.cutoff(driveController.getLeftYAxis());
+        double leftY = -Util.cutoff(driveController.getLeftYAxis());
         double rightX = Util.cutoff(driveController.getRightXAxis());
         
         if (rightX == 0 && !isDrivingStraight)
         	isDrivingStraight = true;
+        else if (rightX != 0)
+        	isDrivingStraight = false;
         
         if (isDrivingStraight) {
-        	// Do gyro stuff here
+        	double angle = robot.drive.getGyroAngle();
+        	robot.drive.drive(1, -angle * Constants.GYRO_KP);
         }
         
         // Traversing wheel

@@ -158,4 +158,9 @@ public class Drive extends Subsystem {
 	public void stop() {
 		m_drive.arcadeDrive(0, 0);
 	}
+	
+	public void autoDriveForward(){
+    	double angle = getGyroAngle();
+    	drive(1, -angle * Constants.GYRO_KP);
+	}
 }
