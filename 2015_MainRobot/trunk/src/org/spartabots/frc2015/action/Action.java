@@ -1,6 +1,7 @@
 package org.spartabots.frc2015.action;
 
 import org.spartabots.frc2015.Robot;
+import org.spartabots.frc2015.profile.Profile;
 
 import edu.wpi.first.wpilibj.Timer;
 
@@ -38,6 +39,7 @@ public abstract class Action {
 	}
 	
 	protected void run(ActionThread actionThread) {
+		Profile.getCurrent().actionRegister(this);
 		timer.start();
 		init();
 		while (!done && running() && !isTimedOut()) {
@@ -48,6 +50,7 @@ public abstract class Action {
 		this.robot = null;
 		if (actionThread != null)
 			actionThread.actionDone();
+		Profile.getCurrent().actionDone(this);
 	}
 	
 	public boolean isDone() {
