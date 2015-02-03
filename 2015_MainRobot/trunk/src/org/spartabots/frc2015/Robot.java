@@ -5,6 +5,7 @@ import org.spartabots.frc2015.subsystem.Drive;
 import org.spartabots.frc2015.subsystem.Elevator;
 
 import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 /**
  * Main Robot class for initialization
@@ -16,24 +17,28 @@ public class Robot extends SampleRobot {
     public Drive drive 					= new Drive();
     public Elevator elevator 			= new Elevator();
     
-    /* Profiles
-     * auto 1: grab 1 tote and go accross
-     * auto 2: grab 2 totes and go across
-     * auto 3: grab 3 totes and go across
-     * auto 4: grab 1 bin and go across
-     */
-    public Profile autoProfile1 		= new Auto1Tote(this);
-    public Profile autoProfile2 		= new Auto2Tote(this);
-    public Profile autoProfile3 		= new Auto3Tote(this);
-    public Profile autoProfile4 		= new Auto1Bin(this);
-    public Profile autoProfile5 		= new AutoDoNothing(this);
-    public Profile autoProfile6 		= new AutoDriveCenter(this);
-    public Profile controlProfile	 	= new ControlProfile(this);
-    public int selAutoProfile		 	= 1;
+    // Profiles
+    public Profile autoProfile1, autoProfile2, autoProfile3, autoProfile4, autoProfile5, autoProfile6, controlProfile;
+    public int selAutoProfile = 1;
+    
+    // Camera
+    AxisCamera cam;
     
     public Robot() {
     	super();
     	instance = this;
+    }
+    
+    @Override
+    public void robotInit() {
+    	autoProfile1 	= new Auto1Tote(this); 			// Grab 1 tote, go across
+    	autoProfile2 	= new Auto2Tote(this); 			// Grab 2 tote, go across
+        autoProfile3 	= new Auto3Tote(this); 			// Grab 3 tote, go across
+        autoProfile4 	= new Auto1Bin(this);  			// Grab 1 bin, go across
+        autoProfile5 	= new AutoDoNothing(this); 		// Do nothing
+        autoProfile6 	= new AutoDriveCenter(this); 	// Only drive to center
+        controlProfile	= new ControlProfile(this); 	// Teleop control
+        //cam 			= new AxisCamera("10.29.76.11");
     }
     
     @Override
