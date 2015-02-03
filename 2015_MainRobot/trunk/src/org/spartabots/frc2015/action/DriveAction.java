@@ -1,5 +1,7 @@
 package org.spartabots.frc2015.action;
 
+import org.spartabots.frc2015.util.Constants;
+
 /**
  * Drives for a certain distance or for a certain time.
  */
@@ -38,7 +40,8 @@ public class DriveAction extends Action {
 
 	@Override
 	public boolean running() {
-		robot.drive.drive(speed, 0);
+		double angle = robot.drive.getGyroAngle();
+		robot.drive.drive(speed, -angle * Constants.GYRO_KP);
 		if (this.type == DISTANCE) {
 			if (robot.drive.getLeftEncoderDistance() >= (dist-error)) {
 				return false;
