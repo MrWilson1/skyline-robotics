@@ -16,10 +16,10 @@ public class Robot extends SampleRobot {
     // Subsystems
     public Drive drive 					= new Drive();
     public Elevator elevator 			= new Elevator();
-    
+
     // Profiles
     public Profile autoProfile1, autoProfile2, autoProfile3, autoProfile4, autoProfile5, autoProfile6, controlProfile;
-    public int selAutoProfile = 1;
+    public int selAutoProfile = 6;
     
     // Camera
     AxisCamera cam;
@@ -56,8 +56,14 @@ public class Robot extends SampleRobot {
     	case 4:
         	autoProfile4.start();
         	break;
+    	case 5:
+    		autoProfile5.start();
+    		break;
+    	case 6:
+    		autoProfile6.start();
+    		break;
         default:
-        	autoProfile5.start();
+        	autoProfile6.start();
     	}
     }
 
