@@ -12,6 +12,7 @@ public class DriveAction extends Action {
 	double dist;
 	double speed = 0.7;
 	double error = 0.08;
+	int direction = 0; // 0 - forward, 1 = backward
 	
 	/**
 	 * Drive a certain distance or for a certain time.
@@ -22,14 +23,19 @@ public class DriveAction extends Action {
 	 */
 	public DriveAction(int type, double value, double speed) {
 		this.type = type;
-		if (value < 0 || speed < 0)
+		if (speed < 0)
 			throw new IllegalArgumentException();
-		if (this.type == TIME)
+		if (this.type == TIME) {
+			if (value < 0) throw new IllegalArgumentException();
 			this.setTimeout(value);
-		else if (this.type == DISTANCE)
+		} else if (this.type == DISTANCE) {
+			if (value < 0)
+				this.direction = 1;
+			if (value == 0) cancel();
 			this.dist = value;
-		else
+		} else {
 			throw new IllegalArgumentException();
+		}
 		this.speed = speed;
 	}
 	
@@ -40,16 +46,32 @@ public class DriveAction extends Action {
 
 	@Override
 	public boolean running() {
-		double angle = robot.drive.getGyroAngle();
-		robot.drive.drive(speed, -angle * Constants.GYRO_KP);
+		drive();
 		if (this.type == DISTANCE) {
-			if (robot.drive.getLeftEncoderDistance() >= (dist-error)) {
-				return false;
+			if (direction == 0) { // forward, positive encoder distance
+				if (getEncoderDistance() >= (dist-error)) {
+					return false;
+				}
+			} else { // backward, negative encoder distance
+				if (getEncoderDistance() <= (dist+error)) {
+					return false;
+				}
 			}
 		}
 		return true;
 	}
+	
+	// For Actions that may extend this DriveAction, so running() does not have to be overriden
+	protected void drive() {
+		double angle = robot.drive.getGyroAngle();
+		robot.drive.drive(speed, -angle * Constants.GYRO_KP);
+	}
 
+	// For Actions that may extend this DriveAction, so running() does not have to be overriden
+	protected double getEncoderDistance() {
+		return robot.drive.getLeftEncoderDistance();
+	}
+	
 	@Override
 	public void done() {
 		robot.drive.stop();

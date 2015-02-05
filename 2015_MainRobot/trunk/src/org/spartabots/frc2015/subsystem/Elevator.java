@@ -9,13 +9,11 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class Elevator extends Subsystem {
 	// Elevator Motors
-    public Talon e1;
-    public Talon e2;
+    public Talon eMotor;
     
     // Pistons
     public Compressor compressor;
-    public Solenoid eGrip1;
-    public Solenoid eGrip2;
+    public Solenoid gripSolenoid;
     
     public Elevator() {
     	super();
@@ -24,37 +22,24 @@ public class Elevator extends Subsystem {
 	protected void init() {
         compressor = new Compressor(Constants.COMPRESSOR_PORT);
         
-        e1 = new Talon(Constants.ELEVATOR1_PORT);
-        e2 = new Talon(Constants.ELEVATOR2_PORT);
+        eMotor = new Talon(Constants.ELEVATOR1_PORT);
+        eMotor = new Talon(Constants.ELEVATOR2_PORT);
 	
-        eGrip1 = new Solenoid(Constants.SOLENOID_EGRIP1);
-        eGrip2 = new Solenoid(Constants.SOLENOID_EGRIP2);
+        gripSolenoid = new Solenoid(Constants.SOLENOID_EGRIP);
 	}
 	
-	public void setE1(double value) {
-		e1.set(Util.ease(value, Constants.REGULAR_EASE_CONSTANT));
-	}
-	
-	public void setE2(double value) {
-		e2.set(Util.ease(value, Constants.REGULAR_EASE_CONSTANT));
+	public void setElevator(double value) {
+		eMotor.set(Util.ease(value, Constants.REGULAR_EASE_CONSTANT));
 	}
 	
 	/* CLAMP
 	 * -------------------------------------------------------------------------------- */
 	
-	public void clampE1In(){
-		eGrip1.set(false);
+	public void clampIn(){
+		gripSolenoid.set(false);
 	}
 	
-	public void clampE1Out(){
-		eGrip1.set(true);
-	}
-	
-	public void clampE2In(){
-		eGrip2.set(false);
-	}
-	
-	public void clampE2Out(){
-		eGrip2.set(true);
+	public void clampOut(){
+		gripSolenoid.set(true);
 	}
 }

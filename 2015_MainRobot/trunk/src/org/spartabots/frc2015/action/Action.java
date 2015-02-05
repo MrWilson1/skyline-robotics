@@ -38,12 +38,14 @@ public abstract class Action {
 		run(null);
 	}
 	
-	protected void run(ActionThread actionThread) {
+	public void run(ActionThread actionThread) {
 		Profile.getCurrent().actionRegister(this);
 		timer.start();
 		init();
-		while (!done && running() && !isTimedOut()) {
-			Timer.delay(0.005);
+		if (!done) {
+			while (!done && running() && !isTimedOut()) {
+				Timer.delay(0.005);
+			}
 		}
 		timer.stop();
 		done();
@@ -57,8 +59,17 @@ public abstract class Action {
 		return done;
 	}
 	
-	private boolean isTimedOut() {
+	public boolean isTimedOut() {
 		return timer.get() > timeout;
+	}
+	
+	/**
+	 * Get time the action was running
+	 * 
+	 * @return time in seconds
+	 */
+	public double getTime() {
+		return timer.get();
 	}
 	
 	public void setTimeout(double milliseconds) {
