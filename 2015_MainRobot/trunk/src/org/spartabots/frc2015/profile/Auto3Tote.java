@@ -2,11 +2,14 @@ package org.spartabots.frc2015.profile;
 
 import org.spartabots.frc2015.Robot;
 import org.spartabots.frc2015.action.Actions;
+import org.spartabots.frc2015.util.Util;
 
+// TODO ESTIMATED VALUES ARE CURRENTLY BEING USED, change values to actual
+// TODO move these actions into series and parallel and put them into functions that all 4 auto modes can use
 public class Auto3Tote extends Profile {
 
 	public Auto3Tote(Robot robot) {
-		super(Profile.AUTONOMOUS, robot);
+		super(Profile.AUTONOMOUS, robot, true);
 	}
 	
 	@Override
@@ -14,44 +17,35 @@ public class Auto3Tote extends Profile {
 		robot.drive.resetGyro();
 		robot.drive.resetEncoders();
 		
-		//tote1
-		robot.elevator.clampE1In();		
-		robot.elevator.setE1(0.85);		//elevator up
-		traversedrive(200, 0.5);
-		encoderdrive (2.75, 0.85);
-		traversedrive(200, -0.5);
+		// Tote 1
+		Actions.clampIn(); // grab first tote
+		Actions.elevator(0.85, 2000); // bring elevator up so that tote can be dropped over another
+		Actions.traverseTime(200, 0.5);
+		Actions.driveDist(Util.toMeters(2.75), 0.85);
+		Actions.traverseTime(200, -0.5);
 		
-		//tote2
-		robot.elevator.clampE2In();
-		robot.elevator.setE2(0.85);		//elevator up
-		traversedrive(200, 0.5);
-		encoderdrive (1.5, 0.85);
-		traversedrive(200, -0.5);
+		// Tote 2
+		Actions.elevator(-0.75, 500); // bring elevator down a bit
+		Actions.clampOut(); // drop tote over other tote
+		Actions.elevator(-0.85, 2000); // bring elevator down to bottom most tote
+		Actions.clampIn(); // pick up both totes (which should now be stacked)
+		Actions.traverseTime(200, 0.5);
+		Actions.driveDist(Util.toMeters(1.5), 0.85);
+		Actions.traverseTime(200, -0.5);
 		
-		//tote3
-		encoderdrive (1.25,0.85);
-		Actions.rotateDeg(-90, 0.6); 	// Rotate robot to face auto zone
-		encoderdrive (8.5,0.85);		//Drive to auto zone
-		robot.elevator.clampE1Out();	//Let go of totes
-		robot.elevator.clampE2Out();
-		encoderdrive (-2,-0.85);
-	}
-	
-	public  void traversedrive (int time, double power)
-	{
-		robot.drive.traverse.set(power);
-		Actions.waitAction(time);
-		robot.drive.traverse.set(0); 
-	}
-	
-	public  void encoderdrive (double distance, double power) 
-	{
-		robot.drive.resetEncoders(); 
+		Actions.elevator(0.85, 2500); // bring elevator back up
 		
-		while (robot.drive.getLeftEncoderDistance()>=distance)
-		{
-			Actions.driveTime(1, power); //method for driving without time?
-		}
+		// Tote 3
+		Actions.elevator(-0.75, 500); // bring elevator down a bit
+		Actions.clampOut(); // drop tote over other tote
+		Actions.elevator(-0.85, 2000); // bring elevator down to bottom most tote
+		Actions.clampIn(); // pick up all three totes
+		
+		// Drive to auto zone
+		Actions.rotateDeg(-90, 0.6); // Rotate robot to face auto zone
+		Actions.driveDist(Util.toMeters(8.5) ,0.85); // Drive to auto zone
+		Actions.clampOut(); // Let go of all totes
+		Actions.driveDist(Util.toMeters(-2), -0.85);
 	}
 
 	@Override
