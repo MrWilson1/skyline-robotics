@@ -18,8 +18,8 @@ public class DriveAction extends Action {
 	 * Drive a certain distance or for a certain time.
 	 * 
 	 * @param type DriveAction.DISTANCE or DriveAction.TIME
-	 * @param value Distance in meters or time in milliseconds
-	 * @param speed How fast to move (0 to 1)
+	 * @param value Distance in meters or time in milliseconds (negative drives opposite direction)
+	 * @param speed How fast to move from 0 to 1 (non directional)
 	 */
 	public DriveAction(int type, double value, double speed) {
 		this.type = type;
@@ -29,8 +29,10 @@ public class DriveAction extends Action {
 			if (value < 0) throw new IllegalArgumentException();
 			this.setTimeout(value);
 		} else if (this.type == DISTANCE) {
-			if (value < 0)
+			if (value < 0) {
 				this.direction = 1;
+				speed = -speed;
+			}
 			if (value == 0) cancel();
 			this.dist = value;
 		} else {

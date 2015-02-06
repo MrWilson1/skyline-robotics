@@ -3,8 +3,6 @@ package org.spartabots.frc2015.action;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.spartabots.frc2015.profile.Profile;
-
 import edu.wpi.first.wpilibj.Timer;
 
 public class SeriesAction extends Action {
@@ -27,26 +25,20 @@ public class SeriesAction extends Action {
 			return;
 		}
 		
-		Profile.getCurrent().actionRegister(this);
 		init();
 		
-		while (queue.isEmpty()) {
+		while (queue.isEmpty() && !done) {
 			Action current = queue.remove();
 			
-			if (current instanceof ParallelAction) {
-				current.run(actionThread);
-			} else if (current instanceof SeriesAction) {
+			if (current instanceof ParallelAction || current instanceof SeriesAction) {
 				current.run();
-				while (!current.done && current.running()) {
-					Timer.delay(0.005);
-				}
 			} else {
 				this.setTimeout(current.timeout);
 				timer.start();
 				
 				current.init();
 				if (!current.done) {
-					while (!current.done && current.running() && !isTimedOut()) {
+					while (!this.done && !current.done && current.running() && !isTimedOut()) {
 						Timer.delay(0.005);
 					}
 				}
@@ -54,15 +46,12 @@ public class SeriesAction extends Action {
 			}
 			
 			current.done();
-			current.robot = null;
 		}
 		
 		this.done = true;
 		done();
-		this.robot = null;
 		if (actionThread != null)
 			actionThread.actionDone();
-		Profile.getCurrent().actionDone(this);
 	}
 	
 	@Override

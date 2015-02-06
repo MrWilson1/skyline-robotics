@@ -14,6 +14,7 @@ public class Elevator extends Subsystem {
     // Pistons
     public Compressor compressor;
     public Solenoid gripSolenoid;
+    boolean elevatorMoving = false;
     
     public Elevator() {
     	super();
@@ -29,6 +30,10 @@ public class Elevator extends Subsystem {
 	}
 	
 	public void setElevator(double value) {
+		if (value != 0)
+			elevatorMoving = true;
+		else
+			elevatorMoving = false;
 		eMotor.set(Util.ease(value, Constants.REGULAR_EASE_CONSTANT));
 	}
 	
