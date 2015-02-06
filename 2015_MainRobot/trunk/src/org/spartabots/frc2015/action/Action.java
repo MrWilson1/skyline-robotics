@@ -1,7 +1,6 @@
 package org.spartabots.frc2015.action;
 
 import org.spartabots.frc2015.Robot;
-import org.spartabots.frc2015.profile.Profile;
 
 import edu.wpi.first.wpilibj.Timer;
 
@@ -13,11 +12,11 @@ import edu.wpi.first.wpilibj.Timer;
  * stop running by the isRunning method. Once the action is complete, the done method
  * will be called stop and cleanup whatever needs to be stopped or cleaned up.
  */
-public abstract class Action {
+public abstract class Action implements Runnable {
 	Timer timer = new Timer();
 	boolean done = false;
 	double timeout = 100; // in seconds
-	Robot robot = Robot.getInstance();
+	static Robot robot = Robot.getInstance();
 	
 	public abstract void init();
 	/**
@@ -39,20 +38,19 @@ public abstract class Action {
 	}
 	
 	public void run(ActionThread actionThread) {
-		Profile.getCurrent().actionRegister(this);
-		timer.start();
+		if (timeout >= 0)
+			timer.start();
 		init();
 		if (!done) {
 			while (!done && running() && !isTimedOut()) {
 				Timer.delay(0.005);
 			}
 		}
-		timer.stop();
+		if (timeout >= 0)
+			timer.stop();
 		done();
-		this.robot = null;
 		if (actionThread != null)
 			actionThread.actionDone();
-		Profile.getCurrent().actionDone(this);
 	}
 	
 	public boolean isDone() {
@@ -60,6 +58,8 @@ public abstract class Action {
 	}
 	
 	public boolean isTimedOut() {
+		if (timeout < 0)
+			return false;
 		return timer.get() > timeout;
 	}
 	
@@ -73,6 +73,9 @@ public abstract class Action {
 	}
 	
 	public void setTimeout(double milliseconds) {
-		this.timeout = (milliseconds / 1000.0D);
+		if (milliseconds < 0)
+			this.timeout = -1;
+		else
+			this.timeout = (milliseconds / 1000.0D);
 	}
 }

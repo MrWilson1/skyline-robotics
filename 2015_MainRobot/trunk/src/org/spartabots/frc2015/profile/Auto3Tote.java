@@ -1,7 +1,7 @@
 package org.spartabots.frc2015.profile;
 
 import org.spartabots.frc2015.Robot;
-import org.spartabots.frc2015.action.Actions;
+import org.spartabots.frc2015.action.*;
 import org.spartabots.frc2015.util.Util;
 
 // TODO ESTIMATED VALUES ARE CURRENTLY BEING USED, change values to actual
@@ -18,34 +18,38 @@ public class Auto3Tote extends Profile {
 		robot.drive.resetEncoders();
 		
 		// Tote 1
-		Actions.clampIn(); // grab first tote
-		Actions.elevator(0.85, 2000); // bring elevator up so that tote can be dropped over another
-		Actions.traverseTime(200, 0.5);
-		Actions.driveDist(Util.toMeters(2.75), 0.85);
-		Actions.traverseTime(200, -0.5);
+		SeriesAction series = new SeriesAction();
+		series.add(Actions.clampIn());
+		series.add(new ParallelAction(Actions.elevatorTime(0.85, 2000)));
+		series.add(Actions.traverseTime(200, 0.5));
+		series.add(Actions.driveDist(Util.toMeters(2.75), 0.85));
+		series.add(Actions.traverseTime(-200, 0.5));
 		
 		// Tote 2
-		Actions.elevator(-0.75, 500); // bring elevator down a bit
-		Actions.clampOut(); // drop tote over other tote
-		Actions.elevator(-0.85, 2000); // bring elevator down to bottom most tote
-		Actions.clampIn(); // pick up both totes (which should now be stacked)
-		Actions.traverseTime(200, 0.5);
-		Actions.driveDist(Util.toMeters(1.5), 0.85);
-		Actions.traverseTime(200, -0.5);
-		
-		Actions.elevator(0.85, 2500); // bring elevator back up
+		series.add(Actions.elevatorTime(-0.75, 500)); // bring elevatorTime down a bit
+		series.add(Actions.clampOut()); // drop tote over other tote
+		series.add(Actions.elevatorTime(-0.85, 2000)); // bring elevatorTime down to bottom most tote
+		series.add(Actions.clampIn()); // pick up both totes (which should now be stacked)
+		series.add(new ParallelAction(Actions.elevatorTime(0.85, 2500))); // bring elevatorTime back up
+		series.add(Actions.traverseTime(200, 0.5));
+		series.add(Actions.driveDist(Util.toMeters(1.5), 0.85));
+		series.add(Actions.traverseTime(-200, 0.5));
 		
 		// Tote 3
-		Actions.elevator(-0.75, 500); // bring elevator down a bit
-		Actions.clampOut(); // drop tote over other tote
-		Actions.elevator(-0.85, 2000); // bring elevator down to bottom most tote
-		Actions.clampIn(); // pick up all three totes
+		series.add(Actions.elevatorTime(-0.75, 500)); // bring elevatorTime down a bit
+		series.add(Actions.clampOut()); // drop tote over other tote
+		series.add(Actions.elevatorTime(-0.85, 2000)); // bring elevatorTime down to bottom most tote
+		series.add(Actions.clampIn()); // pick up all three totes
+		series.add(new ParallelAction(Actions.elevatorTime(0.85, 2500))); // bring elevatorTime back up
 		
 		// Drive to auto zone
-		Actions.rotateDeg(-90, 0.6); // Rotate robot to face auto zone
-		Actions.driveDist(Util.toMeters(8.5) ,0.85); // Drive to auto zone
-		Actions.clampOut(); // Let go of all totes
-		Actions.driveDist(Util.toMeters(-2), -0.85);
+		series.add(Actions.rotateDeg(90, 0.6)); // Rotate robot to face auto zone
+		series.add(new ParallelAction(Actions.elevatorTime(-0.85, 2500))); // bring elevatorTime down to right above floor
+		series.add(Actions.driveDist(Util.toMeters(8.5) ,0.85)); // Drive to auto zone
+		series.add(Actions.clampOut()); // Let go of all totes
+		series.add(Actions.driveDist(Util.toMeters(-2), 0.85)); // Back off
+		
+		series.run();
 	}
 
 	@Override

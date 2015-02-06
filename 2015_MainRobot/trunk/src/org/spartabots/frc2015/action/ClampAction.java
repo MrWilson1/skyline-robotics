@@ -13,6 +13,10 @@ public class ClampAction extends Action {
 	
 	@Override
 	public void init() {
+		if (state == IN)
+			robot.elevator.clampIn();
+		else
+			robot.elevator.clampOut();
 		done();
 	}
 

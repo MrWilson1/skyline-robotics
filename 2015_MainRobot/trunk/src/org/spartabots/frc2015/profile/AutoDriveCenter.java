@@ -7,13 +7,13 @@ import org.spartabots.frc2015.util.Util;
 public class AutoDriveCenter extends Profile {
 
 	public AutoDriveCenter(Robot robot) {
-		super(Profile.AUTONOMOUS, robot);
+		super(Profile.AUTONOMOUS, robot, true);
 	}
 
 	
 	@Override
 	public void init() {
-		Actions.driveDist(Util.toMeters(9), 0.85);
+		Actions.driveDist(Util.toMeters(9), 0.85).run();
 	}
 
 	@Override

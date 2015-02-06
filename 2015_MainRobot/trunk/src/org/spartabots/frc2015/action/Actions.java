@@ -2,43 +2,47 @@ package org.spartabots.frc2015.action;
 
 public class Actions {
 	
-	public static void driveDist(double meters, double speed) {
-		new DriveAction(DriveAction.DISTANCE, meters, speed).run();
+	public static DriveAction driveDist(double meters, double speed) {
+		return new DriveAction(DriveAction.DISTANCE, meters, speed);
 	}
 
-	public static void driveTime(double millis, double speed) {
-		new DriveAction(DriveAction.TIME, millis, speed).run();
+	public static DriveAction driveTime(double millis, double speed) {
+		return new DriveAction(DriveAction.TIME, millis, speed);
 	}
 
-	public static void travserseDist(double meters, double speed) {
-		new TraverseAction(TraverseAction.DISTANCE, meters, speed).run();
+	public static TraverseAction travserseDist(double meters, double speed) {
+		return new TraverseAction(TraverseAction.DISTANCE, meters, speed);
 	}
 
-	public static void traverseTime(double millis, double speed) {
-		new TraverseAction(TraverseAction.TIME, millis, speed).run();
+	public static TraverseAction traverseTime(double millis, double speed) {
+		return new TraverseAction(TraverseAction.TIME, millis, speed);
 	}
 
-	public static void rotateDeg(double heading, double speed) {
-		new RotateAction(heading, RotateAction.DEGREES, speed).run();
+	public static RotateAction rotateDeg(double heading, double speed) {
+		return new RotateAction(heading, RotateAction.DEGREES, speed);
 	}
 	
-	public static void rotateRad(double heading, double speed) {
-		new RotateAction(heading, RotateAction.RADIANS, speed).run();
+	public static RotateAction rotateRad(double heading, double speed) {
+		return new RotateAction(heading, RotateAction.RADIANS, speed);
 	}
 	
-	public static void elevator(double power, double timeMillis) {
-		new ElevatorAction(power, timeMillis).run();
+	public static ElevatorAction elevatorTime(double power, double timeMillis) {
+		return new ElevatorAction(power, timeMillis);
 	}
 	
-	public static void waitAction(double millis) {
-		new WaitAction(millis).run();
+	public static ElevatorAction elevator(double power) {
+		return new ElevatorAction(power, -1);
+	}
+	
+	public static WaitAction waitAction(double millis) {
+		return new WaitAction(millis);
 	}
 
-	public static void clampIn() {
-		new ClampAction(ClampAction.IN).run();
+	public static ClampAction clampIn() {
+		return new ClampAction(ClampAction.IN);
 	}
 
-	public static void clampOut() {
-		new ClampAction(ClampAction.OUT).run();
+	public static ClampAction clampOut() {
+		return new ClampAction(ClampAction.OUT);
 	}
 }
