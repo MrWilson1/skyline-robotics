@@ -62,7 +62,7 @@ public class Robot extends SampleRobot {
     @Override
     public void operatorControl() {
     	controlProfile.start();
-    }8 
+    }
 
     @Override
     public void test() {
