@@ -13,12 +13,17 @@ import edu.wpi.first.wpilibj.SampleRobot;
  */
 public class Robot extends SampleRobot {
     private static Robot instance;
-    public int selectedAutoProfile = 5;
+    public int selectedAutoAction = 5;
     public XboxController driveController;
     
     // Subsystems
     public Drive drive;
     public Elevator elevator;
+    
+    // Profiles
+    ControlProfile controlProfile;
+    AutoProfile autoProfile;
+    TestProfile testProfile;
     
     // Current profile
     public Profile profile;
@@ -37,25 +42,29 @@ public class Robot extends SampleRobot {
     	this.elevator = new Elevator();
     	this.driveController = new XboxController(Ports.Computer.Usb0);
     	
+    	this.controlProfile = new ControlProfile();
+    	this.autoProfile = new AutoProfile();
+    	this.testProfile = new TestProfile();
+    	
     	server = CameraServer.getInstance();
         server.setQuality(50);
-        //the camera name (ex "cam0") can be found through the roborio web interface
         server.startAutomaticCapture("cam0");
     }
     
     @Override
     public void autonomous() {
-    	new AutoProfile(this, selectedAutoProfile).start();;
+    	autoProfile.setSelectedAction(selectedAutoAction);
+    	autoProfile.start();;
     }
 
     @Override
     public void operatorControl() {
-    	new ControlProfile(this).start();
+    	controlProfile.start();
     }
 
     @Override
     public void test() {
-    	new TestProfile(this).start();
+    	testProfile.start();
     }
     
     public static Robot getInstance() {

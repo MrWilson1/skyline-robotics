@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Timer;
 public abstract class Action {
 	protected Timer timer = new Timer();
 	protected boolean done = false;
+	protected boolean doneFinal = false;
 	protected static Robot robot = Robot.getInstance();
 	protected boolean init = false;
 	protected double timeout = 100; // in seconds
@@ -31,6 +32,9 @@ public abstract class Action {
 	public abstract void done();
 	
 	public boolean running() {
+		if (doneFinal)
+			return false;
+		
 		if (!init) {
 			init = true;
 			timer.start();
@@ -38,16 +42,18 @@ public abstract class Action {
 		}
 		
 		if (done || !runPeriodic() || isTimedOut()) {
-			timer.stop();
-			done();
+			cancel();
 			return false;
 		}
 		return true;
 		
 	}
-	
+
 	public void cancel() {
+		timer.stop();
 		done = true;
+		done();
+		doneFinal = true;
 	}
 	
 	public boolean isDone() {
