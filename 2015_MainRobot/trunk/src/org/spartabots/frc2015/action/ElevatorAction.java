@@ -20,7 +20,7 @@ public class ElevatorAction extends Action {
 	public void init() {
 		robot.elevator.setElevator(power);
 		if (timeLimit)
-			done();
+			cancel();
 	}
 
 	@Override

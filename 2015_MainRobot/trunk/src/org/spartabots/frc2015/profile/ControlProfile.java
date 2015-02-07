@@ -1,14 +1,14 @@
 package org.spartabots.frc2015.profile;
 
-import org.spartabots.frc2015.Robot;
 import org.spartabots.frc2015.action.DriveWithJoystickAction;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ControlProfile extends Profile {
+	DriveWithJoystickAction mainAction = new DriveWithJoystickAction();
 	
-	public ControlProfile(Robot robot) {
-		super(Profile.CONTROL, robot);
+	public ControlProfile() {
+		super(Profile.CONTROL);
 	}
 	
 	@Override
@@ -16,7 +16,7 @@ public class ControlProfile extends Profile {
 		robot.drive.resetGyro();
 		robot.drive.resetEncoders();
 		
-		add(new DriveWithJoystickAction());
+		add(mainAction);
 	}
 	
 	@Override

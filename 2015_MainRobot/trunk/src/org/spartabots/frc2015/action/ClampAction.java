@@ -17,7 +17,7 @@ public class ClampAction extends Action {
 			robot.elevator.clampIn();
 		else
 			robot.elevator.clampOut();
-		done();
+		cancel();
 	}
 
 	@Override

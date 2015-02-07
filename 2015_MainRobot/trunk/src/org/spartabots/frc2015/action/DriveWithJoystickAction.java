@@ -1,5 +1,6 @@
 package org.spartabots.frc2015.action;
 
+import org.spartabots.frc2015.profile.Profile;
 import org.spartabots.frc2015.util.Util;
 
 public class DriveWithJoystickAction extends Action {
@@ -53,9 +54,9 @@ public class DriveWithJoystickAction extends Action {
         // Clamp
         // --------------------------------------------------------------------------------
         if (robot.driveController.getAButton()) {
-        	robot.profile.add(Actions.clampOut());
+        	Profile.add(Actions.clampOut());
         } else if (robot.driveController.getAButton()) {
-        	robot.profile.add(Actions.clampIn());
+        	Profile.add(Actions.clampIn());
         }
         
 		return true;

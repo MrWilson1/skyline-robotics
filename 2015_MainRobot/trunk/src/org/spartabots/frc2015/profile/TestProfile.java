@@ -1,11 +1,9 @@
 package org.spartabots.frc2015.profile;
 
-import org.spartabots.frc2015.Robot;
-
 public class TestProfile extends Profile {
 
-	public TestProfile(Robot robot) {
-		super(Profile.TEST, robot);
+	public TestProfile() {
+		super(Profile.TEST);
 	}
 	
 	@Override
