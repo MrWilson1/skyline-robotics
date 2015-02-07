@@ -43,19 +43,15 @@ public class DriveWithJoystickAction extends Action {
         
         // Elevator
         // --------------------------------------------------------------------------------
-        if (robot.driveController2.getLeftBumperButton()) {
-        	// Elevator down
-        } else if (robot.driveController2.getRightBumperButton()) {
-        	// Elevator up
-        } else {
-        	// Elevator stop
-        }
+        double elevatorMove= -Util.cutoff(robot.driveController2.getLeftTriggerAxis())
+        		+ Util.cutoff(robot.driveController2.getRightTriggerAxis());
+        robot.elevator.setElevator(elevatorMove);
         
         // Clamp
         // --------------------------------------------------------------------------------
-        if (robot.driveController2.getAButton()) {
+        if (robot.driveController2.getLeftBumperButton()) {
         	Profile.add(Actions.clampOut());
-        } else if (robot.driveController2.getAButton()) {
+        } else if (robot.driveController2.getRightBumperButton()) {
         	Profile.add(Actions.clampIn());
         }
         
