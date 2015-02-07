@@ -5,6 +5,7 @@ import org.spartabots.frc2015.subsystem.Drive;
 import org.spartabots.frc2015.subsystem.Elevator;
 import org.spartabots.frc2015.util.XboxController;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.SampleRobot;
 
 /**
@@ -22,6 +23,9 @@ public class Robot extends SampleRobot {
     // Current profile
     public Profile profile;
     
+    // Camera
+    CameraServer server;
+    
     public Robot() {
     	super();
     	instance = this;
@@ -32,6 +36,11 @@ public class Robot extends SampleRobot {
     	this.drive = new Drive();
     	this.elevator = new Elevator();
     	this.driveController = new XboxController(Ports.Computer.Usb0);
+    	
+    	server = CameraServer.getInstance();
+        server.setQuality(50);
+        //the camera name (ex "cam0") can be found through the roborio web interface
+        server.startAutomaticCapture("cam0");
     }
     
     @Override
