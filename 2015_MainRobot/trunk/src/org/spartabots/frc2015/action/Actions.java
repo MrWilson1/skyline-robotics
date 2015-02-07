@@ -48,4 +48,16 @@ public class Actions {
 	public static ClampAction clampOut() {
 		return new ClampAction(ClampAction.OUT);
 	}
+
+	public static RumbleAction rumbleLeft(float value, double time) {
+		return new RumbleAction(RumbleAction.RUMBLE_LEFT, value, time);
+	}
+
+	public static RumbleAction rumbleRight(float value, double time) {
+		return new RumbleAction(RumbleAction.RUMBLE_RIGHT, value, time);
+	}
+
+	public static RumbleAction rumbleBoth(float value, double time) {
+		return new RumbleAction(RumbleAction.RUMBLE_BOTH, value, time);
+	}
 }

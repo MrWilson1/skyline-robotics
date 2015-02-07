@@ -9,9 +9,6 @@ public class Auto3Tote extends SeriesAction {
 	
 	@Override
 	public void init() {
-		robot.drive.resetGyro();
-		robot.drive.resetEncoders();
-		
 		// Tote 1
 		enqueue(Actions.clampIn());
 		enqueueToProfile(Actions.elevatorTime(0.85, 2000));
