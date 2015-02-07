@@ -38,7 +38,7 @@ public class RotateAction extends Action {
 	
 	@Override
 	public boolean runPeriodic() {
-		robot.drive.m_drive.arcadeDrive(0.1, speed);
+		robot.drive.m_drive.arcadeDrive(0, speed);
 		
 		if (unit == DEGREES) {
 			if (Util.isWithinRange(robot.drive.getGyroAngle(), heading, headingError)) {

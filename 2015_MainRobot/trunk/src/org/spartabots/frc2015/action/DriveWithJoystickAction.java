@@ -5,7 +5,11 @@ import org.spartabots.frc2015.util.Util;
 public class DriveWithJoystickAction extends Action {
 	double prevTraverseMove = 0;
 	boolean isBDown = false;
-
+	
+	public DriveWithJoystickAction() {
+		this.canTimeOut = false;
+	}
+	
 	@Override
 	public void init() {
 		
