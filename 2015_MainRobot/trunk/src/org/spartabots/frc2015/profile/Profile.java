@@ -70,6 +70,10 @@ public abstract class Profile {
 		}
 		
 		done();
+		actions.clear();
+		toRemove.clear();
+		toAdd.clear();
+		robot = null;
 		this.running = false;
 	}
 	

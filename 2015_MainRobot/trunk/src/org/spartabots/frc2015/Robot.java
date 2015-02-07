@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.SampleRobot;
  */
 public class Robot extends SampleRobot {
     private static Robot instance;
-    public int selectedAutoProfile = 6;
+    public int selectedAutoProfile = 5;
     public XboxController driveController;
     
     // Subsystems

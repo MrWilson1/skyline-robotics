@@ -7,7 +7,7 @@ public class ClampAction extends Action {
 	
 	public ClampAction(int state) {
 		this.state = state;
-		if (state != 0 || state != 1)
+		if (state != 0 && state != 1)
 			throw new IllegalArgumentException();
 	}
 	

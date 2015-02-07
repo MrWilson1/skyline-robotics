@@ -15,10 +15,6 @@ public class Util {
         return n;
     }
     
-    public static double toMeters(double feet) {
-    	return feet * Constants.FEET_TO_METERS;
-    }
-    
     /**
      * <style>.eq {font-family: "Times New Roman","Symbola-mq",serif;}
      * .i {font-style: italic;}.sym {margin: 0 4px;}</style>

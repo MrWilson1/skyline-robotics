@@ -40,8 +40,12 @@ public class SeriesAction extends Action {
 	public final boolean runPeriodic() {
 		if (!queue.isEmpty()) {
 			Action current = queue.peek();
-			if (!current.runPeriodic())
+			if (current.enqueue2) {
+				robot.profile.add(current);
 				queue.remove();
+			} else if (!current.runPeriodic()) {
+				queue.remove();
+			}
 			return true;
 		} else {
 			return false;

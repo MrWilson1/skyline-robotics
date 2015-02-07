@@ -9,8 +9,8 @@ public class Constants {
 	public static final int DRIVE_RIGHT_PORT 	= Ports.RoboRIO.Pwm0;
 	public static final int TRAVERSE_PORT 		= Ports.RoboRIO.Pwm2;
 
-	public static final double DRIVE_FAST_REDUCTION_FACTOR = 1.25;
-	public static final double DRIVE_SLOW_REDUCTION_FACTOR = 1.85;
+	public static final double DRIVE_FAST_REDUCTION_FACTOR = 1.15;
+	public static final double DRIVE_SLOW_REDUCTION_FACTOR = 1.5;
 	public static final double DRIVE_GEAR_RATIO = 0.08255 / 0.0508; // in meters (3.25 in / 2 in)
 	// ELEVATOR
 	public static final int ELEVATOR1_PORT 		= Ports.RoboRIO.Pwm3;

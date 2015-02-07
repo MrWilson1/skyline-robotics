@@ -85,12 +85,12 @@ public class Drive extends Subsystem {
     /* ENCODERS
      * -------------------------------------------------------------------------------- */
     public double getLeftEncoderDistance() {
-    	return leftEc.getRaw() * Constants.LEFT_EC_ENCODER_TO_FEET_RATIO * Constants.FEET_TO_METERS;
+    	return leftEc.getRaw() * Constants.LEFT_EC_ENCODER_TO_FEET_RATIO;
     	// (leftEc.getRaw() / 360) * (Constants.WHEEL_CIRCUMFERENCE/(26/15)) * Constants.FEET_TO_METERS;
     }
     
     public double  getRightEncoderDistance() {
-    	return rightEc.getRaw() * Constants.RIGHT_EC_ENCODER_TO_FEET_RATIO * Constants.FEET_TO_METERS;
+    	return rightEc.getRaw() * Constants.RIGHT_EC_ENCODER_TO_FEET_RATIO;
     }
     
     public void resetEncoders() {
@@ -106,17 +106,6 @@ public class Drive extends Subsystem {
     	double newMove = curveDrive(move, prevMove, true, 2);
     	double newRotate = curveDrive(rotate, prevRotate, false, 3);
     	
-        if (rotate == 0 && !isDrivingStraight){
-        	isDrivingStraight = true;
-        	setZeroHeading();
-        }
-        else if (rotate != 0)
-        	isDrivingStraight = false;
-        
-        if (isDrivingStraight) {
-        	double angle = getGyroAngle();
-        	newRotate = -angle * Constants.GYRO_KP;
-        }
         m_drive.arcadeDrive(newMove, newRotate);
             
         // Set previous values for next loop

@@ -6,7 +6,6 @@ import org.spartabots.frc2015.auto.Auto1Bin;
 import org.spartabots.frc2015.auto.Auto1Tote;
 import org.spartabots.frc2015.auto.Auto2Tote;
 import org.spartabots.frc2015.auto.Auto3Tote;
-import org.spartabots.frc2015.util.Util;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -37,7 +36,7 @@ public class AutoProfile extends Profile {
     		add(new Auto1Bin());
         	break;
     	case 5:
-    		add(Actions.driveDist(Util.toMeters(9), 0.85));
+    		add(Actions.driveDist(9, 0.85));
     		break;
     	case 6: // Do nothing
     		break;
