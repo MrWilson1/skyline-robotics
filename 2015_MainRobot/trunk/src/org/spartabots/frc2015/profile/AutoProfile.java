@@ -23,20 +23,15 @@ public class AutoProfile extends Profile {
 		robot.drive.resetEncoders();
 		
 		switch (selectedAction) {
-    	case 1:
-    		add(new Auto1Tote());
+    	case 1: add(new Auto1Tote());
         	break;
-    	case 2:
-    		add(new Auto2Tote());
+    	case 2: add(new Auto2Tote());
         	break;
-    	case 3:
-    		add(new Auto3Tote());
+    	case 3: add(new Auto3Tote());
         	break;
-    	case 4:
-    		add(new Auto1Bin());
+    	case 4: add(new Auto1Bin());
         	break;
-    	case 5:
-    		add(Actions.driveDist(9, 0.85));
+    	case 5: add(Actions.driveDist(8.5, 0.85));
     		break;
     	case 6: // Do nothing
     		break;
