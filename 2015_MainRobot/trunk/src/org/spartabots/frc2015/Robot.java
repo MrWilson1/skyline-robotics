@@ -15,6 +15,7 @@ public class Robot extends SampleRobot {
     private static Robot instance;
     public int selectedAutoAction = 5;
     public XboxController driveController;
+    public XboxController driveController2;
     
     // Subsystems
     public Drive drive;
@@ -41,6 +42,7 @@ public class Robot extends SampleRobot {
     	this.drive = new Drive();
     	this.elevator = new Elevator();
     	this.driveController = new XboxController(Ports.Computer.Usb0);
+    	this.driveController2 = new XboxController(Ports.Computer.Usb1);
     	
     	this.controlProfile = new ControlProfile();
     	this.autoProfile = new AutoProfile();
@@ -60,7 +62,7 @@ public class Robot extends SampleRobot {
     @Override
     public void operatorControl() {
     	controlProfile.start();
-    }
+    }8 
 
     @Override
     public void test() {
