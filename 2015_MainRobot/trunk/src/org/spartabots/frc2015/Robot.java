@@ -15,7 +15,7 @@ public class Robot extends SampleRobot {
     private static Robot instance;
     public int selectedAutoAction = 5;
     public XboxController driveController;
-    public XboxController driveController2;
+    public XboxController loadController;
     
     // Subsystems
     public Drive drive;
@@ -42,11 +42,11 @@ public class Robot extends SampleRobot {
     	this.drive = new Drive();
     	this.elevator = new Elevator();
     	this.driveController = new XboxController(Ports.Computer.Usb0);
-    	this.driveController2 = new XboxController(Ports.Computer.Usb1);
+    	this.loadController = new XboxController(Ports.Computer.Usb1);
     	
-    	this.controlProfile = new ControlProfile();
-    	this.autoProfile = new AutoProfile();
-    	this.testProfile = new TestProfile();
+    	controlProfile = new ControlProfile();
+    	autoProfile = new AutoProfile();
+    	testProfile = new TestProfile();
     	
     	server = CameraServer.getInstance();
         server.setQuality(50);
@@ -56,7 +56,7 @@ public class Robot extends SampleRobot {
     @Override
     public void autonomous() {
     	autoProfile.setSelectedAction(selectedAutoAction);
-    	autoProfile.start();;
+    	autoProfile.start();
     }
 
     @Override

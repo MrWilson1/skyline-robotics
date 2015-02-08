@@ -3,8 +3,6 @@ package org.spartabots.frc2015.action;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.spartabots.frc2015.profile.Profile;
-
 public class SeriesAction extends Action {
 	Queue<Action> queue = new LinkedList<Action>();
 	
@@ -43,7 +41,7 @@ public class SeriesAction extends Action {
 		if (!queue.isEmpty()) {
 			Action current = queue.peek();
 			if (current.enqueue2) {
-				Profile.add(current);
+				robot.profile.add(current);
 				queue.remove();
 			} else if (!current.runPeriodic()) {
 				queue.remove();

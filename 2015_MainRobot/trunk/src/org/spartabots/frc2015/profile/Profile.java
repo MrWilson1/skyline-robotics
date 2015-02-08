@@ -36,11 +36,9 @@ public abstract class Profile {
 	public static final int AUTONOMOUS = 1;
 	public static final int TEST = 2;
 	
-	// Actions collections. There should only ever be one profile running at a time,
-	// so these collections are static.
-	protected static ArrayList<Action> actions = new ArrayList<Action>(100);
-	protected static ArrayList<Action> toRemove = new ArrayList<Action>(50);
-	protected static ArrayList<Action> toAdd = new ArrayList<Action>(50);
+	protected ArrayList<Action> actions = new ArrayList<Action>(100);
+	protected ArrayList<Action> toRemove = new ArrayList<Action>(50);
+	protected ArrayList<Action> toAdd = new ArrayList<Action>(50);
 	
 	public Profile(int mode) {
 		this.mode = mode;
@@ -57,9 +55,9 @@ public abstract class Profile {
 	}
 	
 	public final void start(Supplier<Boolean> modeCondition) {
-		this.running = true;
-		if (robot.profile != null && robot.profile.running)
+		if (robot.profile != null && robot.profile != this && robot.profile.running)
 			robot.profile.running = false;
+		this.running = true;
 		robot.profile = this;
 		init();
 		
@@ -88,16 +86,16 @@ public abstract class Profile {
 		this.running = false;
 	}
 	
-	public static void add(Action a) {
+	public void add(Action a) {
 		toAdd.add(a);
 		a.init();
 	}
 	
-	public static void remove(Action a) {
+	public void remove(Action a) {
 		toRemove.add(a);
 	}
 	
-	public static void cancelActions() {
+	public void cancelActions() {
 		for (int i = 0; i < actions.size(); i++) {
 			Action a = actions.get(i);
 			if (!a.isDone()) {
@@ -106,7 +104,7 @@ public abstract class Profile {
 		}
 	}
 	
-	protected static void cleanup() {
+	protected void cleanup() {
 		cancelActions();
 		actions.clear();
 		toRemove.clear();
