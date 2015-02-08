@@ -1,13 +1,26 @@
 package org.spartabots.frc2015.action;
 
+import org.spartabots.frc2015.subsystem.Elevator;
+
+
 public class ReleaseAction extends Action {
+	
 	
 	@Override
 	public void init() {
-		// TODO Finish this
 		// if already clamp out, do nothing
 		// else if elevator at bottom, then just clamp out
 		// else RealReleaseAction
+		
+		//if clamp out
+		if(ClampAction.clampState == 1){
+			
+		}else if(Elevator.bottom_switch.equals(0)){
+			Actions.clampOut();
+		}else{
+			Actions.elevatorTime(-0.5, 1500);
+			Actions.clampOut();
+		}	
 		cancel();
 	}
 
