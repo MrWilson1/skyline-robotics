@@ -19,7 +19,7 @@ public class Elevator extends Subsystem {
     boolean elevatorMoving = false;
     
     //Limit Switch
-    public DigitalInput bottom_switch;
+    public static DigitalInput bottom_switch;
     
     public Elevator() {
     	super();
