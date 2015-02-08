@@ -1,6 +1,5 @@
 package org.spartabots.frc2015.action;
 
-import org.spartabots.frc2015.profile.Profile;
 import org.spartabots.frc2015.util.Util;
 
 public class DriveWithJoystickAction extends Action {
@@ -38,21 +37,21 @@ public class DriveWithJoystickAction extends Action {
         // Drive
         // --------------------------------------------------------------------------------
         robot.drive.drive(
-        		-Util.cutoff(robot.driveController.getLeftYAxis()), 
+        		Util.cutoff(robot.driveController.getLeftYAxis()), 
         		Util.cutoff(robot.driveController.getRightXAxis()));
         
         // Elevator
         // --------------------------------------------------------------------------------
-        double elevatorMove= -Util.cutoff(robot.driveController2.getLeftTriggerAxis())
-        		+ Util.cutoff(robot.driveController2.getRightTriggerAxis());
+        double elevatorMove= -Util.cutoff(robot.loadController.getLeftTriggerAxis())
+        		+ Util.cutoff(robot.loadController.getRightTriggerAxis());
         robot.elevator.setElevator(elevatorMove);
         
         // Clamp
         // --------------------------------------------------------------------------------
-        if (robot.driveController2.getLeftBumperButton()) {
-        	Profile.add(Actions.clampOut());
-        } else if (robot.driveController2.getRightBumperButton()) {
-        	Profile.add(Actions.clampIn());
+        if (robot.loadController.getLeftBumperButton()) {
+        	robot.profile.add(Actions.clampOut());
+        } else if (robot.loadController.getRightBumperButton()) {
+        	robot.profile.add(Actions.clampIn());
         }
         
 		return true;

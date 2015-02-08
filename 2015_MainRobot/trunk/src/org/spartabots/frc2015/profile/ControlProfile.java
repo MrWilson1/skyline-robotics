@@ -5,7 +5,6 @@ import org.spartabots.frc2015.action.DriveWithJoystickAction;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ControlProfile extends Profile {
-	DriveWithJoystickAction mainAction = new DriveWithJoystickAction();
 	
 	public ControlProfile() {
 		super(Profile.CONTROL);
@@ -16,7 +15,7 @@ public class ControlProfile extends Profile {
 		robot.drive.resetGyro();
 		robot.drive.resetEncoders();
 		
-		add(mainAction);
+		add(new DriveWithJoystickAction());
 	}
 	
 	@Override

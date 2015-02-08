@@ -48,12 +48,25 @@ public abstract class Action {
 		return true;
 		
 	}
-
+	
+	/**
+	 * Stop this action.
+	 */
 	public void cancel() {
 		timer.stop();
 		done = true;
 		done();
 		doneFinal = true;
+	}
+	
+	/**
+	 * Reactivate this Action if it was cancelled
+	 */
+	public void reactivate() {
+		timer.reset();
+		init = false;
+		done = false;
+		doneFinal = false;
 	}
 	
 	public boolean isDone() {

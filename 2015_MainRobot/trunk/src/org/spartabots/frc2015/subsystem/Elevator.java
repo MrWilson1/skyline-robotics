@@ -23,8 +23,7 @@ public class Elevator extends Subsystem {
 	protected void init() {
         compressor = new Compressor(Constants.COMPRESSOR_PORT);
         
-        eMotor = new Talon(Constants.ELEVATOR1_PORT);
-        eMotor = new Talon(Constants.ELEVATOR2_PORT);
+        eMotor = new Talon(Constants.ELEVATOR_PORT);
 	
         gripSolenoid = new Solenoid(Constants.SOLENOID_EGRIP);
 	}
