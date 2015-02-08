@@ -12,7 +12,6 @@ public class ReleaseAction extends Action {
 		// else if elevator at bottom, then just clamp out
 		// else RealReleaseAction
 		
-		//if clamp out
 		if(ClampAction.clampState == 1){
 			
 		}else if(Elevator.bottom_switch.equals(0)){
