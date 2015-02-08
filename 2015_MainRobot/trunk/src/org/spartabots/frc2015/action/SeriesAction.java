@@ -40,6 +40,17 @@ public class SeriesAction extends Action {
 	public final boolean runPeriodic() {
 		if (!queue.isEmpty()) {
 			Action current = queue.peek();
+			
+			if (current instanceof SeriesAssert) {
+				SeriesAssert seriesAssert = (SeriesAssert) current;
+				if (!seriesAssert.check()) {
+					return false;
+				} else {
+					queue.remove();
+					return true;
+				}
+			}
+			
 			if (current.enqueue2) {
 				robot.profile.add(current);
 				queue.remove();

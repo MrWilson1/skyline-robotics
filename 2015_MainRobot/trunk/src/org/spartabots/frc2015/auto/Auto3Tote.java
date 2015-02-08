@@ -4,7 +4,7 @@ import org.spartabots.frc2015.action.Actions;
 import org.spartabots.frc2015.action.SeriesAction;
 
 // TODO ESTIMATED VALUES ARE CURRENTLY BEING USED, change values to actual
-// TODO move these actions into series and parallel and put them into functions that all 4 auto modes can use
+// TODO Create methods for certain sequences of enqueues that are the same across the multiple auto actions
 public class Auto3Tote extends SeriesAction {
 	
 	@Override

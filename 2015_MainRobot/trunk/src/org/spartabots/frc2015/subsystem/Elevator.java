@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
+// TODO Elevator encoders and limit switches
 public class Elevator extends Subsystem {
 	// Elevator Motors
     public Talon eMotor;
