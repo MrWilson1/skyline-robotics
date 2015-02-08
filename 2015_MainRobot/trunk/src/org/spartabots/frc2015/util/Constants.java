@@ -33,8 +33,14 @@ public class Constants {
 	public static final int RIGHT_EC_A 			= Ports.RoboRIO.Dio0;
 	public static final int RIGHT_EC_B 			= Ports.RoboRIO.Dio3;
 	
-	public static final int TRAVERSE_EC_A 		= Ports.RoboRIO.Dio4;
-	public static final int TRAVERSE_EC_B 		= Ports.RoboRIO.Dio5;
+	public static final int ELEVATOR_EC_A		=Ports.RoboRIO.Dio5;
+	public static final int ELEVATOR_EC_B		=Ports.RoboRIO.Dio6;
+	
+	public static final int TRAVERSE_EC_A 		= Ports.RoboRIO.Dio7;
+	public static final int TRAVERSE_EC_B 		= Ports.RoboRIO.Dio8;
+	
+	//LIMIT SWITCHES
+	public static final int ELEVATOR_BOTTOM	=Ports.RoboRIO.Dio4; 
 	
 	public static final double WHEEL_DIAMETER = 0.5;
 	public static final double WHEEL_RADIUS = WHEEL_DIAMETER/2;
@@ -43,6 +49,7 @@ public class Constants {
 	
 	public static final double LEFT_EC_ENCODER_TO_FEET_RATIO = 15.0/6082;
 	public static final double RIGHT_EC_ENCODER_TO_FEET_RATIO = 15.0/6082;
+	
 	
 	//public static final double LEFT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
 	//public static final double RIGHT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
