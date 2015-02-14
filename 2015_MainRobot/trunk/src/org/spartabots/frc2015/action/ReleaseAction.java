@@ -1,24 +1,19 @@
 package org.spartabots.frc2015.action;
 
-import org.spartabots.frc2015.subsystem.Elevator;
-
-
+/**
+ * @Deprecated Not necessary anymore
+ */
+@Deprecated
 public class ReleaseAction extends Action {
-	
 	
 	@Override
 	public void init() {
-		// if already clamp out, do nothing
-		// else if elevator at bottom, then just clamp out
-		// else RealReleaseAction
-		
-		if(ClampAction.clampState == 1){
-			
-		}else if(Elevator.bottom_switch.equals(0)){
-			Actions.clampOut();
-		}else{
-			Actions.elevatorTime(-0.5, 1500);
-			Actions.clampOut();
+		if (robot.elevator.clampState == ClampAction.OUT) {
+			// Do nothing
+		} else if (robot.elevator.isAtBottom()) { // Already at bottom
+			robot.profile.add(Actions.clampOut());
+		} else {
+			robot.profile.add(new WithElevatorReleaseAction());
 		}	
 		cancel();
 	}
@@ -34,7 +29,7 @@ public class ReleaseAction extends Action {
 		// Nothing to do here
 	}
 	
-	static class RealReleaseAction extends SeriesAction {
+	static class WithElevatorReleaseAction extends SeriesAction {
 		@Override
 		public void init() {
 			enqueue(Actions.elevatorTime(-0.5, 1500));

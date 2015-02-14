@@ -1,5 +1,6 @@
 package org.spartabots.frc2015.subsystem;
 
+import org.spartabots.frc2015.action.ClampAction;
 import org.spartabots.frc2015.util.Constants;
 import org.spartabots.frc2015.util.Util;
 
@@ -16,11 +17,15 @@ public class Elevator extends Subsystem {
     // Pistons
     public Compressor compressor;
     public Solenoid gripSolenoid;
-    boolean elevatorMoving = false;
     
     //Limit Switch
-    public static DigitalInput bottom_switch;
+    public DigitalInput bottom_switch;
     
+    // Misc state
+    boolean elevatorMoving = false;
+	public int clampState = 0;
+	boolean speedMode = false;
+	
     public Elevator() {
     	super();
     }
@@ -36,21 +41,43 @@ public class Elevator extends Subsystem {
 	}
 	
 	public void setElevator(double value) {
-		if (value != 0)
-			elevatorMoving = true;
-		else
-			elevatorMoving = false;
-		eMotor.set(Util.ease(value, Constants.REGULAR_EASE_CONSTANT));
+		if (value != 0) {
+			if (value < 0 && this.isAtBottom()) {
+				if (this.isAtBottom()) {
+					this.elevatorMoving = false;
+					return;
+				} else if (!speedMode) {
+					value /= Constants.ELEVATOR_DOWN_REDUCTION_FACTOR;
+				}
+			} else if (value > 0 && !speedMode){
+				value /= Constants.ELEVATOR_UP_REDUCTION_FACTOR;
+			}
+			this.elevatorMoving = true;
+		} else {
+			this.elevatorMoving = false;
+		}
+		
+		this.eMotor.set(Util.ease(value, Constants.REGULAR_EASE_CONSTANT));
 	}
 	
 	/* CLAMP
 	 * -------------------------------------------------------------------------------- */
 	
-	public void clampIn(){
+	public void clampIn() {
 		gripSolenoid.set(false);
+		this.clampState = ClampAction.IN;
 	}
 	
-	public void clampOut(){
+	public void clampOut() {
 		gripSolenoid.set(true);
+		this.clampState = ClampAction.OUT;
+	}
+	
+	public boolean isAtBottom() {
+		return bottom_switch.get();
+	}
+
+	public void toggleSpeedMode() {
+		this.speedMode = !speedMode;
 	}
 }

@@ -4,7 +4,7 @@ import org.spartabots.frc2015.util.Util;
 
 public class DriveWithJoystickAction extends Action {
 	double prevTraverseMove = 0;
-	boolean isBDown = false;
+	boolean isBDown = false, isXDown;
 	
 	public DriveWithJoystickAction() {
 		this.canTimeOut = false;
@@ -17,7 +17,8 @@ public class DriveWithJoystickAction extends Action {
 
 	@Override
 	public boolean runPeriodic() {
-		// Poll drive speed mode
+		// Poll drive speed mode toggle
+        // --------------------------------------------------------------------------------
 		if (robot.driveController.getBButton()) {
         	if (!isBDown) {
 	        	isBDown = true;
@@ -26,6 +27,17 @@ public class DriveWithJoystickAction extends Action {
         } else {
         	isBDown = false;
         }
+
+        // --------------------------------------------------------------------------------
+		if (robot.loadController.getXButton()) {
+        	if (!isXDown) {
+	        	isXDown = true;
+	            robot.elevator.toggleSpeedMode();
+        	}
+        } else {
+        	isXDown = false;
+        }
+		
 		
 		// Traverse
         // --------------------------------------------------------------------------------
@@ -42,7 +54,7 @@ public class DriveWithJoystickAction extends Action {
         
         // Elevator
         // --------------------------------------------------------------------------------
-        double elevatorMove= -Util.cutoff(robot.loadController.getLeftTriggerAxis())
+        double elevatorMove = -Util.cutoff(robot.loadController.getLeftTriggerAxis())
         		+ Util.cutoff(robot.loadController.getRightTriggerAxis());
         robot.elevator.setElevator(elevatorMove);
         

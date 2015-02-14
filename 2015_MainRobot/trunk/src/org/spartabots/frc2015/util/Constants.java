@@ -12,10 +12,17 @@ public class Constants {
 	public static final double DRIVE_FAST_REDUCTION_FACTOR = 1.28;
 	public static final double DRIVE_SLOW_REDUCTION_FACTOR = 1.45;
 	public static final double DRIVE_GEAR_RATIO = 0.08255 / 0.0508; // in meters (3.25 in / 2 in)
+
+	// WHEEL
+	public static final double WHEEL_DIAMETER = 0.5;
+	public static final double WHEEL_RADIUS = WHEEL_DIAMETER/2;
+	public static final double WHEEL_CIRCUMFERENCE = 0.5 * Math.PI;
+	public static final double FEET_TO_METERS = 0.3048;
 	
 	// ELEVATOR
 	public static final int ELEVATOR_PORT 		= Ports.RoboRIO.Pwm3;
-	
+	public static final double ELEVATOR_DOWN_REDUCTION_FACTOR = 1.5; // for slow mode
+	public static final double ELEVATOR_UP_REDUCTION_FACTOR = 1; // for slow mode
 	public static final int REGULAR_EASE_CONSTANT = 2;
 	
 	// GYRO
@@ -38,19 +45,13 @@ public class Constants {
 	
 	public static final int TRAVERSE_EC_A 		= Ports.RoboRIO.Dio7;
 	public static final int TRAVERSE_EC_B 		= Ports.RoboRIO.Dio8;
-	
-	//LIMIT SWITCHES
-	public static final int ELEVATOR_BOTTOM	=Ports.RoboRIO.Dio4; 
-	
-	public static final double WHEEL_DIAMETER = 0.5;
-	public static final double WHEEL_RADIUS = WHEEL_DIAMETER/2;
-	public static final double WHEEL_CIRCUMFERENCE = 0.5 * Math.PI;
-	public static final double FEET_TO_METERS = 0.3048;
-	
+
 	public static final double LEFT_EC_ENCODER_TO_FEET_RATIO = 15.0/6082;
 	public static final double RIGHT_EC_ENCODER_TO_FEET_RATIO = 15.0/6082;
 	
-	
 	//public static final double LEFT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
 	//public static final double RIGHT_EC_TO_DISTANCE_RATIO = ((1392.0d/250.0d)/5.568d) * 0.3048;
+	
+	// LIMIT SWITCHES
+	public static final int ELEVATOR_BOTTOM	= Ports.RoboRIO.Dio4; 
 }
