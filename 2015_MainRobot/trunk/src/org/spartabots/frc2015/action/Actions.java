@@ -60,4 +60,8 @@ public class Actions {
 	public static RumbleAction rumbleBoth(float value, double time) {
 		return new RumbleAction(RumbleAction.RUMBLE_BOTH, value, time);
 	}
+
+	public static ReleaseAction releaseAction() {
+		return new ReleaseAction();
+	}
 }
