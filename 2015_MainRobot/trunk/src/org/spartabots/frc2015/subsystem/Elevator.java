@@ -18,8 +18,9 @@ public class Elevator extends Subsystem {
     public Compressor compressor;
     public Solenoid gripSolenoid;
     
-    //Limit Switch
+    // Limit Switch
     public DigitalInput bottom_switch;
+    public DigitalInput top_switch;
     
     // Misc state
     boolean elevatorMoving = false;
@@ -31,13 +32,14 @@ public class Elevator extends Subsystem {
     }
     
 	protected void init() {
-        compressor = new Compressor(Constants.COMPRESSOR_PORT);
+        compressor 		= new Compressor(Constants.COMPRESSOR_PORT);
         
-        eMotor = new Talon(Constants.ELEVATOR_PORT);
+        eMotor 			= new Talon(Constants.ELEVATOR_PORT);
         
-        bottom_switch  = new DigitalInput(Constants.ELEVATOR_BOTTOM);
+        bottom_switch	= new DigitalInput(Constants.ELEVATOR_BOTTOM);
+        top_switch		= new DigitalInput(Constants.ELEVATOR_TOP);
 	
-        gripSolenoid = new Solenoid(Constants.SOLENOID_EGRIP);
+        gripSolenoid 	= new Solenoid(Constants.SOLENOID_EGRIP);
 	}
 	
 	public void setElevator(double value) {
@@ -50,7 +52,12 @@ public class Elevator extends Subsystem {
 					value /= Constants.ELEVATOR_DOWN_REDUCTION_FACTOR;
 				}
 			} else if (value > 0 && !speedMode){
-				value /= Constants.ELEVATOR_UP_REDUCTION_FACTOR;
+				if (this.isAtTop()) {
+					this.elevatorMoving = false;
+					return;
+				} else if (!speedMode) {
+					value /= Constants.ELEVATOR_UP_REDUCTION_FACTOR;	
+				}
 			}
 			this.elevatorMoving = true;
 		} else {
@@ -75,6 +82,10 @@ public class Elevator extends Subsystem {
 	
 	public boolean isAtBottom() {
 		return bottom_switch.get();
+	}
+	
+	public boolean isAtTop() {
+		return top_switch.get();
 	}
 
 	public void toggleSpeedMode() {

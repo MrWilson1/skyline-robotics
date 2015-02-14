@@ -54,4 +54,5 @@ public class Constants {
 	
 	// LIMIT SWITCHES
 	public static final int ELEVATOR_BOTTOM	= Ports.RoboRIO.Dio4; 
+	public static final int ELEVATOR_TOP	= Ports.RoboRIO.Dio9; 
 }
