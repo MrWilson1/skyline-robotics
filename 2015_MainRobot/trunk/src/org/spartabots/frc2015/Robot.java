@@ -7,6 +7,8 @@ import org.spartabots.frc2015.util.XboxController;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Main Robot class for initialization
@@ -32,6 +34,9 @@ public class Robot extends SampleRobot {
     // Camera
     CameraServer server;
     
+    // Sendable Chooser
+    SendableChooser autoChooser;
+    
     public Robot() {
     	super();
     	instance = this;
@@ -50,12 +55,22 @@ public class Robot extends SampleRobot {
     	
     	server = CameraServer.getInstance();
         server.setQuality(50);
+        server.setQuality(50);
         server.startAutomaticCapture("cam0");
+        
+        autoChooser = new SendableChooser();
+        autoChooser.addDefault("Do nothing", 0);
+        autoChooser.addObject("1 Tote", 1);
+        autoChooser.addObject("2 Tote", 2);
+        autoChooser.addObject("3 Tote", 3);
+        autoChooser.addObject("1 Bin", 4);
+        autoChooser.addObject("Drive only", 5);
+        SmartDashboard.putData("Autonomous Mode Chooser", autoChooser);
     }
     
     @Override
     public void autonomous() {
-    	autoProfile.setSelectedAction(selectedAutoAction);
+    	autoProfile.setSelectedAction((int) autoChooser.getSelected());
     	autoProfile.start();
     }
 

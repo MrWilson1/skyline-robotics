@@ -4,7 +4,8 @@ import org.spartabots.frc2015.util.Util;
 
 public class DriveWithJoystickAction extends Action {
 	double prevTraverseMove = 0;
-	boolean isBDown = false, isXDown;
+	boolean isBDown = false, isXDown = false;
+	boolean isBDown2 = false;
 	
 	public DriveWithJoystickAction() {
 		this.canTimeOut = false;
@@ -38,7 +39,6 @@ public class DriveWithJoystickAction extends Action {
         	isXDown = false;
         }
 		
-		
 		// Traverse
         // --------------------------------------------------------------------------------
 		double traverseMove = -Util.cutoff(robot.driveController.getLeftTriggerAxis())
@@ -64,6 +64,17 @@ public class DriveWithJoystickAction extends Action {
         	robot.profile.add(Actions.clampOut());
         } else if (robot.loadController.getRightBumperButton()) {
         	robot.profile.add(Actions.clampIn());
+        }
+
+        // Release Action
+        // --------------------------------------------------------------------------------
+        if (robot.loadController.getBButton()) {
+        	if (!isBDown2) {
+        		robot.profile.add(Actions.releaseAction());
+        	}
+        	isBDown2 = true;
+        } else {
+        	isBDown2 = false;
         }
         
 		return true;

@@ -1,9 +1,5 @@
 package org.spartabots.frc2015.action;
 
-/**
- * @Deprecated Not necessary anymore
- */
-@Deprecated
 public class ReleaseAction extends Action {
 	
 	@Override
