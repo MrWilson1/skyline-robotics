@@ -1,7 +1,5 @@
 package org.spartabots.frc2015.action;
 
-import org.spartabots.frc2015.util.Constants;
-
 /**
  * Drives for a certain distance or for a certain time.
  */
@@ -39,6 +37,7 @@ public class DriveAction extends Action {
 			throw new IllegalArgumentException();
 		}
 		this.speed = speed;
+		robot.drive.isDrivingStraight = true;
 	}
 	
 	@Override
@@ -65,8 +64,7 @@ public class DriveAction extends Action {
 	
 	// For Actions that may extend this DriveAction, so running() does not have to be overriden
 	protected void drive() {
-		double angle = robot.drive.getGyroAngle();
-		robot.drive.drive(speed, -angle * Constants.GYRO_KP);
+		robot.drive.drive(speed, 0);
 	}
 
 	// For Actions that may extend this DriveAction, so running() does not have to be overriden

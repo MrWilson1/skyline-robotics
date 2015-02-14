@@ -40,8 +40,8 @@ public class Constants {
 	public static final int RIGHT_EC_A 			= Ports.RoboRIO.Dio0;
 	public static final int RIGHT_EC_B 			= Ports.RoboRIO.Dio3;
 	
-	public static final int ELEVATOR_EC_A		=Ports.RoboRIO.Dio5;
-	public static final int ELEVATOR_EC_B		=Ports.RoboRIO.Dio6;
+	public static final int ELEVATOR_EC_A		= Ports.RoboRIO.Dio5;
+	public static final int ELEVATOR_EC_B		= Ports.RoboRIO.Dio6;
 	
 	public static final int TRAVERSE_EC_A 		= Ports.RoboRIO.Dio7;
 	public static final int TRAVERSE_EC_B 		= Ports.RoboRIO.Dio8;

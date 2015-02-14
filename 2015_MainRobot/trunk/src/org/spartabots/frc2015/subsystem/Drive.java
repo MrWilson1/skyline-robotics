@@ -33,7 +33,7 @@ public class Drive extends Subsystem {
     double prevMove = 0;
     double prevRotate = 0;
     boolean speedMode = false;
-	boolean isDrivingStraight = false;
+	public boolean isDrivingStraight = false;
     
     public Drive() {
     	super();
@@ -98,7 +98,7 @@ public class Drive extends Subsystem {
     	rightEc.reset();
     }
     
-
+    
     /* DRIVE
      * -------------------------------------------------------------------------------- */
     
@@ -106,8 +106,20 @@ public class Drive extends Subsystem {
     	double newMove = curveDrive(move, prevMove, true, 2);
     	double newRotate = curveDrive(rotate, prevRotate, false, 3);
     	
-        m_drive.arcadeDrive(newMove, newRotate);
-            
+    	if (newRotate == 0) {
+    		this.setZeroHeading();
+    		this.isDrivingStraight = true;
+    	} else {
+    		this.isDrivingStraight = false;
+    	}
+    	
+    	if (isDrivingStraight) {
+    		double angle = this.getGyroAngle();
+        	m_drive.arcadeDrive(newMove, newRotate + (-angle * Constants.GYRO_KP));
+    	} else {
+        	m_drive.arcadeDrive(newMove, newRotate);
+    	}
+    	
         // Set previous values for next loop
         prevRotate = newRotate;
         prevMove = newMove;
@@ -159,10 +171,5 @@ public class Drive extends Subsystem {
 
 	public void stop() {
 		m_drive.arcadeDrive(0, 0);
-	}
-	
-	public void autoDriveForward(){
-    	double angle = getGyroAngle();
-    	drive(1, -angle * Constants.GYRO_KP);
 	}
 }
