@@ -21,7 +21,7 @@ public abstract class Action {
 	protected double timeout = 100; // in seconds
 	protected boolean canTimeOut = true;
 	protected boolean enqueue2 = false; // for actions when added to series
-	
+
 	public abstract void init();
 	/**
 	 * Periodically called during action run-time
@@ -83,5 +83,9 @@ public abstract class Action {
 	
 	public void setTimeout(double milliseconds) {
 		this.timeout = (milliseconds / 1000.0D);
+	}
+	
+	public String toString() {
+		return this.getClass().getSimpleName();
 	}
 }

@@ -2,7 +2,6 @@ package org.spartabots.frc2015.action;
 
 public class ElevatorAction extends Action {
 	double power;
-	boolean timeLimit = true;
 	
 	/**
 	 * 
@@ -18,19 +17,22 @@ public class ElevatorAction extends Action {
 	
 	@Override
 	public void init() {
-		robot.elevator.setElevator(power);
-		if (timeLimit)
+		DriveWithJoystickAction.elevatorControlEnabled = false;
+        robot.elevator.setElevator(power);
+		if (!this.canTimeOut)
 			cancel();
 	}
 
 	@Override
 	public boolean runPeriodic() {
+		robot.elevator.setElevator(power);
 		return true;
 	}
 
 	@Override
 	public void done() {
-		if (this.timeLimit)
+		DriveWithJoystickAction.elevatorControlEnabled = true;
+		if (this.canTimeOut)
 			robot.elevator.setElevator(0);
 	}
 	

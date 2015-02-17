@@ -3,6 +3,7 @@ package org.spartabots.frc2015;
 import org.spartabots.frc2015.profile.*;
 import org.spartabots.frc2015.subsystem.Drive;
 import org.spartabots.frc2015.subsystem.Elevator;
+import org.spartabots.frc2015.util.Constants;
 import org.spartabots.frc2015.util.XboxController;
 
 import edu.wpi.first.wpilibj.CameraServer;
@@ -15,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends SampleRobot {
     private static Robot instance;
-    public int selectedAutoAction = 5;
     public XboxController driveController;
     public XboxController loadController;
     
@@ -49,6 +49,8 @@ public class Robot extends SampleRobot {
     	this.driveController = new XboxController(Ports.Computer.Usb0);
     	this.loadController = new XboxController(Ports.Computer.Usb1);
     	
+    	elevator.ec.reset();
+    	
     	controlProfile = new ControlProfile();
     	autoProfile = new AutoProfile();
     	testProfile = new TestProfile();
@@ -65,7 +67,10 @@ public class Robot extends SampleRobot {
         autoChooser.addObject("3 Tote", 3);
         autoChooser.addObject("1 Bin", 4);
         autoChooser.addObject("Drive only", 5);
+        autoChooser.addObject("Rotate 90 deg", 6);
         SmartDashboard.putData("Autonomous Mode Chooser", autoChooser);
+        
+        SmartDashboard.putNumber("GYRO_KP", Constants.GYRO_KP);
     }
     
     @Override
@@ -73,12 +78,12 @@ public class Robot extends SampleRobot {
     	autoProfile.setSelectedAction((int) autoChooser.getSelected());
     	autoProfile.start();
     }
-
+    
     @Override
     public void operatorControl() {
     	controlProfile.start();
     }
-
+    
     @Override
     public void test() {
     	testProfile.start();

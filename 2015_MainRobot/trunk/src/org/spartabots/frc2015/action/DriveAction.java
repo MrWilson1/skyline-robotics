@@ -9,6 +9,7 @@ public class DriveAction extends Action {
 	int type;
 	double dist;
 	double speed = 0.7;
+	double originalSpeed = 0;
 	double error = 0.08;
 	int direction = 0; // 0 - forward, 1 = backward
 	
@@ -17,10 +18,11 @@ public class DriveAction extends Action {
 	 * 
 	 * @param type DriveAction.DISTANCE or DriveAction.TIME
 	 * @param value Distance in meters or time in milliseconds (negative drives opposite direction)
-	 * @param speed How fast to move from 0 to 1 (non directional)
+	 * @param speed How fast to move from 0 to 1 (scalar, non-directional)
 	 */
 	public DriveAction(int type, double value, double speed) {
 		this.type = type;
+		this.originalSpeed = speed;
 		if (speed < 0)
 			throw new IllegalArgumentException();
 		if (this.type == TIME) {
@@ -42,7 +44,7 @@ public class DriveAction extends Action {
 	
 	@Override
 	public void init() {
-		robot.drive.resetEncoders();
+		robot.drive.setZeroEcDist();
 	}
 
 	@Override
@@ -64,18 +66,21 @@ public class DriveAction extends Action {
 	
 	// For Actions that may extend this DriveAction, so running() does not have to be overriden
 	protected void drive() {
-		robot.drive.drive(speed, 0);
+		robot.drive.m_drive.arcadeDrive(-speed, 0);
 	}
 
 	// For Actions that may extend this DriveAction, so running() does not have to be overriden
 	protected double getEncoderDistance() {
-		return robot.drive.getLeftEncoderDistance();
+		return robot.drive.getBeltEncoderDistance();
 	}
 	
 	@Override
 	public void done() {
 		robot.drive.stop();
-		robot.drive.resetEncoders();
+		robot.drive.setZeroEcDist();
 	}
-
+	
+	public String toString() {
+		return this.getClass().getSimpleName() + ", " + this.dist + ", " + this.speed + "("+this.originalSpeed+")";
+	}
 }

@@ -1,10 +1,7 @@
 package org.spartabots.frc2015.profile;
 
 import org.spartabots.frc2015.action.Actions;
-import org.spartabots.frc2015.auto.Auto1Bin;
-import org.spartabots.frc2015.auto.Auto1Tote;
-import org.spartabots.frc2015.auto.Auto2Tote;
-import org.spartabots.frc2015.auto.Auto3Tote;
+import org.spartabots.frc2015.auto.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -37,6 +34,8 @@ public class AutoProfile extends Profile {
 			break;
 		case 5: add(Actions.driveDist(8.5, 0.85));
 			break;
+		case 6: add(new AutoTest());
+			break;
 		default:
 			break;
 		}
@@ -48,9 +47,10 @@ public class AutoProfile extends Profile {
         SmartDashboard.putNumber("Acceleration X", robot.drive.getAccelX());
         SmartDashboard.putNumber("Acceleration Y", robot.drive.getAccelY());
         SmartDashboard.putNumber("Acceleration Z", robot.drive.getAccelZ());
-        SmartDashboard.putNumber("Left Encoder Raw", robot.drive.leftEc.getRaw());
-        SmartDashboard.putNumber("Right Encoder Distance", robot.drive.getRightEncoderDistance());
-        SmartDashboard.putNumber("Left Encoder Distance", robot.drive.getLeftEncoderDistance());
+        SmartDashboard.putNumber("Belt Encoder Raw", robot.drive.beltEc.getRaw());
+        SmartDashboard.putNumber("Belt Encoder Distance", robot.drive.getBeltEncoderDistance());
+        SmartDashboard.putNumber("Traverse Encoder Raw", robot.drive.traverseEc.getRaw());
+        SmartDashboard.putNumber("Traverse Encoder Distance", robot.drive.getTraverseEncoderDistance());
 	}
 	
 }
