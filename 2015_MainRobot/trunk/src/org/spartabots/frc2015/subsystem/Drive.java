@@ -10,16 +10,17 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Subsystem {	
     // Drive Motors
     public RobotDrive m_drive;
-    public Drive drive;
     public Talon traverse;
+    private double driveEcOffset = 0;
     
     // Encoders
-    public Encoder leftEc = new Encoder(Constants.LEFT_EC_A, Constants.LEFT_EC_B, false, EncodingType.k1X);
-    public Encoder rightEc = new Encoder(Constants.RIGHT_EC_A, Constants.RIGHT_EC_B, false);
+    public Encoder beltEc = new Encoder(Constants.D_BELT_EC_A, Constants.D_BELT_EC_B, false, EncodingType.k1X);
+    public Encoder gearboxEc = new Encoder(Constants.D_GEARBOX_EC_A, Constants.D_GEARBOX_EC_B, false);
     public Encoder traverseEc = new Encoder(Constants.TRAVERSE_EC_A, Constants.TRAVERSE_EC_B, false);
     
     // Built-in accelerometer
@@ -28,12 +29,25 @@ public class Drive extends Subsystem {
     // Gyro
     public Gyro gyro;
     private double gyroOffset = 0;
+    public boolean lockGyroOffsetChange = false;
+    public boolean kpDisabled = false;
+    public boolean kpOff = false;
+    
+	private final double waitForAdjust = 1; // in secodns
+	private double driveStraightStartTime = 0;
+	
+	protected double gV = 0.0;
+	private double gp = 0.0;
+    private double gVpTime = 0;
+    private double gVCheckInterval = 0.1;
 	
     // Misc Variables
+    int driveComplexity = 2;
     double prevMove = 0;
     double prevRotate = 0;
     boolean speedMode = false;
 	public boolean isDrivingStraight = false;
+	public boolean isNotMoving = false;
     
     public Drive() {
     	super();
@@ -47,7 +61,7 @@ public class Drive extends Subsystem {
         m_drive.setExpiration(0.1);
         traverse = new Talon(Constants.TRAVERSE_PORT);
         
-        gyro = new Gyro(Constants.GYRO_PORT); // Dummy port
+        gyro = new Gyro(Constants.GYRO_PORT);
     }
 
     /* ACCELEROMETER
@@ -66,12 +80,14 @@ public class Drive extends Subsystem {
     
     /* GYRO
      * -------------------------------------------------------------------------------- */
+    
     public void resetGyro() {
     	gyro.reset();
     }
     
     public void setZeroHeading() {
-    	this.gyroOffset = -gyro.getAngle();
+    	if (!lockGyroOffsetChange)
+    		this.gyroOffset = -gyro.getAngle();
     }
     
     public double getGyroAngle() {
@@ -84,43 +100,113 @@ public class Drive extends Subsystem {
 
     /* ENCODERS
      * -------------------------------------------------------------------------------- */
-    public double getLeftEncoderDistance() {
-    	return leftEc.getRaw() * Constants.LEFT_EC_ENCODER_TO_FEET_RATIO;
+    
+    public void setZeroEcDist() {
+    	this.driveEcOffset = -(beltEc.getRaw() * Constants.BELT_EC_ENCODER_TO_FEET_RATIO);
+    }
+    
+    public double getBeltEncoderDistance() {
+    	return (beltEc.getRaw() * Constants.BELT_EC_ENCODER_TO_FEET_RATIO) + this.driveEcOffset;
     	// (leftEc.getRaw() / 360) * (Constants.WHEEL_CIRCUMFERENCE/(26/15)) * Constants.FEET_TO_METERS;
     }
     
-    public double  getRightEncoderDistance() {
-    	return rightEc.getRaw() * Constants.RIGHT_EC_ENCODER_TO_FEET_RATIO;
+    public double getGearboxEncoderDistance() {
+    	return gearboxEc.getRaw() * Constants.GEARBOX_EC_ENCODER_TO_FEET_RATIO;
+    }
+
+    public double getTraverseEncoderDistance() {
+    	return traverseEc.getRaw() * Constants.TRAVERSE_EC_ENCODER_TO_FEET_RATIO;
     }
     
     public void resetEncoders() {
-    	leftEc.reset();
-    	rightEc.reset();
+    	beltEc.reset();
+    	gearboxEc.reset();
+    	traverseEc.reset();
     }
     
     
     /* DRIVE
      * -------------------------------------------------------------------------------- */
+    public void pollGV() {
+    	double t = robot.profile.getTime();
+    	if (gVpTime == 0) {
+    		gVpTime = t;
+    	}
+    	if (t > (gVpTime + gVCheckInterval)) {
+    		gV = (this.getGyroAngle() - this.gp) / (t - gVpTime);
+    	}
+    }
     
-    public void drive(double move, double rotate){
-    	double newMove = curveDrive(move, prevMove, true, 2);
-    	double newRotate = curveDrive(rotate, prevRotate, false, 3);
+    public void drive(double move, double rotate) {
+    	double newMove = curveDrive(move, prevMove, true, 2, false);
+    	double newRotate = curveDrive(rotate, prevRotate, false, 3, true);
+		double angle = this.getGyroAngle();
+		pollGV();
+		
+    	// LOGGING
+    	// ----------------------------------------------------------------------
+    	SmartDashboard.putNumber("New Movement", Math.round(newMove * 100.0) / 100.0);
+    	SmartDashboard.putNumber("Rotation", rotate);
+    	SmartDashboard.putNumber("New Rotation", newRotate);
     	
-    	if (newRotate == 0) {
-    		this.setZeroHeading();
-    		this.isDrivingStraight = true;
+    	// CONDITIONS
+    	// ----------------------------------------------------------------------
+    	if (rotate == 0 && move != 0) { // not rotating, moving
+    		SmartDashboard.putString("Drive state", "not rotating, moving");
+    		if (!isDrivingStraight) {
+    			this.setZeroHeading();
+    			this.isDrivingStraight = true;
+    			this.driveStraightStartTime = robot.profile.getTime();
+    			this.kpOff = true;
+    		} else if (kpOff) {
+    			if ((robot.profile.getTime() - driveStraightStartTime) > waitForAdjust) {
+        			this.setZeroHeading();
+            		this.kpOff = false;	
+    			}
+    		}
     	} else {
     		this.isDrivingStraight = false;
     	}
     	
+    	if (rotate != 0 && move == 0) { // rotating, not moving
+    		SmartDashboard.putString("Drive state", "rotating, not moving");
+    		this.kpOff = true;
+    	}
+    	if (rotate == 0 && move == 0) { // not moving at all
+    		SmartDashboard.putString("Drive state", "not rotating, not moving");
+    		if (!isNotMoving) {
+    			this.setZeroHeading();
+    			isNotMoving = true;
+    		}
+    		this.kpOff = true;
+    	}
+    	if (rotate != 0 && move != 0) { // rotating and moving
+    		SmartDashboard.putString("Drive state", "rotating and moving");
+    		this.kpOff = true;
+    	}
+
+    	// LOGGING
+    	// ----------------------------------------------------------------------
+    	SmartDashboard.putBoolean("kpOff", kpOff);
+    	SmartDashboard.putBoolean("kpDisabled", kpDisabled);
+    	
+    	// DRIVE
+    	// ----------------------------------------------------------------------
     	if (isDrivingStraight) {
-    		double angle = this.getGyroAngle();
-        	m_drive.arcadeDrive(newMove, newRotate + (-angle * Constants.GYRO_KP));
+    		SmartDashboard.putNumber("gV angle", Math.round(angle * 100.0) / 100.0);
+    		double newRotate2 = newRotate + (-angle * SmartDashboard.getNumber("GYRO_KP"));
+    		if (kpDisabled || kpOff) {
+    			newRotate2 = newRotate;
+    		}
+    		
+        	SmartDashboard.putNumber("New Rotation 2", newRotate2);
+        	m_drive.arcadeDrive(newMove, newRotate2);	
     	} else {
         	m_drive.arcadeDrive(newMove, newRotate);
     	}
-    	
-        // Set previous values for next loop
+
+    	// SET PREVIOUS VALUES
+    	// ----------------------------------------------------------------------
         prevRotate = newRotate;
         prevMove = newMove;
     }
@@ -144,6 +230,10 @@ public class Drive extends Subsystem {
         prevRotate = 0;        
     }
     
+    public boolean isSpeedMode() {
+    	return this.speedMode;
+    }
+    
     public void toggleSpeedMode() {
     	this.speedMode = !speedMode;
     }
@@ -152,7 +242,7 @@ public class Drive extends Subsystem {
     	this.speedMode = speedMode;
     }
     
-    public double curveDrive(double value, double prevValue, boolean isZeroStopped, double accelCurve){
+    public double curveDrive(double value, double prevValue, boolean isZeroStopped, double accelCurve, boolean isRotate){
         //velocity curve
         value = uCurve(value);
         
@@ -163,10 +253,17 @@ public class Drive extends Subsystem {
             value = curve(value, prevValue, accelCurve);
         value = Util.limit(value, -1, 1);
         
-        if (speedMode)
-            return value / Constants.DRIVE_FAST_REDUCTION_FACTOR;
-        else
-            return value / Constants.DRIVE_SLOW_REDUCTION_FACTOR;
+        if (isRotate){
+        	if (speedMode)
+                return value / Constants.ROTATE_FAST_REDUCTION_FACTOR;
+            else
+                return value / Constants.ROTATE_SLOW_REDUCTION_FACTOR;
+        } else {
+        	if (speedMode)
+                return value / Constants.DRIVE_FAST_REDUCTION_FACTOR;
+            else
+                return value / Constants.DRIVE_SLOW_REDUCTION_FACTOR;
+        }
     }
 
 	public void stop() {

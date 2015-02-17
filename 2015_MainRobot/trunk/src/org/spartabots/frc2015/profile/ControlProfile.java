@@ -21,12 +21,20 @@ public class ControlProfile extends Profile {
 	@Override
 	public void log() {
         SmartDashboard.putNumber("Gyro Angle", robot.drive.getGyroAngle());
-        SmartDashboard.putNumber("Acceleration X", robot.drive.getAccelX());
-        SmartDashboard.putNumber("Acceleration Y", robot.drive.getAccelY());
-        SmartDashboard.putNumber("Acceleration Z", robot.drive.getAccelZ());
-        SmartDashboard.putNumber("Left Encoder Raw", robot.drive.leftEc.getRaw());
-        SmartDashboard.putNumber("Right Encoder Distance", robot.drive.getRightEncoderDistance());
-        SmartDashboard.putNumber("Left Encoder Distance", robot.drive.getLeftEncoderDistance());
+        SmartDashboard.putBoolean("Is driving straight", robot.drive.isDrivingStraight);
+        SmartDashboard.putNumber("Belt Encoder Raw", robot.drive.beltEc.getRaw());
+        SmartDashboard.putNumber("Belt Encoder Distance", robot.drive.getBeltEncoderDistance());
+        SmartDashboard.putNumber("Traverse Encoder Raw", robot.drive.traverseEc.getRaw());
+        SmartDashboard.putNumber("Traverse Encoder Distance", robot.drive.getTraverseEncoderDistance());
+        SmartDashboard.putNumber("Elevator Encoder Raw", robot.elevator.ec.getRaw());
+        SmartDashboard.putNumber("Elevator Encoder Distance", robot.elevator.getDistanceFromGround());
+        
+        SmartDashboard.putBoolean("Is drive speed mode", robot.drive.isSpeedMode());
+        SmartDashboard.putBoolean("Is elevator speed mode", robot.elevator.isSpeedMode());
+
+        SmartDashboard.putNumber("Accel X", robot.drive.getAccelX());
+        SmartDashboard.putNumber("Accel Y", robot.drive.getAccelY());
+        SmartDashboard.putNumber("Accel Z", robot.drive.getAccelZ());
 	}
 	
 }

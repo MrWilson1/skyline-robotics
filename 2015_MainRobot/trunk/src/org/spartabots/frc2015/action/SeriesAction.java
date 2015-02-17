@@ -3,11 +3,13 @@ package org.spartabots.frc2015.action;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class SeriesAction extends Action {
-	Queue<Action> queue = new LinkedList<Action>();
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public abstract class SeriesAction extends Action {
+	protected Queue<Action> queue = new LinkedList<Action>();
 	
 	public SeriesAction(Action... actions) {
-		this.canTimeOut = false;
+		this.setTimeout(20000);
 		for (Action a : actions)
 			queue.add(a);
 	}
@@ -31,16 +33,12 @@ public class SeriesAction extends Action {
 		queue.add(action);
 	}
 	
-	@Override
-	public void init() {
-		
-	}
 
 	@Override
 	public final boolean runPeriodic() {
 		if (!queue.isEmpty()) {
 			Action current = queue.peek();
-			
+			SmartDashboard.putString("Series", current.toString());
 			if (current instanceof SeriesAssert) {
 				SeriesAssert seriesAssert = (SeriesAssert) current;
 				if (!seriesAssert.check()) {
@@ -54,7 +52,7 @@ public class SeriesAction extends Action {
 			if (current.enqueue2) {
 				robot.profile.add(current);
 				queue.remove();
-			} else if (!current.runPeriodic()) {
+			} else if (!current.running()) {
 				queue.remove();
 			}
 			return true;

@@ -28,7 +28,7 @@ public class ReleaseAction extends Action {
 	static class WithElevatorReleaseAction extends SeriesAction {
 		@Override
 		public void init() {
-			enqueue(Actions.elevatorTime(-0.5, 1500));
+			enqueue(Actions.elevatorTime(-0.85, 200));
 			enqueue(Actions.clampOut());
 		}
 	}

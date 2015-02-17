@@ -6,6 +6,7 @@ import org.spartabots.frc2015.util.Util;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -23,9 +24,10 @@ public class Elevator extends Subsystem {
     public DigitalInput top_switch;
     
     // Misc state
-    boolean elevatorMoving = false;
-	public int clampState = 0;
-	boolean speedMode = false;
+    public boolean elevatorMoving = false;
+	public int clampState = ClampAction.IN;
+	public boolean speedMode = false;
+	public Encoder ec;
 	
     public Elevator() {
     	super();
@@ -40,20 +42,25 @@ public class Elevator extends Subsystem {
         top_switch		= new DigitalInput(Constants.ELEVATOR_TOP);
 	
         gripSolenoid 	= new Solenoid(Constants.SOLENOID_EGRIP);
+        
+
+       ec = new Encoder(Constants.ELEVATOR_EC_A, Constants.ELEVATOR_EC_B, false);
 	}
 	
 	public void setElevator(double value) {
 		if (value != 0) {
-			if (value < 0 && this.isAtBottom()) {
+			if (value < 0) {
 				if (this.isAtBottom()) {
 					this.elevatorMoving = false;
+					this.eMotor.set(0);
 					return;
 				} else if (!speedMode) {
 					value /= Constants.ELEVATOR_DOWN_REDUCTION_FACTOR;
 				}
-			} else if (value > 0 && !speedMode){
+			} else if (value > 0){
 				if (this.isAtTop()) {
 					this.elevatorMoving = false;
+					this.eMotor.set(0);
 					return;
 				} else if (!speedMode) {
 					value /= Constants.ELEVATOR_UP_REDUCTION_FACTOR;	
@@ -90,5 +97,13 @@ public class Elevator extends Subsystem {
 
 	public void toggleSpeedMode() {
 		this.speedMode = !speedMode;
+	}
+	
+	public boolean isSpeedMode() {
+		return this.speedMode;
+	}
+	
+	public double getDistanceFromGround() {
+		return ec.getRaw() * Constants.ELEVATOR_EC_ENCODER_TO_FEET_RATIO + 0.5;
 	}
 }

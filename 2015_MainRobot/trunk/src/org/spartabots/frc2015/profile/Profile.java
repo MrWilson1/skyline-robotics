@@ -7,6 +7,7 @@ import org.spartabots.frc2015.Robot;
 import org.spartabots.frc2015.action.Action;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*
  *  SAFETY PIG HAS ARRIVED!
@@ -30,6 +31,7 @@ public abstract class Profile {
 	public static final Robot robot = Robot.getInstance();
 	private final int mode;
 	public boolean running = true;
+	Timer timer = new Timer();
 	
 	// Mode Types
 	public static final int CONTROL = 0;
@@ -60,13 +62,15 @@ public abstract class Profile {
 		this.running = true;
 		robot.profile = this;
 		init();
-		
+		timer.start();
 		while (running && robot.isEnabled() && modeCondition.get()) {
+			
 			actions.addAll(toAdd);
 			toAdd.clear();
 			actions.removeAll(toRemove);
 			toRemove.clear();
-			
+
+			SmartDashboard.putString("Actions List", actions.toString());
 			for (int i = 0; i < actions.size(); i++) {
 				Action a = actions.get(i);
 				if (!a.running())
@@ -88,7 +92,6 @@ public abstract class Profile {
 	
 	public void add(Action a) {
 		toAdd.add(a);
-		a.init();
 	}
 	
 	public void remove(Action a) {
@@ -105,10 +108,16 @@ public abstract class Profile {
 	}
 	
 	protected void cleanup() {
+		timer.stop();
+		timer.reset();
 		cancelActions();
 		actions.clear();
 		toRemove.clear();
 		toAdd.clear();
+	}
+	
+	public double getTime() {
+		return timer.get();
 	}
 	
 	/** Whether or not the Profile is currently running */

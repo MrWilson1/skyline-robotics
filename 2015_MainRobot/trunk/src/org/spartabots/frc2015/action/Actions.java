@@ -1,20 +1,22 @@
 package org.spartabots.frc2015.action;
 
+import org.spartabots.frc2015.util.Constants;
+
 /**
  * A factory class for Actions
  */
 public class Actions {
 	
-	public static DriveAction driveDist(double meters, double speed) {
-		return new DriveAction(DriveAction.DISTANCE, meters, speed);
+	public static DriveAction driveDist(double feet, double speed) {
+		return new DriveAction(DriveAction.DISTANCE, feet, speed);
 	}
 
 	public static DriveAction driveTime(double millis, double speed) {
 		return new DriveAction(DriveAction.TIME, millis, speed);
 	}
 
-	public static TraverseAction travserseDist(double meters, double speed) {
-		return new TraverseAction(TraverseAction.DISTANCE, meters, speed);
+	public static TraverseAction traverseDist(double feet, double speed) {
+		return new TraverseAction(TraverseAction.DISTANCE, feet, speed);
 	}
 
 	public static TraverseAction traverseTime(double millis, double speed) {
@@ -35,6 +37,18 @@ public class Actions {
 	
 	public static ElevatorAction elevator(double power) {
 		return new ElevatorAction(power, -1);
+	}
+	
+	public static ElevatorGotoAction elevatorGoto(double feetFromGround) {
+		return new ElevatorGotoAction(feetFromGround);
+	}
+	
+	public static ElevatorGotoAction elevatorGotoBottom() {
+		return new ElevatorGotoAction(0);
+	}
+	
+	public static ElevatorGotoAction elevatorGotoTop() {
+		return new ElevatorGotoAction(Constants.ELEVATOR_HEIGHT);
 	}
 	
 	public static WaitAction waitAction(double millis) {

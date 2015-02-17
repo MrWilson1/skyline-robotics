@@ -2,10 +2,13 @@ package org.spartabots.frc2015.action;
 
 import org.spartabots.frc2015.util.Util;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class DriveWithJoystickAction extends Action {
 	double prevTraverseMove = 0;
 	boolean isBDown = false, isXDown = false;
 	boolean isBDown2 = false;
+	public static boolean elevatorControlEnabled = true;
 	
 	public DriveWithJoystickAction() {
 		this.canTimeOut = false;
@@ -43,7 +46,7 @@ public class DriveWithJoystickAction extends Action {
         // --------------------------------------------------------------------------------
 		double traverseMove = -Util.cutoff(robot.driveController.getLeftTriggerAxis())
         		+ Util.cutoff(robot.driveController.getRightTriggerAxis());
-		robot.drive.traverse.set(robot.drive.curveDrive(traverseMove, prevTraverseMove, true, 3));
+		robot.drive.traverse.set(robot.drive.curveDrive(traverseMove, prevTraverseMove, true, 3, false));
 		prevTraverseMove = traverseMove;
         
         // Drive
@@ -54,22 +57,42 @@ public class DriveWithJoystickAction extends Action {
         
         // Elevator
         // --------------------------------------------------------------------------------
-        double elevatorMove = -Util.cutoff(robot.loadController.getLeftTriggerAxis())
-        		+ Util.cutoff(robot.loadController.getRightTriggerAxis());
-        robot.elevator.setElevator(elevatorMove);
+        if (elevatorControlEnabled) {
+        	double elevatorMove = -Util.cutoff(robot.loadController.getLeftYAxis());
+	        /*double elevatorMove = -Util.cutoff(robot.loadController.getLeftTriggerAxis())
+	        		+ Util.cutoff(robot.loadController.getRightTriggerAxis());*/
+	        robot.elevator.setElevator(elevatorMove);
+        }
         
         // Clamp
         // --------------------------------------------------------------------------------
-        if (robot.loadController.getLeftBumperButton()) {
-        	robot.profile.add(Actions.clampOut());
-        } else if (robot.loadController.getRightBumperButton()) {
+        if (robot.loadController.getLeftBumperButton() || (robot.loadController.getLeftTriggerAxis() > 0.2)) {
         	robot.profile.add(Actions.clampIn());
+        } else if (robot.loadController.getRightBumperButton() || (robot.loadController.getRightTriggerAxis() > 0.2)) {
+        	robot.profile.add(Actions.clampOut());
+        }
+        
+        if (robot.loadController.getLeftTriggerAxis() > 0.2) {
+        	robot.profile.add(Actions.clampOut());
+        } else if (robot.loadController.getRightTriggerAxis() > 0.2) {
+        	robot.profile.add(Actions.clampIn());
+        }
+
+        // Clamp
+        // --------------------------------------------------------------------------------
+        if (robot.driveController.getBackButton() || robot.loadController.getBackButton()) {
+        	robot.drive.kpDisabled = true;
+        }
+        if (robot.driveController.getStartButton() || robot.loadController.getStartButton()) {
+        	robot.drive.kpDisabled = false;
         }
 
         // Release Action
         // --------------------------------------------------------------------------------
         if (robot.loadController.getBButton()) {
+            SmartDashboard.putString("ReleaseAction", "0");
         	if (!isBDown2) {
+                SmartDashboard.putString("ReleaseAction", "1");
         		robot.profile.add(Actions.releaseAction());
         	}
         	isBDown2 = true;

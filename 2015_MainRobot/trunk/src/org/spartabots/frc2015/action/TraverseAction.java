@@ -4,8 +4,11 @@ public class TraverseAction extends DriveAction {
 
 	public TraverseAction(int type, double value, double speed) {
 		super(type, value, speed);
-		if (type == TraverseAction.DISTANCE)
-			throw new UnsupportedOperationException("Traversing a certain distance is not yet implemented (encoder nonexistant)");
+	}
+	
+	@Override
+	public void init() {
+		super.init();
 	}
 	
 	@Override
@@ -15,6 +18,12 @@ public class TraverseAction extends DriveAction {
 
 	@Override
 	protected double getEncoderDistance() {
-		return 0; // TODO no encoder exists yet for traverse wheel
+		return robot.drive.getTraverseEncoderDistance();
+	}
+	
+	@Override
+	public void done() {
+		robot.drive.traverse.set(0);
+		robot.drive.resetEncoders();
 	}
 }
