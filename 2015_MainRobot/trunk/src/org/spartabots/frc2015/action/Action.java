@@ -15,12 +15,12 @@ import edu.wpi.first.wpilibj.Timer;
 public abstract class Action {
 	protected Timer timer = new Timer();
 	protected boolean done = false;
-	protected boolean doneFinal = false;
 	protected static Robot robot = Robot.getInstance();
 	protected boolean init = false;
 	protected double timeout = 100; // in seconds
 	protected boolean canTimeOut = true;
 	protected boolean enqueue2 = false; // for actions when added to series
+	protected boolean doneFinal = false;
 
 	public abstract void init();
 	/**
@@ -48,7 +48,7 @@ public abstract class Action {
 		return true;
 		
 	}
-	
+
 	/**
 	 * Stop this action.
 	 */

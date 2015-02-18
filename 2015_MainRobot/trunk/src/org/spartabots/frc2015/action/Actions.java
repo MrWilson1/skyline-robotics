@@ -7,20 +7,20 @@ import org.spartabots.frc2015.util.Constants;
  */
 public class Actions {
 	
-	public static DriveAction driveDist(double feet, double speed) {
-		return new DriveAction(DriveAction.DISTANCE, feet, speed);
+	public static DriveAction driveDist(double feet, double speed, boolean resetEncoders) {
+		return new DriveAction(DriveAction.DISTANCE, feet, speed, resetEncoders);
 	}
 
-	public static DriveAction driveTime(double millis, double speed) {
-		return new DriveAction(DriveAction.TIME, millis, speed);
+	public static DriveAction driveTime(double millis, double speed, boolean resetEncoders) {
+		return new DriveAction(DriveAction.TIME, millis, speed, resetEncoders);
 	}
 
-	public static TraverseAction traverseDist(double feet, double speed) {
-		return new TraverseAction(TraverseAction.DISTANCE, feet, speed);
+	public static TraverseAction traverseDist(double feet, double speed, boolean resetEncoders) {
+		return new TraverseAction(TraverseAction.DISTANCE, feet, speed, resetEncoders);
 	}
 
-	public static TraverseAction traverseTime(double millis, double speed) {
-		return new TraverseAction(TraverseAction.TIME, millis, speed);
+	public static TraverseAction traverseTime(double millis, double speed, boolean resetEncoders) {
+		return new TraverseAction(TraverseAction.TIME, millis, speed, resetEncoders);
 	}
 
 	public static RotateAction rotateDeg(double heading, double speed) {

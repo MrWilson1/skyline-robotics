@@ -5,7 +5,7 @@ import java.util.Queue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public abstract class SeriesAction extends Action {
+public class SeriesAction extends Action {
 	protected Queue<Action> queue = new LinkedList<Action>();
 	
 	public SeriesAction(Action... actions) {
@@ -71,6 +71,10 @@ public abstract class SeriesAction extends Action {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void init() {
 	}
 	
 }

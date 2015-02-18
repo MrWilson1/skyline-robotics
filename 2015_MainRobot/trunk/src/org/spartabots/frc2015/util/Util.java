@@ -15,6 +15,10 @@ public class Util {
         return n;
     }
     
+    public static double round2d(double val) {
+    	return Math.round(val * 100.0) / 100.0;
+    }
+    
     /**
      * <style>.eq {font-family: "Times New Roman","Symbola-mq",serif;}
      * .i {font-style: italic;}.sym {margin: 0 4px;}</style>

@@ -22,9 +22,12 @@ public class RotateAction extends Action {
 		this.speed = speed;
 	}
 	
+	public void _init() {
+		robot.drive.setZeroHeading();
+	}
+	
 	@Override
 	public void init() {
-		robot.drive.setZeroHeading();
 		robot.drive.lockGyroOffsetChange = true;
 		
 		SmartDashboard.putString("Whatcha doing rotate?", "init");
