@@ -6,12 +6,13 @@ package org.spartabots.frc2015.action;
 public class DriveAction extends Action {
 	public static final int DISTANCE = 0;
 	public static final int TIME = 1;
-	int type;
-	double dist;
-	double speed = 0.7;
-	double originalSpeed = 0;
-	double error = 0.08;
-	int direction = 0; // 0 - forward, 1 = backward
+	private int type;
+	protected double dist;
+	protected double speed = 0.7;
+	protected double originalSpeed = 0;
+	protected double error = 0.08;
+	private int direction = 0; // 0 - forward, 1 = backward
+	boolean resetEncoders = true;
 	
 	/**
 	 * Drive a certain distance or for a certain time.
@@ -20,11 +21,15 @@ public class DriveAction extends Action {
 	 * @param value Distance in meters or time in milliseconds (negative drives opposite direction)
 	 * @param speed How fast to move from 0 to 1 (scalar, non-directional)
 	 */
-	public DriveAction(int type, double value, double speed) {
+	public DriveAction(int type, double value, double speed, boolean resetEncoders) {
 		this.type = type;
+		_init(value, speed);
+		robot.drive.isDrivingStraight = true;
+		this.resetEncoders = resetEncoders;
+	}
+	
+	public void _init(double value, double speed) {
 		this.originalSpeed = speed;
-		if (speed < 0)
-			throw new IllegalArgumentException();
 		if (this.type == TIME) {
 			if (value < 0) throw new IllegalArgumentException();
 			this.setTimeout(value);
@@ -39,12 +44,12 @@ public class DriveAction extends Action {
 			throw new IllegalArgumentException();
 		}
 		this.speed = speed;
-		robot.drive.isDrivingStraight = true;
 	}
 	
 	@Override
 	public void init() {
-		robot.drive.setZeroEcDist();
+		if (resetEncoders)
+			robot.drive.setZeroEcDist();
 	}
 
 	@Override
@@ -77,7 +82,8 @@ public class DriveAction extends Action {
 	@Override
 	public void done() {
 		robot.drive.stop();
-		robot.drive.setZeroEcDist();
+		if (resetEncoders)
+			robot.drive.setZeroEcDist();
 	}
 	
 	public String toString() {

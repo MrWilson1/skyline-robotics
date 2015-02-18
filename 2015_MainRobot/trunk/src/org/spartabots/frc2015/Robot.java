@@ -67,7 +67,8 @@ public class Robot extends SampleRobot {
         autoChooser.addObject("3 Tote", 3);
         autoChooser.addObject("1 Bin", 4);
         autoChooser.addObject("Drive only", 5);
-        autoChooser.addObject("Rotate 90 deg", 6);
+        autoChooser.addObject("Testing: rotate 90 & elevator", 6);
+        autoChooser.addObject("Testing: repickup", 7);
         SmartDashboard.putData("Autonomous Mode Chooser", autoChooser);
         
         SmartDashboard.putNumber("GYRO_KP", Constants.GYRO_KP);

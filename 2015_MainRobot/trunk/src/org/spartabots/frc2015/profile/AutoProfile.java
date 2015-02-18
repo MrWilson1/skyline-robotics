@@ -1,6 +1,7 @@
 package org.spartabots.frc2015.profile;
 
 import org.spartabots.frc2015.action.Actions;
+import org.spartabots.frc2015.action.SeriesAction;
 import org.spartabots.frc2015.auto.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,9 +33,14 @@ public class AutoProfile extends Profile {
 			break;
 		case 4: add(new Auto1Bin());
 			break;
-		case 5: add(Actions.driveDist(8.5, 0.85));
+		case 5: add(Actions.driveDist(8.5, 0.85, true));
 			break;
 		case 6: add(new AutoTest());
+			break;
+		case 7:
+			SeriesAction repickup = new SeriesAction();
+			AutoHandle.repickup(repickup);
+			add(repickup);
 			break;
 		default:
 			break;

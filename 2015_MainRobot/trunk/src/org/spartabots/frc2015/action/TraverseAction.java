@@ -2,13 +2,14 @@ package org.spartabots.frc2015.action;
 
 public class TraverseAction extends DriveAction {
 
-	public TraverseAction(int type, double value, double speed) {
-		super(type, value, speed);
+	public TraverseAction(int type, double value, double speed, boolean resetEncoders) {
+		super(type, value, speed, resetEncoders);
 	}
 	
 	@Override
 	public void init() {
-		super.init();
+		if (resetEncoders)
+			robot.drive.resetEncoders();
 	}
 	
 	@Override
@@ -24,6 +25,7 @@ public class TraverseAction extends DriveAction {
 	@Override
 	public void done() {
 		robot.drive.traverse.set(0);
-		robot.drive.resetEncoders();
+		if (resetEncoders)
+			robot.drive.resetEncoders();
 	}
 }

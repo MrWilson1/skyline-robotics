@@ -33,7 +33,7 @@ public class Drive extends Subsystem {
     public boolean kpDisabled = false;
     public boolean kpOff = false;
     
-	private final double waitForAdjust = 1; // in secodns
+	private final double waitForAdjust = 0.85; // in secodns
 	private double driveStraightStartTime = 0;
 	
 	protected double gV = 0.0;
@@ -42,7 +42,6 @@ public class Drive extends Subsystem {
     private double gVCheckInterval = 0.1;
 	
     // Misc Variables
-    int driveComplexity = 2;
     double prevMove = 0;
     double prevRotate = 0;
     boolean speedMode = false;
