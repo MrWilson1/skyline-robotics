@@ -52,10 +52,10 @@ public class ElevatorGotoAction extends Action {
 	@Override
 	public boolean runPeriodic() {
 		if (dfg == 0) {
-			robot.elevator.setElevator(-0.9);
+			robot.elevator.setElevator(-1);
 			return !robot.elevator.isAtBottom();
 		} else if (dfg == Constants.ELEVATOR_HEIGHT) {
-			robot.elevator.setElevator(0.9);
+			robot.elevator.setElevator(1);
 			return !robot.elevator.isAtTop();
 		}
 		

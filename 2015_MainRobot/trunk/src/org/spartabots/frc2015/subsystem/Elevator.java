@@ -55,7 +55,9 @@ public class Elevator extends Subsystem {
 					this.eMotor.set(0);
 					return;
 				} else if (!speedMode) {
-					value /= Constants.ELEVATOR_DOWN_REDUCTION_FACTOR;
+					value /= Constants.ELEVATOR_DOWN_SLOW_REDUCTION_FACTOR;
+				} else if (speedMode) {
+					value /= Constants.ELEVATOR_DOWN_FAST_REDUCTION_FACTOR;
 				}
 			} else if (value > 0){
 				if (this.isAtTop()) {
@@ -63,7 +65,9 @@ public class Elevator extends Subsystem {
 					this.eMotor.set(0);
 					return;
 				} else if (!speedMode) {
-					value /= Constants.ELEVATOR_UP_REDUCTION_FACTOR;	
+					value /= Constants.ELEVATOR_UP_SLOW_REDUCTION_FACTOR;	
+				} else if (speedMode) {
+					value /= Constants.ELEVATOR_UP_FAST_REDUCTION_FACTOR;
 				}
 			}
 			this.elevatorMoving = true;

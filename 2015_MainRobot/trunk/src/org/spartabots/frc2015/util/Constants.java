@@ -24,8 +24,10 @@ public class Constants {
 	// ELEVATOR
 	public static final int ELEVATOR_PORT 						= Ports.RoboRIO.Pwm3;
 	public static final int REGULAR_EASE_CONSTANT 				= 2;
-	public static final double ELEVATOR_DOWN_REDUCTION_FACTOR 	= 1.85; // for slow mode
-	public static final double ELEVATOR_UP_REDUCTION_FACTOR		= 1; // for slow mode
+	public static final double ELEVATOR_DOWN_FAST_REDUCTION_FACTOR 		= 1.55; // for slow mode
+	public static final double ELEVATOR_DOWN_SLOW_REDUCTION_FACTOR 		= 1.85; // for slow mode
+	public static final double ELEVATOR_UP_FAST_REDUCTION_FACTOR		= 1; // for slow mode
+	public static final double ELEVATOR_UP_SLOW_REDUCTION_FACTOR		= 1; // for slow mode
 	public static final double ELEVATOR_HEIGHT 					= 6; /* about */ 
 	
 	// GYRO
