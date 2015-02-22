@@ -13,13 +13,12 @@ public class SpclTraverseBackAction extends TraverseAction {
 	@Override
 	public void init() {
 		this._init(getDist(), 1);
-		robot.drive.resetEncoders();
 	}
 	
 	public static double getDist() {
 		SmartDashboard.putNumber("Spcl Traverse Dist", -robot.drive.getTraverseEncoderDistance());
 		
-		double val = -robot.drive.getTraverseEncoderDistance();;
+		double val = -robot.drive.getTraverseEncoderDistance();
 		int val_zsgn = (int) Math.signum(val);
 		
 		val = (Math.abs(val) + 0.3) * val_zsgn;

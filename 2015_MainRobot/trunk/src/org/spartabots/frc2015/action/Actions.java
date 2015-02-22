@@ -23,12 +23,12 @@ public class Actions {
 		return new TraverseAction(TraverseAction.TIME, millis, speed, resetEncoders);
 	}
 
-	public static RotateAction rotateDeg(double heading, double speed) {
-		return new RotateAction(heading, RotateAction.DEGREES, speed);
+	public static RotateAction rotateDeg(double heading, double speed, boolean resetHeading) {
+		return new RotateAction(heading, RotateAction.DEGREES, speed, resetHeading);
 	}
 	
-	public static RotateAction rotateRad(double heading, double speed) {
-		return new RotateAction(heading, RotateAction.RADIANS, speed);
+	public static RotateAction rotateRad(double heading, double speed, boolean resetHeading) {
+		return new RotateAction(heading, RotateAction.RADIANS, speed, resetHeading);
 	}
 	
 	public static ElevatorAction elevatorTime(double power, double timeMillis) {

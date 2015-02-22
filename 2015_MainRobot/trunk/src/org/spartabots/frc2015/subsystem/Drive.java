@@ -16,7 +16,7 @@ public class Drive extends Subsystem {
     // Drive Motors
     public RobotDrive m_drive;
     public Talon traverse;
-    private double driveEcOffset = 0;
+    public double driveEcOffset = 0;
     
     // Encoders
     public Encoder beltEc = new Encoder(Constants.D_BELT_EC_A, Constants.D_BELT_EC_B, false, EncodingType.k1X);
@@ -28,7 +28,7 @@ public class Drive extends Subsystem {
     
     // Gyro
     public Gyro gyro;
-    private double gyroOffset = 0;
+    public double gyroOffset = 0;
     public boolean lockGyroOffsetChange = false;
     public boolean kpDisabled = false;
     public boolean kpOff = false;

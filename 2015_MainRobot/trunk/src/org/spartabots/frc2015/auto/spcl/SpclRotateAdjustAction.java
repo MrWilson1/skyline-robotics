@@ -2,10 +2,10 @@ package org.spartabots.frc2015.auto.spcl;
 
 import org.spartabots.frc2015.action.Action;
 
-public class SpclRotateReadjustAction extends Action {
+public class SpclRotateAdjustAction extends Action {
 	
-	public SpclRotateReadjustAction() {
-		this.setTimeout(600);
+	public SpclRotateAdjustAction() {
+		this.setTimeout(200);
 	}
 
 	@Override
@@ -15,7 +15,7 @@ public class SpclRotateReadjustAction extends Action {
 
 	@Override
 	public boolean runPeriodic() {
-		robot.drive.m_drive.arcadeDrive(0, -(robot.drive.getGyroAngle() * 0.03));
+		robot.drive.m_drive.arcadeDrive(0, -(robot.drive.getGyroAngle() * 0.032));
 		return true;
 	}
 

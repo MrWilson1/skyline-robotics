@@ -12,7 +12,7 @@ public class AutoTest extends SeriesAction {
 	public void init() {
 		enqueue(new LogAction("AutoTest", "run count=" + i));
 		enqueueToProfile(Actions.elevatorGoto(AutoHandle.TOTE_HEIGHT));
-		enqueue(Actions.rotateDeg(90, 0.6));
+		enqueue(Actions.rotateDeg(90, 0.6, true));
 		enqueue(new LogAction("AutoTest Queue", this.queue.toString()));
 	}
 	

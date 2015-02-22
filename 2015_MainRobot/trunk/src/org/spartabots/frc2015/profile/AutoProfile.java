@@ -21,6 +21,7 @@ public class AutoProfile extends Profile {
 	public void init() {
 		robot.drive.resetGyro();
 		robot.drive.resetEncoders();
+		robot.elevator.speedMode = true;
 		
 		switch (selectedAction) {
 		case 0: add(Actions.waitAction(1000));

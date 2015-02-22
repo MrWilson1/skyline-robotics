@@ -11,8 +11,9 @@ public class RotateAction extends Action {
 	public static final int RADIANS = 1;
 	int unit = 0;
 	double speed = 0;
+	boolean resetHeading = true;
 	
-	public RotateAction(double heading, int unit, double speed) {
+	public RotateAction(double heading, int unit, double speed, boolean resetHeading) {
 		if (unit != DEGREES && unit != RADIANS)
 			throw new IllegalArgumentException();
 		if (1 < speed || speed < 0)
@@ -20,10 +21,12 @@ public class RotateAction extends Action {
 		this.heading = heading;
 		this.unit = unit;
 		this.speed = speed;
+		this.resetHeading = resetHeading;
 	}
 	
 	public void _init() {
-		robot.drive.setZeroHeading();
+		if (resetHeading)
+			robot.drive.setZeroHeading();
 	}
 	
 	@Override
@@ -72,7 +75,8 @@ public class RotateAction extends Action {
 	public void done() {
 		robot.drive.lockGyroOffsetChange = false;
 		robot.drive.stop();
-		robot.drive.setZeroHeading();
+		if (resetHeading)
+			robot.drive.setZeroHeading();
 	}
 	
 }

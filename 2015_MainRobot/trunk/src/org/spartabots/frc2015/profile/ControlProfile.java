@@ -14,6 +14,7 @@ public class ControlProfile extends Profile {
 	public void init() {
 		robot.drive.resetGyro();
 		robot.drive.resetEncoders();
+		robot.elevator.speedMode = false;
 		
 		add(new DriveWithJoystickAction());
 	}

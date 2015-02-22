@@ -5,12 +5,12 @@ import org.spartabots.frc2015.util.Util;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SpclDriveReadjustAction extends DriveAction {
+public class SpclDriveAdjustAction extends DriveAction {
 	double adjustTo;
 	double my_speed = 0;
 	
 	boolean zeroEcAfter = true;
-	public SpclDriveReadjustAction(double adjustTo, boolean zeroEcAfter, double speed) {
+	public SpclDriveAdjustAction(double adjustTo, boolean zeroEcAfter, double speed) {
 		super(DISTANCE, 0.1, 0.5, false); /* dummy values, second param cannot be 0 */
 		this.adjustTo = adjustTo;
 		SmartDashboard.putString("Spcl Drive Did Init", "true; " + this.init + ", " + this.doneFinal);
