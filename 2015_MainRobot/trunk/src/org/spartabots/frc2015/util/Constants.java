@@ -9,8 +9,8 @@ public class Constants {
 	public static final int DRIVE_RIGHT_PORT 	= Ports.RoboRIO.Pwm0;
 	public static final int TRAVERSE_PORT 		= Ports.RoboRIO.Pwm2;
 	
-	public static final double DRIVE_FAST_REDUCTION_FACTOR 		= 1.24;
-	public static final double DRIVE_SLOW_REDUCTION_FACTOR 		= 1.45;
+	public static final double DRIVE_FAST_REDUCTION_FACTOR 			= 1.24;
+	public static final double DRIVE_SLOW_REDUCTION_FACTOR 			= 1.45;
 	
 	public static final double ROTATE_FAST_REDUCTION_FACTOR 		= 1.15;
 	public static final double ROTATE_SLOW_REDUCTION_FACTOR 		= 1.25;
@@ -22,13 +22,13 @@ public class Constants {
 	public static final double FEET_TO_METERS 			= 0.3048;
 	
 	// ELEVATOR
-	public static final int ELEVATOR_PORT 						= Ports.RoboRIO.Pwm3;
-	public static final int REGULAR_EASE_CONSTANT 				= 2;
+	public static final int ELEVATOR_PORT 								= Ports.RoboRIO.Pwm3;
+	public static final int REGULAR_EASE_CONSTANT 						= 2;
 	public static final double ELEVATOR_DOWN_FAST_REDUCTION_FACTOR 		= 1.55; // for slow mode
 	public static final double ELEVATOR_DOWN_SLOW_REDUCTION_FACTOR 		= 1.85; // for slow mode
 	public static final double ELEVATOR_UP_FAST_REDUCTION_FACTOR		= 1; // for slow mode
 	public static final double ELEVATOR_UP_SLOW_REDUCTION_FACTOR		= 1; // for slow mode
-	public static final double ELEVATOR_HEIGHT 					= 6; /* about */ 
+	public static final double ELEVATOR_HEIGHT 							= 6; /* about */ 
 	
 	// GYRO
 	public static final int GYRO_PORT 			= Ports.RoboRIO.AnalogChannel1;
