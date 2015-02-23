@@ -4,7 +4,6 @@ public class RotateToZero extends RotateAction {
 
 	public RotateToZero(double speed) {
 		super(0, DEGREES, speed, false);
-		// TODO Auto-generated constructor stub
 	}
 
 }

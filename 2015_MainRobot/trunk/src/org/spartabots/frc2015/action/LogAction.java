@@ -20,14 +20,11 @@ public class LogAction extends Action {
 
 	@Override
 	public boolean runPeriodic() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void done() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
