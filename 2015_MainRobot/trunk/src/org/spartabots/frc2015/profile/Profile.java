@@ -64,7 +64,6 @@ public abstract class Profile {
 		init();
 		timer.start();
 		while (running && robot.isEnabled() && modeCondition.get()) {
-			
 			actions.addAll(toAdd);
 			toAdd.clear();
 			actions.removeAll(toRemove);

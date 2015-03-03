@@ -30,11 +30,11 @@ public class AutoProfile extends Profile {
 			break;
 		case 2: add(new Auto2Tote());
 			break;
-		case 3: add(new Auto3Tote());
+		case 3: add(new Auto1ToteSpcl());
 			break;
 		case 4: add(new Auto1Bin());
 			break;
-		case 5: add(Actions.driveDist(8.5, 0.85, true));
+		case 5: add(Actions.driveDist(6.5, 0.85, true));
 			break;
 		case 6: add(new AutoTest());
 			break;

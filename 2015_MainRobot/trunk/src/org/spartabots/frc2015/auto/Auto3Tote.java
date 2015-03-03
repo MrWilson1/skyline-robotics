@@ -9,7 +9,7 @@ public class Auto3Tote extends SeriesAction {
 		AutoHandle.enqueue1stTote(this, true);
 		AutoHandle.enqueue2ndTote(this, true);
 		AutoHandle.enqueue3rdTote(this, false);
-		AutoHandle.enqueueGotoAutoZone(this, false);
+		AutoHandle.enqueueGotoAutoZone(this);
 	}
 	
 }

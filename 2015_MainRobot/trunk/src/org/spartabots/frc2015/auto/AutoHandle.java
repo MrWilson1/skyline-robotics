@@ -1,5 +1,6 @@
 package org.spartabots.frc2015.auto;
 
+import org.spartabots.frc2015.Robot;
 import org.spartabots.frc2015.action.*;
 import org.spartabots.frc2015.auto.spcl.*;
 
@@ -83,11 +84,11 @@ public interface AutoHandle {
 		repickup(a); // pick up
 	}
 	
-	public static void enqueueGotoAutoZone(SeriesAction a, boolean turnOpposite) {
-		a.enqueue(new LogAction("Auto Step", "Auto zone, " + turnOpposite));
-		a.enqueue(Actions.rotateDeg((turnOpposite) ? -90 : 90, 0.575, true)); // Rotate robot to face auto zone
+	public static void enqueueGotoAutoZone(SeriesAction a) {
+		a.enqueue(new LogAction("Auto Step", "Auto zone, "));
+		a.enqueue(Actions.rotateDeg((int) Robot.getInstance().autoRotateChooser.getSelected() * 90, 0.575, true)); // Rotate robot to face auto zone
 		a.enqueueToProfile(Actions.elevatorGoto(FLOOR_HEIGHT)); // bring elevator down to right above floor
-		a.enqueue(Actions.driveDist(8, 0.7, true)); // Drive to auto zone
-		a.enqueue(Actions.rotateDeg(-45, 0.625, true)); // Rotate robot to face auto zone
+		a.enqueue(Actions.driveDist(6, 0.7, true)); // Drive to auto zone
+		a.enqueue(Actions.rotateDeg(-45, 0.625, true));
 	}
 }

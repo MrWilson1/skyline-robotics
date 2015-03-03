@@ -7,7 +7,7 @@ public class Auto1Tote extends SeriesAction {
 	@Override
 	public void init() {
 		AutoHandle.enqueue1stTote(this, false);
-		AutoHandle.enqueueGotoAutoZone(this, false);
+		AutoHandle.enqueueGotoAutoZone(this);
 	}
 	
 }
