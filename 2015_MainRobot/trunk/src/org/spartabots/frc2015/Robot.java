@@ -6,6 +6,9 @@ import org.spartabots.frc2015.subsystem.Elevator;
 import org.spartabots.frc2015.util.Constants;
 import org.spartabots.frc2015.util.XboxController;
 
+import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.Image;
+
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -32,10 +35,13 @@ public class Robot extends SampleRobot {
     public Profile profile;
     
     // Camera
-    CameraServer server;
+    public int cam_session;
+    public Image cam_frame;
+    public Thread cameraThread;
     
     // Sendable Chooser
-    SendableChooser autoChooser;
+    public SendableChooser autoChooser;
+    public SendableChooser autoRotateChooser;
     
     public Robot() {
     	super();
@@ -54,23 +60,43 @@ public class Robot extends SampleRobot {
     	controlProfile = new ControlProfile();
     	autoProfile = new AutoProfile();
     	testProfile = new TestProfile();
-    	
-    	server = CameraServer.getInstance();
-        server.setQuality(50);
-        server.setQuality(50);
-        server.startAutomaticCapture("cam0");
+
+        cam_frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+        cam_session = NIVision.IMAQdxOpenCamera("cam0",
+                NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+        NIVision.IMAQdxConfigureGrab(cam_session);
         
         autoChooser = new SendableChooser();
         autoChooser.addDefault("Do nothing", 0);
         autoChooser.addObject("1 Tote", 1);
         autoChooser.addObject("2 Tote", 2);
-        autoChooser.addObject("3 Tote", 3);
+        autoChooser.addObject("1 Tote Special", 3);
         autoChooser.addObject("1 Bin", 4);
         autoChooser.addObject("Drive only", 5);
         autoChooser.addObject("Testing: rotate 90 & elevator", 6);
         autoChooser.addObject("Testing: repickup", 7);
         SmartDashboard.putData("Autonomous Mode Chooser", autoChooser);
+        
+        autoRotateChooser = new SendableChooser();
+        autoRotateChooser.addDefault("Auto Rotate Right", 1);
+        autoRotateChooser.addObject("Auto Rotate Left", -1);
+        SmartDashboard.putData("Autonomous Mode Rotate Chooser", autoRotateChooser);
+        
         SmartDashboard.putNumber("GYRO_KP", Constants.GYRO_KP);
+        
+        this.cameraThread = new Thread() {
+        	public void run() {
+                NIVision.IMAQdxStartAcquisition(cam_session);
+                
+                while (Robot.isReal()) {
+                    NIVision.IMAQdxGrab(cam_session, cam_frame, 1);
+                    CameraServer.getInstance().setImage(cam_frame);
+                }
+                
+                NIVision.IMAQdxStopAcquisition(cam_session);
+        	}
+        };
+        this.cameraThread.start();
     }
     
     @Override

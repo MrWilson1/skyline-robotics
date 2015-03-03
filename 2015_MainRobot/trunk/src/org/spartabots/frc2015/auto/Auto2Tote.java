@@ -8,7 +8,7 @@ public class Auto2Tote extends SeriesAction {
 	public void init() {
 		AutoHandle.enqueue1stTote(this, true);
 		AutoHandle.enqueue2ndTote(this, false);
-		AutoHandle.enqueueGotoAutoZone(this, false);
+		AutoHandle.enqueueGotoAutoZone(this);
 	}
 	
 }
